@@ -1,6 +1,6 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import TouchableCard from '../components/Touchable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,7 +25,7 @@ const Home = () => {
               <Feather name="bell" size={30} />
             </Text>
           </View>
-          <View style={{flexDirection: 'row', marginHorizontal: 20}}>
+          <View style={{flexDirection: 'row', marginHorizontal: 20,top:"5%"}}>
             <Image
               source={require('../assets/Images/smile.jpg')}
               style={{width: 60, height: 60, borderRadius: 50}}
@@ -42,10 +42,15 @@ const Home = () => {
         </View>
       </LinearGradient>
       <View style={styles.carousel}>
-        <SliderBox images={image}  style={styles.carouselimg}/>
+        <SliderBox images={image}
+        autoplay ={true} 
+        circleLoop={true} 
+        style={styles.carouselimg}/>
       </View>
-
-      <TouchableCard />
+   
+    
+    <TouchableCard />
+    
     </View>
   );
 };
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    fontFamily:'PTSerif-Bold',
+    fontFamily:'Montserrat-Regular',
   },
   gradient: {
     width: '100%',
@@ -70,6 +75,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 10,
+    fontFamily:'Montserrat-Regular',
+    top:'3%',
   },
   brand: {
     color: 'white',
@@ -96,9 +103,10 @@ const styles = StyleSheet.create({
     overflow:'hidden'
   },
   carouselimg:{
-    position:'relative',
+   
     minHeight:'100%',
     width:"100%",
+    resizeMode:'cover'
   }
 });
 

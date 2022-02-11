@@ -17,7 +17,10 @@ function Tabs() {
     screenOptions={{
       headerShown: false,
       tabBarActiveTintColor: '#fff',
-      tabBarStyle: {backgroundColor: '#624686',height:70,borderTopLeftRadius:15,borderTopRightRadius:15,},
+      tabBarStyle:{position:'absolute', height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
+      tabBarBackground:() =>(
+        <LinearGradient  colors={['#AD3231',  '#2757C3']} style={{height:80,borderTopLeftRadius:15,borderTopRightRadius:15}}/>
+      )
     }}>
       <Tab.Screen name="Home" component={Home} 
       options={{
@@ -44,6 +47,7 @@ function Tabs() {
       <Tab.Screen name="More" component={More} 
       options={{
         tabBarLabel: 'More',
+       
         tabBarIcon: ({ color, size }) => (
           <Material name="sort" color={'white'} size={size} />
         ),
