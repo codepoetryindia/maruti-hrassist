@@ -77,7 +77,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Employee Lookup"
-              onPress={() => navigation.navigate(EmployeeNavs)}
+              onPress={() => navigation.navigate(EmployeLookUp)}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>

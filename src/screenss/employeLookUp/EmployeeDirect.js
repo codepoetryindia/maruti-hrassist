@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // create a component
 const EmployeeDirect = () => {
     return (
+        <View style={styles.container}>
         <View style={styles.searchSection}>
         <Ionicons
           style={styles.searchIcon}
@@ -24,6 +25,7 @@ const EmployeeDirect = () => {
           color="#2757C3"
         />
       </View>
+      </View>
     );
 };
 
@@ -31,9 +33,6 @@ const EmployeeDirect = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
     },
     searchSection: {
         top: 10,

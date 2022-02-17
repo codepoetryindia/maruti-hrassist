@@ -7,32 +7,16 @@ import {
   Image,
   ScrollView,
   TextInput,
-  useWindowDimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import EmployeeDirect from './EmployeeDirect';
-import Birthdays from './Birthdays';
 
-const FirstRoute = () => <EmployeeDirect />;
-
-const SecondRoute = () => <Birthdays />;
+// create a component
 const EmployeLookUp = ({navigation}) => {
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'EmployeeDirect'},
-    {key: 'second', title: 'Birthdays'},
-  ]);
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <View>
       <LinearGradient
-        colors={['#2757C3', '#80406A', '#ad3231']}
+        colors={['#2757C3', '#80406A', '#AD3231']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -40,7 +24,7 @@ const EmployeLookUp = ({navigation}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: 40,
-              alignItems: 'center',
+              alignItems:'center'
             }}>
             <Ionicons
               name="chevron-back-outline"
@@ -67,22 +51,21 @@ const EmployeLookUp = ({navigation}) => {
           </Text>
         </View>
       </LinearGradient>
-      <TabView
-        renderTabBar={props => {
-          return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
-              <TabBar
-                {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
-              />
-            </LinearGradient>
-          );
-        }}
-        navigationState={{index, routes}}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
-      />
+      <View style={styles.searchSection}>
+        <Ionicons
+          style={styles.searchIcon}
+          name="ios-search"
+          size={20}
+          color="#2757C3"
+        />
+        <TextInput style={styles.input} placeholder="Search By Name/Dept/Staff ID" />
+        <Ionicons
+          style={styles.searchIcon}
+          name="send"
+          size={20}
+          color="#2757C3"
+        />
+      </View>
     </View>
   );
 };
@@ -103,7 +86,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 1,
     borderColor: '#d9d9d9',
-    borderRadius: 7,
+    borderRadius:7
   },
   searchIcon: {
     padding: 10,

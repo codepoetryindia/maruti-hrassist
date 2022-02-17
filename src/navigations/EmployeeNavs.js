@@ -12,9 +12,6 @@ function EmployeeNavs() {
   return (
       <Stack.Navigator initialRouteName='EmployeLookUp' screenOptions={{headerShown:false}}>
         <Stack.Screen name='EmployeLookUp' component={EmployeLookUp}/>
-        <Stack.Screen name='TopTab' component={TopTabs}/>
-        {/* <Stack.Screen name="EmployeeDirect" component={EmployeeDirect} />
-        <Stack.Screen name='EmployeProfile' component={EmployeProfile}/> */}
       </Stack.Navigator>
   );
 }

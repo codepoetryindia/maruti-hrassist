@@ -1,12 +1,19 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet , TouchableOpacity,} from 'react-native';
 
 // create a component
 const Birthdays = () => {
     return (
         <View style={styles.container}>
-            <Text>Birthdays</Text>
+            <View style={styles.buttonBack}>
+            <TouchableOpacity style={styles.today}>
+            <Text style={{textAlign:'center',top:3}}>Today</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.today}>
+            <Text style={{  textAlign:'center',top:3}}>Tommorow</Text>
+            </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -15,10 +22,19 @@ const Birthdays = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
+        backgroundColor: '#fff',
     },
+    buttonBack:{
+        flexDirection:'row',
+        alignSelf:'center',
+        top:10,
+    },
+    today:{
+        width:'45%',
+        borderWidth:1,
+        borderColor: '#d9d9d9',
+        height:30,
+    }
 });
 
 //make this component available to the app
