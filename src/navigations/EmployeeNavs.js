@@ -5,14 +5,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EmployeeDirect from '../screenss/employeLookUp/EmployeeDirect';
 import EmployeProfile from '../screenss/employeLookUp/EmployeProfile';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
+import TopTabs from './TopTab';
 const Stack = createNativeStackNavigator();
 
 function EmployeeNavs() {
   return (
       <Stack.Navigator initialRouteName='EmployeLookUp' screenOptions={{headerShown:false}}>
         <Stack.Screen name='EmployeLookUp' component={EmployeLookUp}/>
-        <Stack.Screen name="EmployeeDirect" component={EmployeeDirect} />
-        <Stack.Screen name='EmployeProfile' component={EmployeProfile}/>
+        <Stack.Screen name='TopTab' component={TopTabs}/>
+        {/* <Stack.Screen name="EmployeeDirect" component={EmployeeDirect} />
+        <Stack.Screen name='EmployeProfile' component={EmployeProfile}/> */}
       </Stack.Navigator>
   );
 }

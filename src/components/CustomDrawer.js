@@ -75,7 +75,6 @@ function CustomDrawer(props) {
               )}
               style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
             />
-
             <DrawerItem
               label="Employee Lookup"
               onPress={() => navigation.navigate(EmployeeNavs)}
@@ -232,7 +231,7 @@ const styles = StyleSheet.create({
   gradient: {
     width: '100%',
     height: '21%',
-    marginTop: -12,
+    marginTop: -18,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
 

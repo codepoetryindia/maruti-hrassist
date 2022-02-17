@@ -15,6 +15,7 @@ function Tabs() {
     <Tab.Navigator
     initialRouteName="Home"
     screenOptions={{
+
       headerShown: false,
       tabBarActiveTintColor: '#fff',
       tabBarStyle:{position:'absolute', height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
