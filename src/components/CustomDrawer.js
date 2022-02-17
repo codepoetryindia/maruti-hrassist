@@ -60,7 +60,6 @@ function CustomDrawer(props) {
             </Text>
           </View>
         </LinearGradient>
-
         <View style={styles.container}>
           <ScrollView>
             <DrawerItem
