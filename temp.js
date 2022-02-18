@@ -1,132 +1,70 @@
 //import liraries
-import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
-} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet , TouchableOpacity,
+    useWindowDimensions,} from 'react-native';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import Todays from './Todays';
+import Tommorow from './Tomorow';
+import SegmentedControlTab from "react-native-segmented-control-tab";
 
 // create a component
-const EmployeLookUp = ({navigation}) => {
-  return (
-    <View>
-      <LinearGradient
-        colors={['#2757C3', '#80406A', '#AD3231']}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems:'center'
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={15}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={20}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
+const FirstRoute = () => <Todays />;
 
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Employee Lookup
-          </Text>
+const SecondRoute = () => <Tommorow />;
+const Birthdays = () => {
+    const renderScene = SceneMap({
+        first: FirstRoute,
+        second: SecondRoute,
+      });
+      const layout = useWindowDimensions();
+      const [index, setIndex] = React.useState(0);
+      const [routes] = React.useState([
+        {key: 'first', title: 'Todays'},
+        {key: 'second', title: 'Tommorow'},
+      ]);
+    return (
+        <View style={styles.container}>
+            <TabView
+            style={{}}
+
+renderTabBar={props => {
+    return (
+        <TabBar
+          {...props}
+          style={{backgroundColor: 'green',color:'#000', elevation: 0,}}
+        />
+     
+    );
+  }}
+
+
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{width: layout.width}}
+      />
         </View>
-      </LinearGradient>
-      <View style={styles.searchSection}>
-        <Ionicons
-          style={styles.searchIcon}
-          name="ios-search"
-          size={20}
-          color="#2757C3"
-        />
-        <TextInput style={styles.input} placeholder="Search By Name/Dept/Staff ID" />
-        <Ionicons
-          style={styles.searchIcon}
-          name="send"
-          size={20}
-          color="#2757C3"
-        />
-      </View>
-    </View>
-  );
+    );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-  gradient: {
-    padding: 20,
-  },
-  container: {
-    flexDirection: 'row',
-  },
-  searchSection: {
-    top: 10,
-    width: '90%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#d9d9d9',
-    borderRadius:7
-  },
-  searchIcon: {
-    padding: 10,
-  },
-  input: {
-    width: '77%',
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    backgroundColor: '#fff',
-    color: '#424242',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    // buttonBack:{
+    //     flexDirection:'row',
+    //     alignSelf:'center',
+    //     top:10,
+    // },
+    // today:{
+    //     width:'45%',
+    //     borderWidth:1,
+    //     borderColor: '#d9d9d9',
+    //     height:30,
+    // }
 });
 
-// //make this component available to the app
-export default EmployeLookUp;
-
-// //import liraries
-// import React, { Component } from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// // create a component
-// const EmployeLookUp = () => {
-//     return (
-//         <View style={styles.container}>
-//             <Text>EmployeLookUp</Text>
-//         </View>
-//     );
-// };
-
-// // define your styles
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: '#2c3e50',
-//     },
-// });
-
-// //make this component available to the app
-// export default EmployeLookUp;
+//make this component available to the app
+export default Birthdays;

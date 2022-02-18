@@ -5,7 +5,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import Home from '../screenss/Home';
-import Attendance from '../screenss/Attendance';
+import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
 import Gatepass from '../screenss/Gatepass';
 import More from '../screenss/More';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
@@ -90,8 +90,8 @@ function CustomDrawer(props) {
             />
 
             <DrawerItem
-              label="Attendance"
-              onPress={() => navigation.navigate(Attendance)}
+              label="AttendanceAdmin"
+              onPress={() => navigation.navigate(AttendanceAdmin)}
               icon={({color, size}) => (
                 //   <Foundation
                 //   name='torsos-all' color={'black'} size={20}/>

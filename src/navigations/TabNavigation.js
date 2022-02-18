@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import Home from '../screenss/Home';
-import Attendance from '../screenss/Attendance';
+import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
 import Gatepass from '../screenss/Gatepass';
 import More from '../screenss/More';
 import LinearGradient from 'react-native-linear-gradient';
@@ -30,9 +30,9 @@ function Tabs() {
           <Icon name="home" color={'white'} size={size} />
         ),
       }}/>
-      <Tab.Screen name="Attendance" component={Attendance}
+      <Tab.Screen name="AttendanceAdmin" component={AttendanceAdmin}
        options={{
-        tabBarLabel: 'Attendance',
+        tabBarLabel: 'AttendanceAdmin',
         tabBarIcon: ({ color, size }) => (
           <Icon name="calendar" color={'white'} size={size} />
         ),

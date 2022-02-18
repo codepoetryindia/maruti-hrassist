@@ -12,22 +12,30 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import EmployeeDirect from './EmployeeDirect';
-import Birthdays from './Birthday/Birthdays';
+import Attendance from './Attendence';
+import Leave from './Leave';
+import Shift from './Shift';
+import HolidayCalendar from './HolidayCalendar';
 
-const FirstRoute = () => <EmployeeDirect />;
+const FirstRoute = () => <Attendance />;
+const SecondRoute = () => <Leave />;
+const ThirdRoute = () => <Shift />;
+const FourthdRoute = () => <HolidayCalendar />;
 
-const SecondRoute = () => <Birthdays />;
-const EmployeLookUp = ({navigation}) => {
+const AttendanceAdmin = ({navigation}) => {
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
+    third: ThirdRoute,
+    fourth: FourthdRoute,
   });
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'EmployeeDirect'},
-    {key: 'second', title: 'Birthdays'},
+    {key: 'first', title: 'Attendance'},
+    {key: 'second', title: 'Leave'},
+    {key: 'third', title: 'Shift'},
+    {key: 'fourth', title: 'HolidayCalendar'},
   ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -63,14 +71,16 @@ const EmployeLookUp = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-            Employee Lookup
+           Attendance & Admin
           </Text>
         </View>
       </LinearGradient>
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient
+              colors={['#ad3231', '#bd5b5a']}
+              style={{marginTop: -1, zIndex: -1}}>
               <TabBar
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
@@ -120,7 +130,7 @@ const styles = StyleSheet.create({
 });
 
 // //make this component available to the app
-export default EmployeLookUp;
+export default AttendanceAdmin;
 
 // //import liraries
 // import React, { Component } from 'react';

@@ -2,9 +2,10 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList} from 'react-native';
 import { setDisabled } from 'react-native/Libraries/LogBox/Data/LogBoxData';
+import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
 
 // create a component
-const TouchableCard = () => {
+const TouchableCard = ({navigation}) => {
   const Data = [
     {
       id: '1',
@@ -110,6 +111,7 @@ const TouchableCard = () => {
           renderItem={({ item }) => (
            
             <TouchableOpacity style={styles.card}>
+            {/* // onPress={() =>navigation.navigate(EmployeLookUp)}> */}
             <Image source={item.images} style={styles.cardimg} />
             <Text style={{fontSize:10,color:'#000'}}>{item.name}</Text>
           </TouchableOpacity>
