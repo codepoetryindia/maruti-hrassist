@@ -1,11 +1,50 @@
 //import liraries
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // create a component
 const Attendance = () => {
+  // const [date, setDate] = useState(new Date());
+  // const [mode, setMode] = useState('date');
+  // const [show, setShow] = useState(false);
+
+  // const onChange = (event, selectedDate) => {
+  //   const currentDate = selectedDate || date;
+  //   setShow(Platform.OS === 'ios');
+  //   setDate(currentDate);
+  // };
+
+  // const showMode = (currentMode) => {
+  //   setShow(true);
+  //   setMode(currentMode);
+  // };
+
+  // const showDatepicker = () => {
+  //   showMode('date');
+  // };
+
+ 
+
+  // return (
+  //   <View>
+  //     <View>
+  //       <TextInput onFocus={showDatepicker} title="Show date picker!" />
+  //     </View>
+     
+  //     {show && (
+  //       <DateTimePicker
+  //         testID="dateTimePicker"
+  //         value={date}
+  //         mode={mode}
+  //         is24Hour={true}
+  //         display="default"
+  //         onChange={onChange}
+  //       />
+  //     )}
+  //   </View>
+  // );
     const [mode, setMode] = useState('date');
     const [MarkAttandance , setMarkAttandance] = useState(0)
     const handleMarkAttandance = index => {
@@ -40,7 +79,9 @@ const Attendance = () => {
                         <Text>West Bengal , siliguri 734004</Text>
                      </View>
                  </View>) : (<View>
-                    <Text>Date Picker</Text>
+                    <TextInput>
+
+                    </TextInput>
                  </View>)
           }
       </View>
