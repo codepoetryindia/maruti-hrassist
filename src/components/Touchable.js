@@ -97,9 +97,9 @@ const TouchableCard = ({navigation}) => {
        name: 'Visitor Gatepass',
        images: require('../assets/Images/identity-card.png'),
      },
-  
 
   ];
+
     return (
       <View style={{height:'46%',marginBottom:"-5%",marginLeft:'1.5%',}}>
         <FlatList
@@ -109,9 +109,7 @@ const TouchableCard = ({navigation}) => {
           data={Data}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-           
-            <TouchableOpacity style={styles.card}>
-            {/* // onPress={() =>navigation.navigate(EmployeLookUp)}> */}
+            <TouchableOpacity style={styles.card} onPress = {() => navigation.navigate("EmployeeLookUp")}>
             <Image source={item.images} style={styles.cardimg} />
             <Text style={{fontSize:10,color:'#000'}}>{item.name}</Text>
           </TouchableOpacity>

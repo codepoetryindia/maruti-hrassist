@@ -1,41 +1,32 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
   useWindowDimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import Attendance from './Attendence';
-import Leave from './Leave';
-import Shift from './Shift';
-import HolidayCalendar from './HolidayCalendar';
+import CanteenMenu from './CanteenMenu';
+import FoodCount from './FoodCount';
 
-const FirstRoute = () => <Attendance />;
-const SecondRoute = () => <Leave />;
-const ThirdRoute = () => <Shift />;
-const FourthdRoute = () => <HolidayCalendar />;
 
-const AttendanceAdmin = ({navigation}) => {
+const FirstRoute = () => <CanteenMenu/>;
+const SecondRoute = () => <FoodCount/>;
+const Canteen = ({navigation}) => {
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
-    third: ThirdRoute,
-    fourth: FourthdRoute,
+  
   });
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'Attendance'},
-    {key: 'second', title: 'Leave'},
-    {key: 'third', title: 'Shift'},
-    {key: 'fourth', title: 'HolidayCalendar'},
+    {key: 'first', title: 'Canteen Menu'},
+    {key: 'second', title: 'Food Count'},
+    
   ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -71,16 +62,14 @@ const AttendanceAdmin = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-           Attendance & Admin
+           Canteen
           </Text>
         </View>
       </LinearGradient>
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient
-              colors={['#ad3231', '#bd5b5a']}
-              style={{marginTop: -1, zIndex: -1}}>
+            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
@@ -130,5 +119,4 @@ const styles = StyleSheet.create({
 });
 
 // //make this component available to the app
-export default AttendanceAdmin;
-
+export default Canteen;

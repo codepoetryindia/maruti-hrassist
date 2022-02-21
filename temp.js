@@ -68,3 +68,23 @@ const styles = StyleSheet.create({
 
 //make this component available to the app
 export default Birthdays;
+<View style={styles.itemView}>
+<View
+  style={{
+    borderRightWidth: 2,
+    paddingVertical: 8,
+    width: '20%',
+  }}>
+  <Text style={{textAlign: 'center'}}>{item.dept}</Text>
+</View>
+<View
+  style={{
+    width: '80%',
+    paddingVertical: 5,
+    paddingLeft: 15,
+  }}>
+  <Text style>{item.name}</Text>
+  <Text>{item.email}</Text>
+  <Text>{item.divison}</Text>
+</View>
+</View>

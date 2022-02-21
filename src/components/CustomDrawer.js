@@ -9,6 +9,7 @@ import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
 import Gatepass from '../screenss/Gatepass';
 import More from '../screenss/More';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
+import CompensationBenifits from '../screenss/CompensationAndBenifits/CompensationBenifits'
 import {
   View,
   Text,
@@ -19,9 +20,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
-import Tabs from '../navigations/TabNavigation';
-import EmployeeNavs from '../navigations/EmployeeNavs';
-import TopTabs from '../navigations/TopTab';
+import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
+import Canteen from '../screenss/Canteen/Canteen';
 function CustomDrawer(props) {
   const {navigation} = props;
   return (
@@ -90,7 +90,7 @@ function CustomDrawer(props) {
             />
 
             <DrawerItem
-              label="AttendanceAdmin"
+              label="Attendance & Admin"
               onPress={() => navigation.navigate(AttendanceAdmin)}
               icon={({color, size}) => (
                 //   <Foundation
@@ -104,7 +104,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Compensatino and Benifits"
-              onPress={() => navigation.navigate(Gatepass)}
+              onPress={() => navigation.navigate(CompensationBenifits)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -116,7 +116,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Hospital & Emergency"
-              onPress={() => navigation.navigate(More)}
+              onPress={() => navigation.navigate(EmergencyHospital)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -129,7 +129,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Canteen Menu"
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate(Canteen)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

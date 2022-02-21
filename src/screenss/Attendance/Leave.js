@@ -145,6 +145,7 @@ const Leave = () => {
            
            <View style={styles.comment}>
              <TextInput
+             
               multiline={true}
               numberOfLines={10}
               placeholder={'Comment'}

@@ -73,7 +73,7 @@ const Home = ({navigation}) => {
         />
       </View>
 
-      <TouchableCard />
+      <TouchableCard navigation={navigation}/>
     </View>
   );
 };
