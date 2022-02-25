@@ -9,6 +9,7 @@ import {
   Image,
   Button,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -18,8 +19,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import RadioButtonRN from 'radio-buttons-react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-// import SelectBox from 'react-native-multi-selectbox';
-import { xorBy } from 'lodash'
+import SelectBox from 'react-native-multi-selectbox';
+import {xorBy} from 'lodash';
 const Gatepass = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
@@ -32,8 +33,8 @@ const Gatepass = ({navigation}) => {
   const [text, setText] = useState('');
   const [searchLevel, setSearchLevel] = useState('');
   const options = ['Yes', 'No'];
-  const [selectedTeam, setSelectedTeam] = useState({})
-  const [selectedTeams, setSelectedTeams] = useState([])
+  const [selectedTeam, setSelectedTeam] = useState({});
+  const [selectedTeams, setSelectedTeams] = useState([]);
 
   // const []
   // const [toBeSearchLevel, setToBeSearchLevel] = useState(false);
@@ -142,24 +143,24 @@ const Gatepass = ({navigation}) => {
       item: 'Arsenal FC',
       id: 'ARS',
     },
-  
+
     {
       item: 'Leicester City FC',
       id: 'LEI',
     },
-  ]
-  
+  ];
+
   function onMultiChange() {
-    return (item) => setSelectedTeams(xorBy(selectedTeams, [item], 'id'))
+    return item => setSelectedTeams(xorBy(selectedTeams, [item], 'id'));
   }
 
   function onChangeOne() {
-    return (val) => setSelectedTeam(val)
+    return val => setSelectedTeam(val);
   }
 
-
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <ScrollView style={{minHeight:100}}>
+    <View style={{width: '100%', height: '100%'}}>
       <LinearGradient
         colors={['#2757C3', '#80406A', '#ad3231']}
         style={styles.gradient}>
@@ -569,9 +570,7 @@ const Gatepass = ({navigation}) => {
               buttonTextAfterSelection={(selectedItem, index) => {
                 return selectedItem;
               }}
-              icon={
-              <Feather name="chevron-down" size={30} />
-            }
+              icon={<Feather name="chevron-down" size={30} />}
             />
           </View>
         </View>
@@ -597,40 +596,136 @@ const Gatepass = ({navigation}) => {
               borderBottomColor: '#2757C3',
               borderEndColor: '#ad3231',
               borderRadius: 5,
+              paddingVertical: 5,
             }}
           />
         </View>
 
         {/* Select Building / multiple selection*/}
+        <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
+          <Text style={{fontSize: 16, top: 1}}>Select Building *</Text>
+          <SelectBox
+            toggleIconColor={'#ad3231'}
+            optionsLabelStyle={{paddingHorizontal:10}}
+            selectedItemStyle={{backgroundColor:'transparent'}}
+            label=""
+            options={BuildingData}
+            selectedValues={selectedTeams}
+            onMultiSelect={onMultiChange()}
+            onTapClose={onMultiChange()}
+            isMulti
+            containerStyle={{
+              backgroundColor: 'transparent',
+              alignItems: 'center',
+              marginTop: -10,
+              borderWidth: 1,
+              borderTopColor: '#80406A',
+              borderStartColor: '#ad3231',
+              borderBottomColor: '#2757C3',
+              borderEndColor: '#ad3231',
+              borderRadius: 5,
+            }}
+            optionContainerStyle={{
+              margin: 1,
+              borderWidth: 1,
+              borderTopColor: '#80406A',
+              borderStartColor: '#ad3231',
+              borderBottomColor: '#2757C3',
+              borderEndColor: '#ad3231',
+              borderRadius: 5,
+            }}
+            listOptionProps={{
+              height: 90,
+              borderWidth: 1,
+              borderTopColor: '#80406A',
+              borderStartColor: '#ad3231',
+              borderBottomColor: '#2757C3',
+              borderEndColor: '#ad3231',
+              borderRadius: 5,
+            }}
+            inputFilterContainerStyle={{width: 0, display: 'none'}}
+          />
+        </View>
 
-        <View style={{ margin: 30 }}>
-      <View style={{ width: '100%', alignItems: 'center' }}>
-        <Text style={{ fontSize: 30, paddingBottom: 20 }}>Demos</Text>
-      </View>
-      <Text style={{ fontSize: 20, paddingBottom: 10 }}>Select Demo</Text>
-      {/* <SelectBox
-        label="Select single"
-        options={BuildingData}
-        value={selectedTeam}
-        onChange={onChangeOne()}
-        hideInputFilter={false}
-      /> */}
-      <View style={{ height: 40 }} />
-      <Text style={{ fontSize: 20, paddingBottom: 10 }}>MultiSelect Demo</Text>
-      {/* <SelectBox
-        label="Select multiple"
-        options={BuildingData}
-        selectedValues={selectedTeams}
-        onMultiSelect={onMultiChange()}
-        onTapClose={onMultiChange()}
-        isMulti
-      /> */}
-    </View>
+        {/* SEARCH BOX */}
+        <View style={{width: '100%'}}>
+          <Text
+            style={{
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}>
+            Vehicle Number *
+          </Text>
+          <View
+            style={{
+              width: '90%',
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderTopColor: '#80406A',
+              borderStartColor: '#ad3231',
+              borderBottomColor: '#2757C3',
+              borderEndColor: '#ad3231',
+              borderRadius: 5,
+              alignSelf: 'center',
+            }}>
+            <View
+              style={{
+                width: '15%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Feather name="search" size={20} color={'#ad3231'} />
+            </View>
+            <TextInput
+            placeholder='Search By Name/Dept/Staff/ID'
+              style={{
+                width: '70%',
+                paddingVertical: 5,
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                width: '15%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Ionicons name="send" size={20} color={'#ad3231'} />
+            </TouchableOpacity>
+          </View>
 
-    {/* SEARCH BOX */}
-    
+        </View>
+
+        {/* TExtInput */}
+        <View style={{width: '100%'}}>
+          <Text
+            style={{
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}>
+            Name
+          </Text>
+          <TextInput
+              editable={false}
+              style={{
+                width: '90%',
+                paddingVertical: 5,
+                borderWidth: 1,
+                borderTopColor: '#80406A',
+                borderStartColor: '#ad3231',
+                borderBottomColor: '#2757C3',
+                borderEndColor: '#ad3231',
+                borderRadius: 5,
+                alignSelf:"center"
+              }}
+            />
+          </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
