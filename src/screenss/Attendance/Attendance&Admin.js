@@ -83,7 +83,7 @@ const AttendanceAdmin = ({navigation}) => {
               style={{marginTop: -1, zIndex: -1}}>
               <TabBar
                 {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
+                style={{backgroundColor: 'transparent', elevation: 0,}}
               />
             </LinearGradient>
           );
@@ -91,7 +91,7 @@ const AttendanceAdmin = ({navigation}) => {
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
+        initialLayout={{width: layout.width,}}
       />
     </View>
   );

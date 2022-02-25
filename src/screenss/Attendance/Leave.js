@@ -92,8 +92,11 @@ const Leave = () => {
               <View style={{flexDirection: 'row',padding:8}}>
                 <RadioForm
                   borderRadius={0}
+              
+                  
                   radio_props={radio_props}
                   initial={isSelected}
+                  
                   onPress={value => {
                     setSelection(isSelected);
                   }}

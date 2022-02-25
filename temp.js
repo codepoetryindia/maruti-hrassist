@@ -87,4 +87,152 @@ export default Birthdays;
   <Text>{item.email}</Text>
   <Text>{item.divison}</Text>
 </View>
+
+
+<TouchableOpacity
+            style={{
+              width: '80%',
+              backgroundColor: 'transparent',
+              borderWidth: 1,
+              borderTopColor: '#80406A',
+              borderStartColor: '#ad3231',
+              borderBottomColor: '#2757C3',
+              borderEndColor: '#ad3231',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              padding: 6,
+              alignSelf: 'center',
+            }}>
+            <Text style={{color: 'gray'}}>{text}</Text>
+            <View>
+              <View style={{flexDirection:'row',width:80,justifyContent:'space-between'}}>
+                <Ionicons name="calendar-outline" size={30} color={'#ad3231'}  onPress={showDatepicker} />
+              
+            
+                <Ionicons name="time-outline" size={30} color={'#ad3231'}  onPress={showTimepicker} />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="spinner"
+                  onChange={onChange}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
+          <TextInput style={{width:'20%',padding:20}}>
+
+          </TextInput>
+
+
+
+          <Text
+            style={{
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              paddingVertical: 5,
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}>
+           Search Level
+          </Text>
+
+          <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            width: '90%',
+            borderWidth: 1,
+            borderTopColor: '#80406A',
+            borderStartColor: '#ad3231',
+            borderBottomColor: '#2757C3',
+            borderEndColor: '#ad3231',
+            alignSelf: 'center',
+            padding: 10,
+            justifyContent: 'space-between',
+          }}
+          onPress={toggleModal}>
+          <Text>
+            { noSearchLevel== true ? 'ONLY BELONGING TO BE SAERCH' :(toBeSearchLevel==true) ? 'INDIVIDUAL AND BELONGING TO BE':'NO SEARCH REQUIRED'}
+          </Text>
+          <Feather name="chevron-down" size={20} />
+          <Modal isVisible={isModalVisible}>
+            <View
+              style={{
+                flex: 0.2,
+                backgroundColor: '#fff',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 8,
+              }}>
+              <View style={{width: '90%', justifyContent: 'space-evenly'}}>
+                <LinearGradient
+                  style={{margin: 5, borderRadius: 8}}
+                  colors={['#2757C3', '#80406A', '#ad3231']}>
+                  <TouchableOpacity
+                    style={{
+                      width: '90%',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignSelf: 'center',
+                      padding: 10,
+                    }}
+                    onPress={() => {
+                      handleRadioStatus('C');
+                      setModalVisible(false);
+                    }}>
+                    <Text style={{color: 'white'}}>ONLY BELONGING TO BE SAERCH</Text>
+                    {noSearchLevel == true ? (
+                      <Ionicons name="checkbox" size={20} color={'#fff'} />
+                    ) : (
+                      <Ionicons
+                        name="square-outline"
+                        size={20}
+                        color={'#fff'}
+                      />
+                    )}
+                  </TouchableOpacity>
+                </LinearGradient>
+
+                <LinearGradient
+                  style={{margin: 5, borderRadius: 8}}
+                  colors={['#2757C3', '#80406A', '#ad3231']}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleRadioStatus('D');
+                      setModalVisible(false);
+                    }}
+                    style={{
+                      width: '90%',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignSelf: 'center',
+                      padding: 10,
+                    }}>
+                    <Text style={{color: 'white'}}>INDIVIDUAL AND BELONGING TO BE</Text>
+                    {toBeSearchLevel == true ? (
+                      <Ionicons name="checkbox" size={20} color={'#fff'} />
+                    ) : (
+                      <Ionicons
+                        name="square-outline"
+                        size={20}
+                        color={'#fff'}
+                      />
+                    )}
+                  </TouchableOpacity>
+                </LinearGradient>
+              </View>
+            </View>
+          </Modal>
+        </TouchableOpacity>
 </View>
+
+
+
+
+
+
+

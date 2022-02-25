@@ -1,33 +1,14 @@
 //import liraries
-import React, {} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+// import GifImage from '@lowkey/react-native-gif';
 import CanteenMenu from './CanteenMenu';
 import FoodCount from './FoodCount';
-
-
-const FirstRoute = () => <CanteenMenu/>;
-const SecondRoute = () => <FoodCount/>;
 const Canteen = ({navigation}) => {
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'Canteen Menu'},
-    {key: 'second', title: 'Food Count'},
-    
-  ]);
+  // ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
@@ -62,26 +43,62 @@ const Canteen = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-           Canteen
+            Canteen
           </Text>
         </View>
       </LinearGradient>
-      <TabView
-        renderTabBar={props => {
-          return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
-              <TabBar
-                {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
-              />
-            </LinearGradient>
-          );
-        }}
-        navigationState={{index, routes}}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
-      />
+
+      <TouchableOpacity
+        style={styles.canteen}
+        onPress={() => navigation.navigate(CanteenMenu)}>
+        <View style={{width: '20%'}}>
+          <Image
+            style={{width: 50, height: 50}}
+            source={require('../../assets/Images/cutlery.gif')}
+          />
+          {/* <GifImage
+            source={require('../../assets/Images/cutlery.gif')}
+            style={{width: 50, height: 50}}
+            resizeMode={'cover'}
+          /> */}
+        </View>
+        <View
+          style={{
+            width: '80%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: 10,
+          }}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Canteen Menu</Text>
+          <Feather name="corner-up-right" size={20} />
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.canteen}
+        onPress={() => navigation.navigate(FoodCount)}>
+        <View style={{width: '20%'}}>
+          <Image
+            style={{width: 50, height: 50}}
+            source={require('../../assets/Images/chicken.gif')}
+          />
+            {/* <GifImage
+           source={require('../../assets/Images/chicken.gif')}
+            style={{width: 50, height: 50}}
+            resizeMode={'cover'}
+          /> */}
+        </View>
+        <View
+          style={{
+            width: '80%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: 10,
+          }}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Food Count</Text>
+          <Feather name="corner-up-right" size={20} />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -94,27 +111,23 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
-  searchSection: {
-    top: 10,
+  canteen: {
+    marginVertical: 8,
     width: '90%',
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#d9d9d9',
-    borderRadius: 7,
-  },
-  searchIcon: {
-    padding: 10,
-  },
-  input: {
-    width: '77%',
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    backgroundColor: '#fff',
-    color: '#424242',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
   },
 });
 
