@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import Home from '../screenss/Home';
 import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
-import Gatepass from '../screenss/Gatepass';
+import Gatepass from '../screenss/Gatspass/Gatepass';
 import More from '../screenss/More';
 import LinearGradient from 'react-native-linear-gradient';
 

@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/drawer';
 import Home from '../screenss/Home';
 import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
-import Gatepass from '../screenss/Gatepass';
+import Gatepass from '../screenss/Gatspass/Gatepass';
 import More from '../screenss/More';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
 import CompensationBenifits from '../screenss/CompensationAndBenifits/CompensationBenifits'
@@ -142,7 +142,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Other Mobile Apps"
-              onPress={() => navigation.navigate(Attendance)}
+              onPress={() => navigation.navigate(More)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -166,7 +166,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Buisness Travel"
-              onPress={() => navigation.navigate(More)}
+              onPress={() => navigation.navigate(BuisnessTravel)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -178,7 +178,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Share App"
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate(More)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

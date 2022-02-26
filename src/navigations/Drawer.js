@@ -1,6 +1,5 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-
 import Tabs from './TabNavigation';
 import CustomDrawer from '../components/CustomDrawer';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
@@ -9,6 +8,10 @@ import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospit
 import Canteen from '../screenss/Canteen/Canteen';
 import CanteenMenu from '../screenss/Canteen/CanteenMenu';
 import FoodCount from '../screenss/Canteen/FoodCount';
+import Gatepass from '../screenss/Gatspass/Gatepass';
+import VisitorDetails from '../screenss/Gatspass/VisitoDetails';
+import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
+import Gst from '../screenss/Buisness/GST';
 
 const Drawer = createDrawerNavigator();
 
@@ -26,6 +29,10 @@ function MyDrawer() {
       <Drawer.Screen name="Canteen" component={Canteen} />
       <Drawer.Screen name='CanteenMenu' component={CanteenMenu}/>
       <Drawer.Screen name='FoodCount' component={FoodCount}/>
+      <Drawer.Screen name='VisitorDetails' component={VisitorDetails}/>
+      <Drawer.Screen name='BuisnessTravel' component={BuisnessTravel}/>
+      <Drawer.Screen name ='Gst' component={Gst}/>
+      
     
     </Drawer.Navigator>
   );
