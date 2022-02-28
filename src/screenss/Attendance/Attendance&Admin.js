@@ -35,7 +35,7 @@ const AttendanceAdmin = ({navigation}) => {
     {key: 'first', title: 'Attendance'},
     {key: 'second', title: 'Leave'},
     {key: 'third', title: 'Shift'},
-    {key: 'fourth', title: 'HolidayCalendar'},
+    {key: 'fourth', title: 'HoliCalendar'},
   ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -76,16 +76,23 @@ const AttendanceAdmin = ({navigation}) => {
         </View>
       </LinearGradient>
       <TabView
+      
         renderTabBar={props => {
           return (
             <LinearGradient
               colors={['#ad3231', '#bd5b5a']}
               style={{marginTop: -1, zIndex: -1}}>
               <TabBar
+              renderLabel={({ route, focused, color }) => (
+                <Text style={{ fontSize:13,color:'#fff' }}>
+                  {route.title}
+                </Text>
+              )}
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0,}}
               />
             </LinearGradient>
+            
           );
         }}
         navigationState={{index, routes}}

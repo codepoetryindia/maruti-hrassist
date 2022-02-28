@@ -19,6 +19,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import VisitorDetails from './VisitoDetails';
 const Gatepass = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -195,9 +196,9 @@ const Gatepass = ({navigation}) => {
           </Text>
         </View>
       </LinearGradient>
-            {/* BODY */}
+      {/* BODY */}
 
-      <ScrollView nestedScrollEnabled={true} style={{marginBottom: '18%',}}>
+      <ScrollView nestedScrollEnabled={true} style={{marginBottom: '18%'}}>
         <View style={{paddingBottom: 20}}>
           <Text
             style={{
@@ -513,7 +514,7 @@ const Gatepass = ({navigation}) => {
                   borderStartColor: '#ad3231',
                   borderBottomColor: '#2757C3',
                   borderEndColor: '#ad3231',
-                  width: '49%',
+                  width: '50%',
                   height: 40,
                   borderRadius: 5,
                 }}
@@ -527,6 +528,15 @@ const Gatepass = ({navigation}) => {
                   borderEndColor: '#ad3231',
                   borderRadius: 5,
                 }}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <FontAwesome
+                      name={isOpened ? 'chevron-up' : 'chevron-down'}
+                      color={'#444'}
+                      size={18}
+                    />
+                  );
+                }}
                 dropdownBackgroundColor={'transparent'}
                 data={options}
                 onSelect={(selectedItem, index) => {
@@ -535,6 +545,9 @@ const Gatepass = ({navigation}) => {
                 buttonTextAfterSelection={(selectedItem, index) => {
                   return selectedItem;
                 }}
+                icon={
+                  <Feather name="chevron-down" size={20} color={'#ad3231'} />
+                }
               />
 
               <SelectDropdown
@@ -546,7 +559,7 @@ const Gatepass = ({navigation}) => {
                   borderStartColor: '#ad3231',
                   borderBottomColor: '#2757C3',
                   borderEndColor: '#ad3231',
-                  width: '49%',
+                  width: '50%',
                   height: 40,
                   borderRadius: 5,
                 }}
@@ -558,6 +571,15 @@ const Gatepass = ({navigation}) => {
                   borderBottomColor: '#2757C3',
                   borderEndColor: '#ad3231',
                   borderRadius: 5,
+                }}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    <FontAwesome
+                      name={isOpened ? 'chevron-up' : 'chevron-down'}
+                      color={'#444'}
+                      size={18}
+                    />
+                  );
                 }}
                 buttonTextStyle={{fontSize: 16, justifyContent: 'flex-start'}}
                 dropdownBackgroundColor={
@@ -605,53 +627,53 @@ const Gatepass = ({navigation}) => {
           </View>
 
           {/* Select Building / multiple selection*/}
-              {/* <View style={{backgroundColor:'red',marginVertical:20}}> */}
-              <View>
-              <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
-            <Text style={{fontSize: 16, top: 1}}>Select Building *</Text>
-            <SelectBox
-              toggleIconColor={'#ad3231'}
-              optionsLabelStyle={{paddingHorizontal: 10}}
-              selectedItemStyle={{backgroundColor: 'transparent'}}
-              label=""
-              options={BuildingData}
-              selectedValues={selectedTeams}
-              onMultiSelect={onMultiChange()}
-              onTapClose={onMultiChange()}
-              isMulti
-              containerStyle={{
-                backgroundColor: 'transparent',
-                alignItems: 'center',
-                marginTop: -10,
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
-                borderRadius: 5,
-              }}
-              optionContainerStyle={{
-                margin: 1,
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
-                borderRadius: 5,
-              }}
-              listOptionProps={{
-                height: 90,
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
-                borderRadius: 5,
-              }}
-              inputFilterContainerStyle={{width: 0, display: 'none'}}
-            />
+          {/* <View style={{backgroundColor:'red',marginVertical:20}}> */}
+          <View>
+            <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
+              <Text style={{fontSize: 16, top: 1}}>Select Building *</Text>
+              <SelectBox
+                toggleIconColor={'#ad3231'}
+                optionsLabelStyle={{paddingHorizontal: 10}}
+                selectedItemStyle={{backgroundColor: 'transparent'}}
+                label=""
+                options={BuildingData}
+                selectedValues={selectedTeams}
+                onMultiSelect={onMultiChange()}
+                onTapClose={onMultiChange()}
+                isMulti
+                containerStyle={{
+                  backgroundColor: 'transparent',
+                  alignItems: 'center',
+                  marginTop: -10,
+                  borderWidth: 1,
+                  borderTopColor: '#80406A',
+                  borderStartColor: '#ad3231',
+                  borderBottomColor: '#2757C3',
+                  borderEndColor: '#ad3231',
+                  borderRadius: 5,
+                }}
+                optionContainerStyle={{
+                  margin: 1,
+                  borderWidth: 1,
+                  borderTopColor: '#80406A',
+                  borderStartColor: '#ad3231',
+                  borderBottomColor: '#2757C3',
+                  borderEndColor: '#ad3231',
+                  borderRadius: 5,
+                }}
+                listOptionProps={{
+                  height: 90,
+                  borderWidth: 1,
+                  borderTopColor: '#80406A',
+                  borderStartColor: '#ad3231',
+                  borderBottomColor: '#2757C3',
+                  borderEndColor: '#ad3231',
+                  borderRadius: 5,
+                }}
+                inputFilterContainerStyle={{width: 0, display: 'none'}}
+              />
+            </View>
           </View>
-              </View>
 
           {/* SEARCH BOX */}
           <View style={{width: '100%'}}>
@@ -757,14 +779,34 @@ const Gatepass = ({navigation}) => {
 
           {/* Next Button */}
 
-          <View style={{paddingVertical:10}}>
-          <LinearGradient
-            style={{margin: 5, borderRadius: 8,width:'90%',alignSelf:'center'}}
-            colors={[ '#a67997', '#b54746']}>
-            <TouchableOpacity style={{width: '100%', paddingVertical: 10,alignItems:'center',marginTop:5}} onPress={ ()=> navigation.navigate('VisitorDetails')}>
-              <Text style={{fontSize: 16, fontWeight: 'bold',color:'#fff',letterSpacing:2}}>Next</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+          <View style={{paddingVertical: 10}}>
+            <LinearGradient
+              style={{
+                margin: 5,
+                borderRadius: 8,
+                width: '90%',
+                alignSelf: 'center',
+              }}
+              colors={['#a67997', '#b54746']}>
+              <TouchableOpacity
+                style={{
+                  width: '100%',
+                  paddingVertical: 10,
+                  alignItems: 'center',
+                  marginTop: 5,
+                }}
+                onPress={() => navigation.navigate('VisitorDetails')}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: '#fff',
+                    letterSpacing: 2,
+                  }}>
+                  Next
+                </Text>
+              </TouchableOpacity>
+            </LinearGradient>
           </View>
         </View>
       </ScrollView>

@@ -73,6 +73,11 @@ const EmergencyHospital = ({navigation}) => {
           return (
             <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
+               renderLabel={({ route, focused, color }) => (
+                <Text style={{ fontSize:13,color:'#fff' }}>
+                  {route.title}
+                </Text>
+              )}
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
               />

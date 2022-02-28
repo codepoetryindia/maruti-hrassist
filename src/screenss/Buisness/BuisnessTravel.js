@@ -4,6 +4,7 @@ import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Gst from './GST';
+import ShuttleBooking from './ShuttleBooking';
 // create a component
 const BuisnessTravel = ({navigation}) => {
   return (
@@ -69,11 +70,12 @@ const BuisnessTravel = ({navigation}) => {
           <Text style={{fontSize: 16, fontWeight: 'bold'}}>
             MSIL GST Details
           </Text>
-          <Ionicons name="next" size={20} />
+          <Ionicons name="chevron-forward-outline" size={20} />
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity style={styles.box}
+      onPress={() => {navigation.navigate(ShuttleBooking)}}>
         <View style={styles.iconBox}>
           <View
             style={{
@@ -95,7 +97,7 @@ const BuisnessTravel = ({navigation}) => {
           <Text style={{fontSize: 16, fontWeight: 'bold'}}>
             Shuttle Booking
           </Text>
-          <Ionicons name="next" size={20} />
+          <Ionicons name="chevron-forward-outline" size={20} />
         </View>
       </TouchableOpacity>
     </View>

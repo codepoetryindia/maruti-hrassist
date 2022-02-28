@@ -5,11 +5,11 @@ import { View ,StyleSheet,Text,TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
-// create a component
+
 // const [count,setCount] = useState(1);
-// const handleClick = ()=>{
-//   let newValue =count++;
-//   setCount (newValue);
+// const addMore = ()=>{
+  
+//   setCount (count =>[...count , <VisitDetails/>]);
 // }
 const VisitorDetails = ({navigation}) => {
   return (

@@ -1,6 +1,13 @@
 //import liraries
 import React, {useState} from 'react';
-import {View, Text, StyleSheet,ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RadioForm, {
@@ -44,7 +51,9 @@ const Leave = () => {
       </View>
       <View>
         {applyLeave == 0 ? (
-          <ScrollView showsVerticalScrollIndicator={false} style={{height:"80%",paddingVertical:1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{height: '80%', paddingVertical: 1}}>
             <Text style={{paddingVertical: 15}}>Leave Type</Text>
             <View style={styles.box}>
               <View
@@ -89,14 +98,11 @@ const Leave = () => {
 
             <Text style={{paddingVertical: 15}}>Planned/Unplanned</Text>
             <View style={styles.box}>
-              <View style={{flexDirection: 'row',padding:8}}>
+              <View style={{flexDirection: 'row', padding: 8}}>
                 <RadioForm
                   borderRadius={0}
-              
-                  
                   radio_props={radio_props}
                   initial={isSelected}
-                  
                   onPress={value => {
                     setSelection(isSelected);
                   }}
@@ -111,7 +117,7 @@ const Leave = () => {
 
             <Text style={{paddingVertical: 15}}>Period</Text>
             <View style={styles.box}>
-              <View style={{flexDirection: 'row',padding:8}}>
+              <View style={{flexDirection: 'row', padding: 8}}>
                 <RadioForm
                   borderRadius={0}
                   radio_props={radio_propsSecond}
@@ -129,42 +135,67 @@ const Leave = () => {
             </View>
             <Text style={{paddingVertical: 15}}>Select Date</Text>
             <View style={styles.box}>
-              <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-              <TextInput value='Start Date'/>
-              <TextInput value='End Date'/>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <TextInput value="Start Date" />
+                <TextInput value="End Date" />
               </View>
             </View>
             <Text style={{paddingVertical: 15}}>Select Your Reason</Text>
-            
-              <View style={styles.box}>
-              <TouchableOpacity style={{flexDirection:'row',alignItems:'baseline', paddingHorizontal:10, justifyContent:'space-between'}}>
-              <Text>Select Reason</Text>
-              <Ionicons 
-            name='arrow-forward-outline'
-            color={'#23d'}
-            size={20}/>
-             </TouchableOpacity>
-             </View>
-           
-           <View style={styles.comment}>
-             <TextInput
-             
-              multiline={true}
-              numberOfLines={10}
-              placeholder={'Comment'}
-             />
-           </View>
 
-           <View style={[styles.comment],{MinHeight:100,marginTop:20}}>
-              <TouchableOpacity style={{flexDirection:'row',alignItems:'center', justifyContent:'space-evenly',backgroundColor:'#2d45',width:"100%",padding:5}}>
-              <Text>Submit</Text>
-              <Ionicons 
-            name='cloud-upload-outline'
-            color={'#23d'}
-            size={20}/>
-             </TouchableOpacity>
-             </View>
+            <View style={styles.box}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'baseline',
+                  paddingHorizontal: 10,
+                  justifyContent: 'space-between',
+                }}>
+                <Text>Select Reason</Text>
+                <Ionicons
+                  name="arrow-forward-outline"
+                  color={'#23d'}
+                  size={20}
+                />
+              </TouchableOpacity>
+            </View>
 
+            <View style={styles.comment}>
+              <TextInput
+                multiline={true}
+                numberOfLines={10}
+                placeholder={'Comment'}
+              />
+            </View>
+
+            <View style={{height: 100, marginTop: 10}}>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-evenly',
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  paddingVertical: 25,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.18,
+                  shadowRadius: 2.0,
+                  elevation: 2,
+                  borderWidth: 0,
+                  marginTop: 10,
+                }}>
+                <Text>Submit</Text>
+                <Ionicons
+                  name="cloud-upload-outline"
+                  color={'#23d'}
+                  size={20}
+                />
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         ) : (
           <View>
@@ -187,7 +218,11 @@ const styles = StyleSheet.create({
   tabStyle: {
     //custom styles
     paddingVertical: 10,
-    borderColor: '#ad3231',
+    borderWidth: 1,
+    borderTopColor: '#80406A',
+    borderStartColor: '#ad3231',
+    borderBottomColor: '#2757C3',
+    borderEndColor: '#ad3231',
   },
   tabTextStyle: {
     //custom styles
@@ -224,7 +259,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: '100%',
-    padding:5,
+    padding: 5,
     backgroundColor: '#FFF',
     alignSelf: 'center',
     shadowColor: '#000',
@@ -237,11 +272,11 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-  comment:{
-    borderWidth:0,
-    marginTop:20,
-    width:'100%',
-    height:100,
+  comment: {
+    borderWidth: 0,
+    marginTop: 20,
+    width: '100%',
+    height: 100,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -251,8 +286,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.0,
 
     elevation: 2,
-
-  }
+  },
 });
 
 //make this component available to the app

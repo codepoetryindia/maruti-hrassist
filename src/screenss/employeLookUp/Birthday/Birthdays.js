@@ -12,6 +12,7 @@ import {
 import Modal from 'react-native-modal';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Feather from 'react-native-vector-icons/Feather';
+import LinearGradient from 'react-native-linear-gradient';
 // create a component
 const Birthdays = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -122,7 +123,7 @@ const Birthdays = () => {
             />
 
             <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
-            <FlatList
+              <FlatList
                 showsVerticalScrollIndicator={false}
                 data={BirthdayData}
                 keyExtractor={item => item.name}
@@ -154,87 +155,98 @@ const Birthdays = () => {
                         backdropOpacity={0.1}
                         animationInTiming={300}
                         animationIn="zoomInUp"
-                        animationOut='fadeOut'
+                        animationOut="fadeOut"
                         animationOutTiming={500}
                         coverScreen={true}
                         isVisible={isModalVisible}>
-                        <View style={styles.modal}>
-                          <TouchableOpacity style={{alignSelf: 'flex-end'}}>
-                            <Feather
-                              name="x-circle"
-                              color={'#000'}
-                              size={20}
-                              onPress={toggleModal}
-                              style={{margin: 10}}
-                            />
-                          </TouchableOpacity>
-                          <View
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              alignSelf: 'center',
-                              width: 150,
-                              height: 150,
-                              borderWidth: 20,
-                              borderColor: '#bd5b5a',
-                              borderRadius: 50,
-                            }}>
-                            <Image
-                              source={item.images}
-                              style={styles.profileImg}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              paddingVertical: 15,
-                              alignSelf: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <Text style>{item.name}</Text>
-                            <Text>{item.email}</Text>
-                            <Text>{item.divison}</Text>
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignSelf: 'center',
-                              justifyContent: 'space-around',
-                              width: '50%',
-                             
-                            }}>
-                            <TouchableOpacity
+                      
+                       <LinearGradient
+                          colors={['#2757C3', '#80406A', '#ad3231']}
+                          style={{flex:0.53,borderRadius:15}}>
+                          <View style={styles.modal}>
+                            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+                              <Feather
+                                name="x-circle"
+                                color={'#000'}
+                                size={20}
+                                onPress={toggleModal}
+                                style={{margin: 10}}
+                              />
+                            </TouchableOpacity>
+                            <View
                               style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height:40,
-                                borderColor: '#8a2827',
-                                borderRadius: 100,
                                 justifyContent: 'center',
                                 alignItems: 'center',
+                                alignSelf: 'center',
+                                width: 150,
+                                height: 150,
+                                borderWidth: 20,
+                                borderColor: '#bd5b5a',
+                                borderRadius: 60,
+                                marginTop:30
                               }}>
-                              <Feather
-                                name="mail"
-                                size={20}
-                                color={'#8a2827'}
+                              <Image
+                                source={require('../../../assets/Images/smile.jpg')}
+                                style={styles.profileImg}
                               />
-                            </TouchableOpacity>
-                            <TouchableOpacity  style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height:40,
-                                borderColor: '#8a2827',
-                                borderRadius: 100,
-                                justifyContent: 'center',
+                            </View>
+                            <View
+                              style={{
+                                paddingVertical: 15,
+                                alignSelf: 'center',
                                 alignItems: 'center',
                               }}>
-                              <Feather
-                                name="phone-call"
-                                size={20}
-                                color={'#8a2827'}
-                              />
-                            </TouchableOpacity>
+                              <Text style={{color:'#fff',lineHeight:20}}>{item.name}</Text>
+                              <Text  style={{color:'#fff',lineHeight:20}}>{item.email}</Text>
+                              <Text  style={{color:'#fff',lineHeight:20}}>{item.divison}</Text>
+                            </View>
+                            <View
+                              style={{
+                                height:'23%',
+                                marginTop:12,
+                                // backgroundColor:'yellow',
+                                flexDirection: 'row',
+                                alignSelf:'center',
+                                justifyContent: 'space-around',
+                                width: '50%',
+                                alignItems:'flex-end'
+                              }}>
+                              <TouchableOpacity
+                                style={{
+                                  borderWidth: 1,
+                                  width: 40,
+                                  height: 40,
+                                  borderColor: '#fff',
+                                  borderRadius: 100,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Feather
+                                  name="mail"
+                                  size={20}
+                                  color={'#fff'}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={{
+                                  borderWidth: 1,
+                                  width: 40,
+                                  height: 40,
+                                  borderColor: '#fff',
+                                  borderRadius: 100,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Feather
+                                  name="phone-call"
+                                  size={20}
+                                  color={'#fff'}
+                                />
+                              </TouchableOpacity>
+                            </View>
                           </View>
-                        </View>
+                        </LinearGradient>
+                      
                       </Modal>
                     </TouchableOpacity>
                   </View>
@@ -277,10 +289,13 @@ const Birthdays = () => {
                         backdropOpacity={0.1}
                         animationInTiming={300}
                         animationIn="fadeIn"
-                        animationOut='fadeOut'
+                        animationOut="fadeOut"
                         animationOutTiming={500}
                         coverScreen={true}
                         isVisible={isModalVisible}>
+                           <LinearGradient
+                          colors={['#2757C3', '#80406A', '#ad3231']}
+                          style={{flex:0.53,borderRadius:15}}>
                         <View style={styles.modal}>
                           <TouchableOpacity style={{alignSelf: 'flex-end'}}>
                             <Feather
@@ -302,10 +317,10 @@ const Birthdays = () => {
                               borderColor: '#bd5b5a',
                               borderRadius: 50,
                             }}>
-                            <Image
-                              source={item.images}
-                              style={styles.profileImg}
-                            />
+                             <Image
+                                source={require('../../../assets/Images/smile.jpg')}
+                                style={styles.profileImg}
+                              />
                           </View>
                           <View
                             style={{
@@ -313,9 +328,9 @@ const Birthdays = () => {
                               alignSelf: 'center',
                               alignItems: 'center',
                             }}>
-                            <Text style>{item.name}</Text>
-                            <Text>{item.email}</Text>
-                            <Text>{item.divison}</Text>
+                            <Text style={{color:'#fff'}}>{item.name}</Text>
+                            <Text  style={{color:'#fff'}}>{item.email}</Text>
+                            <Text  style={{color:'#fff'}}>{item.divison}</Text>
                           </View>
                           <View
                             style={{
@@ -323,14 +338,13 @@ const Birthdays = () => {
                               alignSelf: 'center',
                               justifyContent: 'space-around',
                               width: '50%',
-                             
                             }}>
                             <TouchableOpacity
                               style={{
                                 borderWidth: 1,
                                 width: 40,
-                                height:40,
-                                borderColor: '#8a2827',
+                                height: 40,
+                                borderColor: '#fff',
                                 borderRadius: 100,
                                 justifyContent: 'center',
                                 alignItems: 'center',
@@ -338,14 +352,15 @@ const Birthdays = () => {
                               <Feather
                                 name="mail"
                                 size={20}
-                                color={'#8a2827'}
+                                color={'#fff'}
                               />
                             </TouchableOpacity>
-                            <TouchableOpacity  style={{
+                            <TouchableOpacity
+                              style={{
                                 borderWidth: 1,
                                 width: 40,
-                                height:40,
-                                borderColor: '#8a2827',
+                                height: 40,
+                                borderColor: '#fff',
                                 borderRadius: 100,
                                 justifyContent: 'center',
                                 alignItems: 'center',
@@ -353,11 +368,12 @@ const Birthdays = () => {
                               <Feather
                                 name="phone-call"
                                 size={20}
-                                color={'#8a2827'}
+                                color={'#fff'}
                               />
                             </TouchableOpacity>
                           </View>
                         </View>
+                        </LinearGradient>
                       </Modal>
                     </TouchableOpacity>
                   </View>
@@ -385,7 +401,11 @@ const styles = StyleSheet.create({
   tabStyle: {
     //custom styles
     paddingVertical: 10,
-    borderColor: '#ad3231',
+    borderWidth:1,
+    borderTopColor: '#80406A',
+    borderStartColor: '#ad3231',
+    borderBottomColor: '#2757C3',
+    borderEndColor: '#ad3231',
   },
   tabTextStyle: {
     //custom styles
@@ -433,17 +453,19 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   modal: {
-    flex: 0.5,
+    flex: 0.39,
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#f8edec',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+    borderBottomLeftRadius:50,
+    borderBottomRightRadius:50,
   },
   profileImg: {
-    minHeight: '100%',
-    width: '100%',
-    resizeMode: 'cover',
-    alignSelf: 'center',
-    overflow:'hidden',position:'relative', zIndex:1
+    height: 100,
+    width: 100,
+    borderRadius: 40,
   },
 });
 

@@ -158,32 +158,6 @@ const Gst = ({navigation}) => {
                   <Text style={styles.GStBox}>Address</Text>
                   <Text>{item.Adress}</Text>
                 </View>
-
-                {/* <Text>{item.Adress}</Text>
-                    <Text>{item.companyName}</Text>
-                    <Text>{item.gstNumber}</Text>
-                    <Text>{item.stateName}</Text> */}
-
-                {/* <View
-                  style={{
-                    width: '90%',
-                    backgroundColor: '#b54746',
-                    alignSelf: 'center',
-                    paddingVertical: 20,
-                  }}>
-                  <Text style={{fontSize: 16, color: '#000', padding: 5}}>
-                    {item.stateName}
-                  </Text>
-                </View>
-                <Text style={{fontSize: 14, color: '#000', padding: 5}}>
-                  {gstdata.gstNumber}
-                </Text>
-                <Text style={{fontSize: 14, color: '#000', padding: 5}}>
-                  {gstdata.companyName}
-                </Text>
-                <Text style={{fontSize: 14, color: '#000', padding: 5}}>
-                  {gstdata.Adress}
-                </Text> */}
               </TouchableOpacity>
             </View>
           );

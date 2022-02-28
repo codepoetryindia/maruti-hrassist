@@ -73,7 +73,7 @@ const Attendance = () => {
                 padding: 10,
                 marginVertical: 10,
               }}>
-            <View>
+            <View style={{width:'90%',flexDirection:'row',justifyContent:'space-between'}}>
             <Text style={{color: 'gray'}}>{text}</Text>
               <View>
                 <View>

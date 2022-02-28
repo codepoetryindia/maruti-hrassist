@@ -47,61 +47,64 @@ const More = ({navigation}) => {
       </LinearGradient>
 
       {/* body */}
-
+      <View style={{width:'100%',top:50}}>
       <TouchableOpacity
         style={{
-            marginVertical:10,
-          width: '90%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+       
+          width: '60%',
           paddingHorizontal:15,
           paddingVertical: 25,
           alignSelf: 'center',
           backgroundColor: '#f3f3',
-          alignItems:'center'
+          alignItems:'center',
+         marginVertical:15,
+         borderRadius:8
         }}>
         <Image
           source={require('../assets/Images/man.png')}
-          style={{width:50,height:50}}
+          style={{width:50,height:50,}}
         />
-        <Text style={{fontSize: 20}}>SAP SF (NEEV)</Text>
+        <Text style={{fontSize: 20,paddingVertical:5}}>SAP SF (NEEV)</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-            marginVertical:5,
-          width: '90%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+    
+          width: '60%',
+         
           paddingHorizontal:15,
           paddingVertical: 25,
           alignSelf: 'center',
           backgroundColor: '#f3f3',
-          alignItems:'center'
+          alignItems:'center',
+          marginVertical:15,
+          borderRadius:8
         }}>
         <Image
           source={require('../assets/Images/smile.jpg')}
-          style={{width:50,height:50,borderRadius:40}}
+          style={{width:50,height:50,borderRadius:40,}}
         />
-        <Text style={{fontSize: 20}}>Ask HR</Text>
+        <Text style={{fontSize: 20,paddingVertical:5}}>Ask HR</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-            marginVertical:5,
-          width: '90%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+          
+          width: '60%',
+          alignSelf: 'center',
           paddingHorizontal:15,
           paddingVertical: 25,
-          alignSelf: 'center',
+          alignItems: 'center',
           backgroundColor: '#f3f3',
-          alignItems:'center'
+          alignItems:'center',
+          marginVertical:15,
+          borderRadius:8
         }}>
         <Image
           source={require('../assets/Images/profile2.jpg')}
-          style={{width:50,height:50,borderRadius:40}}
+          style={{width:50,height:50,borderRadius:40,}}
         />
-        <Text style={{fontSize: 20}}>Wellness Mitra</Text>
+        <Text style={{fontSize: 20,paddingVertical:5}}>Wellness Mitra</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };

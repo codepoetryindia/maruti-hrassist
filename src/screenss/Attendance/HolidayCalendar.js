@@ -54,7 +54,11 @@ const styles = StyleSheet.create({
     tabStyle: {
         //custom styles
         paddingVertical: 10,
-        borderColor: '#ad3231',
+        borderWidth:1,
+        borderTopColor: '#80406A',
+        borderStartColor: '#ad3231',
+        borderBottomColor: '#2757C3',
+        borderEndColor: '#ad3231',
       },
       tabTextStyle: {
         //custom styles

@@ -9,6 +9,7 @@ import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
 import Gatepass from '../screenss/Gatspass/Gatepass';
 import More from '../screenss/More';
 import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
+import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
 import CompensationBenifits from '../screenss/CompensationAndBenifits/CompensationBenifits'
 import {
   View,
@@ -26,7 +27,7 @@ function CustomDrawer(props) {
   const {navigation} = props;
   return (
     <>
-      <DrawerContentScrollView style={{backgroundColor: '#ffffff'}} {...props}>
+      <DrawerContentScrollView style={{backgroundColor: '#ffffff',}} {...props}>
         <LinearGradient
           colors={['#2757C3', '#80406A', '#AD3231']}
           style={styles.gradient}>
@@ -34,7 +35,7 @@ function CustomDrawer(props) {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-around',
-              top: 10,
+              top: 30,
               padding: 10,
             }}>
             <Image
@@ -61,7 +62,7 @@ function CustomDrawer(props) {
           </View>
         </LinearGradient>
         <View style={styles.container}>
-          <ScrollView>
+          <ScrollView style={{height:730}}>
             <DrawerItem
               label="Home"
               onPress={() => navigation.navigate(Home)}
@@ -191,7 +192,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="App Tutorial"
-              onPress={() => navigation.navigate(Attendance)}
+              onPress={() => navigation.navigate(More)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

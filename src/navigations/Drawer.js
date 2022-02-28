@@ -12,6 +12,7 @@ import Gatepass from '../screenss/Gatspass/Gatepass';
 import VisitorDetails from '../screenss/Gatspass/VisitoDetails';
 import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
 import Gst from '../screenss/Buisness/GST';
+import ShuttleBooking from '../screenss/Buisness/ShuttleBooking';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,7 @@ function MyDrawer() {
       <Drawer.Screen name='VisitorDetails' component={VisitorDetails}/>
       <Drawer.Screen name='BuisnessTravel' component={BuisnessTravel}/>
       <Drawer.Screen name ='Gst' component={Gst}/>
+      <Drawer.Screen name='ShuttleBooking' component={ShuttleBooking}/>
       
     
     </Drawer.Navigator>

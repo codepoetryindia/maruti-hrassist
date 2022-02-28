@@ -129,9 +129,9 @@ const Hospital = () => {
                 </Text>
                 <Text>{item.hospialAdd}</Text>
               </View>
-              <View style={{width: '10%'}}>
-                <Feather name="phone-call" size={20} />
-              </View>
+              <TouchableOpacity style={{width: '10%'}}>
+                <Feather name="phone-call" size={20} color={'#ad3231'} />
+              </TouchableOpacity>
             </View>
           )}
         />
