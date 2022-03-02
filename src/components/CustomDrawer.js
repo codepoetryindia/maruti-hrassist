@@ -23,6 +23,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
 import Canteen from '../screenss/Canteen/Canteen';
+import SignIn from '../Auth/SignIn';
 function CustomDrawer(props) {
   const {navigation} = props;
   return (
@@ -204,7 +205,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="LogOut"
-              onPress={() => navigation.navigate(Gatepass)}
+              onPress={() => navigation.navigate(SignIn)}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -212,7 +213,7 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
+              // style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
             />
           </ScrollView>
         </View>

@@ -157,13 +157,13 @@ const ShuttleBooking = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
               onPress={() => navigation.navigate(BuisnessTravel)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />

@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Payroll from './Payroll';
 import Benifits from './Benifits';
+import Home from '../Home';
 
 const FirstRoute = () => <Payroll />;
 
@@ -41,13 +42,13 @@ const CompensationBenifits = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate(Home)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />

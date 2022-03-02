@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Home from '../Home';
 import Gst from './GST';
 import ShuttleBooking from './ShuttleBooking';
 // create a component
@@ -22,13 +23,13 @@ const BuisnessTravel = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate(Home)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />

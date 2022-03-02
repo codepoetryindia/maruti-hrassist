@@ -31,7 +31,7 @@ const Home = ({navigation}) => {
               }}>
               <Ionicons
                 name="menu-outline"
-                size={20}
+                size={25}
                 color={'white'}
                 onPress={() => navigation.openDrawer()}
               />

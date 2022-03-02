@@ -8,11 +8,12 @@ import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospit
 import Canteen from '../screenss/Canteen/Canteen';
 import CanteenMenu from '../screenss/Canteen/CanteenMenu';
 import FoodCount from '../screenss/Canteen/FoodCount';
-import Gatepass from '../screenss/Gatspass/Gatepass';
 import VisitorDetails from '../screenss/Gatspass/VisitoDetails';
 import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
 import Gst from '../screenss/Buisness/GST';
 import ShuttleBooking from '../screenss/Buisness/ShuttleBooking';
+import SignIn from '../Auth/SignIn';
+import Home from '../screenss/Home';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,19 +24,22 @@ function MyDrawer() {
         headerShown: false,
       }}
       drawerContent={props => <CustomDrawer {...props} />}>
+       {/* <Drawer.Screen name='Home' component={Home}/> */}
+      <Drawer.Screen name="SignIn" component={SignIn} />
       <Drawer.Screen name="Tabs" component={Tabs} />
       <Drawer.Screen name="EmployeLookUp" component={EmployeLookUp} />
-      <Drawer.Screen name="CompensationBenifits" component={CompensationBenifits} />
+      <Drawer.Screen
+        name="CompensationBenifits"
+        component={CompensationBenifits}
+      />
       <Drawer.Screen name="EmergencyHospital" component={EmergencyHospital} />
       <Drawer.Screen name="Canteen" component={Canteen} />
-      <Drawer.Screen name='CanteenMenu' component={CanteenMenu}/>
-      <Drawer.Screen name='FoodCount' component={FoodCount}/>
-      <Drawer.Screen name='VisitorDetails' component={VisitorDetails}/>
-      <Drawer.Screen name='BuisnessTravel' component={BuisnessTravel}/>
-      <Drawer.Screen name ='Gst' component={Gst}/>
-      <Drawer.Screen name='ShuttleBooking' component={ShuttleBooking}/>
-      
-    
+      <Drawer.Screen name="CanteenMenu" component={CanteenMenu} />
+      <Drawer.Screen name="FoodCount" component={FoodCount} />
+      <Drawer.Screen name="VisitorDetails" component={VisitorDetails} />
+      <Drawer.Screen name="BuisnessTravel" component={BuisnessTravel} />
+      <Drawer.Screen name="Gst" component={Gst} />
+      <Drawer.Screen name="ShuttleBooking" component={ShuttleBooking} />
     </Drawer.Navigator>
   );
 }

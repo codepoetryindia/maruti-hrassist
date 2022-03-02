@@ -18,6 +18,8 @@
     "@react-navigation/material-top-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "@reduxjs/toolkit": "^1.8.0",
+    "formik": "^2.2.9",
     "moment": "^2.29.1",
     "radio-buttons-react-native": "^1.0.4",
     "react": "17.0.2",
@@ -40,7 +42,11 @@
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
-    "react-native-vector-icons": "^9.0.0"
+    "react-native-vector-icons": "^9.0.0",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

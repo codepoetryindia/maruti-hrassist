@@ -98,13 +98,13 @@ const FoodCount = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
               onPress={() => navigation.navigate(Canteen)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
@@ -117,7 +117,7 @@ const FoodCount = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-            Employee Lookup
+           Food Count
           </Text>
         </View>
       </LinearGradient>

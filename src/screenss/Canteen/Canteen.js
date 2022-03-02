@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // import GifImage from '@lowkey/react-native-gif';
 import CanteenMenu from './CanteenMenu';
 import FoodCount from './FoodCount';
+import Home from '../Home';
 const Canteen = ({navigation}) => {
   // ]);
   return (
@@ -24,13 +25,13 @@ const Canteen = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate(Home)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
@@ -110,9 +111,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+    
   },
   canteen: {
-    marginVertical: 8,
+    top:10,
+    marginVertical: 10,
     width: '90%',
     backgroundColor: '#fff',
     alignSelf: 'center',
@@ -128,6 +131,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
 
     elevation: 8,
+    borderRadius:8
   },
 });
 

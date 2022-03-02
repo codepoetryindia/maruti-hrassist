@@ -21,6 +21,7 @@ import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import VisitorDetails from './VisitoDetails';
+import Home from '../Home';
 const Gatepass = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
@@ -173,13 +174,13 @@ const Gatepass = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate(Home)}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
