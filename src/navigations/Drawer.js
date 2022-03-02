@@ -16,7 +16,7 @@ import ShuttleBooking from '../screenss/Buisness/ShuttleBooking';
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+const MyDrawer = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
