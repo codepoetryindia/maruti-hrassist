@@ -17,7 +17,7 @@ import Home from '../screenss/Home';
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+const MyDrawer = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
