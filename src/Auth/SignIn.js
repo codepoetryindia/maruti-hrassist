@@ -12,9 +12,44 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-// import { useSelector ,  userDispatch } from 'react-redux';
-// import {setEmail , setPassword} from '../redux/Actions';
-// create a component
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../actions/loginAction';
+
+
+// export const spinner = () => {
+//   return async dispatch => {
+//     let payload = await AsyncStorage.getItem('payload');
+//     if (payload !== null) {
+//       console.log('token fetched');
+//       dispatch({
+//         type: 'LOGIN',
+//         payload: payload,
+//       })
+//     } 
+//   }
+// }
+
+
+// const [loading, setLoading] = useState;
+
+//   const dispatch = useDispatch();
+//   const Spinner = async () => {
+//     await dispatch(spinner());
+//     setLoading(false);
+//   };
+//   useEffect(() => {
+//     console.log(store.getState());
+//     Spinner();
+//   }, []);
+//   if (loading) {
+    
+//       <View style={{flex: 1, justifyContent: 'center'}}>
+//         <ActivityIndicator size={30} color={'blue'} />
+//       </View>
+   
+//   }
+
+
 const SignIn = ({navigation}) => {
   // Schema
   const [showPass, setShowPass] = useState(true);
@@ -37,6 +72,11 @@ const SignIn = ({navigation}) => {
       .min(8, 'password must be atleast 8 character')
       .required('Password is required'),
   });
+  const dispatch = useDispatch();
+  const handleLogin = (data) =>{
+   dispatch (loginAction(data))
+  
+  }
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -50,7 +90,7 @@ const SignIn = ({navigation}) => {
           }}>
           <Image
             source={require('../assets/Images/logoo.png')}
-            style={{width: '20%', height: 70, resizeMode: 'cover'}}
+            style={{width: '20%', height: 75, resizeMode: 'cover'}}
           />
         </View>
         <View
@@ -87,12 +127,12 @@ const SignIn = ({navigation}) => {
         validationSchema={loginValidationSchema}
         initialValues={{email: '', password: ''}}
         onSubmit={values => {
-          if (values) {
-            navigation.navigate('Tabs', {screen: 'Home'});
-          } else {
-            alert('osdfg');
-          }
-
+          // if (values) {
+          //   navigation.navigate('Tabs', {screen: 'Home'});
+          // } else {
+          //   alert('osdfg');
+          // }
+           handleLogin (values)
           // se4nd data to redux
 
           // store.dispatch(setSignInValue(values))
@@ -233,7 +273,7 @@ const SignIn = ({navigation}) => {
                     }}
                     colors={['#2757C3', '#80406A', '#ad3231']}>
                     <TouchableOpacity
-                      onPress={handleSubmit}
+                      onPress={() =>{handleSubmit()}}
                       style={{
                         width: '100%',
                         paddingVertical: 10,
@@ -270,7 +310,7 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 0.45,
     width: '100%',
-    paddingVertical: 25,
+    paddingVertical: 10,
   },
   login: {
     justifyContent: 'flex-end',

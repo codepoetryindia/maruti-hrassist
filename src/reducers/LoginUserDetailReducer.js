@@ -1,4 +1,4 @@
-import {LOGIN_USER} from '../actions/actionTypes';
+import {LOGIN_USER, LOGOUT_USER} from '../actions/actionTypes';
 
 const initialState = {
     loginUserDetail: null
@@ -13,6 +13,8 @@ const LoginUserDetailReducer = (state = initialState, action) => {
         ...state,
         loginUserDetail: action.payload
       };
+    case LOGOUT_USER :
+      return{loginUserDetail: null}
     default:
       return state;
   }

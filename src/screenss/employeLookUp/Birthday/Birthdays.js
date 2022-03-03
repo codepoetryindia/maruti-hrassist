@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,80 +13,95 @@ import Modal from 'react-native-modal';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector, useDispatch} from 'react-redux';
+import {todaysBirthday} from '../../../actions/birthdaysAction';
 // create a component
 const Birthdays = () => {
+  const {todayBirthdayData} = useSelector(state => {
+    console.log('birthday state',state.apitodaysEmployBirthday)
+    return state.apitodaysEmployBirthday;
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(todaysBirthday());
+    // console.log('logged', todayBirthdayData);
+  }, []);
+
+
+
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const BirthdayData = [
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-  ];
+  // const BirthdayData = [
+  //   {
+  //     dept: 'EPP',
+  //     name: 'MR. Dahal',
+  //     email: 'mrdahal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/smile.jpg'),
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Kunal',
+  //     email: 'mrKunal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'CPP',
+  //     name: 'MR. Amit',
+  //     email: 'amit@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/smile.jpg'),
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Diwas',
+  //     email: 'diwas@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'cpp',
+  //     name: 'MR. Brashant',
+  //     email: 'Brashant@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'EPP',
+  //     name: 'MR. Dahal',
+  //     email: 'mrdahal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Kunal',
+  //     email: 'mrKunal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'CPP',
+  //     name: 'MR. Amit',
+  //     email: 'amit@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Diwas',
+  //     email: 'diwas@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'cpp',
+  //     name: 'MR. Brashant',
+  //     email: 'Brashant@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  // ];
 
   //   const {Birthdays, Tomorow} = route.params;
   const [CurrentPage, setCurrentPage] = useState(0);
@@ -125,8 +140,8 @@ const Birthdays = () => {
             <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={BirthdayData}
-                keyExtractor={item => item.name}
+                data={todayBirthdayData}
+                keyExtractor={item => item.id}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
                     <TouchableOpacity onPress={toggleModal}>
@@ -137,7 +152,9 @@ const Birthdays = () => {
                             paddingVertical: 8,
                             width: '20%',
                           }}>
-                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
+                          <Text style={{textAlign: 'center'}}>
+                            {item.username}
+                          </Text>
                         </View>
                         <View
                           style={{
@@ -147,7 +164,6 @@ const Birthdays = () => {
                           }}>
                           <Text style>{item.name}</Text>
                           <Text>{item.email}</Text>
-                          <Text>{item.divison}</Text>
                         </View>
                       </View>
 
@@ -159,10 +175,9 @@ const Birthdays = () => {
                         animationOutTiming={500}
                         coverScreen={true}
                         isVisible={isModalVisible}>
-                      
-                       <LinearGradient
+                        <LinearGradient
                           colors={['#2757C3', '#80406A', '#ad3231']}
-                          style={{flex:0.53,borderRadius:15}}>
+                          style={{flex: 0.53, borderRadius: 15}}>
                           <View style={styles.modal}>
                             <TouchableOpacity style={{alignSelf: 'flex-end'}}>
                               <Feather
@@ -183,7 +198,7 @@ const Birthdays = () => {
                                 borderWidth: 20,
                                 borderColor: '#bd5b5a',
                                 borderRadius: 60,
-                                marginTop:30
+                                marginTop: 30,
                               }}>
                               <Image
                                 source={require('../../../assets/Images/smile.jpg')}
@@ -196,20 +211,26 @@ const Birthdays = () => {
                                 alignSelf: 'center',
                                 alignItems: 'center',
                               }}>
-                              <Text style={{color:'#fff',lineHeight:20}}>{item.name}</Text>
-                              <Text  style={{color:'#fff',lineHeight:20}}>{item.email}</Text>
-                              <Text  style={{color:'#fff',lineHeight:20}}>{item.divison}</Text>
+                              <Text style={{color: '#fff', lineHeight: 20}}>
+                                {item.name}
+                              </Text>
+                              <Text style={{color: '#fff', lineHeight: 20}}>
+                                {item.email}
+                              </Text>
+                              <Text style={{color: '#fff', lineHeight: 20}}>
+                                {item.username}
+                              </Text>
                             </View>
                             <View
                               style={{
-                                height:'23%',
-                                marginTop:12,
+                                height: '23%',
+                                marginTop: 12,
                                 // backgroundColor:'yellow',
                                 flexDirection: 'row',
-                                alignSelf:'center',
+                                alignSelf: 'center',
                                 justifyContent: 'space-around',
                                 width: '50%',
-                                alignItems:'flex-end'
+                                alignItems: 'flex-end',
                               }}>
                               <TouchableOpacity
                                 style={{
@@ -221,11 +242,7 @@ const Birthdays = () => {
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}>
-                                <Feather
-                                  name="mail"
-                                  size={20}
-                                  color={'#fff'}
-                                />
+                                <Feather name="mail" size={20} color={'#fff'} />
                               </TouchableOpacity>
                               <TouchableOpacity
                                 style={{
@@ -246,7 +263,6 @@ const Birthdays = () => {
                             </View>
                           </View>
                         </LinearGradient>
-                      
                       </Modal>
                     </TouchableOpacity>
                   </View>
@@ -259,7 +275,7 @@ const Birthdays = () => {
             <View style={{height: '95%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={BirthdayData}
+                data={todayBirthdayData}
                 keyExtractor={item => item.name}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
@@ -293,86 +309,84 @@ const Birthdays = () => {
                         animationOutTiming={500}
                         coverScreen={true}
                         isVisible={isModalVisible}>
-                           <LinearGradient
+                        <LinearGradient
                           colors={['#2757C3', '#80406A', '#ad3231']}
-                          style={{flex:0.53,borderRadius:15}}>
-                        <View style={styles.modal}>
-                          <TouchableOpacity style={{alignSelf: 'flex-end'}}>
-                            <Feather
-                              name="x-circle"
-                              color={'#000'}
-                              size={20}
-                              onPress={toggleModal}
-                              style={{margin: 10}}
-                            />
-                          </TouchableOpacity>
-                          <View
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              alignSelf: 'center',
-                              width: 150,
-                              height: 150,
-                              borderWidth: 20,
-                              borderColor: '#bd5b5a',
-                              borderRadius: 50,
-                            }}>
-                             <Image
+                          style={{flex: 0.53, borderRadius: 15}}>
+                          <View style={styles.modal}>
+                            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+                              <Feather
+                                name="x-circle"
+                                color={'#000'}
+                                size={20}
+                                onPress={toggleModal}
+                                style={{margin: 10}}
+                              />
+                            </TouchableOpacity>
+                            <View
+                              style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                                width: 150,
+                                height: 150,
+                                borderWidth: 20,
+                                borderColor: '#bd5b5a',
+                                borderRadius: 50,
+                              }}>
+                              <Image
                                 source={require('../../../assets/Images/smile.jpg')}
                                 style={styles.profileImg}
                               />
-                          </View>
-                          <View
-                            style={{
-                              paddingVertical: 15,
-                              alignSelf: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <Text style={{color:'#fff'}}>{item.name}</Text>
-                            <Text  style={{color:'#fff'}}>{item.email}</Text>
-                            <Text  style={{color:'#fff'}}>{item.divison}</Text>
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignSelf: 'center',
-                              justifyContent: 'space-around',
-                              width: '50%',
-                            }}>
-                            <TouchableOpacity
+                            </View>
+                            <View
                               style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height: 40,
-                                borderColor: '#fff',
-                                borderRadius: 100,
-                                justifyContent: 'center',
+                                paddingVertical: 15,
+                                alignSelf: 'center',
                                 alignItems: 'center',
                               }}>
-                              <Feather
-                                name="mail"
-                                size={20}
-                                color={'#fff'}
-                              />
-                            </TouchableOpacity>
-                            <TouchableOpacity
+                              <Text style={{color: '#fff'}}>{item.name}</Text>
+                              <Text style={{color: '#fff'}}>{item.email}</Text>
+                              <Text style={{color: '#fff'}}>
+                                {item.username}
+                              </Text>
+                            </View>
+                            <View
                               style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height: 40,
-                                borderColor: '#fff',
-                                borderRadius: 100,
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                flexDirection: 'row',
+                                alignSelf: 'center',
+                                justifyContent: 'space-around',
+                                width: '50%',
                               }}>
-                              <Feather
-                                name="phone-call"
-                                size={20}
-                                color={'#fff'}
-                              />
-                            </TouchableOpacity>
+                              <TouchableOpacity
+                                style={{
+                                  borderWidth: 1,
+                                  width: 40,
+                                  height: 40,
+                                  borderColor: '#fff',
+                                  borderRadius: 100,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Feather name="mail" size={20} color={'#fff'} />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={{
+                                  borderWidth: 1,
+                                  width: 40,
+                                  height: 40,
+                                  borderColor: '#fff',
+                                  borderRadius: 100,
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}>
+                                <Feather
+                                  name="phone-call"
+                                  size={20}
+                                  color={'#fff'}
+                                />
+                              </TouchableOpacity>
+                            </View>
                           </View>
-                        </View>
                         </LinearGradient>
                       </Modal>
                     </TouchableOpacity>
@@ -401,7 +415,7 @@ const styles = StyleSheet.create({
   tabStyle: {
     //custom styles
     paddingVertical: 10,
-    borderWidth:1,
+    borderWidth: 1,
     borderTopColor: '#80406A',
     borderStartColor: '#ad3231',
     borderBottomColor: '#2757C3',
@@ -457,10 +471,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#f8edec',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    borderBottomLeftRadius:50,
-    borderBottomRightRadius:50,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
   },
   profileImg: {
     height: 100,

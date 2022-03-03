@@ -25,7 +25,7 @@ const MyDrawer = () => {
       }}
       drawerContent={props => <CustomDrawer {...props} />}>
        {/* <Drawer.Screen name='Home' component={Home}/> */}
-      <Drawer.Screen name="SignIn" component={SignIn} />
+      {/* <Drawer.Screen name="SignIn" component={SignIn} /> */}
       <Drawer.Screen name="Tabs" component={Tabs} />
       <Drawer.Screen name="EmployeLookUp" component={EmployeLookUp} />
       <Drawer.Screen

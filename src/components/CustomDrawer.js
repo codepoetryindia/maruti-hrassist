@@ -23,8 +23,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
 import Canteen from '../screenss/Canteen/Canteen';
-import SignIn from '../Auth/SignIn';
+// import SignIn from '../Auth/SignIn';
+import { useDispatch } from 'react-redux';
+import { logoutAction } from '../actions/loginAction';
 function CustomDrawer(props) {
+  const dispatch = useDispatch();
+  const handleLogout = (data) =>{
+   dispatch (logoutAction(data))
+  
+  }
   const {navigation} = props;
   return (
     <>
@@ -205,7 +212,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="LogOut"
-              onPress={() => navigation.navigate(SignIn)}
+              onPress={() =>{handleLogout()}}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
