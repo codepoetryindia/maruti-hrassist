@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView} from 're
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 
+
 // create a component
 const Benifits = () => {
   const data = [

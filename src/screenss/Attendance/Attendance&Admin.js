@@ -16,6 +16,7 @@ import Attendance from './Attendence';
 import Leave from './Leave';
 import Shift from './Shift';
 import HolidayCalendar from './HolidayCalendar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const FirstRoute = () => <Attendance />;
 const SecondRoute = () => <Leave />;
@@ -52,27 +53,33 @@ const AttendanceAdmin = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
               onPress={() => navigation.goBack()}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
           </View>
-
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 18,
               letterSpacing: 1,
               marginLeft: 30,
             }}>
            Attendance & Admin
           </Text>
+          <TouchableOpacity style={{ marginLeft:'45%'}}>
+          <Ionicons
+              name="ellipsis-vertical-circle"
+              size={25}
+              color={'white'}
+            />
+          </TouchableOpacity>
         </View>
       </LinearGradient>
       <TabView

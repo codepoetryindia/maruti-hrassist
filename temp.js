@@ -469,5 +469,157 @@ const styles = StyleSheet.create({
   },
 });
 
+
 //make this component available to the app
 export default Birthdays;
+
+
+// //import liraries
+// import React, {Component} from 'react';
+// import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+// import LinearGradient from 'react-native-linear-gradient';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// // create a component
+// const EmployProfile = ({navigation}) => {
+//   return (
+//     <View style={styles.container}>
+//       <LinearGradient
+//         style={{flex: 0.25}}
+//         colors={['#2757C3', '#80406A', '#AD3231']}>
+//         <View style={{flexDirection: 'row', padding: 15, alignItems: 'center'}}>
+//           <Ionicons
+//             name="chevron-back-outline"
+//             size={30}
+//             color={'white'}
+//             onPress={() => navigation.goBack()}
+//           />
+//           <Text
+//             style={{
+//               color: '#fff',
+//               fontSize: 18,
+//               letterSpacing: 1,
+//               marginLeft: 25,
+//             }}>
+//             Profile
+//           </Text>
+//         </View>
+//       </LinearGradient>
+//       <View
+//         style={{
+//           // height: 200,
+//           backgroundColor: '#fff',
+//           width: '90%',
+//           alignSelf: 'center',
+//           shadowColor: '#000',
+//           shadowOffset: {
+//             width: 0,
+//             height: 2,
+//           },
+//           shadowOpacity: 0.25,
+//           shadowRadius: 3.84,
+//           elevation: 5,
+//           borderRadius: 8,
+//           position: 'absolute',
+//           top: '15%',
+//         }}>
+//         <View
+//           style={{
+//             borderWidth: 5,
+//             borderColor: '#fff',
+//             shadowColor: '#000',
+//             shadowOffset: {
+//               width: 5,
+//               height: 5,
+//             },
+//             shadowOpacity: 0.5,
+//             shadowRadius: 3.84,
+//             elevation: 5,
+//             justifyContent: 'center',
+//             alignSelf: 'center',
+//             borderRadius: 100,
+//             marginTop: '-12%',
+//           }}>
+//           <Image
+//             source={require('../../assets/Images/smile.jpg')}
+//             style={{
+//               width: 100,
+//               height: 100,
+//               overflow: 'hidden',
+//               borderRadius: 100,
+//               alignSelf: 'center',
+//             }}
+//           />
+//         </View>
+//      <View style={{height: '80%',}}>
+//      <ScrollView>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//           <View style={styles.box}>
+//             <Text>Vertical / Div ./Department</Text>
+//             <Text>IT / ITA-1 / AG3</Text>
+//           </View>
+//         </ScrollView>
+//        </View>
+//       </View>
+//     </View>
+//   );
+// };
+
+// // define your styles
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   box: {
+//     width: '100%',
+//     paddingVertical: 10,
+//     padding: 10,
+//     marginVertical: 5,
+//     borderBotttomWidth: 1,
+//     // borderTopColor: '#80406A',
+//     // borderStartColor: '#ad3231',
+//     // borderBottomColor: '#2757C3',
+//     // borderEndColor: '#ad3231',
+//     backgroundColor: '#fff',
+//     shadowColor: '#000',
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 3.84,
+//     elevation: 5,
+//     borderRadius: 5,
+//   },
+// });
+
+// //make this component available to the app
+// export default EmployProfile;

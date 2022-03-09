@@ -10,121 +10,11 @@ const Hospital = () => {
 
   const {hospitalDetails} = useSelector (state => state.apiHospitalDetails);
   const dispatch = useDispatch();
-  // const handleHospitalApi = () =>{
-  //  dispatch (hospitalData())
-  // }
-  // }
-  useEffect(() =>{
-    hospitalData();
-  },[]);
-  // const hospitals = [
-  //   {
-  //     'id': '1',
-  //     'hospitalName': 'ACMH Hospital',
-  //     'hospialAdd': '1 Nolte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     'id': '2',
-  //     'hospitalName': 'AADHAR HEALTH INSSTITUTE',
-  //     'hospialAdd': 'SILIGURI 734004 , NEAR SEIVOK MORE',
-  //   },
-  //   {
-  //     id: '3',
-  //     hospitalName: 'SOLKHA HOSPITAL',
-  //     hospialAdd: 'NAGRAKATA , SOLKHAPARA ,735225',
-  //   },
-  //   {
-  //     id: '4',
-  //     hospitalName: 'ACMH Hospital',
-  //     hospialAdd: '1 Nolte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '5',
-  //     hospitalName: 'AADHAR HEALTH INSSTITUTE',
-  //     hospialAdd: 'SILIGURI 734004 , NEAR SEIVOK MORE',
-  //   },
-  //   {
-  //     id: '6',
-  //     hospitalName: 'SOLKHA HOSPITAL',
-  //     hospialAdd: 'NAGRAKATA , SOLKHAPARA ,735225',
-  //   },
-  //   {
-  //     id: '7',
-  //     hospitalName: 'ACMHFDD Hospital',
-  //     hospialAdd: '1 Drive Kittanning, PA 16201-7111',
-  //   },
 
-  //   {
-  //     id: '8',
-  //     hospitalName: 'ACMHDV Hospital',
-  //     hospialAdd: 'ENoDDDlte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '9',
-  //     hospitalName: 'ACMDDH Hospital',
-  //     hospialAdd: '1 NDSDFDDColte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '10',
-  //     hospitalName: 'ACMH Hospital',
-  //     hospialAdd: '1 Nolte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '11',
-  //     hospitalName: 'AADHAR HEALTH INSSTITUTE',
-  //     hospialAdd: 'SILIGURI 734004 , NEAR SEIVOK MORE',
-  //   },
-  //   {
-  //     id: '12',
-  //     hospitalName: 'SOLKHA HOSPITAL',
-  //     hospialAdd: 'NAGRAKATA , SOLKHAPARA ,735225',
-  //   },
-  //   {
-  //     id: '13',
-  //     hospitalName: 'ACMHFDD Hospital',
-  //     hospialAdd: '1 Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '14',
-  //     hospitalName: 'ACMHDV Hospital',
-  //     hospialAdd: 'ENoDDDlte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '15',
-  //     hospitalName: 'ACMDDH Hospital',
-  //     hospialAdd: '1 NDSDFDDColte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '16',
-  //     hospitalName: 'ACMH Hospital',
-  //     hospialAdd: '1 Nolte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '17',
-  //     hospitalName: 'AADHAR HEALTH INSSTITUTE',
-  //     hospialAdd: 'SILIGURI 734004 , NEAR SEIVOK MORE',
-  //   },
-  //   {
-  //     id: '18',
-  //     hospitalName: 'SOLKHA HOSPITAL',
-  //     hospialAdd: 'NAGRAKATA , SOLKHAPARA ,735225',
-  //   },
-  //   {
-  //     id: '19',
-  //     hospitalName: 'ACMHFDD Hospital',
-  //     hospialAdd: '1 Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '20',
-  //     hospitalName: 'ACMHDV Hospital',
-  //     hospialAdd: 'ENoDDDlte Drive Kittanning, PA 16201-7111',
-  //   },
-  //   {
-  //     id: '',
-  //     hospitalName: 'ACMDDH Hospital',
-  //     hospialAdd: '1 NDSDFDDColte Drive Kittanning, PA 16201-7111',
-  //   },
-  // ];
+  useEffect(() =>{
+    dispatch(hospitalData());
+  },[]);
+ 
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
@@ -140,7 +30,7 @@ const Hospital = () => {
                 </Text>
                 <Text>{item.body}</Text>
               </View>
-              <TouchableOpacity style={{width: '10%'}} onPress={() =>{handleHospitalApi()}}>
+              <TouchableOpacity style={{width: '10%'}}>
                 <Feather name="phone-call" size={20} color={'#ad3231'} />
               </TouchableOpacity> 
             </View>

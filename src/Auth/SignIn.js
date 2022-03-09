@@ -7,6 +7,8 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -78,6 +80,9 @@ const SignIn = ({navigation}) => {
   
   }
   return (
+    // <KeyboardAvoidingView style={{flex:1}}>
+    //   <SafeAreaView >
+    //     <ScrollView style={{flex:1}}>
     <View style={styles.container}>
       <LinearGradient
         colors={['#2757C3', '#80406A', '#ad3231']}
@@ -127,15 +132,7 @@ const SignIn = ({navigation}) => {
         validationSchema={loginValidationSchema}
         initialValues={{email: '', password: ''}}
         onSubmit={values => {
-          // if (values) {
-          //   navigation.navigate('Tabs', {screen: 'Home'});
-          // } else {
-          //   alert('osdfg');
-          // }
            handleLogin (values)
-          // se4nd data to redux
-
-          // store.dispatch(setSignInValue(values))
         }}>
         {({
           handleChange,
@@ -298,6 +295,9 @@ const SignIn = ({navigation}) => {
         )}
       </Formik>
     </View>
+    // </ScrollView>
+    // </SafeAreaView>
+    // </KeyboardAvoidingView>
   );
 };
 

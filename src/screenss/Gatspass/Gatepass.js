@@ -20,16 +20,41 @@ import SelectDropdown from 'react-native-select-dropdown';
 import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import VisitorDetails from './VisitoDetails';
 import Home from '../Home';
+import {Formik} from 'formik';
+import * as yup from 'yup';
+
 const Gatepass = ({navigation}) => {
+
+
+  const loginValidationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .required('Email Address is Required')
+      .test('email', 'please provide a valid email ', values => {
+        const valid = new RegExp(
+          /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+        );
+        if (valid.test(values)) {
+          return true;
+        } else {
+          return false;
+        }
+      }),
+    password: yup
+      .string()
+      .min(8, 'password must be atleast 8 character')
+      .required('Password is required'),
+  });
+
+  
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
   // const [modalVisibleThird, setmodalVisibleThird] = useState(false);
   const [isSelected, setSelection] = useState(false);
   const [state, setState] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
+  const [mode, setMode] = useState(false);
   const [show, setShow] = useState(false);
   const [text, setText] = useState('');
   const [searchLevel, setSearchLevel] = useState('');
@@ -62,6 +87,8 @@ const Gatepass = ({navigation}) => {
     showMode('time');
   };
 
+
+  
   // const handleRadioStatusSecond = value =>{}
 
   const handleRadioStatus = value => {
@@ -378,7 +405,7 @@ const Gatepass = ({navigation}) => {
                       value={date}
                       mode={mode}
                       is24Hour={true}
-                      display="spinner"
+                      display="default"
                       onChange={onChange}
                     />
                   )}

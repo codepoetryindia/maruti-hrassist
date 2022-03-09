@@ -1,21 +1,147 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, PermissionsAndroid, Platform,} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
+
+
 
 // create a component
 const NearByHospital = () => {
+  // const [
+  //   currentLongitude,
+  //   setCurrentLongitude
+  // ] = useState('...');
+  // const [
+  //   currentLatitude,
+  //   setCurrentLatitude
+  // ] = useState('...');
+  // const [
+  //   locationStatus,
+  //   setLocationStatus
+  // ] = useState('');
+
+  // useEffect(() => {
+  //   const requestLocationPermission = async () => {
+  //     if (Platform.OS === 'ios') {
+  //       getOneTimeLocation();
+  //       subscribeLocationLocation();
+  //     } else {
+  //       try {
+  //         const granted = await PermissionsAndroid.request(
+  //           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //           {
+  //             title: 'Location Access Required',
+  //             message: 'This App needs to Access your location',
+  //           },
+  //         );
+  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //           //To Check, If Permission is granted
+  //           getOneTimeLocation();
+  //           subscribeLocationLocation();
+  //         } else {
+  //           setLocationStatus('Permission Denied');
+  //         }
+  //       } catch (err) {
+  //         console.warn(err);
+  //       }
+  //     }
+  //   };
+  //   requestLocationPermission();
+  //   return () => {
+  //     Geolocation.clearWatch(watchID);
+  //   };
+  // }, []);
+
+  // const getOneTimeLocation = () => {
+  //   setLocationStatus('Getting Location ...');
+  //   Geolocation.getCurrentPosition(
+  //     //Will give you the current location
+  //     (position) => {
+  //       setLocationStatus('You are Here');
+
+  //       //getting the Longitude from the location json
+  //       const currentLongitude = 
+  //         JSON.stringify(position.coords.longitude);
+
+  //       //getting the Latitude from the location json
+  //       const currentLatitude = 
+  //         JSON.stringify(position.coords.latitude);
+
+  //       //Setting Longitude state
+  //       setCurrentLongitude(currentLongitude);
+        
+  //       //Setting Longitude state
+  //       setCurrentLatitude(currentLatitude);
+  //     },
+  //     (error) => {
+  //       setLocationStatus(error.message);
+  //     },
+  //     {
+  //       enableHighAccuracy: false,
+  //       timeout: 30000,
+  //       maximumAge: 1000
+  //     },
+  //   );
+  // };
+
+  // const subscribeLocationLocation = () => {
+  //   watchID = Geolocation.watchPosition(
+  //     (position) => {
+  //       //Will give you the location on location change
+        
+  //       setLocationStatus('You are Here');
+  //       console.log(position);
+
+  //       //getting the Longitude from the location json        
+  //       const currentLongitude =
+  //         JSON.stringify(position.coords.longitude);
+
+  //       //getting the Latitude from the location json
+  //       const currentLatitude = 
+  //         JSON.stringify(position.coords.latitude);
+
+  //       //Setting Longitude state
+  //       setCurrentLongitude(currentLongitude);
+
+  //       //Setting Latitude state
+  //       setCurrentLatitude(currentLatitude);
+  //     },
+  //     (error) => {
+  //       setLocationStatus(error.message);
+  //     },
+  //     {
+  //       enableHighAccuracy: false,
+  //       maximumAge: 1000
+  //     },
+  //   );
+  // };
+  const [location ,setLocation] = useState('')
+  const GetHospital = () => {
+    Geolocation.getCurrentPosition(position => {
+      console.log('position',position)
+      const {latitude, longitude} = position.coords;
+      setLocation({
+        latitude,
+        longitude,
+      });
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.box}>
-        <Text style={{fontSize:16, fontWeight:'bold'}}>Near By Panel hospital</Text>
+      <TouchableOpacity style={styles.box} 
+       onPress={() => {GetHospital()}}>
+        <Text style={{fontSize:16, fontWeight:'bold'}}></Text>
         <View style={styles.circle}>
           <Text>Click here to</Text>
           <Text>Search</Text>
         </View>
         <View>
           <Text style={{lineHeight: 30}}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry
+          Longitude: {location.longitude}
+          </Text>
+          <Text style={{lineHeight: 30}}>
+          Latitude: {location.latitude}
           </Text>
           <Text style={{textAlign:'center'}}>Hospital</Text>
         </View>
@@ -52,7 +178,10 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderWidth: 3,
-    borderColor: 'green',
+    borderTopColor: '#80406A',
+    borderStartColor: '#ad3231',
+    borderBottomColor: '#2757C3',
+    borderEndColor: '#80406A',
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',

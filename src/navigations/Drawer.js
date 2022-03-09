@@ -12,11 +12,11 @@ import VisitorDetails from '../screenss/Gatspass/VisitoDetails';
 import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
 import Gst from '../screenss/Buisness/GST';
 import ShuttleBooking from '../screenss/Buisness/ShuttleBooking';
-import SignIn from '../Auth/SignIn';
-import Home from '../screenss/Home';
-
+import DoctorsContact from '../components/EmergencyContact';
+import EmergencyContacts from '../screenss/EmergencyAndHospital/EmergencyContact';
+import Notification from '../screenss/Notification';
+import EmployProfile from '../screenss/employeLookUp/EmployeProfile';
 const Drawer = createDrawerNavigator();
-
 const MyDrawer = () => {
   return (
     <Drawer.Navigator
@@ -24,14 +24,9 @@ const MyDrawer = () => {
         headerShown: false,
       }}
       drawerContent={props => <CustomDrawer {...props} />}>
-       {/* <Drawer.Screen name='Home' component={Home}/> */}
-      {/* <Drawer.Screen name="SignIn" component={SignIn} /> */}
       <Drawer.Screen name="Tabs" component={Tabs} />
       <Drawer.Screen name="EmployeLookUp" component={EmployeLookUp} />
-      <Drawer.Screen
-        name="CompensationBenifits"
-        component={CompensationBenifits}
-      />
+      <Drawer.Screen name="CompensationBenifits" component={CompensationBenifits}/>
       <Drawer.Screen name="EmergencyHospital" component={EmergencyHospital} />
       <Drawer.Screen name="Canteen" component={Canteen} />
       <Drawer.Screen name="CanteenMenu" component={CanteenMenu} />
@@ -40,6 +35,10 @@ const MyDrawer = () => {
       <Drawer.Screen name="BuisnessTravel" component={BuisnessTravel} />
       <Drawer.Screen name="Gst" component={Gst} />
       <Drawer.Screen name="ShuttleBooking" component={ShuttleBooking} />
+      <Drawer.Screen name='DoctorsContacts' component={DoctorsContact}/>
+      <Drawer.Screen name='EmergencyContacts' component={EmergencyContacts}/>
+      <Drawer.Screen name='Notification' component={Notification}/>
+      <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
     </Drawer.Navigator>
   );
 }

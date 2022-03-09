@@ -15,6 +15,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
+import { FlatList } from 'react-native-gesture-handler';
 
 // create a component
 const Leave = () => {
@@ -32,6 +33,41 @@ const Leave = () => {
   const handleLeave = index => {
     setapplyLeave(index);
   };
+
+  const leave = [
+    {
+      id: '1',
+      Type: 'CBR',
+    },
+    {
+      id: '2',
+      Type: 'CBR',
+    },
+    {
+      id: '3',
+      Type: 'CBR',
+    },
+    {
+      id: '4',
+      Type: 'CBR',
+    },
+    {
+      id: '5',
+      Type: 'CBR',
+    },
+    {
+      id:'6',
+      Type:'CBR',
+    },
+    {
+      id:'7',
+      Type:'CBR',
+    },
+    {
+      id:'8',
+      Type:'CBR',
+    }
+  ];
   return (
     <View style={styles.container}>
       <View style={{width: '100%'}}>
@@ -62,37 +98,16 @@ const Leave = () => {
                   justifyContent: 'space-between',
                   paddingHorizontal: 5,
                 }}>
+               <FlatList
+               numColumns= {4}
+               data={leave}
+               keyExtractor={item => item.id}
+               renderItem = {({item}) => (
                 <View style={styles.circle}>
-                  <Text>ARS</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>CL</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>CO</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>PL</Text>
-                </View>
+                <Text>{item.Type}</Text>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 5,
-                }}>
-                <View style={styles.circle}>
-                  <Text>RL</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>SL</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>CLL</Text>
-                </View>
-                <View style={styles.circle}>
-                  <Text>SRL</Text>
-                </View>
+               )}
+               />
               </View>
             </View>
 

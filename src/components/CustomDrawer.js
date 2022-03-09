@@ -26,6 +26,7 @@ import Canteen from '../screenss/Canteen/Canteen';
 // import SignIn from '../Auth/SignIn';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from '../actions/loginAction';
+import EmployProfile from '../screenss/employeLookUp/EmployeProfile';
 function CustomDrawer(props) {
   const dispatch = useDispatch();
   const handleLogout = (data) =>{
@@ -53,7 +54,7 @@ function CustomDrawer(props) {
             <View>
               <Text style={styles.text}>Mrs. Adams Parker</Text>
               <Text style={styles.text}>MIT</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => {navigation.navigate(EmployProfile)}}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
                 </Text>

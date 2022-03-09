@@ -1,7 +1,8 @@
-import { HOSPITAL_DATA } from "../actions/actionTypes";
+import { HOSPITAL_DATA , EMERGRNCY_CONTACTS } from "../actions/actionTypes";
 
 const initialState = {
     hospitalDetails: [],
+    emergencyContacts : [],
 };
 
 const apiHospitalDetails = (state = initialState, action) => {
@@ -10,6 +11,8 @@ const apiHospitalDetails = (state = initialState, action) => {
   switch (action.type) {
     case HOSPITAL_DATA:
       return {...state, hospitalDetails: action.payload };
+    case EMERGRNCY_CONTACTS:
+      return {...state, emergencyContacts: action.payload };
     default:
       return state;
   }

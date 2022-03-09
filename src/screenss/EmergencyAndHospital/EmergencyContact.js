@@ -3,12 +3,17 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity ,Image } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
+import emergencyContacts from '../../components/EmergencyContact';
+import { useNavigation } from '@react-navigation/native';
 
 // create a component
-const EmergencyContacts = () => {
+const EmergencyContacts = ({navigation}) => {
+  const myNavigation = useNavigation();
     return (
         <View style={styles.container}>
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} 
+          onPress = {() => myNavigation.navigate(emergencyContacts)}>
+          
         <View style={styles.iconBox}>
           <View
             style={{
