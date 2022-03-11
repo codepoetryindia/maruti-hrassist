@@ -18,40 +18,6 @@ import { useDispatch } from 'react-redux';
 import { loginAction } from '../actions/loginAction';
 
 
-// export const spinner = () => {
-//   return async dispatch => {
-//     let payload = await AsyncStorage.getItem('payload');
-//     if (payload !== null) {
-//       console.log('token fetched');
-//       dispatch({
-//         type: 'LOGIN',
-//         payload: payload,
-//       })
-//     } 
-//   }
-// }
-
-
-// const [loading, setLoading] = useState;
-
-//   const dispatch = useDispatch();
-//   const Spinner = async () => {
-//     await dispatch(spinner());
-//     setLoading(false);
-//   };
-//   useEffect(() => {
-//     console.log(store.getState());
-//     Spinner();
-//   }, []);
-//   if (loading) {
-    
-//       <View style={{flex: 1, justifyContent: 'center'}}>
-//         <ActivityIndicator size={30} color={'blue'} />
-//       </View>
-   
-//   }
-
-
 const SignIn = ({navigation}) => {
   // Schema
   const [showPass, setShowPass] = useState(true);

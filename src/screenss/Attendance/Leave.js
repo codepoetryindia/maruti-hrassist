@@ -18,8 +18,12 @@ import RadioForm, {
 import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
 // create a component
 const Leave = () => {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const [applyLeave, setapplyLeave] = useState([0]);
   const [isSelected, setSelection] = useState([0]);
   const [checked, setChecked] = useState();
@@ -178,6 +182,9 @@ const Leave = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const handleLeave = index => {
+    setapplyLeave(index)
+  }
 
   const rederReason = ({item}) => {
     return (
@@ -205,7 +212,7 @@ const Leave = () => {
     <View style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+                   borderRadius={8}
           values={['Apply Leave', 'View Report']}
           selectedIndex={applyLeave}
           onTabPress={index => {
@@ -293,7 +300,7 @@ const Leave = () => {
                 alignItems: 'center',
                 flexDirection: 'row',
                 padding: 10,
-                marginVertical: 20,
+                marginVertical: 8,
                 backgroundColor: '#fff',
                 shadowColor: '#000',
                 shadowOffset: {
@@ -307,54 +314,79 @@ const Leave = () => {
                 borderBottomLeftRadius: 15,
                 borderTopRightRadius: 15,
               }}>
-              <View
+                  <View
                 style={{
                   width: '48%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: 10,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: 'gray',
                 }}>
                 <Text>Start Date</Text>
-                <Text style={{color: 'gray'}}></Text>
-                <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'gray',
+                    padding:3,
+                  }}>
+                  <Text style={{color: 'gray'}}>
+                    ...{moment(date).format('MMM Do YYYY')}
+                  </Text>
                   <View>
-                    <TouchableOpacity>
-                      <Ionicons
-                        name="calendar-outline"
-                        size={30}
-                        color={'#ad3231'}
-                      />
-                    </TouchableOpacity>
+                    <View>
+                      <TouchableOpacity onPress={() => setOpen(true)}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={30}
+                          color={'#ad3231'}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
               <View
                 style={{
                   width: '48%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: 10,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: 'gray',
                 }}>
                 <Text>End Date</Text>
-                <Text style={{color: 'gray'}}></Text>
-                <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'gray',
+                    padding:3,
+                  }}>
+                  <Text style={{color: 'gray'}}>
+                    ...{moment(date).format('MMM Do YYYY')}
+                  </Text>
                   <View>
-                    <TouchableOpacity>
-                      <Ionicons
-                        name="calendar-outline"
-                        size={30}
-                        color={'#ad3231'}
-                      />
-                    </TouchableOpacity>
+                    <View>
+                      <TouchableOpacity onPress={() => setOpen(true)}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={30}
+                          color={'#ad3231'}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
+              <DatePicker         
+                modal
+                open={open}
+                date={date}
+                onConfirm={date => {
+                  setOpen(false);
+                  setDate(date);
+                  console.log(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              />
             </View>
             <Text style={{paddingVertical: 15}}>Choose Your Reason</Text>
 

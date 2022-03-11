@@ -113,7 +113,7 @@ const Birthdays = () => {
     <View style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+          borderRadius={8}
           values={['Today', 'Tomorrow']}
           selectedIndex={CurrentPage}
           onTabPress={index => {
@@ -238,13 +238,13 @@ const Birthdays = () => {
                                 {item.email}
                               </Text>
                               <Text style={{color: '#fff', lineHeight: 20}}>
-                                {item.username}
+                                {item.dept}
                               </Text>
                             </View>
                             <View
                               style={{
                                 height: '23%',
-                                marginTop: 12,
+                                marginTop: 5,
                                 // backgroundColor:'yellow',
                                 flexDirection: 'row',
                                 alignSelf: 'center',
@@ -343,15 +343,16 @@ const Birthdays = () => {
                               />
                             </TouchableOpacity>
                             <View
-                              style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                width: 150,
-                                height: 150,
-                                borderWidth: 20,
-                                borderColor: '#bd5b5a',
-                                borderRadius: 50,
+                             style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              alignSelf: 'center',
+                              width: 150,
+                              height: 150,
+                              borderWidth: 20,
+                              borderColor: '#bd5b5a',
+                              borderRadius: 60,
+                              marginTop: 30,
                               }}>
                               <Image
                                 source={require('../../../assets/Images/smile.jpg')}
@@ -367,7 +368,7 @@ const Birthdays = () => {
                               <Text style={{color: '#fff'}}>{item.name}</Text>
                               <Text style={{color: '#fff'}}>{item.email}</Text>
                               <Text style={{color: '#fff'}}>
-                                {item.username}
+                                {item.dept}
                               </Text>
                             </View>
                             <View
@@ -379,6 +380,7 @@ const Birthdays = () => {
                               }}>
                               <TouchableOpacity
                                 style={{
+                                 
                                   borderWidth: 1,
                                   width: 40,
                                   height: 40,
@@ -485,6 +487,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2.0,
 
     elevation: 2,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   modal: {
     flex: 0.39,

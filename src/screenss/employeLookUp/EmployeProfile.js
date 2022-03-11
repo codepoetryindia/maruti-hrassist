@@ -126,7 +126,7 @@ const EmployProfile = ({navigation}) => {
         style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
         colors={['#2757C3', '#80406A', '#AD3231']}>
          
-            <Text style={{color:'#fff',fontSize:16}}>SUBMIT</Text>
+            <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
           </LinearGradient>
           </TouchableOpacity>
       </View>

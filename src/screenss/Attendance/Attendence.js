@@ -3,25 +3,32 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 // import * as Animatable from 'react-native-animatable';
 // create a component
-const Attendance = () => {
+const Attendance = ({navigation}) => {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
-  const [manager, setManager] = useState(false);
+ 
   const [MarkAttandance, setMarkAttandance] = useState(0);
+
   const handleMarkAttandance = index => {
     setMarkAttandance(index);
   };
-
+  // const handelDate = () => {
+  //   let set = setDate()
+  //  setText(set);
+  //  console.log('text',setText)
+  // }
   const [location, setLocation] = useState('');
   const punch = () => {
-   setLocation([]);
+    setLocation([]);
   };
-  useEffect (() => {
+  useEffect(() => {
     Geolocation.getCurrentPosition(position => {
       console.log('position', position);
       const {latitude, longitude} = position.coords;
@@ -30,12 +37,12 @@ const Attendance = () => {
         longitude,
       });
     });
-  }, [])
+  }, []);
   return (
     <View style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+           borderRadius={8}
           values={['Mark Attendance', 'View Report']}
           selectedIndex={MarkAttandance}
           onTabPress={index => {
@@ -52,10 +59,12 @@ const Attendance = () => {
       <View>
         {MarkAttandance == 0 ? (
           <View>
-            <TouchableOpacity
-              style={styles.content}>
-              <TouchableOpacity style={styles.circle} 
-              onPress={() =>{ punch()}}>
+            <TouchableOpacity style={styles.content}>
+              <TouchableOpacity
+                style={styles.circle}
+                onPress={() => {
+                  punch();
+                }}>
                 <Text>Punch</Text>
               </TouchableOpacity>
               <Text>Live Location</Text>
@@ -90,51 +99,80 @@ const Attendance = () => {
               <View
                 style={{
                   width: '48%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: 10,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: 'gray',
                 }}>
                 <Text>From</Text>
-                <Text style={{color: 'gray'}}>{text}</Text>
-                <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'gray',
+                    padding: 3,
+                  }}>
+                  <Text style={{color: 'gray'}}>
+                    ...{moment(date).format('MMM Do YYYY')}
+                  </Text>
                   <View>
-                    <TouchableOpacity>
-                    <Ionicons
-                      name="calendar-outline"
-                      size={30}
-                      color={'#ad3231'}
-                    />
-                    </TouchableOpacity>
+                    <View>
+                      <TouchableOpacity onPress={() => setOpen(true)}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={30}
+                          color={'#ad3231'}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
               <View
                 style={{
                   width: '48%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: 10,
-                  borderBottomWidth: 0.5,
-                  borderBottomColor: 'gray',
                 }}>
                 <Text>To</Text>
-                <Text style={{color: 'gray'}}>{text}</Text>
-                <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'gray',
+                    padding: 3,
+                  }}>
+                  <Text style={{color: 'gray'}}>
+                    ...{moment(date).format('MMM Do YYYY')}
+                  </Text>
                   <View>
-                  <TouchableOpacity>
-                    <Ionicons
-                      name="calendar-outline"
-                      size={30}
-                      color={'#ad3231'}
-                    />
-                    </TouchableOpacity>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => (setOpen(true), handelDate())}>
+                        <Ionicons
+                          name="calendar-outline"
+                          size={30}
+                          color={'#ad3231'}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
+
+              {/* DatePicker */}
+
+              <DatePicker
+                modal
+                open={open}
+                date={date}
+                onConfirm={date => {
+                  setOpen(false);
+                  setDate(date);
+                  console.log(date);
+                }}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              />
             </View>
 
             {/* Button */}
@@ -152,32 +190,8 @@ const Attendance = () => {
             </TouchableOpacity>
 
             {/* Manager Mode */}
-      
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                width: manager == true ? '50%' : '10%',
-                position: 'absolute',
-                right: -20,
-                bottom: '-50%',
-                backgroundColor: '#23f',
-                borderTopLeftRadius: 20,
-                borderBottomLeftRadius: 20,
-                paddingVertical: 5,
-              }}>
-              <Ionicons
-                style={{marginLeft: '8%'}}
-                name="ios-person-circle-outline"
-                size={25}
-                color={'white'}
-                onPress={() => {
-                  manager == true ? setManager(false) : setManager(true);
-                }}
-              />
-             <TouchableOpacity style={{alignSelf:'center'}}>
-             {manager== true ? (<Text style={{color:'#fff',marginLeft:5,}}>Go-To Manager-Mode</Text>):null}
-             </TouchableOpacity>
-            </TouchableOpacity>
+
+          
           </View>
         )}
       </View>

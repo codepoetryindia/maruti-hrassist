@@ -14,7 +14,7 @@ const HolidayCalendar = () => {
         <View style={styles.container}>
            <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+                    borderRadius={8}
           values={['MSIL 249', 'MSIL 280', 'SMG', 'MNS/HQ']}
           selectedIndex={HolidayCalendar}
           onTabPress={index => {

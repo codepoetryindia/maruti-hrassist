@@ -4,13 +4,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import Home from '../screenss/Home';
-import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
-import Gatepass from '../screenss/Gatspass/Gatepass';
-import More from '../screenss/More';
-import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
-import BuisnessTravel from '../screenss/Buisness/BuisnessTravel';
-import CompensationBenifits from '../screenss/CompensationAndBenifits/CompensationBenifits'
+
 import {
   View,
   Text,
@@ -21,12 +15,11 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
-import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
-import Canteen from '../screenss/Canteen/Canteen';
+
 // import SignIn from '../Auth/SignIn';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from '../actions/loginAction';
-import EmployProfile from '../screenss/employeLookUp/EmployeProfile';
+
 function CustomDrawer(props) {
   const dispatch = useDispatch();
   const handleLogout = (data) =>{
@@ -87,7 +80,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Employee Lookup"
-              onPress={() => navigation.navigate("EmployeLookUp")}
+              onPress={() => navigation.navigate('EmployeeNavs')}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>

@@ -4,10 +4,6 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-// import GifImage from '@lowkey/react-native-gif';
-import CanteenMenu from './CanteenMenu';
-import FoodCount from './FoodCount';
-import Home from '../Home';
 const Canteen = ({navigation}) => {
   // ]);
   return (
@@ -22,6 +18,7 @@ const Canteen = ({navigation}) => {
               justifyContent: 'space-between',
               width: 40,
               alignItems: 'center',
+
             }}>
             <Ionicons
               name="chevron-back-outline"
@@ -111,7 +108,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    
   },
   canteen: {
     top:10,

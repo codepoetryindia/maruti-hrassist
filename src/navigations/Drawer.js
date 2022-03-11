@@ -2,7 +2,7 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Tabs from './TabNavigation';
 import CustomDrawer from '../components/CustomDrawer';
-import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
+// import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
 import CompensationBenifits from '../screenss/CompensationAndBenifits/CompensationBenifits';
 import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
 import Canteen from '../screenss/Canteen/Canteen';
@@ -16,6 +16,8 @@ import DoctorsContact from '../components/EmergencyContact';
 import EmergencyContacts from '../screenss/EmergencyAndHospital/EmergencyContact';
 import Notification from '../screenss/Notification';
 import EmployProfile from '../screenss/employeLookUp/EmployeProfile';
+import EmployeeNavs from './EmployeeNavs';
+import AttendanceAdminNav from './AttendanceAdminNav';
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
   return (
@@ -25,7 +27,8 @@ const MyDrawer = () => {
       }}
       drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen name="Tabs" component={Tabs} />
-      <Drawer.Screen name="EmployeLookUp" component={EmployeLookUp} />
+      <Drawer.Screen name="EmployeeNavs" component={EmployeeNavs} />
+      <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
       <Drawer.Screen name="CompensationBenifits" component={CompensationBenifits}/>
       <Drawer.Screen name="EmergencyHospital" component={EmergencyHospital} />
       <Drawer.Screen name="Canteen" component={Canteen} />
@@ -38,7 +41,9 @@ const MyDrawer = () => {
       <Drawer.Screen name='DoctorsContacts' component={DoctorsContact}/>
       <Drawer.Screen name='EmergencyContacts' component={EmergencyContacts}/>
       <Drawer.Screen name='Notification' component={Notification}/>
-      <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
+      <Drawer.Screen name='AttendanceAdminNav' component={AttendanceAdminNav}/>
+
+      
     </Drawer.Navigator>
   );
 }

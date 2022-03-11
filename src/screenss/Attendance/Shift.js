@@ -13,7 +13,7 @@ const Shift = () => {
         <View style={styles.container}>
             <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+                     borderRadius={8}
           values={['Shift Details', 'Flexi Shift']}
           selectedIndex={Shift}
           onTabPress={index => {

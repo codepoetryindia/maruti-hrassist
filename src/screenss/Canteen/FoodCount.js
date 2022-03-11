@@ -1,87 +1,108 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {Component,useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import Canteen from './Canteen';
+import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
 
 const FoodCount = ({navigation}) => {
   const Calander = () => {
-    return (
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: '#9f9f9f',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'row',
-          padding: 10,
-          marginVertical: 10,
-        }}>
-        <Text style={{color: '#fff'}}>Today Menu (current Date)</Text>
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = useState(false);
 
-        <Ionicons name="calendar-outline" size={30} color={'#fff'} />
+    return (
+      <View>
+        <DatePicker
+          modal
+          open={open}
+          date={date}
+          onConfirm={date => {
+            setOpen(false);
+            setDate(date);
+            console.log(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#9f9f9f',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+            padding: 10,
+            marginVertical: 10,
+          }}>
+          <Text style={{color: '#fff'}}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
+          <TouchableOpacity onPress={() => setOpen(true)}>
+            <Ionicons name="calendar-outline" size={30} color={'#fff'} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
 
-   const Gurgaon = ({navigation}) =>{
+  const Gurgaon = ({navigation}) => {
     return (
       <View>
-         <Calander/>
+        <Calander />
         <Text>Gurgaon</Text>
       </View>
-    )
+    );
   };
-  
-   const Manesar = ({navigation}) =>{
+
+  const Manesar = ({navigation}) => {
     return (
       <View>
-         <Calander/>
+        <Calander />
         <Text>Manesar</Text>
       </View>
-    )
+    );
   };
-  
-  const Mpt = ({navigation}) =>{
+
+  const Mpt = ({navigation}) => {
     return (
       <View>
-         <Calander/>
+        <Calander />
         <Text>MPT</Text>
       </View>
-    )
+    );
   };
-  
-  const Rothak = ({navigation}) =>{
+
+  const Rothak = ({navigation}) => {
     return (
       <View>
-        <Calander/>
+        <Calander />
         <Text>Rothak</Text>
       </View>
-    )
+    );
   };
 
   const renderScene = SceneMap({
     first: Gurgaon,
     second: Manesar,
     third: Mpt,
-    fourth : Rothak,
+    fourth: Rothak,
   });
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'first', title: 'Gurgaon'},
     {key: 'second', title: 'Manesar'},
-    {key: 'first', title: 'MPT'},
-    {key: 'second', title: 'Rothak'},
+    {key: 'third', title: 'MPT'},
+    {key: 'fourth', title: 'Rothak'},
   ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -100,7 +121,7 @@ const FoodCount = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Canteen)}
+              onPress={() => navigation.navigate("Canteen")}
             />
             <Ionicons
               name="menu-outline"
@@ -117,14 +138,16 @@ const FoodCount = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-           Food Count
+            Food Count
           </Text>
         </View>
       </LinearGradient>
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient
+              colors={['#ad3231', '#bd5b5a']}
+              style={{marginTop: -1, zIndex: -1}}>
               <TabBar
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
