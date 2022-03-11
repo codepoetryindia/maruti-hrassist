@@ -175,7 +175,7 @@ const CanteenMenu = ({navigation}) => {
     };
     return (
       <View>
-        <Calander />
+        {/* <Calander /> */}
         {/* Lunch */}
         <View style={styles.lunchBoxContainer}>
           <TouchableOpacity
@@ -386,7 +386,7 @@ const CanteenMenu = ({navigation}) => {
     };
     return (
       <View>
-        <Calander />
+        {/* <Calander /> */}
         {/* Lunch */}
         <View style={styles.lunchBoxContainer}>
           <TouchableOpacity

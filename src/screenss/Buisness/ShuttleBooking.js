@@ -159,7 +159,7 @@ const ShuttleBooking = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(BuisnessTravel)}
+              onPress={() => navigation.navigate("BuisnessTravel")}
             />
             <Ionicons
               name="menu-outline"

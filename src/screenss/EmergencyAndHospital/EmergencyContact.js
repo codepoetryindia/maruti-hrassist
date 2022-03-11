@@ -12,7 +12,7 @@ const EmergencyContacts = ({navigation}) => {
     return (
         <View style={styles.container}>
           <TouchableOpacity style={styles.box} 
-          onPress = {() => myNavigation.navigate(emergencyContacts)}>
+          onPress = {() => myNavigation.navigate("emergencyContacts")}>
           
         <View style={styles.iconBox}>
           <View

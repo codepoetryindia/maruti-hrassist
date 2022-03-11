@@ -54,7 +54,7 @@ function CustomDrawer(props) {
             <View>
               <Text style={styles.text}>Mrs. Adams Parker</Text>
               <Text style={styles.text}>MIT</Text>
-              <TouchableOpacity onPress={() => {navigation.navigate(EmployProfile)}}>
+              <TouchableOpacity onPress={() => {navigation.navigate("EmployProfile")}}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
                 </Text>
@@ -74,7 +74,7 @@ function CustomDrawer(props) {
           <ScrollView style={{height:730}}>
             <DrawerItem
               label="Home"
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>
@@ -87,7 +87,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Employee Lookup"
-              onPress={() => navigation.navigate(EmployeLookUp)}
+              onPress={() => navigation.navigate("EmployeLookUp")}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>
@@ -101,7 +101,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Attendance & Admin"
-              onPress={() => navigation.navigate(AttendanceAdmin)}
+              onPress={() => navigation.navigate("AttendanceAdmin")}
               icon={({color, size}) => (
                 //   <Foundation
                 //   name='torsos-all' color={'black'} size={20}/>
@@ -114,7 +114,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Compensatino and Benifits"
-              onPress={() => navigation.navigate(CompensationBenifits)}
+              onPress={() => navigation.navigate("CompensationBenifits")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -126,7 +126,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Hospital & Emergency"
-              onPress={() => navigation.navigate(EmergencyHospital)}
+              onPress={() => navigation.navigate("EmergencyHospital")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -139,7 +139,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Canteen Menu"
-              onPress={() => navigation.navigate(Canteen)}
+              onPress={() => navigation.navigate("Canteen")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -152,7 +152,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Other Mobile Apps"
-              onPress={() => navigation.navigate(More)}
+              onPress={() => navigation.navigate("More")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -164,7 +164,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Visitor Gatepass"
-              onPress={() => navigation.navigate(Gatepass)}
+              onPress={() => navigation.navigate("Gatepass")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -176,7 +176,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Buisness Travel"
-              onPress={() => navigation.navigate(BuisnessTravel)}
+              onPress={() => navigation.navigate("BuisnessTravel")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -188,7 +188,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Share App"
-              onPress={() => navigation.navigate(More)}
+              onPress={() => navigation.navigate("More")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -201,7 +201,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="App Tutorial"
-              onPress={() => navigation.navigate(More)}
+              onPress={() => navigation.navigate("More")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

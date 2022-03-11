@@ -15,12 +15,16 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
-import { FlatList } from 'react-native-gesture-handler';
-
+import {FlatList} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'react-native-modal';
 // create a component
 const Leave = () => {
   const [applyLeave, setapplyLeave] = useState([0]);
   const [isSelected, setSelection] = useState([0]);
+  const [checked, setChecked] = useState();
+  const [validReason, setValidReason] = useState('Select Reason');
+
   var radio_props = [
     {label: 'Planned', value: 0},
     {label: 'Unplanned', value: 1},
@@ -30,9 +34,6 @@ const Leave = () => {
     {label: '1st Half', value: 1},
     {label: '2nd Half', value: 2},
   ];
-  const handleLeave = index => {
-    setapplyLeave(index);
-  };
 
   const leave = [
     {
@@ -56,18 +57,150 @@ const Leave = () => {
       Type: 'CBR',
     },
     {
-      id:'6',
-      Type:'CBR',
+      id: '6',
+      Type: 'CBR',
     },
     {
-      id:'7',
-      Type:'CBR',
+      id: '7',
+      Type: 'CBR',
     },
     {
-      id:'8',
-      Type:'CBR',
-    }
+      id: '8',
+      Type: 'CBR',
+    },
   ];
+
+  const reason = [
+    {
+      id: '1',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '2',
+      reason:
+        'Adverse House situations. You are urgently needed at home because there was a fire, structural damage to your home, a flooded bathroom, etc.',
+    },
+    {
+      id: '3',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '4',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '5',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '6',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '7',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '8',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '9',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '10',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '11',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '12',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '13',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '14',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '15',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '16',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '17',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '18',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '19',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+    {
+      id: '20',
+      reason:
+        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
+    },
+  ];
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+
+  const rederReason = ({item}) => {
+    return (
+      <View
+        style={{
+          padding: 10,
+          margin: 2,
+          borderBottomWidth: 1,
+          borderBottomColor: '#fff',
+          marginVertical: 10,
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            // console.log('selected reason', item);
+            setValidReason(item.reason);
+            setModalVisible(false);
+          }}>
+          <Text style={{color: '#fff', fontSize: 15}}>{item.reason}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={{width: '100%'}}>
@@ -92,23 +225,25 @@ const Leave = () => {
             style={{height: '80%', paddingVertical: 1}}>
             <Text style={{paddingVertical: 15}}>Leave Type</Text>
             <View style={styles.box}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 5,
-                }}>
-               <FlatList
-               numColumns= {4}
-               data={leave}
-               keyExtractor={item => item.id}
-               renderItem = {({item}) => (
-                <View style={styles.circle}>
-                <Text>{item.Type}</Text>
-              </View>
-               )}
-               />
-              </View>
+              <FlatList
+                numColumns={4}
+                data={leave}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setChecked(item.id);
+                    }}
+                    style={[
+                      styles.circle,
+                      {backgroundColor: checked == item.id ? '#ad3231' : null},
+                    ]}>
+                    <Text style={{color: checked == item.id ? '#fff' : '#000'}}>
+                      {item.Type}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
             </View>
 
             <Text style={{paddingVertical: 15}}>Planned/Unplanned</Text>
@@ -149,29 +284,136 @@ const Leave = () => {
               </View>
             </View>
             <Text style={{paddingVertical: 15}}>Select Date</Text>
-            <View style={styles.box}>
+            <View
+              style={{
+                width: '100%',
+                borderWidth: 1,
+                borderColor: '#fff',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
+                padding: 10,
+                marginVertical: 20,
+                backgroundColor: '#fff',
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+                borderTopLeftRadius: 15,
+                borderBottomLeftRadius: 15,
+                borderTopRightRadius: 15,
+              }}>
               <View
-                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <TextInput value="Start Date" />
-                <TextInput value="End Date" />
+                style={{
+                  width: '48%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 10,
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: 'gray',
+                }}>
+                <Text>Start Date</Text>
+                <Text style={{color: 'gray'}}></Text>
+                <View>
+                  <View>
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="calendar-outline"
+                        size={30}
+                        color={'#ad3231'}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: '48%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 10,
+                  borderBottomWidth: 0.5,
+                  borderBottomColor: 'gray',
+                }}>
+                <Text>End Date</Text>
+                <Text style={{color: 'gray'}}></Text>
+                <View>
+                  <View>
+                    <TouchableOpacity>
+                      <Ionicons
+                        name="calendar-outline"
+                        size={30}
+                        color={'#ad3231'}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
-            <Text style={{paddingVertical: 15}}>Select Your Reason</Text>
+            <Text style={{paddingVertical: 15}}>Choose Your Reason</Text>
 
             <View style={styles.box}>
               <TouchableOpacity
+                onPress={toggleModal}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'baseline',
                   paddingHorizontal: 10,
                   justifyContent: 'space-between',
                 }}>
-                <Text>Select Reason</Text>
+                <Text>{validReason}</Text>
                 <Ionicons
                   name="arrow-forward-outline"
                   color={'#23d'}
                   size={20}
                 />
+                <Modal isVisible={isModalVisible}>
+                  <View>
+                    <LinearGradient
+                      colors={['#2757C3', '#80406A', '#ad3231']}
+                      style={{
+                        height: '100%',
+                        backgroundColor: 'red',
+                        borderRadius: 10,
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          paddingHorizontal: 30,
+                          paddingVertical: 5,
+                        }}>
+                        <Text
+                          style={{
+                            color: '#fff',
+                            fontSize: 18,
+                            letterSpacing: 1,
+                          }}>
+                          Select Reason
+                        </Text>
+                        <TouchableOpacity onPress={toggleModal}>
+                          <Ionicons
+                            name="close-circle-outline"
+                            size={30}
+                            color={'#fff'}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <FlatList
+                        data={reason}
+                        keyExtractor={item => item.id}
+                        renderItem={rederReason}
+                      />
+                    </LinearGradient>
+                  </View>
+                </Modal>
               </TouchableOpacity>
             </View>
 
@@ -184,31 +426,16 @@ const Leave = () => {
             </View>
 
             <View style={{height: 100, marginTop: 10}}>
-              <TouchableOpacity
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-evenly',
-                  backgroundColor: '#fff',
-                  width: '100%',
-                  paddingVertical: 25,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.18,
-                  shadowRadius: 2.0,
-                  elevation: 2,
-                  borderWidth: 0,
-                  marginTop: 10,
-                }}>
-                <Text>Submit</Text>
-                <Ionicons
-                  name="cloud-upload-outline"
-                  color={'#23d'}
-                  size={20}
-                />
+              <TouchableOpacity>
+                <LinearGradient
+                  style={{
+                    padding: 20,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                  }}
+                  colors={['#2757C3', '#80406A', '#AD3231']}>
+                  <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -249,7 +476,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderBottomWidth: 4,
     borderBottomColor: '#2757C3',
-    // borderColor:Colors.primaryColor
+    borderRadius: 10,
   },
   activeTabTextStyle: {
     color: '#2757C3',
@@ -261,7 +488,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 5,
     alignItems: 'center',
-    margin: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: '2%',
+    marginHorizontal: 28,
+
     // shadowColor: '#000',
     // shadowOffset: {
     //   width: 0,
@@ -284,14 +515,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
-
     elevation: 5,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   comment: {
-    borderWidth: 0,
     marginTop: 20,
     width: '100%',
-    height: 100,
+    maxHeight: 100,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -299,8 +531,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
-
     elevation: 2,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
 });
 

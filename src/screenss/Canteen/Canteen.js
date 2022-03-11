@@ -27,7 +27,7 @@ const Canteen = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
@@ -51,7 +51,7 @@ const Canteen = ({navigation}) => {
 
       <TouchableOpacity
         style={styles.canteen}
-        onPress={() => navigation.navigate(CanteenMenu)}>
+        onPress={() => navigation.navigate("CanteenMenu")}>
         <View style={{width: '20%'}}>
           <Image
             style={{width: 50, height: 50}}
@@ -77,7 +77,7 @@ const Canteen = ({navigation}) => {
 
       <TouchableOpacity
         style={styles.canteen}
-        onPress={() => navigation.navigate(FoodCount)}>
+        onPress={() => navigation.navigate("FoodCount")}>
         <View style={{width: '20%'}}>
           <Image
             style={{width: 50, height: 50}}

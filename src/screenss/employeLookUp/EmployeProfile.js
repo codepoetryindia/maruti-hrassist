@@ -112,10 +112,10 @@ const EmployProfile = ({navigation}) => {
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Text>Check in Details</Text>
            <Ionicons
-            name="chevron-next-outline"
+            name="arrow-forward-outline"
             size={30}
             color={'red'}
-            onPress={() => navigation.goBack()}
+            
           />
              </View>
           </View>

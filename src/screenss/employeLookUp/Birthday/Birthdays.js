@@ -23,10 +23,10 @@ const Birthdays = () => {
   });
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(todaysBirthday());
-    // console.log('logged', todayBirthdayData);
-  }, []);
+  // useEffect(() => {
+  //   // dispatch(todaysBirthday());
+  //   // console.log('logged', todayBirthdayData);
+  // }, []);
 
 
 
@@ -35,73 +35,73 @@ const Birthdays = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  // const BirthdayData = [
-  //   {
-  //     dept: 'EPP',
-  //     name: 'MR. Dahal',
-  //     email: 'mrdahal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/smile.jpg'),
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Kunal',
-  //     email: 'mrKunal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'CPP',
-  //     name: 'MR. Amit',
-  //     email: 'amit@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/smile.jpg'),
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Diwas',
-  //     email: 'diwas@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'cpp',
-  //     name: 'MR. Brashant',
-  //     email: 'Brashant@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'EPP',
-  //     name: 'MR. Dahal',
-  //     email: 'mrdahal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Kunal',
-  //     email: 'mrKunal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'CPP',
-  //     name: 'MR. Amit',
-  //     email: 'amit@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Diwas',
-  //     email: 'diwas@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'cpp',
-  //     name: 'MR. Brashant',
-  //     email: 'Brashant@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  // ];
+  const BirthdayData = [
+    {
+      dept: 'EPP',
+      name: 'MR. Dahal',
+      email: 'mrdahal@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/smile.jpg'),
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Kunal',
+      email: 'mrKunal@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'CPP',
+      name: 'MR. Amit',
+      email: 'amit@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/smile.jpg'),
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Diwas',
+      email: 'diwas@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'cpp',
+      name: 'MR. Brashant',
+      email: 'Brashant@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'EPP',
+      name: 'MR. Dahal',
+      email: 'mrdahal@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Kunal',
+      email: 'mrKunal@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'CPP',
+      name: 'MR. Amit',
+      email: 'amit@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Diwas',
+      email: 'diwas@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'cpp',
+      name: 'MR. Brashant',
+      email: 'Brashant@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+  ];
 
   //   const {Birthdays, Tomorow} = route.params;
   const [CurrentPage, setCurrentPage] = useState(0);
@@ -140,12 +140,32 @@ const Birthdays = () => {
             <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={todayBirthdayData}
+                data={ BirthdayData}
                 keyExtractor={item => item.id}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
                     <TouchableOpacity onPress={toggleModal}>
-                      <View style={styles.itemView}>
+                    <View style={styles.itemView}>
+                        <View
+                          style={{
+                            borderRightWidth: 2,
+                            paddingVertical: 8,
+                            width: '20%',
+                          }}>
+                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
+                        </View>
+                        <View
+                          style={{
+                            width: '80%',
+                            paddingVertical: 5,
+                            paddingLeft: 15,
+                          }}>
+                          <Text style>{item.name}</Text>
+                          <Text>{item.email}</Text>
+                          <Text>{item.divison}</Text>
+                        </View>
+                      </View>
+                      {/* <View style={styles.itemView}>
                         <View
                           style={{
                             borderRightWidth: 2,
@@ -165,7 +185,7 @@ const Birthdays = () => {
                           <Text style>{item.name}</Text>
                           <Text>{item.email}</Text>
                         </View>
-                      </View>
+                      </View> */}
 
                       <Modal
                         backdropOpacity={0.1}
@@ -275,7 +295,7 @@ const Birthdays = () => {
             <View style={{height: '95%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={todayBirthdayData}
+                data={BirthdayData}
                 keyExtractor={item => item.name}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>

@@ -50,7 +50,7 @@ const Home = ({navigation}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(Notification);
+                  navigation.navigate("Notification");
                 }}>
                 <IconBadge
                   MainElement={<Feather name="bell" color={'#fff'} size={35} />}

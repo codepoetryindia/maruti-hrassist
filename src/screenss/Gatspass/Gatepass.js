@@ -203,7 +203,7 @@ const Gatepass = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
@@ -385,30 +385,22 @@ const Gatepass = ({navigation}) => {
                       width: 65,
                       justifyContent: 'space-around',
                     }}>
-                    <Ionicons
+                  <TouchableOpacity>
+                  <Ionicons
                       name="calendar-outline"
                       size={25}
                       color={'#ad3231'}
-                      onPress={showDatepicker}
                     />
+                  </TouchableOpacity>
 
+                    <TouchableOpacity>
                     <Ionicons
                       name="time-outline"
                       size={25}
                       color={'#ad3231'}
-                      onPress={showTimepicker}
                     />
+                    </TouchableOpacity>
                   </View>
-                  {show && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode={mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={onChange}
-                    />
-                  )}
                 </View>
               </TouchableOpacity>
               <TextInput

@@ -25,7 +25,7 @@ const BuisnessTravel = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
@@ -49,7 +49,7 @@ const BuisnessTravel = ({navigation}) => {
 
       {/* BODY */}
       <TouchableOpacity style={styles.box}
-      onPress={() =>{navigation.navigate(Gst)}}>
+      onPress={() =>{navigation.navigate("Gst")}}>
         <View style={styles.iconBox}>
           <View
             style={{
@@ -76,7 +76,7 @@ const BuisnessTravel = ({navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.box}
-      onPress={() => {navigation.navigate(ShuttleBooking)}}>
+      onPress={() => {navigation.navigate("ShuttleBooking")}}>
         <View style={styles.iconBox}>
           <View
             style={{
