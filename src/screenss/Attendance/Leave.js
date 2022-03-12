@@ -20,14 +20,18 @@ import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 // create a component
 const Leave = () => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [applyLeave, setapplyLeave] = useState([0]);
-  const [isSelected, setSelection] = useState([0]);
-  const [checked, setChecked] = useState();
+  const [isSelected, setSelection] = useState('');
+  const [period, setPeriod] = useState('');
+  const [checked, setChecked] = useState('');
   const [validReason, setValidReason] = useState('Select Reason');
+  const [comment,setComment] = useState('');
 
   var radio_props = [
     {label: 'Planned', value: 0},
@@ -39,6 +43,28 @@ const Leave = () => {
     {label: '2nd Half', value: 2},
   ];
 
+  const checkData = () => {
+    if(checked==''){
+      alert('All field is Required');
+    }
+    // else if(isSelected==''){
+    //   alert('select planed')
+    //   console.log('value',isSelected)
+    // }
+   else if (validReason==='Select Reason'){
+     alert('select one ')
+   }
+    
+    else 
+      alert('sucessfull');
+  }
+  // const leaveSchema = yup.object().shape({
+  //   leave: yup.required('Leave Type Required'),
+  //   RadioForm: yup.required('RadioForm is required'),
+  // });
+  // const handleLogin = data => {
+  //   dispatch(loginAction(data));
+  // };
   const leave = [
     {
       id: '1',
@@ -183,8 +209,8 @@ const Leave = () => {
   };
 
   const handleLeave = index => {
-    setapplyLeave(index)
-  }
+    setapplyLeave(index);
+  };
 
   const rederReason = ({item}) => {
     return (
@@ -212,7 +238,7 @@ const Leave = () => {
     <View style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
-                   borderRadius={8}
+          borderRadius={8}
           values={['Apply Leave', 'View Report']}
           selectedIndex={applyLeave}
           onTabPress={index => {
@@ -227,250 +253,297 @@ const Leave = () => {
       </View>
       <View>
         {applyLeave == 0 ? (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{height: '80%', paddingVertical: 1}}>
-            <Text style={{paddingVertical: 15}}>Leave Type</Text>
-            <View style={styles.box}>
-              <FlatList
-                numColumns={4}
-                data={leave}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setChecked(item.id);
-                    }}
-                    style={[
-                      styles.circle,
-                      {backgroundColor: checked == item.id ? '#ad3231' : null},
-                    ]}>
-                    <Text style={{color: checked == item.id ? '#fff' : '#000'}}>
-                      {item.Type}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              />
-            </View>
-
-            <Text style={{paddingVertical: 15}}>Planned/Unplanned</Text>
-            <View style={styles.box}>
-              <View style={{flexDirection: 'row', padding: 8}}>
-                <RadioForm
-                  borderRadius={0}
-                  radio_props={radio_props}
-                  initial={isSelected}
-                  onPress={value => {
-                    setSelection(isSelected);
-                  }}
-                  borderWidth={0.5}
-                  buttonInnerColor={'#e74c3c'}
-                  buttonOuterColor={'#23f'}
-                  buttonSize={10}
-                  buttonOuterSize={20}
-                />
-              </View>
-            </View>
-
-            <Text style={{paddingVertical: 15}}>Period</Text>
-            <View style={styles.box}>
-              <View style={{flexDirection: 'row', padding: 8}}>
-                <RadioForm
-                  borderRadius={0}
-                  radio_props={radio_propsSecond}
-                  initial={isSelected}
-                  onPress={value => {
-                    setSelection(isSelected);
-                  }}
-                  borderWidth={0.5}
-                  buttonInnerColor={'#e74c3c'}
-                  buttonOuterColor={'#23f'}
-                  buttonSize={10}
-                  buttonOuterSize={20}
-                />
-              </View>
-            </View>
-            <Text style={{paddingVertical: 15}}>Select Date</Text>
-            <View
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                borderColor: '#fff',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                padding: 10,
-                marginVertical: 8,
-                backgroundColor: '#fff',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
-                borderTopLeftRadius: 15,
-                borderBottomLeftRadius: 15,
-                borderTopRightRadius: 15,
-              }}>
-                  <View
-                style={{
-                  width: '48%',
-                }}>
-                <Text>Start Date</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'gray',
-                    padding:3,
-                  }}>
-                  <Text style={{color: 'gray'}}>
-                    ...{moment(date).format('MMM Do YYYY')}
-                  </Text>
-                  <View>
-                    <View>
-                      <TouchableOpacity onPress={() => setOpen(true)}>
-                        <Ionicons
-                          name="calendar-outline"
-                          size={30}
-                          color={'#ad3231'}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  width: '48%',
-                }}>
-                <Text>End Date</Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'gray',
-                    padding:3,
-                  }}>
-                  <Text style={{color: 'gray'}}>
-                    ...{moment(date).format('MMM Do YYYY')}
-                  </Text>
-                  <View>
-                    <View>
-                      <TouchableOpacity onPress={() => setOpen(true)}>
-                        <Ionicons
-                          name="calendar-outline"
-                          size={30}
-                          color={'#ad3231'}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <DatePicker         
-                modal
-                open={open}
-                date={date}
-                onConfirm={date => {
-                  setOpen(false);
-                  setDate(date);
-                  console.log(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
-            </View>
-            <Text style={{paddingVertical: 15}}>Choose Your Reason</Text>
-
-            <View style={styles.box}>
-              <TouchableOpacity
-                onPress={toggleModal}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'baseline',
-                  paddingHorizontal: 10,
-                  justifyContent: 'space-between',
-                }}>
-                <Text>{validReason}</Text>
-                <Ionicons
-                  name="arrow-forward-outline"
-                  color={'#23d'}
-                  size={20}
-                />
-                <Modal isVisible={isModalVisible}>
-                  <View>
-                    <LinearGradient
-                      colors={['#2757C3', '#80406A', '#ad3231']}
-                      style={{
-                        height: '100%',
-                        backgroundColor: 'red',
-                        borderRadius: 10,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          paddingHorizontal: 30,
-                          paddingVertical: 5,
-                        }}>
+          // <Formik
+          //   validationSchema={leaveSchema}
+          //   initialValues={{
+          //     leave: '',
+          //     RadioForm: '',
+          //     date: '',
+          //     validReason: '',
+          //     Comment: '',
+          //   }}
+          //   onSubmit={values => {
+          //     // handleLogin(values);
+          //   }}>
+          //   {({
+          //     handleChange,
+          //     handleBlur,
+          //     handleSubmit,
+          //     values,
+          //     errors,
+          //     touched,
+          //     isValid,
+          //   }) => (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{height: '80%', paddingVertical: 1}}>
+                <Text style={{paddingVertical: 15}}>Leave Type</Text>
+                <View style={styles.box}>
+                  <FlatList
+                    numColumns={4}
+                    data={leave}
+                    keyExtractor={item => item.id}
+                    renderItem={({item}) => (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setChecked(item.id);
+                        }}
+                        style={[
+                          styles.circle,
+                          {
+                            backgroundColor:
+                              checked == item.id ? '#ad3231' : null,
+                          },
+                        ]}>
                         <Text
-                          style={{
-                            color: '#fff',
-                            fontSize: 18,
-                            letterSpacing: 1,
-                          }}>
-                          Select Reason
+                          style={{color: checked == item.id ? '#fff' : '#000'}}>
+                          {item.Type}
                         </Text>
-                        <TouchableOpacity onPress={toggleModal}>
-                          <Ionicons
-                            name="close-circle-outline"
-                            size={30}
-                            color={'#fff'}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                      <FlatList
-                        data={reason}
-                        keyExtractor={item => item.id}
-                        renderItem={rederReason}
-                      />
-                    </LinearGradient>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+
+                <Text style={{paddingVertical: 15}}>Planned/Unplanned</Text>
+                <View style={styles.box}>
+                  <View style={{flexDirection: 'row', padding: 8}}>
+                    <RadioForm
+                      borderRadius={0}
+                      radio_props={radio_props}
+                      initial={isSelected}
+                      onPress={value => {
+                        setSelection(isSelected);
+                        console.log('value',value);
+                      }}
+                      borderWidth={0.5}
+                      buttonInnerColor={'#e74c3c'}
+                      buttonOuterColor={'#23f'}
+                      buttonSize={10}
+                      buttonOuterSize={20}
+                    />
                   </View>
-                </Modal>
-              </TouchableOpacity>
-            </View>
+                </View>
 
-            <View style={styles.comment}>
-              <TextInput
-                multiline={true}
-                numberOfLines={10}
-                placeholder={'Comment'}
-              />
-            </View>
-
-            <View style={{height: 100, marginTop: 10}}>
-              <TouchableOpacity>
-                <LinearGradient
+                <Text style={{paddingVertical: 15}}>Period</Text>
+                <View style={styles.box}>
+                  <View style={{flexDirection: 'row', padding: 8}}>
+                    <RadioForm
+                      borderRadius={0}
+                      radio_props={radio_propsSecond}
+                      initial={period}
+                      onPress={value => {
+                        setPeriod(period);
+                        console.log('second',value)
+                      }}
+                      borderWidth={0.5}
+                      buttonInnerColor={'#e74c3c'}
+                      buttonOuterColor={'#23f'}
+                      buttonSize={10}
+                      buttonOuterSize={20}
+                    />
+                  </View>
+                </View>
+                <Text style={{paddingVertical: 15}}>Select Date</Text>
+                <View
                   style={{
-                    padding: 20,
-                    borderRadius: 8,
+                    width: '100%',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                  }}
-                  colors={['#2757C3', '#80406A', '#AD3231']}>
-                  <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+                    flexDirection: 'row',
+                    padding: 10,
+                    marginVertical: 8,
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
+                    borderTopLeftRadius: 15,
+                    borderBottomLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                  }}>
+                  <View
+                    style={{
+                      width: '48%',
+                    }}>
+                    <Text>Start Date</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'gray',
+                        padding: 3,
+                      }}>
+                      <Text style={{color: 'gray'}}>
+                        ...{moment(date).format('MMM Do YYYY')}
+                      </Text>
+                      <View>
+                        <View>
+                          <TouchableOpacity onPress={() => setOpen(true)}>
+                            <Ionicons
+                              name="calendar-outline"
+                              size={30}
+                              color={'#ad3231'}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      width: '48%',
+                    }}>
+                    <Text>End Date</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderBottomColor: 'gray',
+                        padding: 3,
+                      }}>
+                      <Text style={{color: 'gray'}}>
+                        ...{moment(date).format('MMM Do YYYY')}
+                      </Text>
+                      <View>
+                        <View>
+                          <TouchableOpacity onPress={() => setOpen(true)}>
+                            <Ionicons
+                              name="calendar-outline"
+                              size={30}
+                              color={'#ad3231'}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <DatePicker
+                    modal
+                    open={open}
+                    date={date}
+                    onConfirm={date => {
+                      setOpen(false);
+                      setDate(date);
+                      console.log(date);
+                    }}
+                    onCancel={() => {
+                      setOpen(false);
+                    }}
+                  />
+                </View>
+                <Text style={{paddingVertical: 15}}>Choose Your Reason</Text>
+
+                <View style={styles.box}>
+                  <TouchableOpacity
+                    onPress={toggleModal}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'baseline',
+                      paddingHorizontal: 10,
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text>{validReason}</Text>
+                    <Ionicons
+                      name="arrow-forward-outline"
+                      color={'#23d'}
+                      size={20}
+                    />
+                    <Modal isVisible={isModalVisible}>
+                      <View>
+                        <LinearGradient
+                          colors={['#2757C3', '#80406A', '#ad3231']}
+                          style={{
+                            height: '100%',
+                            backgroundColor: 'red',
+                            borderRadius: 10,
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              paddingHorizontal: 30,
+                              paddingVertical: 5,
+                            }}>
+                            <Text
+                              style={{
+                                color: '#fff',
+                                fontSize: 18,
+                                letterSpacing: 1,
+                              }}>
+                              Select Reason
+                            </Text>
+                            <TouchableOpacity onPress={toggleModal}>
+                              <Ionicons
+                                name="close-circle-outline"
+                                size={30}
+                                color={'#fff'}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                          <FlatList
+                            data={reason}
+                            keyExtractor={item => item.id}
+                            renderItem={rederReason}
+                          />
+                        </LinearGradient>
+                      </View>
+                    </Modal>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.comment}>
+                  <TextInput
+                    multiline={true}
+                    numberOfLines={10}
+                    placeholder={'Comment'}
+                    // value={comment}
+                    // onChangeText={setComment(comment)}
+                    // onBlur={handleBlur('Comment')}
+                    // value={values.Comment}
+                  />
+                </View>
+                {/* {errors.Comment && touched.Comment && (
+                  <View
+                    style={{
+                      width: '90%',
+                      alignSelf: 'center',
+                      paddingVertical: 2,
+                    }}>
+                    <Text style={{fontSize: 12, color: 'red'}}>
+                      {errors.Comment}
+                    </Text>
+                  </View>
+                )} */}
+
+                <View style={{height: 100, marginTop: 10}}>
+                  <TouchableOpacity 
+                
+                   onPress={() =>{checkData()}}>
+                    <LinearGradient
+                      style={{
+                        padding: 20,
+                        borderRadius: 8,
+                        alignItems: 'center',
+                      }}
+                      colors={['#2757C3', '#80406A', '#AD3231']}>
+                      <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+          //   )}
+          // </Formik>
         ) : (
           <View>
             <Text>View report</Text>

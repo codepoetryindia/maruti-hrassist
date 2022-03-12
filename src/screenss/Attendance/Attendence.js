@@ -7,23 +7,28 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
+import { date } from 'yup';
 // import * as Animatable from 'react-native-animatable';
 // create a component
 const Attendance = ({navigation}) => {
-  const [date, setDate] = useState(new Date());
+  const [fromDate, setFromDate] = useState(new Date());
+  const[toDate,setToDate] = useState (new Date());
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState('');
- 
+  const [openSecond, setOpenSecond] = useState(false);
   const [MarkAttandance, setMarkAttandance] = useState(0);
 
   const handleMarkAttandance = index => {
     setMarkAttandance(index);
   };
-  // const handelDate = () => {
-  //   let set = setDate()
-  //  setText(set);
-  //  console.log('text',setText)
-  // }
+  const handelDate = () => {
+   if(fromDate >toDate)
+   {
+     alert('from date should be less then to date');
+   }
+   else {
+     alert('sucessfull');
+   }
+  }
   const [location, setLocation] = useState('');
   const punch = () => {
     setLocation([]);
@@ -111,7 +116,7 @@ const Attendance = ({navigation}) => {
                     padding: 3,
                   }}>
                   <Text style={{color: 'gray'}}>
-                    ...{moment(date).format('MMM Do YYYY')}
+                    ...{moment(fromDate).format('MMM Do YYYY')}
                   </Text>
                   <View>
                     <View>
@@ -141,12 +146,12 @@ const Attendance = ({navigation}) => {
                     padding: 3,
                   }}>
                   <Text style={{color: 'gray'}}>
-                    ...{moment(date).format('MMM Do YYYY')}
+                    ...{moment(toDate).format('MMM Do YYYY')}
                   </Text>
                   <View>
                     <View>
                       <TouchableOpacity
-                        onPress={() => (setOpen(true), handelDate())}>
+                        onPress={() => (setOpen(true))}>
                         <Ionicons
                           name="calendar-outline"
                           size={30}
@@ -163,21 +168,34 @@ const Attendance = ({navigation}) => {
               <DatePicker
                 modal
                 open={open}
-                date={date}
-                onConfirm={date => {
+                date={fromDate}
+                onConfirm={fromDate => {
                   setOpen(false);
-                  setDate(date);
-                  console.log(date);
+                  setFromDate(fromDate);
+                  console.log(fromDate);
                 }}
                 onCancel={() => {
                   setOpen(false);
+                }}
+              />
+              <DatePicker
+                modal
+                open={openSecond}
+                date={toDate}
+                onConfirm={toDate => {
+                  setOpenSecond(false);
+                  setToDate(toDate);
+                  console.log(toDate);
+                }}
+                onCancel={() => {
+                  setOpenSecond(false);
                 }}
               />
             </View>
 
             {/* Button */}
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {handelDate()}}>
               <LinearGradient
                 style={{
                   padding: 20,

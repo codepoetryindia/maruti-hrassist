@@ -12,84 +12,58 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'react-native-modal';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
 import RadioButtonRN from 'radio-buttons-react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Home from '../Home';
-import {Formik} from 'formik';
-import * as yup from 'yup';
+import Modal from 'react-native-modal';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
 
 const Gatepass = ({navigation}) => {
-
-
-  const loginValidationSchema = yup.object().shape({
-    email: yup
-      .string()
-      .required('Email Address is Required')
-      .test('email', 'please provide a valid email ', values => {
-        const valid = new RegExp(
-          /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-        );
-        if (valid.test(values)) {
-          return true;
-        } else {
-          return false;
-        }
-      }),
-    password: yup
-      .string()
-      .min(8, 'password must be atleast 8 character')
-      .required('Password is required'),
-  });
-
-  
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
-  // const [modalVisibleThird, setmodalVisibleThird] = useState(false);
   const [isSelected, setSelection] = useState(false);
   const [state, setState] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState(false);
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState('');
   const [searchLevel, setSearchLevel] = useState('');
   const options = ['Yes', 'No'];
-  const [selectedTeam, setSelectedTeam] = useState({});
-  const [selectedTeams, setSelectedTeams] = useState([]);
-
-  // const []
-  // const [toBeSearchLevel, setToBeSearchLevel] = useState(false);
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(formatedDate);
-    let formatedDate = moment(currentDate).format('LLL');
-    console.log(formatedDate);
-    setText(formatedDate);
-  };
-
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
-
-
-  
+  const [selectBuilding, setSelectBuilding] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const[selectTime,setselectTime] = useState(new Date());
+  const [openTime , setOpenTime] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [duration,setDuration] = useState('');
+  const [reason,setReason] = useState('');
+  const [employ,setEmploy] = useState('');
   // const handleRadioStatusSecond = value =>{}
+
+  const handleSubmit = () => {
+    if(date==''){
+      alert('select a date');
+    }
+    else if (duration>24){
+      alert('Duration should be less then 24Hour');
+    }
+    else if(duration==''){
+      alert('select a duration please');
+    }
+    else if(searchLevel==''){
+      alert('select a search level please');
+    }
+    else if(reason==''){
+      alert('enter your vehical number please');
+    }
+    else if(selectBuilding==''){
+      alert('select buildings please');
+    }
+    else if(employ==''){
+      alert('enter staff ID/Name/Dept please');
+    }
+    else{
+      navigation.navigate('VisitorDetails')
+    }
+  }
 
   const handleRadioStatus = value => {
     switch (value) {
@@ -179,7 +153,7 @@ const Gatepass = ({navigation}) => {
   ];
 
   function onMultiChange() {
-    return item => setSelectedTeams(xorBy(selectedTeams, [item], 'id'));
+    return item => setSelectBuilding(xorBy(selectBuilding, [item], 'id'));
   }
 
   function onChangeOne() {
@@ -203,7 +177,7 @@ const Gatepass = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate('Home')}
             />
             <Ionicons
               name="menu-outline"
@@ -327,6 +301,49 @@ const Gatepass = ({navigation}) => {
 
           {/* Selct Date And Time */}
 
+          <DatePicker
+            modal
+            mode="date"
+            open={open}
+            date={date}
+            onConfirm={date => {
+              setOpen(false);
+              setDate(date);
+              console.log(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+           {/* <DatePicker
+            modal
+            mode="time"
+            open={open}
+            date={date}
+            onConfirm={date => {
+              setOpen(false);
+              setDate(date);
+              console.log(date);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          /> */}
+          {/* <DatePicker
+            modal
+            mode="time"
+            open={open}
+            time={selectTime}
+            onConfirm={time => {
+              setOpen(false);
+              setselectTime(selectTime);
+              console.log(selectTime);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          /> */}
+
           <View style={{width: '100%'}}>
             <View
               style={{
@@ -363,6 +380,7 @@ const Gatepass = ({navigation}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
+               
                 style={{
                   width: '69%',
                   backgroundColor: 'transparent',
@@ -377,7 +395,14 @@ const Gatepass = ({navigation}) => {
                   padding: 6,
                   alignSelf: 'center',
                 }}>
-                <Text style={{color: 'gray'}}>{text}</Text>
+                <Text style={{color: 'gray'}}>
+                
+                {moment(date).format('lll')}
+                </Text>
+                {/* <Text style={{color: 'gray'}}>
+                
+                {moment(selectTime).format('lll')}
+                </Text> */}
                 <View>
                   <View
                     style={{
@@ -385,25 +410,28 @@ const Gatepass = ({navigation}) => {
                       width: 65,
                       justifyContent: 'space-around',
                     }}>
-                  <TouchableOpacity>
-                  <Ionicons
-                      name="calendar-outline"
-                      size={25}
-                      color={'#ad3231'}
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => setOpen(true)}>
+                      <Ionicons
+                        name="calendar-outline"
+                        size={25}
+                        color={'#ad3231'}
+                      />
+                    </TouchableOpacity>
 
-                    <TouchableOpacity>
-                    <Ionicons
-                      name="time-outline"
-                      size={25}
-                      color={'#ad3231'}
-                    />
+                    <TouchableOpacity  onPress={() => setOpen(true)}>
+                      <Ionicons
+                        name="time-outline"
+                        size={25}
+                        color={'#ad3231'}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
               </TouchableOpacity>
               <TextInput
+              onChangeText={(number) =>  {setDuration(number)
+                console.log(number)}}
+              value={duration}
                 placeholder="Duration"
                 keyboardType={'numeric'}
                 style={{
@@ -416,6 +444,7 @@ const Gatepass = ({navigation}) => {
                   paddingVertical: -1,
                 }}
               />
+             
             </View>
           </View>
 
@@ -489,9 +518,41 @@ const Gatepass = ({navigation}) => {
             </Modal>
           </View>
 
-          {/* personal vehical */}
+        
 
+          {/* Vehicle number */}
           <View style={{width: '100%'}}>
+            <Text
+              style={{
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              Reason To Come *
+            </Text>
+            <TextInput
+              onChangeText={(text) => {
+                setReason(text)
+              }}
+              value={reason}
+              style={{
+                width: '90%',
+                alignSelf: 'center',
+                borderWidth: 1,
+                borderTopColor: '#80406A',
+                borderStartColor: '#ad3231',
+                borderBottomColor: '#2757C3',
+                borderEndColor: '#ad3231',
+                borderRadius: 5,
+                paddingVertical: 5,
+              }}
+            />
+          </View>
+
+            {/* personal vehical */}
+
+            <View style={{width: '100%'}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -620,33 +681,7 @@ const Gatepass = ({navigation}) => {
             </View>
           </View>
 
-          {/* Vehicle number */}
-          <View style={{width: '100%'}}>
-            <Text
-              style={{
-                paddingHorizontal: 20,
-                paddingVertical: 5,
-                fontSize: 16,
-                fontWeight: 'bold',
-              }}>
-              Vehicle Number *
-            </Text>
-            <TextInput
-              style={{
-                width: '90%',
-                alignSelf: 'center',
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
-                borderRadius: 5,
-                paddingVertical: 5,
-              }}
-            />
-          </View>
-
-          {/* Select Building / multiple selection*/}
+              {/* Select Building / multiple selection*/}
           {/* <View style={{backgroundColor:'red',marginVertical:20}}> */}
           <View>
             <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
@@ -657,7 +692,7 @@ const Gatepass = ({navigation}) => {
                 selectedItemStyle={{backgroundColor: 'transparent'}}
                 label=""
                 options={BuildingData}
-                selectedValues={selectedTeams}
+                selectedValues={selectBuilding}
                 onMultiSelect={onMultiChange()}
                 onTapClose={onMultiChange()}
                 isMulti
@@ -727,6 +762,8 @@ const Gatepass = ({navigation}) => {
                 <Feather name="search" size={20} color={'#ad3231'} />
               </View>
               <TextInput
+              onChangeText={(text) => {setEmploy(text)}}
+              value={employ}
                 placeholder="Search By Name/Dept/Staff/ID"
                 style={{
                   width: '70%',
@@ -815,7 +852,7 @@ const Gatepass = ({navigation}) => {
                   alignItems: 'center',
                   marginTop: 5,
                 }}
-                onPress={() => navigation.navigate('VisitorDetails')}>
+                onPress={() => {handleSubmit()}}>      
                 <Text
                   style={{
                     fontSize: 16,

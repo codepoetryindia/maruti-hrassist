@@ -24,9 +24,15 @@ const ThirdRoute = () => <Shift />;
 const FourthdRoute = () => <HolidayCalendar />;
 
 const AttendanceAdmin = ({navigation}) => {
+  const [horizental, setHorizental] = useState(false);
   const [manager, setManager] = useState(false);
-  useEffect(() => {setManager(false)}, []);
+  useEffect(() => {
+    setManager(false);
+  }, []);
 
+  const handelHorizental = () =>{
+    setHorizental(!horizental);
+  }
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -76,13 +82,21 @@ const AttendanceAdmin = ({navigation}) => {
             }}>
             Attendance & Admin
           </Text>
+          
           {/* <View style={{alignContent:'center'}}> */}
-          <TouchableOpacity style={{marginLeft: '35%'}}>
+          <TouchableOpacity
+            style={{marginLeft: '35%'}}
+            onPress={() => 
+           {horizental == true?  setHorizental(false) : setHorizental(true)}
+            }>
             <Ionicons
               name="ellipsis-vertical-circle"
               size={25}
               color={'white'}
             />
+             
+             {horizental==true ? (<View style={{padding:5, backgroundColor: '#fff',marginRight:10}}><Text>hello</Text></View>):null} 
+           
           </TouchableOpacity>
           <View
             style={{
