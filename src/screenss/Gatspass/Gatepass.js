@@ -20,6 +20,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const Gatepass = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -30,40 +31,37 @@ const Gatepass = ({navigation}) => {
   const options = ['Yes', 'No'];
   const [selectBuilding, setSelectBuilding] = useState([]);
   const [date, setDate] = useState(new Date());
-  const[selectTime,setselectTime] = useState(new Date());
-  const [openTime , setOpenTime] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectTime, setselectTime] = useState();
   const [open, setOpen] = useState(false);
-  const [duration,setDuration] = useState('');
-  const [reason,setReason] = useState('');
-  const [employ,setEmploy] = useState('');
+  const [duration, setDuration] = useState('');
+  const [reason, setReason] = useState('');
+  const [employ, setEmploy] = useState('');
   // const handleRadioStatusSecond = value =>{}
 
   const handleSubmit = () => {
-    if(date==''){
+    if (date == '') {
       alert('select a date');
     }
-    else if (duration>24){
+    // else if(selectTime < 9 && selectTime>18){
+    //   alert('Duration should be less then ');
+    // } 
+    else if (duration > 24) {
       alert('Duration should be less then 24Hour');
-    }
-    else if(duration==''){
+    } else if (duration == '') {
       alert('select a duration please');
-    }
-    else if(searchLevel==''){
+    } else if (searchLevel == '') {
       alert('select a search level please');
-    }
-    else if(reason==''){
+    } else if (reason == '') {
       alert('enter your vehical number please');
-    }
-    else if(selectBuilding==''){
+    } else if (selectBuilding == '') {
       alert('select buildings please');
-    }
-    else if(employ==''){
+    } else if (employ == '') {
       alert('enter staff ID/Name/Dept please');
+    } else {
+      navigation.navigate('VisitorDetails');
     }
-    else{
-      navigation.navigate('VisitorDetails')
-    }
-  }
+  };
 
   const handleRadioStatus = value => {
     switch (value) {
@@ -156,9 +154,18 @@ const Gatepass = ({navigation}) => {
     return item => setSelectBuilding(xorBy(selectBuilding, [item], 'id'));
   }
 
-  function onChangeOne() {
-    return val => setSelectedTeam(val);
-  }
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    setselectTime(date);
+    hideDatePicker();
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -315,34 +322,17 @@ const Gatepass = ({navigation}) => {
               setOpen(false);
             }}
           />
-           {/* <DatePicker
-            modal
+
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
             mode="time"
-            open={open}
-            date={date}
-            onConfirm={date => {
-              setOpen(false);
-              setDate(date);
-              console.log(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          /> */}
-          {/* <DatePicker
-            modal
-            mode="time"
-            open={open}
-            time={selectTime}
-            onConfirm={time => {
-              setOpen(false);
-              setselectTime(selectTime);
-              console.log(selectTime);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-          /> */}
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            locale="en_GB"
+            date={new Date()}
+            isDarkModeEnabled={true}
+            is24Hour={true}
+          />
 
           <View style={{width: '100%'}}>
             <View
@@ -380,7 +370,6 @@ const Gatepass = ({navigation}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
-               
                 style={{
                   width: '69%',
                   backgroundColor: 'transparent',
@@ -396,13 +385,11 @@ const Gatepass = ({navigation}) => {
                   alignSelf: 'center',
                 }}>
                 <Text style={{color: 'gray'}}>
-                
-                {moment(date).format('lll')}
+                  {moment(date).subtract(10, 'days').calendar()}
                 </Text>
-                {/* <Text style={{color: 'gray'}}>
-                
-                {moment(selectTime).format('lll')}
-                </Text> */}
+                <Text style={{color: 'gray'}}>
+                  {moment(selectTime).format('LT')}
+                </Text>
                 <View>
                   <View
                     style={{
@@ -410,7 +397,7 @@ const Gatepass = ({navigation}) => {
                       width: 65,
                       justifyContent: 'space-around',
                     }}>
-                    <TouchableOpacity  onPress={() => setOpen(true)}>
+                    <TouchableOpacity onPress={() => setOpen(true)}>
                       <Ionicons
                         name="calendar-outline"
                         size={25}
@@ -418,7 +405,10 @@ const Gatepass = ({navigation}) => {
                       />
                     </TouchableOpacity>
 
-                    <TouchableOpacity  onPress={() => setOpen(true)}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        showDatePicker();
+                      }}>
                       <Ionicons
                         name="time-outline"
                         size={25}
@@ -429,9 +419,11 @@ const Gatepass = ({navigation}) => {
                 </View>
               </TouchableOpacity>
               <TextInput
-              onChangeText={(number) =>  {setDuration(number)
-                console.log(number)}}
-              value={duration}
+                onChangeText={number => {
+                  setDuration(number);
+                  console.log(number);
+                }}
+                value={duration}
                 placeholder="Duration"
                 keyboardType={'numeric'}
                 style={{
@@ -444,7 +436,6 @@ const Gatepass = ({navigation}) => {
                   paddingVertical: -1,
                 }}
               />
-             
             </View>
           </View>
 
@@ -518,8 +509,6 @@ const Gatepass = ({navigation}) => {
             </Modal>
           </View>
 
-        
-
           {/* Vehicle number */}
           <View style={{width: '100%'}}>
             <Text
@@ -532,8 +521,8 @@ const Gatepass = ({navigation}) => {
               Reason To Come *
             </Text>
             <TextInput
-              onChangeText={(text) => {
-                setReason(text)
+              onChangeText={text => {
+                setReason(text);
               }}
               value={reason}
               style={{
@@ -550,9 +539,9 @@ const Gatepass = ({navigation}) => {
             />
           </View>
 
-            {/* personal vehical */}
+          {/* personal vehical */}
 
-            <View style={{width: '100%'}}>
+          <View style={{width: '100%'}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -681,7 +670,7 @@ const Gatepass = ({navigation}) => {
             </View>
           </View>
 
-              {/* Select Building / multiple selection*/}
+          {/* Select Building / multiple selection*/}
           {/* <View style={{backgroundColor:'red',marginVertical:20}}> */}
           <View>
             <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
@@ -762,8 +751,10 @@ const Gatepass = ({navigation}) => {
                 <Feather name="search" size={20} color={'#ad3231'} />
               </View>
               <TextInput
-              onChangeText={(text) => {setEmploy(text)}}
-              value={employ}
+                onChangeText={text => {
+                  setEmploy(text);
+                }}
+                value={employ}
                 placeholder="Search By Name/Dept/Staff/ID"
                 style={{
                   width: '70%',
@@ -852,7 +843,9 @@ const Gatepass = ({navigation}) => {
                   alignItems: 'center',
                   marginTop: 5,
                 }}
-                onPress={() => {handleSubmit()}}>      
+                onPress={() => {
+                  handleSubmit();
+                }}>
                 <Text
                   style={{
                     fontSize: 16,

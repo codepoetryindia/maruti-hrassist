@@ -30,9 +30,10 @@ const VisitDetails = ({navigation}) => {
             width: '90%',
             justifyContent: 'space-between',
             alignSelf: 'center',
+            paddingVertical:10,
           }}>
-          <Text>sfidlug</Text>
-          <Text>sfidlug</Text>
+          <Text>Phone</Text>
+          <Text>Vendor *</Text>
         </View>
         <View
           style={{
@@ -43,6 +44,7 @@ const VisitDetails = ({navigation}) => {
             paddingVertical: 5,
           }}>
           <TextInput
+          keyboardType='number-pad'
             style={{
               width: '49.5%',
               borderWidth: 1,
@@ -77,6 +79,8 @@ const VisitDetails = ({navigation}) => {
               width: '90%',
               justifyContent: 'space-between',
               alignSelf: 'center',
+              paddingVertical:10,
+              
             }}>
             <Text>Title</Text>
             <Text>Name *</Text>
@@ -142,6 +146,7 @@ const VisitDetails = ({navigation}) => {
               width: '90%',
               justifyContent: 'space-between',
               alignSelf: 'center',
+              paddingVertical:10,
             }}>
             <Text>Designation *</Text>
             <Text>Laptop/Ipad/Tablet</Text>
@@ -183,7 +188,7 @@ const VisitDetails = ({navigation}) => {
 
         {/* FourthONe */}
         <View>
-          <Text style={{padding: 5, paddingLeft: 20}}>Address</Text>
+          <Text style={{paddingVertical: 10, paddingLeft: 20}}>Address</Text>
           <TextInput
             style={{
               width: '90%',

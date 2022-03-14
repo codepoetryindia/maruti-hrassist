@@ -24,8 +24,10 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 // create a component
 const Leave = () => {
-  const [date, setDate] = useState(new Date());
+  const [stratDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [secondOpen, setSecondOpen] = useState(false);
   const [applyLeave, setapplyLeave] = useState([0]);
   const [isSelected, setSelection] = useState('');
   const [period, setPeriod] = useState('');
@@ -382,7 +384,7 @@ const Leave = () => {
                         padding: 3,
                       }}>
                       <Text style={{color: 'gray'}}>
-                        ...{moment(date).format('MMM Do YYYY')}
+                        ...{moment(stratDate).format('MMM Do YYYY')}
                       </Text>
                       <View>
                         <View>
@@ -396,6 +398,19 @@ const Leave = () => {
                         </View>
                       </View>
                     </View>
+                    <DatePicker
+                    modal
+                    open={open}
+                    date={stratDate}
+                    onConfirm={stratDate => {
+                      setOpen(false);
+                      setStartDate(stratDate);
+                      console.log(stratDate);
+                    }}
+                    onCancel={() => {
+                      setOpen(false);
+                    }}
+                  />
                   </View>
                   <View
                     style={{
@@ -412,11 +427,11 @@ const Leave = () => {
                         padding: 3,
                       }}>
                       <Text style={{color: 'gray'}}>
-                        ...{moment(date).format('MMM Do YYYY')}
+                        ...{moment(endDate).format('MMM Do YYYY')}
                       </Text>
                       <View>
                         <View>
-                          <TouchableOpacity onPress={() => setOpen(true)}>
+                          <TouchableOpacity onPress={() => setSecondOpen(true)}>
                             <Ionicons
                               name="calendar-outline"
                               size={30}
@@ -429,15 +444,16 @@ const Leave = () => {
                   </View>
                   <DatePicker
                     modal
+                    mode='date'
                     open={open}
-                    date={date}
-                    onConfirm={date => {
-                      setOpen(false);
-                      setDate(date);
-                      console.log(date);
+                    date={endDate}
+                    onConfirm={endDate => {
+                      setSecondOpen(false);
+                      setEndDate(endDate);
+                      console.log(endDate);
                     }}
                     onCancel={() => {
-                      setOpen(false);
+                      setSecondOpen(false);
                     }}
                   />
                 </View>
@@ -513,22 +529,8 @@ const Leave = () => {
                     // value={values.Comment}
                   />
                 </View>
-                {/* {errors.Comment && touched.Comment && (
-                  <View
-                    style={{
-                      width: '90%',
-                      alignSelf: 'center',
-                      paddingVertical: 2,
-                    }}>
-                    <Text style={{fontSize: 12, color: 'red'}}>
-                      {errors.Comment}
-                    </Text>
-                  </View>
-                )} */}
-
                 <View style={{height: 100, marginTop: 10}}>
                   <TouchableOpacity 
-                
                    onPress={() =>{checkData()}}>
                     <LinearGradient
                       style={{
@@ -545,8 +547,9 @@ const Leave = () => {
           //   )}
           // </Formik>
         ) : (
-          <View>
-            <Text>View report</Text>
+          <View style={{paddingVertical:15}}>
+            <Text>Select Financial Year</Text>
+            <View></View>
           </View>
         )}
       </View>
