@@ -39,64 +39,64 @@ const TouchableCard = ({navigation}) => {
     },
     {
       id: '7',
-      name: 'Employee Lookup',
-      images: require('../assets/Images/group.png'),
+      name: 'Other Mobile Apps',
+      images: require('../assets/Images/more.png'),
     },
     {
       id: '8',
-      name: 'Attendance & Admin',
-      images: require('../assets/Images/calendar.png'),
+      name: 'Buisness Travel',
+      images: require('../assets/Images/passenger.png'),
     },
     {
       id: '9',
-      name: 'Compliances & Benifis',
-      images: require('../assets/Images/statistics.png'),
+      name: 'Share App',
+      images: require('../assets/Images/share.png'),
     },
-    {
-      id: '10',
-      name: 'Hospital & Emergency',
-      images: require('../assets/Images/first-aid-kit.png'),
-    },
-    {
-      id: '11',
-      name: 'Canteen Menu',
-      images: require('../assets/Images/canteen.png'),
-    },
-    {
-      id: '12',
-      name: 'Visitor Gatepass',
-      images: require('../assets/Images/identity-card.png'),
-    },
-     {
-       id: '13',
-       name: 'Employee Lookup',
-       images: require('../assets/Images/group.png'),
-     },
-     {
-       id: '14',
-       name: 'Attendance & Admin',
-       images: require('../assets/Images/calendar.png'),
-     },
-     {
-       id: '15',
-       name: 'Compliances & Benifis',
-       images: require('../assets/Images/statistics.png'),
-     },
-     {
-       id: '16',
-       name: 'Hospital & Emergency',
-       images: require('../assets/Images/first-aid-kit.png'),
-     },
-     {
-       id: '17',
-       name: 'Canteen Menu',
-       images: require('../assets/Images/canteen.png'),
-     },
-     {
-       id: '18',
-       name: 'Visitor Gatepass',
-       images: require('../assets/Images/identity-card.png'),
-     },
+    // {
+    //   id: '10',
+    //   name: 'Hospital & Emergency',
+    //   images: require('../assets/Images/first-aid-kit.png'),
+    // },
+    // {
+    //   id: '11',
+    //   name: 'Canteen Menu',
+    //   images: require('../assets/Images/canteen.png'),
+    // },
+    // {
+    //   id: '12',
+    //   name: 'Visitor Gatepass',
+    //   images: require('../assets/Images/identity-card.png'),
+    // },
+    //  {
+    //    id: '13',
+    //    name: 'Employee Lookup',
+    //    images: require('../assets/Images/group.png'),
+    //  },
+    //  {
+    //    id: '14',
+    //    name: 'Attendance & Admin',
+    //    images: require('../assets/Images/calendar.png'),
+    //  },
+    //  {
+    //    id: '15',
+    //    name: 'Compliances & Benifis',
+    //    images: require('../assets/Images/statistics.png'),
+    //  },
+    //  {
+    //    id: '16',
+    //    name: 'Hospital & Emergency',
+    //    images: require('../assets/Images/first-aid-kit.png'),
+    //  },
+    //  {
+    //    id: '17',
+    //    name: 'Canteen Menu',
+    //    images: require('../assets/Images/canteen.png'),
+    //  },
+    //  {
+    //    id: '18',
+    //    name: 'Visitor Gatepass',
+    //    images: require('../assets/Images/identity-card.png'),
+    //  },
 
   ];
 
@@ -109,7 +109,35 @@ const TouchableCard = ({navigation}) => {
           data={Data}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.card} onPress = {() => navigation.navigate("EmployeeLookUp")}>
+            <TouchableOpacity style={styles.card} onPress = {() =>{
+              if(item.name==='Employee Lookup') {
+                navigation.navigate('EmployeLookUp');
+              }
+              else if(item.name==='Attendance & Admin') {
+                navigation.navigate('AttendanceAdmin');
+              }
+             else if(item.name==='Compliances & Benifis') {
+                navigation.navigate('CompensationBenifits');
+              }
+              else if(item.name==='Hospital & Emergency') {
+                navigation.navigate('EmergencyHospital');
+              }
+              else if(item.name==='Canteen Menu') {
+                navigation.navigate('Canteen');
+              }
+              else if(item.name==='Visitor Gatepass') {
+                 navigation.navigate('Gatepass');
+               }
+             else if(item.name==='Other Mobile Apps') {
+                navigation.navigate('More');
+              }
+              else if(item.name==='Buisness Travel') {
+                navigation.navigate('BuisnessTravel');
+              }
+             else if(item.name==='Share App') {
+                navigation.navigate('More');
+              }
+            }}>
             <Image source={item.images} style={styles.cardimg} />
             <Text style={{fontSize:10,color:'#000'}}>{item.name}</Text>
           </TouchableOpacity>
@@ -122,11 +150,11 @@ const TouchableCard = ({navigation}) => {
 const styles = StyleSheet.create({
   card: {
     width: "30%",
-    height: 80,
+    paddingVertical:20,
     backgroundColor: '#fff',
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
-    marginTop: 6,
+    marginTop: 5,
     margin:5,
     alignItems: 'center',
     justifyContent: 'center',

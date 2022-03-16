@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import EmployeeDirect from './EmployeeDirect';
 import Birthdays from './Birthday/Birthdays';
+import Home from '../Home';
 
 const FirstRoute = () => <EmployeeDirect />;
 
@@ -44,9 +45,9 @@ const EmployeLookUp = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"

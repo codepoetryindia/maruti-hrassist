@@ -6,6 +6,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchableCard from '../components/Touchable';
 import LinearGradient from 'react-native-linear-gradient';
 import {SliderBox} from 'react-native-image-slider-box';
+import Notification from './Notification';
+import IconBadge from 'react-native-icon-badge';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 // create a component
 const Home = ({navigation}) => {
   // images for carousel
@@ -31,16 +34,34 @@ const Home = ({navigation}) => {
               }}>
               <Ionicons
                 name="menu-outline"
-                size={20}
+                size={30}
                 color={'white'}
                 onPress={() => navigation.openDrawer()}
               />
               <Text style={[styles.brand, {marginLeft: 15}]}>SUZUKI</Text>
             </View>
             <Text style={styles.brand}>HR Assist</Text>
-            <Text style={{color: 'white', margin: 10}}>
-              <Feather name="bell" size={30} />
-            </Text>
+            <Text style={{color: 'white', margin: 10}}></Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Notification");
+                }}>
+                <IconBadge
+                  MainElement={<Feather name="bell" color={'#fff'} size={35} />}
+                  BadgeElement={<Text style={{color: '#fff'}}>5</Text>}
+                  IconBadgeStyle={{
+                    paddingVerticle: 5,
+                    backgroundColor: '#AD3231',
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{flexDirection: 'row', marginHorizontal: 20, top: '5%'}}>
             <Image
@@ -73,7 +94,7 @@ const Home = ({navigation}) => {
         />
       </View>
 
-      <TouchableCard navigation={navigation}/>
+      <TouchableCard navigation={navigation} />
     </View>
   );
 };

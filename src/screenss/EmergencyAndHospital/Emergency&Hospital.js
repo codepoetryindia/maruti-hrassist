@@ -12,6 +12,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Hospital from './Hospital';
 import NearByHospital from './NearByHospital';
 import EmergencyContacts from './EmergencyContact';
+import Home from '../Home';
 
 
 const FirstRoute = () => <EmergencyContacts />;
@@ -45,13 +46,13 @@ const EmergencyHospital = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />

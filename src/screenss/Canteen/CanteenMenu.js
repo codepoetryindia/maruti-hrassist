@@ -12,69 +12,52 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import Canteen from './Canteen';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
 
 const CanteenMenu = ({navigation}) => {
   const Calander = () => {
     const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    const [text, setText] = useState('');
-  
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate || date;
-      setShow(Platform.OS === 'ios');
-      setDate(formatedDate);
-      let formatedDate= moment(currentDate).format('MMMM Do YYYY, h:mm:ss a');
-      console.log(formatedDate)
-      setText(formatedDate)
-    };
-    // let tempDate = new Date();
-    // let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + ' /' + tempDate.getFullYear();
-    //  setText(fDate);
-    // setText(currentDate);
-  
-    const showMode = (currentMode) => {
-      setShow(true);
-      setMode(currentMode);
-    };
-  
-    const showDatepicker = () => {
-      showMode('date');
-    };
-  
+    const [open, setOpen] = useState(false);
+
     return (
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: '#9f9f9f',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'row',
-          padding: 10,
-          marginVertical: 10,
-        }}>
-        <Text style={{color: '#fff'}}>Today's Menu - {text}</Text>
-        <View>
       <View>
-        <Ionicons name="calendar-outline" onPress={showDatepicker} size={30} color={'#fff'} />
-      </View>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
+        <DatePicker
+          modal
+          open={open}
+          date={date}
+          onConfirm={date => {
+            setOpen(false);
+            setDate(date);
+            console.log(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
         />
-      )}
-    </View>
+        <View
+          style={{
+            width:'100%',
+            marginTop:10,
+            backgroundColor:'#a9bce7',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: 22,
+            paddingVertical:6
+          }}>
+          <Text style={{color: 'gray',fontWeight:'800'}}>
+            (Todays Menu ) -- {moment(date).format('MMM Do YYYY')}
+          </Text>
+          <View>
+            <View>
+              <TouchableOpacity onPress={() => (setOpen(true), handelDate())}>
+                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
-      
     );
   };
 
@@ -108,7 +91,7 @@ const CanteenMenu = ({navigation}) => {
       }
     };
     const foodLunch = [
-      {lunchCatogory:'Ag-Shift'},
+      {lunchCatogory: 'Ag-Shift'},
       {data: 'Jeera Rice'},
       {data: 'Dal Punjabi'},
       {data: 'Began Bharta'},
@@ -117,7 +100,6 @@ const CanteenMenu = ({navigation}) => {
       {data: 'khichidi , Kheera ,Gajar'},
       {data: 'Green Chatney'},
       {data: 'Banana'},
-     
     ];
     const foodSnacks = [
       {
@@ -237,7 +219,7 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding:15,justifyContent:'space-evenly'}}>
+            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
               <FlatList
                 data={foodSnacks}
                 keyExtractor={({item, index}) => index}
@@ -448,7 +430,7 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding:15,justifyContent:'space-evenly'}}>
+            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
               <FlatList
                 data={foodSnacks}
                 keyExtractor={({item, index}) => index}
@@ -656,7 +638,7 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding:15,justifyContent:'space-evenly'}}>
+            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
               <FlatList
                 data={foodSnacks}
                 keyExtractor={({item, index}) => index}
@@ -864,7 +846,7 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding:15,justifyContent:'space-evenly'}}>
+            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
               <FlatList
                 data={foodSnacks}
                 keyExtractor={({item, index}) => index}
@@ -928,8 +910,8 @@ const CanteenMenu = ({navigation}) => {
   const [routes] = React.useState([
     {key: 'first', title: 'Gurgaon'},
     {key: 'second', title: 'Manesar'},
-    {key: 'first', title: 'MPT'},
-    {key: 'second', title: 'Rothak'},
+    {key: 'third', title: 'MPT'},
+    {key: 'fourth', title: 'Rothak'},
   ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -946,13 +928,13 @@ const CanteenMenu = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Canteen)}
+              onPress={() => navigation.navigate("Canteen")}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />

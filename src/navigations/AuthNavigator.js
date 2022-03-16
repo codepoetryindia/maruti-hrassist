@@ -1,16 +1,14 @@
 
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {StatusBar,View, Text, SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native'
-import { useDispatch } from 'react-redux';
-import {loginAction} from './../actions/loginAction';
+import SignIn from '../Auth/SignIn';
 
 const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
   return (
-      <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
-        <Stack.Screen name='Login' component={Login}/>
+      <Stack.Navigator initialRouteName='SignIn' screenOptions={{headerShown:false}}>
+        <Stack.Screen name='SignIn' component={SignIn}/>
       </Stack.Navigator>
   );
 }
@@ -18,15 +16,15 @@ const AuthNavigator = () => {
 export default AuthNavigator;
 
 
-const Login = () =>{
-  const dispatch = useDispatch();
-    return(
-        <View>
-          <TouchableOpacity onPress={()=>{
-            dispatch(loginAction("lol"))
-          }}>
-            <Text>Login</Text>
-          </TouchableOpacity>            
-        </View>
-    )
-}
+// const Login = () =>{
+//   const dispatch = useDispatch();
+//     return(
+//         <View>
+//           <TouchableOpacity onPress={()=>{
+//             dispatch(loginAction("lol"))
+//           }}>
+//             <Text>Login</Text>
+//           </TouchableOpacity>            
+//         </View>
+//     )
+// }

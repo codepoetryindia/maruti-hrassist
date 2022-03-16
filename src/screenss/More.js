@@ -22,13 +22,13 @@ const More = ({navigation}) => {
             }}>
             <Ionicons
               name="chevron-back-outline"
-              size={15}
+              size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
-              size={20}
+              size={25}
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
@@ -47,63 +47,93 @@ const More = ({navigation}) => {
       </LinearGradient>
 
       {/* body */}
-      <View style={{width:'100%',top:50}}>
-      <TouchableOpacity
-        style={{
-       
-          width: '60%',
-          paddingHorizontal:15,
-          paddingVertical: 25,
-          alignSelf: 'center',
-          backgroundColor: '#f3f3',
-          alignItems:'center',
-         marginVertical:15,
-         borderRadius:8
-        }}>
-        <Image
-          source={require('../assets/Images/man.png')}
-          style={{width:50,height:50,}}
-        />
-        <Text style={{fontSize: 20,paddingVertical:5}}>SAP SF (NEEV)</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-    
-          width: '60%',
-         
-          paddingHorizontal:15,
-          paddingVertical: 25,
-          alignSelf: 'center',
-          backgroundColor: '#f3f3',
-          alignItems:'center',
-          marginVertical:15,
-          borderRadius:8
-        }}>
-        <Image
-          source={require('../assets/Images/smile.jpg')}
-          style={{width:50,height:50,borderRadius:40,}}
-        />
-        <Text style={{fontSize: 20,paddingVertical:5}}>Ask HR</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          
-          width: '60%',
-          alignSelf: 'center',
-          paddingHorizontal:15,
-          paddingVertical: 25,
-          alignItems: 'center',
-          backgroundColor: '#f3f3',
-          alignItems:'center',
-          marginVertical:15,
-          borderRadius:8
-        }}>
-        <Image
-          source={require('../assets/Images/profile2.jpg')}
-          style={{width:50,height:50,borderRadius:40,}}
-        />
-        <Text style={{fontSize: 20,paddingVertical:5}}>Wellness Mitra</Text>
-      </TouchableOpacity>
+      <View style={{width: '100%', top: 50}}>
+        <TouchableOpacity
+          style={{
+            cursor: 'pointer',
+            width: '50%',
+            paddingHorizontal: 15,
+            paddingVertical: 25,
+            alignSelf: 'center',
+            backgroundColor: '#fff',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 1.29,
+            shadowRadius: 10.65,
+
+            elevation: 5,
+
+            alignItems: 'center',
+            marginVertical: 15,
+            borderRadius: 18,
+          }}>
+          <Image
+            source={require('../assets/Images/man.png')}
+            style={{width: 50, height: 50}}
+          />
+          <Text style={{fontSize: 20, paddingVertical: 5, color: 'grey'}}>
+            SAP SF (NEEV)
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            cursor: 'pointer',
+            width: '50%',
+            paddingHorizontal: 15,
+            paddingVertical: 25,
+            alignSelf: 'center',
+            backgroundColor: '#fff',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 0,
+            },
+            shadowOpacity: 1.29,
+            shadowRadius: 10.65,
+
+            elevation: 5,
+
+            alignItems: 'center',
+            marginVertical: 15,
+            borderRadius: 18,
+          }}>
+          <Image
+            source={require('../assets/Images/smile.jpg')}
+            style={{width: 50, height: 50, borderRadius: 40}}
+          />
+          <Text style={{fontSize: 20, paddingVertical: 5}}>Ask HR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            cursor: 'pointer',
+            width: '50%',
+            paddingHorizontal: 15,
+            paddingVertical: 25,
+            alignSelf: 'center',
+            backgroundColor: '#fff',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 0,
+            },
+            shadowOpacity: 1.29,
+            shadowRadius: 10.65,
+
+            elevation: 5,
+
+            alignItems: 'center',
+            marginVertical: 15,
+            borderRadius: 18,
+          }}>
+          <Image
+            source={require('../assets/Images/profile2.jpg')}
+            style={{width: 50, height: 50, borderRadius: 40}}
+          />
+          <Text style={{fontSize: 20, paddingVertical: 5}}>Wellness Mitra</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
