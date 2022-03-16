@@ -119,7 +119,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Hospital & Emergency"
-              onPress={() => navigation.navigate("EmergencyHospital")}
+              onPress={() => navigation.navigate("HospitalNavs")}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

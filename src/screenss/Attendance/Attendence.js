@@ -2,11 +2,13 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
+import SelectDropdown from 'react-native-select-dropdown';
 import { date } from 'yup';
 // import * as Animatable from 'react-native-animatable';
 // create a component
@@ -16,6 +18,7 @@ const Attendance = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
   const [MarkAttandance, setMarkAttandance] = useState(0);
+  const [horizental, setHorizental] = useState(false);
 
   const handleMarkAttandance = index => {
     setMarkAttandance(index);
@@ -29,6 +32,7 @@ const Attendance = ({navigation}) => {
      alert('sucessfull');
    }
   }
+  const FinancialYear = ['2021', '2022', '1999'];
   const [location, setLocation] = useState('');
   const punch = () => {
     setLocation([]);
@@ -45,7 +49,7 @@ const Attendance = ({navigation}) => {
   }, []);
   return (
     <View style={styles.container}>
-      <View style={{width: '100%'}}>
+      <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
         <SegmentedControlTab
            borderRadius={8}
           values={['Mark Attendance', 'View Report']}
@@ -53,12 +57,63 @@ const Attendance = ({navigation}) => {
           onTabPress={index => {
             handleMarkAttandance(index);
           }}
-          tabsContainerStyle={styles.tabsContainerStyle}
+          tabsContainerStyle={{ width:'97%',alignSelf:'center'}}
           tabStyle={styles.tabStyle}
           tabTextStyle={styles.tabTextStyle}
           activeTabStyle={styles.activeTabStyle}
           activeTabTextStyle={styles.activeTabTextStyle}
         />
+         {/* <TouchableOpacity
+            style={{left:5}}
+            onPress={() => 
+           {horizental == true?  setHorizental(false) : setHorizental(true)}
+            }>
+            <Ionicons
+              name="ellipsis-vertical-circle"
+              size={25}
+              color={'red'}
+            />
+             
+             {horizental==true ? (<View style={{padding:5, backgroundColor: '#000',marginRight:10}}><Text>hello</Text></View>):null} 
+           
+          </TouchableOpacity> */}
+           <SelectDropdown
+                // defaultButtonText="Select Any Year"
+                data={FinancialYear}
+                buttonStyle={{
+                  backgroundColor: 'transparent',
+                  width: '10%',
+                  height: 40,
+                  borderRadius: 5,
+                }}
+                dropdownStyle={{borderRadius: 10}}
+                rowTextStyle={{textAlign: 'left', marginLeft: 5}}
+                buttonTextStyle={{textAlign: 'left', marginLeft: 1}}
+                renderDropdownIcon={isOpened => {
+                  return (
+                    // <FontAwesome
+                    //   name={isOpened ? 'chevron-up' : 'chevron-down'}
+                    //   color={'#444'}
+                    //   size={18}
+                    // />
+                    <Ionicons
+                    name="ellipsis-vertical-circle"
+                    size={25}
+                    color={'red'}
+                  />
+                  );
+                }}
+                onSelect={(selectedItem, index) => {
+                  console.log(selectedItem, index);
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  return selectedItem;
+                }}
+                rowTextForSelection={(item, index) => {
+                
+                  return item;
+                }}
+              />
       </View>
 
       <View>
@@ -151,7 +206,7 @@ const Attendance = ({navigation}) => {
                   <View>
                     <View>
                       <TouchableOpacity
-                        onPress={() => (setOpen(true))}>
+                        onPress={() =>  (setOpenSecond(true))}>
                         <Ionicons
                           name="calendar-outline"
                           size={30}
@@ -169,6 +224,7 @@ const Attendance = ({navigation}) => {
                 modal
                 open={open}
                 date={fromDate}
+                mode='date'
                 onConfirm={fromDate => {
                   setOpen(false);
                   setFromDate(fromDate);
@@ -180,6 +236,7 @@ const Attendance = ({navigation}) => {
               />
               <DatePicker
                 modal
+                mode='date'
                 open={openSecond}
                 date={toDate}
                 onConfirm={toDate => {
@@ -227,6 +284,7 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     //custom styles
+   
     paddingVertical: 10,
     borderColor: '#ad3231',
   },

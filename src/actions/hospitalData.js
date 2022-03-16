@@ -1,7 +1,7 @@
 import { HOSPITAL_DATA , EMERGRNCY_CONTACTS } from "./actionTypes";
 
 export const HOSPITAL_API = 'https://jsonplaceholder.typicode.com/posts';
-const EMERGRNCY_CONTACTS_API = 'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+
 export const hospitalData = () => {
 
     try {
@@ -30,12 +30,12 @@ export const hospitalData = () => {
         console.log(error);
     }
 }
-export const EmergencyContactData = () => {
+export const EmergencyContactData = (url) => {
 
     try {
         return async dispatch => {
            
-            const result = await fetch(EMERGRNCY_CONTACTS_API, {
+            const result = await fetch(url, {
                 method :'GET',
                 headers:{
                     'Content-type' : 'application/json',

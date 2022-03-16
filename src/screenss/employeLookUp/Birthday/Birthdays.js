@@ -137,7 +137,7 @@ const Birthdays = () => {
               style={styles.img}
             />
 
-            <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
+            <View style={{height: '67%', marginTop: 10, marginBottom: '30%', }}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={ BirthdayData}
@@ -292,7 +292,7 @@ const Birthdays = () => {
           </View>
         ) : (
           <View>
-            <View style={{height: '95%', paddingVertical: 10}}>
+            <View style={{height: '96%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={BirthdayData}
