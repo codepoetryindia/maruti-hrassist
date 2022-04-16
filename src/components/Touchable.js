@@ -1,8 +1,17 @@
 //import liraries
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList} from 'react-native';
-import { setDisabled } from 'react-native/Libraries/LogBox/Data/LogBoxData';
-import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
+import Share from 'react-native-share';
+
+const myCustomeSharing =async () =>{
+  const shareOption = {
+    message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
+  }
+  try {const shareResponse = await Share.open(shareOption);}
+  catch(error){
+    console.log('error',error);
+}
+}
 
 // create a component
 const TouchableCard = ({navigation}) => {
@@ -135,7 +144,8 @@ const TouchableCard = ({navigation}) => {
                 navigation.navigate('BuisnessTravel');
               }
              else if(item.name==='Share App') {
-                navigation.navigate('More');
+               console.log('hello')
+               myCustomeSharing()
               }
             }}>
             <Image source={item.images} style={styles.cardimg} />

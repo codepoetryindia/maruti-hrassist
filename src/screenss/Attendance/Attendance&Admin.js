@@ -30,9 +30,9 @@ const AttendanceAdmin = ({navigation}) => {
     setManager(false);
   }, []);
 
-  const handelHorizental = () =>{
+  const handelHorizental = () => {
     setHorizental(!horizental);
-  }
+  };
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -53,6 +53,20 @@ const AttendanceAdmin = ({navigation}) => {
         colors={['#2757C3', '#80406A', '#ad3231']}
         style={styles.gradient}>
         <View style={styles.container}>
+        {horizental == true ? (
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: '#fff',
+                position: 'absolute',
+                top: 30,
+                right: 50,
+                zIndex:1000,
+                borderRadius:8
+              }}>
+              <Text>Attendance Percentage</Text>
+            </View>
+          ) : null}
           <View
             style={{
               flexDirection: 'row',
@@ -82,22 +96,20 @@ const AttendanceAdmin = ({navigation}) => {
             }}>
             Attendance & Admin
           </Text>
-          
+
           {/* <View style={{alignContent:'center'}}> */}
           <TouchableOpacity
             style={{marginLeft: '35%'}}
-            onPress={() => 
-           {horizental == true?  setHorizental(false) : setHorizental(true)}
-            }>
+            onPress={() => {
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }}>
             <Ionicons
               name="ellipsis-vertical-circle"
               size={25}
               color={'white'}
             />
-             
-             {horizental==true ? (<View style={{padding:5, backgroundColor: '#fff',marginRight:10}}><Text>hello</Text></View>):null} 
-           
           </TouchableOpacity>
+
           <View
             style={{
               flexDirection: 'row',
@@ -139,6 +151,7 @@ const AttendanceAdmin = ({navigation}) => {
           {/* </View> */}
         </View>
       </LinearGradient>
+     
       <TabView
         renderTabBar={props => {
           return (

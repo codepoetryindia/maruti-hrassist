@@ -15,10 +15,21 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
+import Share from 'react-native-share';
 
 // import SignIn from '../Auth/SignIn';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from '../actions/loginAction';
+
+const myCustomeSharing =async () =>{
+  const shareOption = {
+    message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
+  }
+  try {const shareResponse = await Share.open(shareOption);}
+  catch(error){
+    console.log('error',error);
+}
+}
 
 function CustomDrawer(props) {
   const dispatch = useDispatch();
@@ -26,6 +37,7 @@ function CustomDrawer(props) {
    dispatch (logoutAction(data))
   
   }
+
   const {navigation} = props;
   return (
     <>
@@ -181,7 +193,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Share App"
-              onPress={() => navigation.navigate("More")}
+              onPress={() =>myCustomeSharing()}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

@@ -22,11 +22,14 @@ const Shift = () => {
   const [toDate, setToDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [openSecond, setOpenSecond] = useState(false);
+  const [second, setSecond] = useState(false);
+  const [textinputDate, setTextinputDate] = useState('');
+  const [textinputSecondDate, setTextinputSecondDate] = useState('');
   const [openThird, setOpenThird] = useState(false);
   const [Shift, setShift] = useState([]);
   const [shiftName, setShiftName] = useState('Select Shift');
   const [isModalVisible, setModalVisible] = useState(false);
+  const [choseDate, setChoseDate] = useState('');
   const handleShift = index => {
     setShift(index);
   };
@@ -58,12 +61,27 @@ const Shift = () => {
     {
       Shift: 'G(09:30 To 18:15)',
       Date: '30/02/2099',
-      status: 'Approved',
+      status: 'Pending',
     },
     {
       Shift: 'G(09:00 To 18:45)',
       Date: '30/02/2999',
       status: 'Approved',
+    },
+    {
+      Shift: 'G(09:00 To 18:45)',
+      Date: '30/02/2999',
+      status: 'Pending',
+    },
+    {
+      Shift: 'G(09:30 To 18:15)',
+      Date: '30/02/2099',
+      status: 'Approved',
+    },
+    {
+      Shift: 'G(09:00 To 18:45)',
+      Date: '30/02/2999',
+      status: 'Pending',
     },
     {
       Shift: 'G(09:00 To 18:45)',
@@ -78,22 +96,7 @@ const Shift = () => {
     {
       Shift: 'G(09:00 To 18:45)',
       Date: '30/02/2999',
-      status: 'Approved',
-    },
-    {
-      Shift: 'G(09:00 To 18:45)',
-      Date: '30/02/2999',
-      status: 'Approved',
-    },
-    {
-      Shift: 'G(09:30 To 18:15)',
-      Date: '30/02/2099',
-      status: 'Approved',
-    },
-    {
-      Shift: 'G(09:00 To 18:45)',
-      Date: '30/02/2999',
-      status: 'Approved',
+      status: 'Pending',
     },
   ];
 
@@ -179,14 +182,14 @@ const Shift = () => {
           <View
             style={{
               width: '90%',
-              borderWidth: 1,
               alignSelf: 'center',
+              borderWidth: 1,
               borderColor: '#fff',
               justifyContent: 'space-between',
               alignItems: 'center',
               flexDirection: 'row',
               padding: 10,
-              marginVertical: 20,
+              marginVertical: 8,
               backgroundColor: '#fff',
               shadowColor: '#000',
               shadowOffset: {
@@ -196,71 +199,10 @@ const Shift = () => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              borderRadius: 8,
+              borderTopLeftRadius: 15,
+              borderBottomLeftRadius: 15,
+              borderTopRightRadius: 15,
             }}>
-            <View
-              style={{
-                width: '48%',
-              }}>
-              <Text>From</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottomWidth: 1,
-                  borderBottomColor: 'gray',
-                  padding: 3,
-                }}>
-                <Text style={{color: 'gray'}}>
-                  ...{moment(fromDate).format('MMM Do YYYY')}
-                </Text>
-                <View>
-                  <View>
-                    <TouchableOpacity onPress={() => setOpen(true)}>
-                      <Ionicons
-                        name="calendar-outline"
-                        size={30}
-                        color={'#ad3231'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View
-              style={{
-                width: '48%',
-              }}>
-              <Text>To</Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottomWidth: 1,
-                  borderBottomColor: 'gray',
-                  padding: 3,
-                }}>
-                <Text style={{color: 'gray'}}>
-                  ...{moment(toDate).format('MMM Do YYYY')}
-                </Text>
-                <View>
-                  <View>
-                    <TouchableOpacity onPress={() => setOpenSecond(true)}>
-                      <Ionicons
-                        name="calendar-outline"
-                        size={30}
-                        color={'#ad3231'}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            {/* DatePicker */}
-
             <DatePicker
               modal
               open={open}
@@ -269,34 +211,75 @@ const Shift = () => {
               onConfirm={fromDate => {
                 setOpen(false);
                 setFromDate(fromDate);
-                console.log(fromDate);
+                let format = moment(fromDate).format('MMM Do YYYY');
+                setTextinputDate(format);
+                console.log(setTextinputDate);
               }}
               onCancel={() => {
                 setOpen(false);
               }}
             />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '49%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <TextInput
+                placeholder="From"
+                style={{color: '#000', letterSpacing: 1}}
+                editable={false}
+                paddingHorizontal={14}
+                value={textinputDate}
+              />
+              <TouchableOpacity onPress={() => setOpen(true)}>
+                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+              </TouchableOpacity>
+            </View>
             <DatePicker
               modal
-              mode="date"
-              open={openSecond}
+              open={second}
               date={toDate}
+              mode="date"
               onConfirm={toDate => {
-                setOpenSecond(false);
+                setSecond(false);
                 setToDate(toDate);
-                console.log(toDate);
+                let formatSecond = moment(toDate).format('MMM Do YYYY');
+                setTextinputSecondDate(formatSecond);
+                console.log(setTextinputSecondDate);
               }}
               onCancel={() => {
-                setOpenSecond(false);
+                setSecond(false);
               }}
             />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '50%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <TextInput
+                style={{color: '#000', letterSpacing: 1}}
+                placeholder="To"
+                editable={false}
+                paddingHorizontal={14}
+                value={textinputSecondDate}
+              />
+              <TouchableOpacity onPress={() => setSecond(true)}>
+                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Button */}
 
-          <TouchableOpacity
-            onPress={() => {
-              handelDate();
-            }}>
+          <TouchableOpacity>
+            {/* onPress={() => 
+             handelDate();
+           }} */}
+
             <LinearGradient
               style={{
                 padding: 20,
@@ -343,7 +326,7 @@ const Shift = () => {
                       {item.status === 'Approved' ? (
                         <Text style={{color: 'green'}}>Approved</Text>
                       ) : (
-                        <Text style={{color: 'red'}}>Approved</Text>
+                        <Text style={{color: 'red'}}>Pending</Text>
                       )}
                     </DataTable.Cell>
                   </DataTable.Row>
@@ -423,7 +406,9 @@ const Shift = () => {
             onConfirm={selectDate => {
               setOpenThird(false);
               setSelectDate(selectDate);
-              console.log(selectDate);
+              let formatDate = moment(selectDate).format('MMM Do YYYY');
+              setChoseDate(formatDate);
+              console.log(choseDate);
             }}
             onCancel={() => {
               setOpenThird(false);
@@ -435,7 +420,7 @@ const Shift = () => {
               width={'90%'}
               editable={false}
               paddingHorizontal={14}
-              value={selectDate}
+              value={choseDate}
             />
             <TouchableOpacity onPress={() => setOpenThird(true)}>
               <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
@@ -444,6 +429,7 @@ const Shift = () => {
           <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
             Current Shift
           </Text>
+
           <View style={styles.inputBox}>
             <TextInput
               placeholder="G(09:12 To 04:45)"
@@ -499,7 +485,13 @@ const Shift = () => {
                   <DataTable.Row>
                     <DataTable.Cell numeric>{item.Shift}</DataTable.Cell>
                     <DataTable.Cell numeric>{item.Date}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.status}</DataTable.Cell>
+                    <DataTable.Cell numeric>
+                      {item.status === 'Approved' ? (
+                        <Text style={{color: 'green'}}>Approved</Text>
+                      ) : (
+                        <Text style={{color: 'red'}}>Pending</Text>
+                      )}
+                    </DataTable.Cell>
                   </DataTable.Row>
                 </View>
               )}

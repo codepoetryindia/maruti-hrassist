@@ -57,7 +57,7 @@ const Attendance = ({navigation}) => {
           onTabPress={index => {
             handleMarkAttandance(index);
           }}
-          tabsContainerStyle={{ width:'97%',alignSelf:'center'}}
+          tabsContainerStyle={{ width:'100%',alignSelf:'center'}}
           tabStyle={styles.tabStyle}
           tabTextStyle={styles.tabTextStyle}
           activeTabStyle={styles.activeTabStyle}
@@ -77,12 +77,12 @@ const Attendance = ({navigation}) => {
              {horizental==true ? (<View style={{padding:5, backgroundColor: '#000',marginRight:10}}><Text>hello</Text></View>):null} 
            
           </TouchableOpacity> */}
-           <SelectDropdown
+           {/* <SelectDropdown
                 // defaultButtonText="Select Any Year"
                 data={FinancialYear}
                 buttonStyle={{
                   backgroundColor: 'transparent',
-                  width: '10%',
+                  width: '80%',
                   height: 40,
                   borderRadius: 5,
                 }}
@@ -113,7 +113,7 @@ const Attendance = ({navigation}) => {
                 
                   return item;
                 }}
-              />
+              /> */}
       </View>
 
       <View>
