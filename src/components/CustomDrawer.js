@@ -54,7 +54,7 @@ function CustomDrawer(props) {
             <View>
               <Text style={styles.text}>Mrs. Adams Parker</Text>
               <Text style={styles.text}>MIT</Text>
-              <TouchableOpacity onPress={() => {navigation.navigate(EmployProfile)}}>
+              <TouchableOpacity onPress={() => {navigation.navigate("EmployProfile")}}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
                 </Text>
@@ -87,7 +87,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Employee Lookup"
-              onPress={() => navigation.navigate(EmployeLookUp)}
+              onPress={() => navigation.navigate("EmployeLookUp")}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>
