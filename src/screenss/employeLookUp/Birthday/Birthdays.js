@@ -17,11 +17,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import {todaysBirthday} from '../../../actions/birthdaysAction';
 // create a component
 const Birthdays = () => {
-  const {todayBirthdayData} = useSelector(state => {
-    console.log('birthday state',state.apitodaysEmployBirthday)
-    return state.apitodaysEmployBirthday;
-  });
-  const dispatch = useDispatch();
+  // const {todayBirthdayData} = useSelector(state => {
+  //   console.log('birthday state',state.apitodaysEmployBirthday)
+  //   return state.apitodaysEmployBirthday;
+  // });
+  // const dispatch = useDispatch();
 
   // useEffect(() => {
   //   // dispatch(todaysBirthday());

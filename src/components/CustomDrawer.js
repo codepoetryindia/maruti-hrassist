@@ -19,7 +19,7 @@ import Share from 'react-native-share';
 
 // import SignIn from '../Auth/SignIn';
 import { useDispatch } from 'react-redux';
-import { logoutAction } from '../actions/loginAction';
+import { logoutAction} from "../ThunkAction/ThunkAction";
 
 const myCustomeSharing =async () =>{
   const shareOption = {

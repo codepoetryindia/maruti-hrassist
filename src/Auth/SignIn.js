@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,48 +7,66 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { loginAction } from '../actions/loginAction';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {ThunkPostAction} from '../ThunkAction/ThunkAction';
+import Snackbar from 'react-native-snackbar';
 
 const SignIn = ({navigation}) => {
-  // Schema
+  const dispatch = useDispatch();
+  const handleLogin = data => {
+    dispatch(ThunkPostAction('API/Login', data));
+    console.log('apiError', AppData.apiError);
+     if(AppData.loader==false){
+      Snackbar.show({
+        text:AppData.apiError,
+        duration: Snackbar.LENGTH_LONG,
+      });
+     }
+     else{
+       return
+     }
+    // dispatch(ThunkPostAction('192.168.0.163:5000/api/users/login', data));
+  };
+
+  useEffect(() => {
+    console.log(AppData);
+  }, []);
+
+  const AppData = useSelector(state => {
+    console.log('state of Current Redux', state.LoginThunkReducers);
+
+    return {
+      // userData: state.LoginThunkReducers.loginUserDetail,
+      loader: state.LoginThunkReducers.isLoading,
+      apiError: state.LoginThunkReducers.error,
+    };
+  });
   const [showPass, setShowPass] = useState(true);
   const loginValidationSchema = yup.object().shape({
-    email: yup
+    UserName: yup
       .string()
-      .required('Email Address is Required')
-      .test('email', 'please provide a valid email ', values => {
-        const valid = new RegExp(
-          /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-        );
-        if (valid.test(values)) {
-          return true;
-        } else {
-          return false;
-        }
-      }),
-    password: yup
+      .required('UserName is Required')
+      .min(6, 'min 6 digit is require ')
+      .max(6, 'max 6 digit allowed'),
+    Password: yup
       .string()
-      .min(8, 'password must be atleast 8 character')
+      .min(8, 'Password must be atleast 8 character')
       .required('Password is required'),
   });
-  const dispatch = useDispatch();
-  const handleLogin = (data) =>{
-   dispatch (loginAction(data))
-  
-  }
-  return (
-    // <KeyboardAvoidingView style={{flex:1}}>
-    //   <SafeAreaView >
-    //     <ScrollView style={{flex:1}}>
+
+  return AppData.loader == true ? (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <ActivityIndicator size={30} color="red" />
+      <Text>Loading ...</Text>
+    </View>
+  ) 
+   : (
     <View style={styles.container}>
       <LinearGradient
         colors={['#2757C3', '#80406A', '#ad3231']}
@@ -93,12 +111,12 @@ const SignIn = ({navigation}) => {
         </Text>
       </LinearGradient>
 
-      {/* INput field */}
       <Formik
         validationSchema={loginValidationSchema}
-        initialValues={{email: '', password: ''}}
+        initialValues={{UserName: '', Password: ''}}
         onSubmit={values => {
-           handleLogin (values)
+          // console.log("values",values)
+          handleLogin(values);
         }}>
         {({
           handleChange,
@@ -118,7 +136,6 @@ const SignIn = ({navigation}) => {
                 alignSelf: 'center',
                 top: 25,
                 resizeMode: 'contain',
-                
               }}
             />
             <View style={{paddingTop: 20}}>
@@ -144,9 +161,9 @@ const SignIn = ({navigation}) => {
                   <TextInput
                     placeholder="Login Id"
                     secureTextEntry={false}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
+                    onChangeText={handleChange('UserName')}
+                    onBlur={handleBlur('UserName')}
+                    value={values.UserName}
                     style={{
                       width: '90%',
                       alignSelf: 'center',
@@ -155,7 +172,7 @@ const SignIn = ({navigation}) => {
                     }}
                   />
                 </View>
-                {errors.email && touched.email && (
+                {errors.UserName && touched.UserName && (
                   <View
                     style={{
                       width: '90%',
@@ -163,7 +180,7 @@ const SignIn = ({navigation}) => {
                       paddingVertical: 2,
                     }}>
                     <Text style={{fontSize: 12, color: 'red'}}>
-                      {errors.email}
+                      {errors.UserName}
                     </Text>
                   </View>
                 )}
@@ -187,9 +204,9 @@ const SignIn = ({navigation}) => {
                   <TextInput
                     placeholder="Password"
                     secureTextEntry={showPass}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
+                    onChangeText={handleChange('Password')}
+                    onBlur={handleBlur('Password')}
+                    value={values.Password}
                     style={{
                       width: '80%',
                       alignSelf: 'center',
@@ -199,8 +216,6 @@ const SignIn = ({navigation}) => {
                   />
                   <TouchableOpacity
                     onPress={() => {
-                    
-
                       if (showPass == false) {
                         setShowPass(true);
                       } else {
@@ -214,7 +229,7 @@ const SignIn = ({navigation}) => {
                     )}
                   </TouchableOpacity>
                 </View>
-                {errors.password && touched.password && (
+                {errors.Password && touched.Password && (
                   <View
                     style={{
                       width: '90%',
@@ -222,7 +237,7 @@ const SignIn = ({navigation}) => {
                       paddingVertical: 2,
                     }}>
                     <Text style={{fontSize: 12, color: 'red'}}>
-                      {errors.password}
+                      {errors.Password}
                     </Text>
                   </View>
                 )}
@@ -236,7 +251,9 @@ const SignIn = ({navigation}) => {
                     }}
                     colors={['#2757C3', '#80406A', '#ad3231']}>
                     <TouchableOpacity
-                      onPress={() =>{handleSubmit()}}
+                      onPress={() => {
+                        handleSubmit();
+                      }}
                       style={{
                         width: '100%',
                         paddingVertical: 10,
@@ -261,10 +278,11 @@ const SignIn = ({navigation}) => {
         )}
       </Formik>
     </View>
-    // </ScrollView>
-    // </SafeAreaView>
-    // </KeyboardAvoidingView>
   );
+
+  // </ScrollView>
+  // </SafeAreaView>
+  // </KeyboardAvoidingView>
 };
 
 // define your styles

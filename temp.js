@@ -1,625 +1,415 @@
-//import liraries
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  Button,
-} from 'react-native';
-import Modal from 'react-native-modal';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
-import Feather from 'react-native-vector-icons/Feather';
-import LinearGradient from 'react-native-linear-gradient';
-// create a component
-const Birthdays = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-  const BirthdayData = [
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-  ];
-
-  //   const {Birthdays, Tomorow} = route.params;
-  const [CurrentPage, setCurrentPage] = useState(0);
-
-  const handleCurrentPage = index => {
-    setCurrentPage(index);
-  };
-  return (
-    <View style={styles.container}>
-      <View style={{width: '100%'}}>
-        <SegmentedControlTab
-          borderRadius={0}
-          values={['Today', 'Tomorrow']}
-          selectedIndex={CurrentPage}
-          onTabPress={index => {
-            handleCurrentPage(index);
-          }}
-          tabsContainerStyle={styles.tabsContainerStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-      </View>
-
-      <View>
-        {CurrentPage == 0 ? (
-          <View>
-            <Image
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Birthday_candles.jpg/1200px-Birthday_candles.jpg',
-              }}
-              style={styles.img}
-            />
-
-            <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={BirthdayData}
-                keyExtractor={item => item.name}
-                renderItem={({item}) => (
-                  <View style={{flex: 1}}>
-                    <TouchableOpacity onPress={toggleModal}>
-                      <View style={styles.itemView}>
-                        <View
-                          style={{
-                            borderRightWidth: 2,
-                            paddingVertical: 8,
-                            width: '20%',
-                          }}>
-                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
-                        </View>
-                        <View
-                          style={{
-                            width: '80%',
-                            paddingVertical: 5,
-                            paddingLeft: 15,
-                          }}>
-                          <Text style>{item.name}</Text>
-                          <Text>{item.email}</Text>
-                          <Text>{item.divison}</Text>
-                        </View>
-                      </View>
-
-                      <Modal
-                        backdropOpacity={0.1}
-                        animationInTiming={300}
-                        animationIn="zoomInUp"
-                        animationOut="fadeOut"
-                        animationOutTiming={500}
-                        coverScreen={true}
-                        isVisible={isModalVisible}>
-                      
-                       <LinearGradient
-                          colors={['#2757C3', '#80406A', '#ad3231']}
-                          style={{flex:0.53,borderRadius:15}}>
-                          <View style={styles.modal}>
-                            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
-                              <Feather
-                                name="x-circle"
-                                color={'#000'}
-                                size={20}
-                                onPress={toggleModal}
-                                style={{margin: 10}}
-                              />
-                            </TouchableOpacity>
-                            <View
-                              style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                width: 150,
-                                height: 150,
-                                borderWidth: 20,
-                                borderColor: '#bd5b5a',
-                                borderRadius: 60,
-                                marginTop:30
-                              }}>
-                              <Image
-                                source={require('../../../assets/Images/smile.jpg')}
-                                style={styles.profileImg}
-                              />
-                            </View>
-                            <View
-                              style={{
-                                paddingVertical: 15,
-                                alignSelf: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Text style={{color:'#fff',lineHeight:20}}>{item.name}</Text>
-                              <Text  style={{color:'#fff',lineHeight:20}}>{item.email}</Text>
-                              <Text  style={{color:'#fff',lineHeight:20}}>{item.divison}</Text>
-                            </View>
-                            <View
-                              style={{
-                                height:'23%',
-                                marginTop:12,
-                                // backgroundColor:'yellow',
-                                flexDirection: 'row',
-                                alignSelf:'center',
-                                justifyContent: 'space-around',
-                                width: '50%',
-                                alignItems:'flex-end'
-                              }}>
-                              <TouchableOpacity
-                                style={{
-                                  borderWidth: 1,
-                                  width: 40,
-                                  height: 40,
-                                  borderColor: '#fff',
-                                  borderRadius: 100,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <Feather
-                                  name="mail"
-                                  size={20}
-                                  color={'#fff'}
-                                />
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                style={{
-                                  borderWidth: 1,
-                                  width: 40,
-                                  height: 40,
-                                  borderColor: '#fff',
-                                  borderRadius: 100,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <Feather
-                                  name="phone-call"
-                                  size={20}
-                                  color={'#fff'}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                        </LinearGradient>
-                      
-                      </Modal>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-            </View>
-          </View>
-        ) : (
-          <View>
-            <View style={{height: '95%', paddingVertical: 10}}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={BirthdayData}
-                keyExtractor={item => item.name}
-                renderItem={({item}) => (
-                  <View style={{flex: 1}}>
-                    <TouchableOpacity onPress={toggleModal}>
-                      <View style={styles.itemView}>
-                        <View
-                          style={{
-                            borderRightWidth: 2,
-                            paddingVertical: 8,
-                            width: '20%',
-                          }}>
-                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
-                        </View>
-                        <View
-                          style={{
-                            width: '80%',
-                            paddingVertical: 5,
-                            paddingLeft: 15,
-                          }}>
-                          <Text style>{item.name}</Text>
-                          <Text>{item.email}</Text>
-                          <Text>{item.divison}</Text>
-                        </View>
-                      </View>
-
-                      <Modal
-                        backdropOpacity={0.1}
-                        animationInTiming={300}
-                        animationIn="fadeIn"
-                        animationOut="fadeOut"
-                        animationOutTiming={500}
-                        coverScreen={true}
-                        isVisible={isModalVisible}>
-                           <LinearGradient
-                          colors={['#2757C3', '#80406A', '#ad3231']}
-                          style={{flex:0.53,borderRadius:15}}>
-                        <View style={styles.modal}>
-                          <TouchableOpacity style={{alignSelf: 'flex-end'}}>
-                            <Feather
-                              name="x-circle"
-                              color={'#000'}
-                              size={20}
-                              onPress={toggleModal}
-                              style={{margin: 10}}
-                            />
-                          </TouchableOpacity>
-                          <View
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              alignSelf: 'center',
-                              width: 150,
-                              height: 150,
-                              borderWidth: 20,
-                              borderColor: '#bd5b5a',
-                              borderRadius: 50,
-                            }}>
-                             <Image
-                                source={require('../../../assets/Images/smile.jpg')}
-                                style={styles.profileImg}
-                              />
-                          </View>
-                          <View
-                            style={{
-                              paddingVertical: 15,
-                              alignSelf: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <Text style={{color:'#fff'}}>{item.name}</Text>
-                            <Text  style={{color:'#fff'}}>{item.email}</Text>
-                            <Text  style={{color:'#fff'}}>{item.divison}</Text>
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignSelf: 'center',
-                              justifyContent: 'space-around',
-                              width: '50%',
-                            }}>
-                            <TouchableOpacity
-                              style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height: 40,
-                                borderColor: '#fff',
-                                borderRadius: 100,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Feather
-                                name="mail"
-                                size={20}
-                                color={'#fff'}
-                              />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={{
-                                borderWidth: 1,
-                                width: 40,
-                                height: 40,
-                                borderColor: '#fff',
-                                borderRadius: 100,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Feather
-                                name="phone-call"
-                                size={20}
-                                color={'#fff'}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                        </LinearGradient>
-                      </Modal>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-            </View>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-};
-
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    width: '90%',
-  },
-  tabsContainerStyle: {
-    marginTop: 20,
-  },
-  tabStyle: {
-    //custom styles
-    paddingVertical: 10,
-    borderWidth:1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
-  },
-  tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
-    color: 'grey',
-  },
-  activeTabStyle: {
-    //custom styles
-    backgroundColor: 'transparent',
-    borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
-    // borderColor:Colors.primaryColor
-  },
-  activeTabTextStyle: {
-    color: '#2757C3',
-  },
-
-  img: {
-    width: '100%',
-    height: '15%',
-    marginTop: 10,
-    overflow: 'hidden',
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  itemView: {
-    width: '100%',
-    borderLeftWidth: 5,
-    borderLeftColor: 'gray',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-    alignSelf: 'center',
-    justifyContent: 'space-around',
-    paddingTop: 15,
-    paddingBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 2.0,
-
-    elevation: 2,
-  },
-  modal: {
-    flex: 0.39,
-    width: '100%',
-    alignSelf: 'center',
-    backgroundColor: '#f8edec',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    borderBottomLeftRadius:50,
-    borderBottomRightRadius:50,
-  },
-  profileImg: {
-    height: 100,
-    width: 100,
-    borderRadius: 40,
-  },
-});
-
-
-//make this component available to the app
-export default Birthdays;
-
-
 // //import liraries
-// import React, {Component} from 'react';
-// import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
+// import React, {useEffect, useState} from 'react';
+// import {
+//   View,
+//   Text,
+//   StyleSheet,
+//   Image,
+//   TextInput,
+//   TouchableOpacity,
+//   KeyboardAvoidingView,
+//   ScrollView,
+//   ActivityIndicator,
+// } from 'react-native';
 // import LinearGradient from 'react-native-linear-gradient';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
+// import {Formik} from 'formik';
+// import * as yup from 'yup';
+// import {useDispatch, useSelector} from 'react-redux';
+// import {ThunkAction, ThunkPostAction} from '../ThunkAction/ThunkAction';
+// import Toast from 'react-native-simple-toast';
+// import axios from 'axios';
 
-// // create a component
-// const EmployProfile = ({navigation}) => {
-//   return (
+// const SignIn = ({navigation}) => {
+//   const dispatch = useDispatch();
+//   const handleLogin = data => {
+//     console.log('userData', data);
+//     dispatch(ThunkPostAction('API/Login', data));
+//     // dispatch(ThunkPostAction('192.168.0.163:5000/api/users/login', data));
+//   };
+//   const AppData = useSelector(state => {
+//     console.log('state of Current Redux', state.LoginThunkReducers);
+
+//     return {
+//       userData: state.LoginThunkReducers.loginUserDetail,
+//       loader: state.LoginThunkReducers.isLoading,
+//       apiError: state.LoginThunkReducers.error,
+//     };
+//   });
+
+//   // console.log('AppData', AppData);
+//   useEffect(() => {
+//     LoginAPI();
+//   }, []);
+
+//   const LoginAPI = async () => {
+//     let response = await axios
+//       .post(
+//         'https://hrassist.maruti.co.in/API/Login',
+//         JSON.stringify({
+//           UserName: '222852',
+//           Password: 'Maruti@131',
+//         }),
+//         {
+//           method: 'POST',
+//           headers: {
+//             Accept: 'application/json',
+//             'Content-Type': 'application/json',
+//           },
+//         },
+//       )
+//       .catch(err => console.log('api Erorr: ', err.response));
+//     console.log('Result', response);
+//     // .then(response => {
+//     //   console.log(response.data);
+//     // })
+
+//     // try {
+//     //   fetch('https://hrassist.maruti.co.in/API/Login', {
+//     //     method: 'POST',
+//     //     headers: {
+//     //       Accept: 'application/json',
+//     //       'Content-Type': 'application/json',
+//     //     },
+//     //     body: JSON.stringify({
+//     //       UserName: '222852',
+//     //       Password: 'Maruti@131',
+//     //     }),
+//     //   })
+//     //     .then(response => response.json())
+//     //     .then(responseJson => {
+//     //       console.log('Result', responseJson);
+//     //     });
+//     // } catch (error) {
+//     //   console.log('error occured', error);
+//     // }
+//   };
+//   const [showPass, setShowPass] = useState(true);
+//   const loginValidationSchema = yup.object().shape({
+//     UserName: yup
+//       .string()
+//       .required('UserName is Required')
+//       .min(6, 'min 6 digit is require ')
+//       .max(6, 'max 6 digit allowed'),
+//     Password: yup
+//       .string()
+//       .min(8, 'Password must be atleast 8 character')
+//       .required('Password is required'),
+//   });
+
+//   return AppData.loader == true ? (
+//     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+//       <ActivityIndicator size={30} color="red" />
+//       <Text>Loading ...</Text>
+//     </View>
+//   ) : (
 //     <View style={styles.container}>
 //       <LinearGradient
-//         style={{flex: 0.25}}
-//         colors={['#2757C3', '#80406A', '#AD3231']}>
-//         <View style={{flexDirection: 'row', padding: 15, alignItems: 'center'}}>
-//           <Ionicons
-//             name="chevron-back-outline"
-//             size={30}
-//             color={'white'}
-//             onPress={() => navigation.goBack()}
-//           />
-//           <Text
-//             style={{
-//               color: '#fff',
-//               fontSize: 18,
-//               letterSpacing: 1,
-//               marginLeft: 25,
-//             }}>
-//             Profile
-//           </Text>
-//         </View>
-//       </LinearGradient>
-//       <View
-//         style={{
-//           // height: 200,
-//           backgroundColor: '#fff',
-//           width: '90%',
-//           alignSelf: 'center',
-//           shadowColor: '#000',
-//           shadowOffset: {
-//             width: 0,
-//             height: 2,
-//           },
-//           shadowOpacity: 0.25,
-//           shadowRadius: 3.84,
-//           elevation: 5,
-//           borderRadius: 8,
-//           position: 'absolute',
-//           top: '15%',
-//         }}>
+//         colors={['#2757C3', '#80406A', '#ad3231']}
+//         style={styles.gradient}>
 //         <View
 //           style={{
-//             borderWidth: 5,
-//             borderColor: '#fff',
-//             shadowColor: '#000',
-//             shadowOffset: {
-//               width: 5,
-//               height: 5,
-//             },
-//             shadowOpacity: 0.5,
-//             shadowRadius: 3.84,
-//             elevation: 5,
+//             flexDirection: 'row',
 //             justifyContent: 'center',
-//             alignSelf: 'center',
-//             borderRadius: 100,
-//             marginTop: '-12%',
+//             alignItems: 'center',
 //           }}>
 //           <Image
-//             source={require('../../assets/Images/smile.jpg')}
-//             style={{
-//               width: 100,
-//               height: 100,
-//               overflow: 'hidden',
-//               borderRadius: 100,
-//               alignSelf: 'center',
-//             }}
+//             source={require('../assets/Images/logoo.png')}
+//             style={{width: '20%', height: 75, resizeMode: 'cover'}}
 //           />
 //         </View>
-//      <View style={{height: '80%',}}>
-//      <ScrollView>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
+//         <View
+//           style={{
+//             flexDirection: 'row',
+//             alignSelf: 'center',
+//             paddingVertical: 8,
+//             justifyContent: 'space-between',
+//           }}>
+//           <Text
+//             style={{
+//               fontSize: 30,
+//               color: '#fff',
+//               fontWeight: 'bold',
+//             }}>
+//             Welcome !
+//           </Text>
+//         </View>
+//         <Text
+//           style={{
+//             fontSize: 30,
+//             color: '#fff',
+//             alignSelf: 'center',
+//             letterSpacing: 1,
+//             fontFamily: 'Montserrat-Bold',
+//           }}>
+//           In <Text style={{fontSize: 40, color: '#f7ebea'}}>M</Text>aruti
+//           <Text style={{fontSize: 40, color: '#f7ebea'}}> S</Text>uzuki
+//         </Text>
+//       </LinearGradient>
+
+//       <Formik
+//         validationSchema={loginValidationSchema}
+//         initialValues={{UserName: '', Password: ''}}
+//         onSubmit={values => {
+//           // console.log("values",values)
+//           handleLogin(values);
+//         }}>
+//         {({
+//           handleChange,
+//           handleBlur,
+//           handleSubmit,
+//           values,
+//           errors,
+//           touched,
+//           isValid,
+//         }) => (
+//           <View style={styles.login}>
+//             <Image
+//               source={require('../assets/Images/login2.png')}
+//               style={{
+//                 width: '60%',
+//                 height: '50%',
+//                 alignSelf: 'center',
+//                 top: 25,
+//                 resizeMode: 'contain',
+//               }}
+//             />
+//             <View style={{paddingTop: 20}}>
+//               <View style={{paddingVertical: 10}}>
+//                 <View
+//                   style={{
+//                     width: '90%',
+//                     flexDirection: 'row',
+//                     justifyContent: 'space-between',
+//                     paddingHorizontal: 10,
+//                     padding: 5,
+//                     borderWidth: 1,
+//                     borderTopColor: '#80406A',
+//                     borderStartColor: '#ad3231',
+//                     borderBottomColor: '#2757C3',
+//                     borderEndColor: '#ad3231',
+//                     alignItems: 'center',
+//                     alignSelf: 'center',
+//                     margin: 8,
+//                     borderRadius: 8,
+//                   }}>
+//                   <Ionicons name="person-circle" size={25} color={'#ad3231'} />
+//                   <TextInput
+//                     placeholder="Login Id"
+//                     secureTextEntry={false}
+//                     onChangeText={handleChange('UserName')}
+//                     onBlur={handleBlur('UserName')}
+//                     value={values.UserName}
+//                     style={{
+//                       width: '90%',
+//                       alignSelf: 'center',
+//                       marginVertical: -2,
+//                       paddingVertical: 10,
+//                     }}
+//                   />
+//                 </View>
+//                 {errors.UserName && touched.UserName && (
+//                   <View
+//                     style={{
+//                       width: '90%',
+//                       alignSelf: 'center',
+//                       paddingVertical: 2,
+//                     }}>
+//                     <Text style={{fontSize: 12, color: 'red'}}>
+//                       {errors.UserName}
+//                     </Text>
+//                   </View>
+//                 )}
+//                 <View
+//                   style={{
+//                     width: '90%',
+//                     flexDirection: 'row',
+//                     justifyContent: 'space-between',
+//                     padding: 5,
+//                     borderWidth: 1,
+//                     borderTopColor: '#80406A',
+//                     borderStartColor: '#ad3231',
+//                     borderBottomColor: '#2757C3',
+//                     borderEndColor: '#ad3231',
+//                     alignItems: 'center',
+//                     alignSelf: 'center',
+//                     borderRadius: 8,
+//                     margin: 8,
+//                   }}>
+//                   <Ionicons name="lock-closed" size={25} color={'#ad3231'} />
+//                   <TextInput
+//                     placeholder="Password"
+//                     secureTextEntry={showPass}
+//                     onChangeText={handleChange('Password')}
+//                     onBlur={handleBlur('Password')}
+//                     value={values.Password}
+//                     style={{
+//                       width: '80%',
+//                       alignSelf: 'center',
+//                       marginVertical: -2,
+//                       paddingVertical: 10,
+//                     }}
+//                   />
+//                   <TouchableOpacity
+//                     onPress={() => {
+//                       if (showPass == false) {
+//                         setShowPass(true);
+//                       } else {
+//                         setShowPass(false);
+//                       }
+//                     }}>
+//                     {showPass == true ? (
+//                       <Ionicons name="eye-off" size={25} color={'#000'} />
+//                     ) : (
+//                       <Ionicons name="eye" size={25} color={'#000'} />
+//                     )}
+//                   </TouchableOpacity>
+//                 </View>
+//                 {errors.Password && touched.Password && (
+//                   <View
+//                     style={{
+//                       width: '90%',
+//                       alignSelf: 'center',
+//                       paddingVertical: 2,
+//                     }}>
+//                     <Text style={{fontSize: 12, color: 'red'}}>
+//                       {errors.Password}
+//                     </Text>
+//                   </View>
+//                 )}
+//                 <View style={{paddingVertical: 10}}>
+//                   <LinearGradient
+//                     style={{
+//                       margin: 5,
+//                       borderRadius: 8,
+//                       width: '90%',
+//                       alignSelf: 'center',
+//                     }}
+//                     colors={['#2757C3', '#80406A', '#ad3231']}>
+//                     <TouchableOpacity
+//                       onPress={() => {
+//                         handleSubmit();
+//                       }}
+//                       style={{
+//                         width: '100%',
+//                         paddingVertical: 10,
+//                         alignItems: 'center',
+//                         marginTop: 5,
+//                       }}>
+//                       <Text
+//                         style={{
+//                           fontSize: 16,
+//                           fontWeight: 'bold',
+//                           color: '#fff',
+//                           letterSpacing: 2,
+//                         }}>
+//                         Submit
+//                       </Text>
+//                     </TouchableOpacity>
+//                   </LinearGradient>
+//                 </View>
+//               </View>
+//             </View>
 //           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//           <View style={styles.box}>
-//             <Text>Vertical / Div ./Department</Text>
-//             <Text>IT / ITA-1 / AG3</Text>
-//           </View>
-//         </ScrollView>
-//        </View>
-//       </View>
+//         )}
+//       </Formik>
 //     </View>
 //   );
+
+//   // </ScrollView>
+//   // </SafeAreaView>
+//   // </KeyboardAvoidingView>
 // };
 
 // // define your styles
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
+//     backgroundColor: '#fff',
 //   },
-//   box: {
+//   gradient: {
+//     flex: 0.45,
 //     width: '100%',
 //     paddingVertical: 10,
-//     padding: 10,
-//     marginVertical: 5,
-//     borderBotttomWidth: 1,
-//     // borderTopColor: '#80406A',
-//     // borderStartColor: '#ad3231',
-//     // borderBottomColor: '#2757C3',
-//     // borderEndColor: '#ad3231',
+//   },
+//   login: {
+//     justifyContent: 'flex-end',
+//     width: '100%',
+//     height: '67%',
+//     overflow: 'hidden',
 //     backgroundColor: '#fff',
-//     shadowColor: '#000',
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//     borderRadius: 5,
+//     position: 'absolute',
+//     bottom: 0,
+//     marginBottom: 20,
+//     borderTopRightRadius: 50,
+//     borderTopLeftRadius: 50,
+//     alignSelf: 'center',
+//     // shadowColor: '#000',
+//     // shadowOffset: {
+//     //   width: 0,
+//     //   height: 0,
+//     // },
+//     // shadowOpacity: 1.29,
+//     // shadowRadius: 10.65,
+
+//     // elevation: 7,
 //   },
 // });
 
 // //make this component available to the app
-// export default EmployProfile;
+// export default SignIn;
+
+
+
+// export const ThunkPostAction = (url, data)=> dispatch => {
+//   dispatch({ type: LOAD_USERS_LOADING });
+//   let postUrl = API_BASE_URL + url;
+//    console.log(postUrl);
+//    console.log('payload', data);
+//    axios.post(postUrl, JSON.stringify(data), {
+//              method: 'POST',
+//              headers: {
+//                Accept: 'application/json',
+//                'Content-Type': 'application/json',
+//              },
+//            })
+//       .then(response => response.json())
+//       .then(
+//           data => dispatch({ type: LOAD_USERS_SUCCESS, data }),
+//           error => dispatch({ type: LOAD_USERS_ERROR, error: error.message || 'Unexpected Error!!!' })
+//       )
+// };
+
+// export default function LoginThunkReducers(state = initialState, action) {
+//   switch (action.type) {
+//       case LOAD_USERS_LOADING: {
+//           return {
+//               ...state,
+//               loading: true,
+//               error:''
+//           };
+//       }
+//       case LOAD_USERS_SUCCESS: {
+//           return {
+//               ...state,
+//               data: action.data,
+//               loading: false
+//           }
+//       }
+//       case LOAD_USERS_ERROR: {
+//           return {
+//               ...state,
+//               loading: false,
+//               error: action.error
+//           };
+//       }
+//       case LOGOUT_USER:
+//       return {
+//         loginUserDetail: null,
+//         isLoading: false,
+//       };
+//       default: {
+//           return state;
+//       }
+//   }
+// }
