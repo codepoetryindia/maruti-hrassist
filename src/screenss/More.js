@@ -1,12 +1,100 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  Linking,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Home from './Home';
-
+import {
+  AppInstalledChecker,
+  CheckPackageInstallation,
+} from 'react-native-check-app-install';
 // create a component
 const More = ({navigation}) => {
+  var SendIntentAndroid = require('react-native-send-intent');
+
+  const SAPSF = () => {
+    let url = 'skype://app';
+    Linking.openURL(url).catch(err => {
+      if (err.code === 'EUNSPECIFIED') {
+        if (Platform.OS === 'android') {
+          AppInstalledChecker.isAppInstalled(
+            'skype',
+          ).then(isInstalled => {
+            if (isInstalled) {
+              Linking.openURL('url');
+            } else {
+              console.log('is installed false');
+              Linking.openURL(
+                'https://play.google.com/store/apps/details?id=com.skype.raider&hl=en_IN&gl=US',
+              ).catch(err => {
+                console.log(err);
+              });
+            }
+          });
+        }
+      } else {
+        console.log('Platform Is Ios');
+      }
+    });
+  };
+
+
+  // const SAPSF = () => {
+  //   SendIntentAndroid.isAppInstalled('com.skype.raider').then(
+  //     isInstalled => {
+  //       if (isInstalled) {
+  //         SendIntentAndroid.openApp('com.skype.raider')
+  //         console.log('is installed true');
+  //       } else {
+  //         Linking.openURL(
+  //           'https://play.google.com/store/apps/details?id=com.successfactors.successfactors',
+  //         ).catch(err => {
+  //           console.log(err);
+  //         });
+  //       }
+  //     },
+  //   );
+  // };
+  const AskHr = () => {
+  
+    SendIntentAndroid.isAppInstalled('symphonysummit://app').then(
+      isInstalled => {
+        console.log('check',isInstalled)
+        if (isInstalled == false) {
+          console.log('check',isInstalled)
+          SendIntentAndroid.openApp('symphonysummit').then(
+            wasOpened => {},
+          );
+          console.log('is installed true',wasOpened);
+        } else {
+          Linking.openURL(
+            'https://play.google.com/store/apps/details?id=air.com.symphonysummit.marutisuzukihr',
+          ).catch(err => {
+            console.log(err);
+          });
+        }
+      },
+    );
+  };
+  const Wellness = () => {
+    SendIntentAndroid.isAppInstalled('in/WellnessMitra/').then(isInstalled => { 
+      
+      if (isInstalled) {
+        SendIntentAndroid.openApp('in/WellnessMitra/')
+        console.log('is installed true');
+      } else {
+        Linking.openURL('https://msilappstore.in/WellnessMitra/').catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -24,7 +112,7 @@ const More = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate('Home')}
             />
             <Ionicons
               name="menu-outline"
@@ -49,6 +137,10 @@ const More = ({navigation}) => {
       {/* body */}
       <View style={{width: '100%', top: 50}}>
         <TouchableOpacity
+          onPress={() => {
+            SAPSF();
+           
+          }}
           style={{
             cursor: 'pointer',
             width: '50%',
@@ -79,6 +171,9 @@ const More = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => {
+            AskHr();
+          }}
           style={{
             cursor: 'pointer',
             width: '50%',
@@ -107,6 +202,9 @@ const More = ({navigation}) => {
           <Text style={{fontSize: 20, paddingVertical: 5}}>Ask HR</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => {
+            Wellness();
+          }}
           style={{
             cursor: 'pointer',
             width: '50%',

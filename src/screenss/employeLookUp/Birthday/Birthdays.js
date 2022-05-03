@@ -23,10 +23,10 @@ const Birthdays = () => {
   });
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(todaysBirthday());
-    // console.log('logged', todayBirthdayData);
-  }, []);
+  // useEffect(() => {
+  //   // dispatch(todaysBirthday());
+  //   // console.log('logged', todayBirthdayData);
+  // }, []);
 
 
 
@@ -35,73 +35,73 @@ const Birthdays = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  // const BirthdayData = [
-  //   {
-  //     dept: 'EPP',
-  //     name: 'MR. Dahal',
-  //     email: 'mrdahal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/smile.jpg'),
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Kunal',
-  //     email: 'mrKunal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'CPP',
-  //     name: 'MR. Amit',
-  //     email: 'amit@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/smile.jpg'),
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Diwas',
-  //     email: 'diwas@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'cpp',
-  //     name: 'MR. Brashant',
-  //     email: 'Brashant@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //     images: require('../../../assets/Images/avtar.webp'),
-  //   },
-  //   {
-  //     dept: 'EPP',
-  //     name: 'MR. Dahal',
-  //     email: 'mrdahal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Kunal',
-  //     email: 'mrKunal@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'CPP',
-  //     name: 'MR. Amit',
-  //     email: 'amit@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'ENGG',
-  //     name: 'MR. Diwas',
-  //     email: 'diwas@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  //   {
-  //     dept: 'cpp',
-  //     name: 'MR. Brashant',
-  //     email: 'Brashant@.codepoetry.in',
-  //     divison: 'MGR | GPA',
-  //   },
-  // ];
+  const BirthdayData = [
+    {
+      dept: 'EPP',
+      name: 'MR. Dahal',
+      email: 'mrdahal@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/smile.jpg'),
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Kunal',
+      email: 'mrKunal@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'CPP',
+      name: 'MR. Amit',
+      email: 'amit@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/smile.jpg'),
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Diwas',
+      email: 'diwas@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'cpp',
+      name: 'MR. Brashant',
+      email: 'Brashant@.codepoetry.in',
+      divison: 'MGR | GPA',
+      images: require('../../../assets/Images/avtar.webp'),
+    },
+    {
+      dept: 'EPP',
+      name: 'MR. Dahal',
+      email: 'mrdahal@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Kunal',
+      email: 'mrKunal@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'CPP',
+      name: 'MR. Amit',
+      email: 'amit@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'ENGG',
+      name: 'MR. Diwas',
+      email: 'diwas@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+    {
+      dept: 'cpp',
+      name: 'MR. Brashant',
+      email: 'Brashant@.codepoetry.in',
+      divison: 'MGR | GPA',
+    },
+  ];
 
   //   const {Birthdays, Tomorow} = route.params;
   const [CurrentPage, setCurrentPage] = useState(0);
@@ -113,7 +113,7 @@ const Birthdays = () => {
     <View style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
-          borderRadius={0}
+          borderRadius={8}
           values={['Today', 'Tomorrow']}
           selectedIndex={CurrentPage}
           onTabPress={index => {
@@ -137,15 +137,35 @@ const Birthdays = () => {
               style={styles.img}
             />
 
-            <View style={{height: '65%', marginTop: 10, marginBottom: '30%'}}>
+            <View style={{height: '67%', marginTop: 10, marginBottom: '30%', }}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={todayBirthdayData}
+                data={ BirthdayData}
                 keyExtractor={item => item.id}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
                     <TouchableOpacity onPress={toggleModal}>
-                      <View style={styles.itemView}>
+                    <View style={styles.itemView}>
+                        <View
+                          style={{
+                            borderRightWidth: 2,
+                            paddingVertical: 8,
+                            width: '20%',
+                          }}>
+                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
+                        </View>
+                        <View
+                          style={{
+                            width: '80%',
+                            paddingVertical: 5,
+                            paddingLeft: 15,
+                          }}>
+                          <Text style>{item.name}</Text>
+                          <Text>{item.email}</Text>
+                          <Text>{item.divison}</Text>
+                        </View>
+                      </View>
+                      {/* <View style={styles.itemView}>
                         <View
                           style={{
                             borderRightWidth: 2,
@@ -165,7 +185,7 @@ const Birthdays = () => {
                           <Text style>{item.name}</Text>
                           <Text>{item.email}</Text>
                         </View>
-                      </View>
+                      </View> */}
 
                       <Modal
                         backdropOpacity={0.1}
@@ -218,13 +238,13 @@ const Birthdays = () => {
                                 {item.email}
                               </Text>
                               <Text style={{color: '#fff', lineHeight: 20}}>
-                                {item.username}
+                                {item.dept}
                               </Text>
                             </View>
                             <View
                               style={{
                                 height: '23%',
-                                marginTop: 12,
+                                marginTop: 5,
                                 // backgroundColor:'yellow',
                                 flexDirection: 'row',
                                 alignSelf: 'center',
@@ -272,10 +292,10 @@ const Birthdays = () => {
           </View>
         ) : (
           <View>
-            <View style={{height: '95%', paddingVertical: 10}}>
+            <View style={{height: '96%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={todayBirthdayData}
+                data={BirthdayData}
                 keyExtractor={item => item.name}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
@@ -323,15 +343,16 @@ const Birthdays = () => {
                               />
                             </TouchableOpacity>
                             <View
-                              style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                width: 150,
-                                height: 150,
-                                borderWidth: 20,
-                                borderColor: '#bd5b5a',
-                                borderRadius: 50,
+                             style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              alignSelf: 'center',
+                              width: 150,
+                              height: 150,
+                              borderWidth: 20,
+                              borderColor: '#bd5b5a',
+                              borderRadius: 60,
+                              marginTop: 30,
                               }}>
                               <Image
                                 source={require('../../../assets/Images/smile.jpg')}
@@ -347,7 +368,7 @@ const Birthdays = () => {
                               <Text style={{color: '#fff'}}>{item.name}</Text>
                               <Text style={{color: '#fff'}}>{item.email}</Text>
                               <Text style={{color: '#fff'}}>
-                                {item.username}
+                                {item.dept}
                               </Text>
                             </View>
                             <View
@@ -359,6 +380,7 @@ const Birthdays = () => {
                               }}>
                               <TouchableOpacity
                                 style={{
+                                 
                                   borderWidth: 1,
                                   width: 40,
                                   height: 40,
@@ -465,6 +487,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2.0,
 
     elevation: 2,
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   modal: {
     flex: 0.39,

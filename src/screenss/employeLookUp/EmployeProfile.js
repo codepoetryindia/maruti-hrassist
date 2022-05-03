@@ -112,10 +112,10 @@ const EmployProfile = ({navigation}) => {
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Text>Check in Details</Text>
            <Ionicons
-            name="chevron-next-outline"
+            name="arrow-forward-outline"
             size={30}
             color={'red'}
-            onPress={() => navigation.goBack()}
+            
           />
              </View>
           </View>
@@ -126,7 +126,7 @@ const EmployProfile = ({navigation}) => {
         style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
         colors={['#2757C3', '#80406A', '#AD3231']}>
          
-            <Text style={{color:'#fff',fontSize:16}}>SUBMIT</Text>
+            <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
           </LinearGradient>
           </TouchableOpacity>
       </View>

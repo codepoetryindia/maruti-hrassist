@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,7 +16,7 @@ import Attendance from './Attendence';
 import Leave from './Leave';
 import Shift from './Shift';
 import HolidayCalendar from './HolidayCalendar';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const FirstRoute = () => <Attendance />;
 const SecondRoute = () => <Leave />;
@@ -24,6 +24,15 @@ const ThirdRoute = () => <Shift />;
 const FourthdRoute = () => <HolidayCalendar />;
 
 const AttendanceAdmin = ({navigation}) => {
+  const [horizental, setHorizental] = useState(false);
+  const [manager, setManager] = useState(false);
+  useEffect(() => {
+    setManager(false);
+  }, []);
+
+  const handelHorizental = () => {
+    setHorizental(!horizental);
+  };
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -44,6 +53,20 @@ const AttendanceAdmin = ({navigation}) => {
         colors={['#2757C3', '#80406A', '#ad3231']}
         style={styles.gradient}>
         <View style={styles.container}>
+        {horizental == true ? (
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: '#fff',
+                position: 'absolute',
+                top: 30,
+                right: 50,
+                zIndex:1000,
+                borderRadius:8
+              }}>
+              <Text>Attendance Percentage</Text>
+            </View>
+          ) : null}
           <View
             style={{
               flexDirection: 'row',
@@ -71,41 +94,86 @@ const AttendanceAdmin = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-           Attendance & Admin
+            Attendance & Admin
           </Text>
-          <TouchableOpacity style={{ marginLeft:'45%'}}>
-          <Ionicons
+
+          {/* <View style={{alignContent:'center'}}> */}
+          <TouchableOpacity
+            style={{marginLeft: '35%'}}
+            onPress={() => {
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }}>
+            <Ionicons
               name="ellipsis-vertical-circle"
               size={25}
               color={'white'}
             />
           </TouchableOpacity>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              width: manager == true ? '50%' : '8%',
+              position: 'absolute',
+              bottom: -5,
+
+              right: -20,
+              alignItems: 'center',
+              backgroundColor: '#23f',
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              paddingVertical: 5,
+            }}>
+            <TouchableOpacity>
+              <Ionicons
+                style={{marginLeft: '5%'}}
+                name="ios-person-circle-outline"
+                size={25}
+                color={'white'}
+                onPress={() => {
+                  manager == true ? setManager(false) : setManager(true);
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{alignSelf: 'center'}}
+              onPress={() => {
+                // navigation.navigate('ManagerMode');
+                navigation.navigate('ManagerMode');
+              }}>
+              {manager == true ? (
+                <Text style={{color: '#fff', marginLeft: 0}}>
+                  Go-To Manager-Mode
+                </Text>
+              ) : null}
+            </TouchableOpacity>
+          </View>
+          {/* </View> */}
         </View>
       </LinearGradient>
+     
       <TabView
-      
         renderTabBar={props => {
           return (
             <LinearGradient
               colors={['#ad3231', '#bd5b5a']}
               style={{marginTop: -1, zIndex: -1}}>
               <TabBar
-              renderLabel={({ route, focused, color }) => (
-                <Text style={{ fontSize:13,color:'#fff' }}>
-                  {route.title}
-                </Text>
-              )}
+                renderLabel={({route, focused, color}) => (
+                  <Text style={{fontSize: 13, color: '#fff'}}>
+                    {route.title}
+                  </Text>
+                )}
                 {...props}
-                style={{backgroundColor: 'transparent', elevation: 0,}}
+                style={{backgroundColor: 'transparent', elevation: 0}}
               />
             </LinearGradient>
-            
           );
         }}
         navigationState={{index, routes}}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{width: layout.width,}}
+        initialLayout={{width: layout.width}}
       />
     </View>
   );
@@ -145,4 +213,3 @@ const styles = StyleSheet.create({
 
 // //make this component available to the app
 export default AttendanceAdmin;
-

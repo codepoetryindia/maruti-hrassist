@@ -47,7 +47,7 @@ const EmployeLookUp = ({navigation}) => {
               name="chevron-back-outline"
               size={25}
               color={'white'}
-              onPress={() => navigation.navigate(Home)}
+              onPress={() => navigation.navigate("Home")}
             />
             <Ionicons
               name="menu-outline"
