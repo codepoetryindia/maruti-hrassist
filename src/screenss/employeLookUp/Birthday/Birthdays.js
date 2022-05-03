@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,31 +7,51 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  StatusBar,
+  Animated,
   Button,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector, useDispatch} from 'react-redux';
-import {todaysBirthday} from '../../../actions/birthdaysAction';
+import Toast from 'react-native-simple-toast'
 // create a component
 const Birthdays = () => {
-  // const {todayBirthdayData} = useSelector(state => {
-  //   console.log('birthday state',state.apitodaysEmployBirthday)
-  //   return state.apitodaysEmployBirthday;
-  // });
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   // dispatch(todaysBirthday());
-  //   // console.log('logged', todayBirthdayData);
-  // }, []);
-
-
+  const PostBirthdayData = data => {
+    setLoader(true);
+    ApiService.PostMethode('/GetEmplBirthday', data, token)
+      .then(result => {
+        setLoader(false);
+        console.log('ApiResult', result);
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [birthdayDetails, setBirthdayDetails] = useState({});
+  const scrollY = useRef(new Animated.Value(0)).current;
 
+  const SPACING = 20;
+  const AVATAR_SIZE = 70;
+  const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -111,6 +131,7 @@ const Birthdays = () => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       <View style={{width: '100%'}}>
         <SegmentedControlTab
           borderRadius={8}
@@ -137,157 +158,168 @@ const Birthdays = () => {
               style={styles.img}
             />
 
-            <View style={{height: '67%', marginTop: 10, marginBottom: '30%', }}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={ BirthdayData}
-                keyExtractor={item => item.id}
-                renderItem={({item}) => (
-                  <View style={{flex: 1}}>
-                    <TouchableOpacity onPress={toggleModal}>
-                    <View style={styles.itemView}>
-                        <View
-                          style={{
-                            borderRightWidth: 2,
-                            paddingVertical: 8,
-                            width: '20%',
-                          }}>
-                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
-                        </View>
-                        <View
-                          style={{
-                            width: '80%',
-                            paddingVertical: 5,
-                            paddingLeft: 15,
-                          }}>
-                          <Text style>{item.name}</Text>
-                          <Text>{item.email}</Text>
-                          <Text>{item.divison}</Text>
-                        </View>
-                      </View>
-                      {/* <View style={styles.itemView}>
-                        <View
-                          style={{
-                            borderRightWidth: 2,
-                            paddingVertical: 8,
-                            width: '20%',
-                          }}>
-                          <Text style={{textAlign: 'center'}}>
-                            {item.username}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            width: '80%',
-                            paddingVertical: 5,
-                            paddingLeft: 15,
-                          }}>
-                          <Text style>{item.name}</Text>
-                          <Text>{item.email}</Text>
-                        </View>
-                      </View> */}
-
-                      <Modal
-                        backdropOpacity={0.1}
-                        animationInTiming={300}
-                        animationIn="zoomInUp"
-                        animationOut="fadeOut"
-                        animationOutTiming={500}
-                        coverScreen={true}
-                        isVisible={isModalVisible}>
-                        <LinearGradient
-                          colors={['#2757C3', '#80406A', '#ad3231']}
-                          style={{flex: 0.53, borderRadius: 15}}>
-                          <View style={styles.modal}>
-                            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
-                              <Feather
-                                name="x-circle"
-                                color={'#000'}
-                                size={20}
-                                onPress={toggleModal}
-                                style={{margin: 10}}
-                              />
-                            </TouchableOpacity>
-                            <View
-                              style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'center',
-                                width: 150,
-                                height: 150,
-                                borderWidth: 20,
-                                borderColor: '#bd5b5a',
-                                borderRadius: 60,
-                                marginTop: 30,
-                              }}>
-                              <Image
-                                source={require('../../../assets/Images/smile.jpg')}
-                                style={styles.profileImg}
-                              />
-                            </View>
-                            <View
-                              style={{
-                                paddingVertical: 15,
-                                alignSelf: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Text style={{color: '#fff', lineHeight: 20}}>
-                                {item.name}
-                              </Text>
-                              <Text style={{color: '#fff', lineHeight: 20}}>
-                                {item.email}
-                              </Text>
-                              <Text style={{color: '#fff', lineHeight: 20}}>
-                                {item.dept}
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                height: '23%',
-                                marginTop: 5,
-                                // backgroundColor:'yellow',
-                                flexDirection: 'row',
-                                alignSelf: 'center',
-                                justifyContent: 'space-around',
-                                width: '50%',
-                                alignItems: 'flex-end',
-                              }}>
-                              <TouchableOpacity
-                                style={{
-                                  borderWidth: 1,
-                                  width: 40,
-                                  height: 40,
-                                  borderColor: '#fff',
-                                  borderRadius: 100,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <Feather name="mail" size={20} color={'#fff'} />
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                style={{
-                                  borderWidth: 1,
-                                  width: 40,
-                                  height: 40,
-                                  borderColor: '#fff',
-                                  borderRadius: 100,
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                }}>
-                                <Feather
-                                  name="phone-call"
-                                  size={20}
-                                  color={'#fff'}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                        </LinearGradient>
-                      </Modal>
-                    </TouchableOpacity>
-                  </View>
+            <View style={{height: '67%', marginTop: 10, marginBottom: '30%'}}>
+              <Animated.FlatList
+                onScroll={Animated.event(
+                  [{nativeEvent: {contentOffset: {y: scrollY}}}],
+                  {useNativeDriver: true},
                 )}
+                showsVerticalScrollIndicator={false}
+                data={BirthdayData}
+                keyExtractor={item => item.id}
+                renderItem={({item, index}) => {
+                  const inputRange = [
+                    -1,
+                    0,
+                    ITEM_SIZE * index,
+                    ITEM_SIZE * (index + 2),
+                  ];
+                  const opacityInputRange = [
+                    -1,
+                    0,
+                    ITEM_SIZE * index,
+                    ITEM_SIZE * (index + 0.7),
+                  ];
+                  const scale = scrollY.interpolate({
+                    inputRange,
+                    outputRange: [1, 1, 1, 0],
+                  });
+                  const opacity = scrollY.interpolate({
+                    inputRange: opacityInputRange,
+                    outputRange: [1, 1, 1, 0],
+                  });
+                  return (
+                    <Animated.View style={{flex: 1}}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          toggleModal();
+                          console.log(item);
+                          setBirthdayDetails(item);
+                        }}>
+                        <View
+                          style={[
+                            styles.itemView,
+                            // {transform: [{scale}], opacity},
+                          ]}>
+                          <View
+                            style={{
+                              borderRightWidth: 2,
+                              paddingVertical: 8,
+                              width: '20%',
+                            }}>
+                            <Text style={{textAlign: 'center'}}>
+                              {item.dept}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              width: '80%',
+                              paddingVertical: 5,
+                              paddingLeft: 15,
+                            }}>
+                            <Text style>{item.name}</Text>
+                            <Text>{item.email}</Text>
+                            <Text>{item.divison}</Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    </Animated.View>
+                  );
+                }}
               />
+              <Modal
+                backdropOpacity={0.1}
+                animationInTiming={300}
+                animationIn="zoomInUp"
+                animationOut="fadeOut"
+                animationOutTiming={500}
+                coverScreen={true}
+                isVisible={isModalVisible}>
+                <LinearGradient
+                  colors={['#2757C3', '#80406A', '#ad3231']}
+                  style={{flex: 0.53, borderRadius: 15}}>
+                  <View style={styles.modal}>
+                    <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+                      <Feather
+                        name="x-circle"
+                        color={'#000'}
+                        size={20}
+                        onPress={toggleModal}
+                        style={{margin: 10}}
+                      />
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        width: 150,
+                        height: 150,
+                        borderWidth: 20,
+                        borderColor: '#bd5b5a',
+                        borderRadius: 60,
+                        marginTop: 30,
+                      }}>
+                      <Image
+                        source={require('../../../assets/Images/smile.jpg')}
+                        style={styles.profileImg}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        paddingVertical: 15,
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text style={{color: '#fff', lineHeight: 20}}>
+                        {birthdayDetails.name}
+                      </Text>
+                      <Text style={{color: '#fff', lineHeight: 20}}>
+                        {birthdayDetails.email}
+                      </Text>
+                      <Text style={{color: '#fff', lineHeight: 20}}>
+                        {birthdayDetails.dept}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        height: '23%',
+                        marginTop: 5,
+                        // backgroundColor:'yellow',
+                        flexDirection: 'row',
+                        alignSelf: 'center',
+                        justifyContent: 'space-around',
+                        width: '50%',
+                        alignItems: 'flex-end',
+                      }}>
+                      <TouchableOpacity
+                        style={{
+                          borderWidth: 1,
+                          width: 40,
+                          height: 40,
+                          borderColor: '#fff',
+                          borderRadius: 100,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Feather name="mail" size={20} color={'#fff'} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          borderWidth: 1,
+                          width: 40,
+                          height: 40,
+                          borderColor: '#fff',
+                          borderRadius: 100,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Feather name="phone-call" size={20} color={'#fff'} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </LinearGradient>
+              </Modal>
             </View>
           </View>
         ) : (
@@ -299,7 +331,11 @@ const Birthdays = () => {
                 keyExtractor={item => item.name}
                 renderItem={({item}) => (
                   <View style={{flex: 1}}>
-                    <TouchableOpacity onPress={toggleModal}>
+                    <TouchableOpacity onPress={() => {
+                      toggleModal()
+                      console.log(item)
+
+                    }}>
                       <View style={styles.itemView}>
                         <View
                           style={{
@@ -343,16 +379,16 @@ const Birthdays = () => {
                               />
                             </TouchableOpacity>
                             <View
-                             style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              alignSelf: 'center',
-                              width: 150,
-                              height: 150,
-                              borderWidth: 20,
-                              borderColor: '#bd5b5a',
-                              borderRadius: 60,
-                              marginTop: 30,
+                              style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                alignSelf: 'center',
+                                width: 150,
+                                height: 150,
+                                borderWidth: 20,
+                                borderColor: '#bd5b5a',
+                                borderRadius: 60,
+                                marginTop: 30,
                               }}>
                               <Image
                                 source={require('../../../assets/Images/smile.jpg')}
@@ -365,11 +401,9 @@ const Birthdays = () => {
                                 alignSelf: 'center',
                                 alignItems: 'center',
                               }}>
-                              <Text style={{color: '#fff'}}>{item.name}</Text>
-                              <Text style={{color: '#fff'}}>{item.email}</Text>
-                              <Text style={{color: '#fff'}}>
-                                {item.dept}
-                              </Text>
+                              <Text style={{color: '#fff'}}>{birthdayDetails.name}</Text>
+                              <Text style={{color: '#fff'}}>{birthdayDetails.email}</Text>
+                              <Text style={{color: '#fff'}}>{birthdayDetails.dept}</Text>
                             </View>
                             <View
                               style={{
@@ -380,7 +414,6 @@ const Birthdays = () => {
                               }}>
                               <TouchableOpacity
                                 style={{
-                                 
                                   borderWidth: 1,
                                   width: 40,
                                   height: 40,

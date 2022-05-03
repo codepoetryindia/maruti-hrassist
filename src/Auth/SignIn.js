@@ -21,7 +21,7 @@ const SignIn = ({navigation}) => {
   const dispatch = useDispatch();
   const handleLogin = data => {
     dispatch(ThunkPostAction('API/Login', data));
-    console.log('apiError', AppData.apiError);
+    console.log('Error for unauthorize', AppData.apiError);
      if(AppData.loader==false){
       Snackbar.show({
         text:AppData.apiError,

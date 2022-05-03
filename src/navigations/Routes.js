@@ -9,7 +9,7 @@ const Routes = () => {
     console.log(' loginToken', state.LoginThunkReducers.token);
     return state.LoginThunkReducers.token;
   });
-  // console.log('token data', token);
+  console.log('token data', token);
 
   // useEffect(() => {
   //   console.log('token', token);

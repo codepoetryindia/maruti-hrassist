@@ -3,24 +3,23 @@ import React, {Component, useEffect} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
-import { useDispatch , useSelector } from 'react-redux';
-import { hospitalData } from '../../actions/hospitalData';
 // create a component
 const Hospital = () => {
 
-  const {hospitalDetails} = useSelector (state => state.apiHospitalDetails);
-  const dispatch = useDispatch();
+  // const {hospitalDetails} = useSelector (state => state.apiHospitalDetails);
+  // const dispatch = useDispatch();
 
-  useEffect(() =>{
-    dispatch(hospitalData());
-  },[]);
+  // useEffect(() =>{
+  //   dispatch(hospitalData());
+  // },[]);
  
   return (
     <View style={styles.container}>
       <View style={styles.itemBox}>
-        <FlatList
+        <Text>HospitalList</Text>
+        {/* <FlatList
           showsVerticalScrollIndicator={false}
-          data={hospitalDetails}
+          // data={hospitalDetails}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View style={styles.box}>
@@ -35,7 +34,7 @@ const Hospital = () => {
               </TouchableOpacity> 
             </View>
           )}
-        />
+        /> */}
         
       </View>
     </View>

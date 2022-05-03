@@ -1,42 +1,40 @@
 //import liraries
 import React, {Component, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {EmergencyContactData} from '../actions/hospitalData';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
 // create a component
 const DoctorsContacts = ({navigation, route}) => {
-  const {emergencyContacts} = useSelector(state => state.apiHospitalDetails);
-  const dispatch = useDispatch();
-  const EmergencyContact = route.params.data;
-  const EMERGRNCY_CONTACTS_API =
-    'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
-  const EMERGRNCY_CONTACTS_API2 =
-    'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
-  const EMERGRNCY_CONTACTS_API3 =
-    'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
-  const EMERGRNCY_CONTACTS_API4 =
-    'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
-  const EMERGRNCY_CONTACTS_API5 =
-    'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
-  useEffect(() => {
-    if (EmergencyContact === 'Doctor') {
-      dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API));
-    } else if (EmergencyContact === 'Vigilance') {
-      dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API2));
-    } else if (EmergencyContact === 'Fire Control') {
-      dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API3));
-    } else if (EmergencyContact === 'Electricity') {
-      dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API4));
-    } else if (EmergencyContact === 'PHOS Cell') {
-      dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API5));
-    }
+  // const {emergencyContacts} = useSelector(state => state.apiHospitalDetails);
+  // const dispatch = useDispatch();
+  // const EmergencyContact = route.params.data;
+  // const EMERGRNCY_CONTACTS_API =
+  //   'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+  // const EMERGRNCY_CONTACTS_API2 =
+  //   'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+  // const EMERGRNCY_CONTACTS_API3 =
+  //   'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+  // const EMERGRNCY_CONTACTS_API4 =
+  //   'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+  // const EMERGRNCY_CONTACTS_API5 =
+  //   'https://mocki.io/v1/9d2b32c2-66a4-451a-bb1e-1398989b63d2';
+  // useEffect(() => {
+  //   if (EmergencyContact === 'Doctor') {
+  //     dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API));
+  //   } else if (EmergencyContact === 'Vigilance') {
+  //     dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API2));
+  //   } else if (EmergencyContact === 'Fire Control') {
+  //     dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API3));
+  //   } else if (EmergencyContact === 'Electricity') {
+  //     dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API4));
+  //   } else if (EmergencyContact === 'PHOS Cell') {
+  //     dispatch(EmergencyContactData(EMERGRNCY_CONTACTS_API5));
+  //   }
 
-    console.log('route data', route.params.data);
-  }, []);
+  //   console.log('route data', route.params.data);
+  // }, []);
   return (
     <View style={styles.container}>
       <LinearGradient

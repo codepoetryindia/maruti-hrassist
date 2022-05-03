@@ -88,7 +88,7 @@ const Leave = () => {
           }
           // client received an error response (5xx, 4xx)
           Toast.show(error.response.data.title);
-        } else if (error.request) {
+        } else if (error) {
           // client never received a response, or request never left
           Toast.show('Network Error');
           // console.log("error.request", error.request._response);

@@ -61,51 +61,6 @@ const TouchableCard = ({navigation}) => {
       name: 'Share App',
       images: require('../assets/Images/share.png'),
     },
-    // {
-    //   id: '10',
-    //   name: 'Hospital & Emergency',
-    //   images: require('../assets/Images/first-aid-kit.png'),
-    // },
-    // {
-    //   id: '11',
-    //   name: 'Canteen Menu',
-    //   images: require('../assets/Images/canteen.png'),
-    // },
-    // {
-    //   id: '12',
-    //   name: 'Visitor Gatepass',
-    //   images: require('../assets/Images/identity-card.png'),
-    // },
-    //  {
-    //    id: '13',
-    //    name: 'Employee Lookup',
-    //    images: require('../assets/Images/group.png'),
-    //  },
-    //  {
-    //    id: '14',
-    //    name: 'Attendance & Admin',
-    //    images: require('../assets/Images/calendar.png'),
-    //  },
-    //  {
-    //    id: '15',
-    //    name: 'Compliances & Benifis',
-    //    images: require('../assets/Images/statistics.png'),
-    //  },
-    //  {
-    //    id: '16',
-    //    name: 'Hospital & Emergency',
-    //    images: require('../assets/Images/first-aid-kit.png'),
-    //  },
-    //  {
-    //    id: '17',
-    //    name: 'Canteen Menu',
-    //    images: require('../assets/Images/canteen.png'),
-    //  },
-    //  {
-    //    id: '18',
-    //    name: 'Visitor Gatepass',
-    //    images: require('../assets/Images/identity-card.png'),
-    //  },
 
   ];
 

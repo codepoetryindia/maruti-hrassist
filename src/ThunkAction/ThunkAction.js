@@ -36,7 +36,8 @@ export const ThunkPostAction = (url, data) => {
     console.log(postUrl);
     console.log('payload', data);
 
-    let response = await axios
+    try {
+      let response = await axios
       .post(postUrl, JSON.stringify(data), {
         method: 'POST',
         headers: {
@@ -44,29 +45,29 @@ export const ThunkPostAction = (url, data) => {
           'Content-Type': 'application/json',
         },
       })
-      .catch(error => {
-        if (error.response) {
-          console.log('You Are ', error.response.data.title);
-          dispatch(callApi(null, false, error.response.data.title));
-        } else if (error.request) {
-          console.log('Network Error');
-          dispatch(callApi(null, false, 'Network Error'));
-        } else {
-          console.log('Something Went Wrong');
-          dispatch(callApi(null, false, 'Something Went Wrong'));
-        }
-        console.log('api Erorr: ', error.response.data.title);
-        // throw handleError(err, dispatch);
-      });
-
-    console.log('Result', response);
-    dispatch(
-      callApi(
-        response.data.token,
-        false,
-        response.data.title == undefined ? '' : response.data.title,
-      ),
-    );
+      console.log('Api response',response);
+      dispatch(
+        callApi(
+          response.data.token,
+          false,
+          response.data.title == undefined ? '' : response.data.title,
+        ),
+      );
+    } catch (error) {
+      if (error.response) {
+        console.log('error occured ', error.response.data.title);
+        dispatch(callApi(null, false, error.response.data.title));
+      } else if (error.request) {
+        console.log('Network Error');
+        dispatch(callApi(null, false, 'Network Error'));
+      } else {
+        console.log('Something Went Wrong');
+        dispatch(callApi(null, false, 'Something Went Wrong'));
+      }
+      console.log('api Erorr: ', error.response.data.title);
+      dispatch(callApi(null, false, error.response.data.title));
+    }
+   
   };
 };
 
