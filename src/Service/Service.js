@@ -9,7 +9,7 @@ export const Post = async (url, data) => {
     let res = await axios.post(PostUrl, data, {
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        
       },
     });
     return res.data;

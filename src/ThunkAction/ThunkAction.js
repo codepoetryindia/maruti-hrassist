@@ -1,34 +1,6 @@
 import {LOGIN_USER, GET_LOGIN_DATA, LOGOUT_USER} from '../actions/actionTypes';
 import axios from 'axios';
 import {API_SERVICES_URL, API_BASE_URL} from '../API/Api';
-
-// export const ThunkAction = url => {
-//   return async function (dispatch) {
-//     dispatch(
-//       callApi(
-//         {
-//           userId: null,
-//           token: null,
-//         },
-//         true,
-
-//       ),
-//     );
-//     // return;
-//     let postUrl = API_SERVICES_URL + url;
-//     try {
-//       let res = await axios.get(postUrl, {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Accept: 'application/json',
-//         },
-//       });
-//       dispatch(setLoginData(res.data, false));
-//     } catch (error) {
-//       throw handleError(error);
-//     }
-//   };
-// };
 export const ThunkPostAction = (url, data) => {
   return async function (dispatch) {
     dispatch(callApi(null, true, ''));
@@ -70,16 +42,6 @@ export const ThunkPostAction = (url, data) => {
    
   };
 };
-
-// function handleError(err, dispatch) {
-//   let error = err;
-//   if (err.response && err.response.data.hasOwnProperty('message')) {
-//     error = err.response.data;
-//     dispatch(callApi(null, false, error));
-//   } else if (!err.hasOwnProperty('message')) error = err.toJSON();
-//   dispatch(callApi(null, false, new Error(error.message)));
-//   return;
-// }
 
 export const callApi = (data, loder,error) => {
   console.log('payload data', data);
