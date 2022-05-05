@@ -71,8 +71,9 @@ const Leave = () => {
       loader: state.AllApiReducer.isLoading,
     };
   });
-
+// console.log('Token', state.LoginThunkReducers.token);
   const PostSubmitLeave = data => {
+    console.log('post data' , data);
     setLoader(true);
     ApiService.PostMethode('/SubmitLeave', data, token)
       .then(result => {
