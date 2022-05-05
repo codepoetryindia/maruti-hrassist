@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef,useContext} from 'react';
 import {
   View,
   Text,
@@ -9,21 +9,49 @@ import {
   TouchableOpacity,
   StatusBar,
   Animated,
-  Button,
+  ActivityIndicator
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../../Utils/Utils';
+import AuthContext from '../../../context/AuthContext'
 // create a component
 const Birthdays = () => {
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [birthdayDetails, setBirthdayDetails] = useState({});
+  const [loader, setLoader] = useState(false)
+  const [todayBirthday,setTodayBirthday]= useState ([])
+  const [tomorrowBirthday,SetTomorrowBirthday]= useState ([])
+  
   const PostBirthdayData = data => {
+    let apiData= {PFlag:''}
+    let token = AppUserData.token
+    console.log(apiData)
     setLoader(true);
-    ApiService.PostMethode('/GetEmplBirthday', data, token)
+    ApiService.PostMethode('/GetEmplBirthday', apiData, token)
       .then(result => {
         setLoader(false);
         console.log('ApiResult', result);
+        let ApiValue = result.Value
+        console.log('Todays', ApiValue)
+        setBirthdayDetails(ApiValue)
+        // let splitedValue = ApiValue[0].BIRTHDATE
+        // let getValue = splitedValue(2)
+        // console.log("getValue",splitedValue)
+        ApiValue.filter((Element) => {
+          let todayResult = Element.BIRTHDATE.includes("TODAY");
+          let tommorowResult = Element.BIRTHDATE.includes("TOMORROW");
+          if (todayResult) {
+            setTodayBirthday(Element)
+          }
+          else if (tommorowResult){
+            SetTomorrowBirthday(Element)
+          }
+        })
       })
       .catch(error => {
         setLoader(false);
@@ -44,9 +72,13 @@ const Birthdays = () => {
         }
       });
   };
-
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [birthdayDetails, setBirthdayDetails] = useState({});
+  console.log("tod",todayBirthday)
+  console.log("tom",tomorrowBirthday)
+  useEffect(() => {
+    PostBirthdayData()
+   
+  }, [])
+  
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const SPACING = 20;
@@ -55,73 +87,73 @@ const Birthdays = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const BirthdayData = [
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/smile.jpg'),
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-      images: require('../../../assets/Images/avtar.webp'),
-    },
-    {
-      dept: 'EPP',
-      name: 'MR. Dahal',
-      email: 'mrdahal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Kunal',
-      email: 'mrKunal@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'CPP',
-      name: 'MR. Amit',
-      email: 'amit@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'ENGG',
-      name: 'MR. Diwas',
-      email: 'diwas@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-    {
-      dept: 'cpp',
-      name: 'MR. Brashant',
-      email: 'Brashant@.codepoetry.in',
-      divison: 'MGR | GPA',
-    },
-  ];
+  // const BirthdayData = [
+  //   {
+  //     dept: 'EPP',
+  //     name: 'MR. Dahal',
+  //     email: 'mrdahal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/smile.jpg'),
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Kunal',
+  //     email: 'mrKunal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'CPP',
+  //     name: 'MR. Amit',
+  //     email: 'amit@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/smile.jpg'),
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Diwas',
+  //     email: 'diwas@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'cpp',
+  //     name: 'MR. Brashant',
+  //     email: 'Brashant@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //     images: require('../../../assets/Images/avtar.webp'),
+  //   },
+  //   {
+  //     dept: 'EPP',
+  //     name: 'MR. Dahal',
+  //     email: 'mrdahal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Kunal',
+  //     email: 'mrKunal@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'CPP',
+  //     name: 'MR. Amit',
+  //     email: 'amit@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'ENGG',
+  //     name: 'MR. Diwas',
+  //     email: 'diwas@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  //   {
+  //     dept: 'cpp',
+  //     name: 'MR. Brashant',
+  //     email: 'Brashant@.codepoetry.in',
+  //     divison: 'MGR | GPA',
+  //   },
+  // ];
 
   //   const {Birthdays, Tomorow} = route.params;
   const [CurrentPage, setCurrentPage] = useState(0);
@@ -130,6 +162,14 @@ const Birthdays = () => {
     setCurrentPage(index);
   };
   return (
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='red' size={30} />
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    ) : (
     <View style={styles.container}>
       <StatusBar hidden />
       <View style={{width: '100%'}}>
@@ -165,29 +205,29 @@ const Birthdays = () => {
                   {useNativeDriver: true},
                 )}
                 showsVerticalScrollIndicator={false}
-                data={BirthdayData}
-                keyExtractor={item => item.id}
+                data={birthdayDetails}
+                keyExtractor={({ item, index }) => index}
                 renderItem={({item, index}) => {
-                  const inputRange = [
-                    -1,
-                    0,
-                    ITEM_SIZE * index,
-                    ITEM_SIZE * (index + 2),
-                  ];
-                  const opacityInputRange = [
-                    -1,
-                    0,
-                    ITEM_SIZE * index,
-                    ITEM_SIZE * (index + 0.7),
-                  ];
-                  const scale = scrollY.interpolate({
-                    inputRange,
-                    outputRange: [1, 1, 1, 0],
-                  });
-                  const opacity = scrollY.interpolate({
-                    inputRange: opacityInputRange,
-                    outputRange: [1, 1, 1, 0],
-                  });
+                  // const inputRange = [
+                  //   -1,
+                  //   0,
+                  //   ITEM_SIZE * index,
+                  //   ITEM_SIZE * (index + 2),
+                  // ];
+                  // const opacityInputRange = [
+                  //   -1,
+                  //   0,
+                  //   ITEM_SIZE * index,
+                  //   ITEM_SIZE * (index + 0.7),
+                  // ];
+                  // const scale = scrollY.interpolate({
+                  //   inputRange,
+                  //   outputRange: [1, 1, 1, 0],
+                  // });
+                  // const opacity = scrollY.interpolate({
+                  //   inputRange: opacityInputRange,
+                  //   outputRange: [1, 1, 1, 0],
+                  // });
                   return (
                     <Animated.View style={{flex: 1}}>
                       <TouchableOpacity
@@ -208,7 +248,7 @@ const Birthdays = () => {
                               width: '20%',
                             }}>
                             <Text style={{textAlign: 'center'}}>
-                              {item.dept}
+                              {item.DIRC_CODE}
                             </Text>
                           </View>
                           <View
@@ -217,9 +257,9 @@ const Birthdays = () => {
                               paddingVertical: 5,
                               paddingLeft: 15,
                             }}>
-                            <Text style>{item.name}</Text>
-                            <Text>{item.email}</Text>
-                            <Text>{item.divison}</Text>
+                            <Text>{item.Name}</Text>
+                            <Text>{item.Email}</Text>
+                            <Text>{item.Dept}</Text>
                           </View>
                         </View>
                       </TouchableOpacity>
@@ -327,9 +367,9 @@ const Birthdays = () => {
             <View style={{height: '96%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={BirthdayData}
-                keyExtractor={item => item.name}
-                renderItem={({item}) => (
+                data={birthdayDetails}
+                keyExtractor={({ item, index }) => index}
+                renderItem={({item,index}) => (
                   <View style={{flex: 1}}>
                     <TouchableOpacity onPress={() => {
                       toggleModal()
@@ -343,7 +383,7 @@ const Birthdays = () => {
                             paddingVertical: 8,
                             width: '20%',
                           }}>
-                          <Text style={{textAlign: 'center'}}>{item.dept}</Text>
+                          <Text style={{textAlign: 'center'}}>{item.DIRC_CODE}</Text>
                         </View>
                         <View
                           style={{
@@ -351,9 +391,9 @@ const Birthdays = () => {
                             paddingVertical: 5,
                             paddingLeft: 15,
                           }}>
-                          <Text style>{item.name}</Text>
-                          <Text>{item.email}</Text>
-                          <Text>{item.divison}</Text>
+                          <Text style>{item.Name}</Text>
+                          <Text>{item.Email}</Text>
+                          <Text>{item.Dept}</Text>
                         </View>
                       </View>
 
@@ -453,6 +493,7 @@ const Birthdays = () => {
         )}
       </View>
     </View>
+    )
   );
 };
 

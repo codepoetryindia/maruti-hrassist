@@ -12,7 +12,7 @@ export const PostMethode =  async(url , data , token) => {
                 authToken : token,
             }
         })
-        console.log("Api resp",response)
+        // console.log("Api resp",response)
         return response.data;
     } catch (error) {
         throw handleError(error)

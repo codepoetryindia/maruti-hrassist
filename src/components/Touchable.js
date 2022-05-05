@@ -75,7 +75,7 @@ const TouchableCard = ({navigation}) => {
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.card} onPress = {() =>{
               if(item.name==='Employee Lookup') {
-                navigation.navigate('EmployeLookUp');
+                navigation.navigate('EmployeeNavs');
               }
               else if(item.name==='Attendance & Admin') {
                 navigation.navigate('AttendanceAdmin');
@@ -84,7 +84,7 @@ const TouchableCard = ({navigation}) => {
                 navigation.navigate('CompensationBenifits');
               }
               else if(item.name==='Hospital & Emergency') {
-                navigation.navigate('EmergencyHospital');
+                navigation.navigate('HospitalNavs');
               }
               else if(item.name==='Canteen Menu') {
                 navigation.navigate('Canteen');

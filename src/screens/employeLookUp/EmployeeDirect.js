@@ -1,86 +1,140 @@
 //import liraries
-import React, {useEffect,useState} from 'react';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState, useContext, } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
-import {useDispatch, useSelector} from 'react-redux';
+import AuthContext from '../../context/AuthContext'
 import { ActivityIndicator } from 'react-native-paper';
 // create a component
 const EmployeeDirect = () => {
-  const [search,setSearch] = useState ('')
-  const [loader,setLoader]= useState(false)
-  const [searchedData,setSearchData]= useState([])
+  const [search, setSearch] = useState('')
+  const [loader, setLoader] = useState(false)
+  const [searchedData, setSearchedData] = useState([])
+  const { authContext, AppUserData } = useContext(AuthContext);
+  useEffect(() => {
+    console.log("use", AppUserData)
+  }, [])
 
-  const token = useSelector(state => {
-    return {
-      token: state.LoginThunkReducers.token,
-    };
-  });
   const SearchEmployee = () => {
-    console.log('post data' , search);
-    if(search === ''){
+    console.log('post data', search);
+    if (search === '') {
       alert("please enter a valid keyWord ")
       return
-    } else{
+    } else {
       let apiData = {
-        Search:search
+        Search: search
       }
+      let token = AppUserData.token
       setLoader(true);
-    ApiService.PostMethode('/GetEmplLookup', apiData, token)
-      .then(result => {
-        setLoader(false);
-        console.log('ApiResult', result);
-      })
-      .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
+      ApiService.PostMethode('/GetEmplLookup', apiData, token)
+        .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value
+          setSearchedData(responseData)
+          // console.log('responseData', responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
           }
-          Toast.show(error.response.data.title);
-        } else if (error) {
-          Toast.show('Network Error');
-        } else {
-          Toast.show('Something Went Wrong');
-        }
-      });
+        });
     }
   };
+  const emptyList = () => {
+    setSearch('')
+  }
+
+  // console.log('searchedData',searchedData)
   return (
-    loader ==true ? (
-      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <ActivityIndicator color='red'size={30}/>
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='red' size={30} />
         <Text>
           Loading...
         </Text>
       </View>
-    ):(
-    <View style={styles.container}>
-      <View style={styles.searchSection}>
-        <Ionicons
-          style={styles.searchIcon}
-          name="ios-search"
-          size={20}
-          color="#2757C3"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Search By Name/Dept/Staff ID"
-          value={search}
-          onChangeText={(data) => {setSearch(data)}}
-        />
-        <TouchableOpacity onPress={() => {SearchEmployee()}}>
-        <Ionicons
-          style={styles.searchIcon}
-          name="send"
-          size={20}
-          color="#2757C3"
-        />
-        </TouchableOpacity>
+    ) : (
+      <View style={styles.container}>
+        <View style={styles.searchSection}>
+          <Ionicons
+            style={styles.searchIcon}
+            name="ios-search"
+            size={20}
+            color="#2757C3"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Search By Name/Dept/Staff ID"
+            value={search}
+            onChangeText={(data) => { setSearch(data) }}
+          />
+          <TouchableOpacity onPress={() => { SearchEmployee() }}>
+            <Ionicons
+              style={[styles.searchIcon,{marginLeft: search==''? 35:null}]}
+              name="send"
+              size={20}
+              color="#2757C3"
+            />
+          </TouchableOpacity>
+          {search !== '' ? (
+            <TouchableOpacity onPress={() => { emptyList() }}>
+              <Ionicons
+                style={styles.searchIcon}
+                name="close-circle-outline"
+                size={20}
+                color="#2757C3"
+              />
+            </TouchableOpacity>
+          ) : null}
+        </View>
+        {searchedData.length > 0 ? (
+          <FlatList
+            style={{ height: '70%', marginTop: 15 }}
+            data={searchedData}
+            keyExtractor={({ item, index }) => index}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity style={styles.FlatListData}>
+                <Ionicons
+                  style={styles.searchIcon}
+                  name="person-circle-outline"
+                  size={25}
+                  color="#2757C3"
+                />
+                <View style={{ flexDirection: 'column', width: '70%' }}>
+                  <Text style={{ fontSize: 16 }}>
+                    {item.Name}
+                  </Text>
+                  <Text>
+                    {item.Desg} , {item.Dept} ({item['Staff No']})
+                  </Text>
+                </View>
+                <TouchableOpacity>
+                  <Ionicons
+                    style={styles.searchIcon}
+                    name="chevron-forward-circle-outline"
+                    size={25}
+                    color="#2757C3"
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            )}
+          />
+        ) : (<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Text>data not found</Text>
+        </View>)
+        }
       </View>
-    </View>
     )
   );
 };
@@ -92,6 +146,7 @@ const styles = StyleSheet.create({
   },
   searchSection: {
     top: 10,
+    backgroundColor: '#fff',
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -107,14 +162,29 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   input: {
-    width: '77%',
+    width: '67%',
     paddingTop: 10,
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
     backgroundColor: '#fff',
-    
   },
+  FlatListData: {
+    width: '90%',
+    borderWidth: 1,
+    borderTopColor: '#80406A',
+    borderStartColor: '#ad3231',
+    borderBottomColor: '#2757C3',
+    borderEndColor: '#ad3231',
+    borderRadius: 7,
+    flexDirection: 'row',
+    margin: 3,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 5,
+    marginTop: 5
+  }
 });
 
 //make this component available to the app
