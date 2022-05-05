@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EmergencyHospital from '../screenss/EmergencyAndHospital/Emergency&Hospital';
-import EmergencyContacts from '../screenss/EmergencyAndHospital/EmergencyContact';
-import Hospital from '../screenss/EmergencyAndHospital/Hospital';
-import NearByHospital from '../screenss/EmergencyAndHospital/NearByHospital';
+import EmergencyHospital from '../screens/EmergencyAndHospital/Emergency&Hospital';
+import EmergencyContacts from '../screens/EmergencyAndHospital/EmergencyContact';
+import Hospital from '../screens/EmergencyAndHospital/Hospital';
+import NearByHospital from '../screens/EmergencyAndHospital/NearByHospital';
 import DoctorsContacts from '../components/DoctorsContacts';
 
 const Stack = createNativeStackNavigator();

@@ -2,9 +2,9 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 import Material from 'react-native-vector-icons/MaterialIcons';
-import Home from '../screenss/Home';
-import Gatepass from '../screenss/Gatspass/Gatepass';
-import More from '../screenss/More';
+import Home from '../screens/Home';
+import Gatepass from '../screens/Gatspass/Gatepass';
+import More from '../screens/More';
 import LinearGradient from 'react-native-linear-gradient';
 import AttendanceAdminNav from './AttendanceAdminNav';
 

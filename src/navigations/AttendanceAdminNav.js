@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AttendanceAdmin from '../screenss/Attendance/Attendance&Admin';
-import ManagerMode from '../screenss/Attendance/ManagerMode';
+import AttendanceAdmin from '../screens/Attendance/Attendance&Admin';
+import ManagerMode from '../screens/Attendance/ManagerMode';
 
 const Stack = createNativeStackNavigator();
 

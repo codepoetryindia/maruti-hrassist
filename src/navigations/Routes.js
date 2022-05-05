@@ -20,7 +20,6 @@ const Routes = () => {
     isLoading: true,
     isSignOut: false,
     userToken: null,
-    userData: null,
   };
   let options = {AppUserData, setAppUserData};
 
@@ -32,7 +31,6 @@ const Routes = () => {
           isSignOut: false,
           userToken: action.payload.token,
           isLoading: false,
-          userData: action.payload.user,
         };
         break;
 
@@ -43,7 +41,6 @@ const Routes = () => {
           isSignOut: false,
           userToken: action.payload.token,
           isLoading: false,
-          userData: action.payload.user,
         };
       case 'LOGOUT':
         return {
@@ -51,7 +48,7 @@ const Routes = () => {
           isSignOut: true,
           userToken: null,
           isLoading: false,
-          userData: null,
+    
         };
       default:
         return prevState;
@@ -164,12 +161,6 @@ const Routes = () => {
       </AuthContext.Provider>
     );
   }
-  // return (
-  //   <NavigationContainer>
-  //     {/* {token == null ? <AuthNavigator /> : <MyDrawer />} */}
-  //     <AuthNavigator />
-  //   </NavigationContainer>
-  // );
 };
 
 export default Routes;

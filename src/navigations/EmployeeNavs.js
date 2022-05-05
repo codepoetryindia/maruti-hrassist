@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EmployeeDirect from '../screenss/employeLookUp/EmployeeDirect';
-import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
-import Birthdays from '../screenss/employeLookUp/Birthday/Birthdays';
+import EmployeeDirect from '../screens/employeLookUp/EmployeeDirect';
+import EmployeLookUp from '../screens/employeLookUp/EmployeLookUp';
+import Birthdays from '../screens/employeLookUp/Birthday/Birthdays';
 const Stack = createNativeStackNavigator();
 
 function EmployeeNavs() {
