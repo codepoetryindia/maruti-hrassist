@@ -1,3 +1,5 @@
+'#2757C3', '#80406A', '#AD3231';
+
 // //import liraries
 // import React, {useEffect, useState} from 'react';
 // import {
@@ -358,8 +360,6 @@
 
 // //make this component available to the app
 // export default SignIn;
-
-
 
 // export const ThunkPostAction = (url, data)=> dispatch => {
 //   dispatch({ type: LOAD_USERS_LOADING });

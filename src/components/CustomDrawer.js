@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -12,36 +12,49 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import Share from 'react-native-share';
+import AuthContext from '../context/AuthContext';
 
 // import SignIn from '../Auth/SignIn';
-import { useDispatch } from 'react-redux';
-import { logoutAction} from "../ThunkAction/ThunkAction";
 
-const myCustomeSharing =async () =>{
+const myCustomeSharing = async () => {
   const shareOption = {
-    message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
+    message:
+      'install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors',
+  };
+  try {
+    const shareResponse = await Share.open(shareOption);
+  } catch (error) {
+    console.log('error', error);
   }
-  try {const shareResponse = await Share.open(shareOption);}
-  catch(error){
-    console.log('error',error);
-}
-}
+};
 
 function CustomDrawer(props) {
-  const dispatch = useDispatch();
-  const handleLogout = (data) =>{
-   dispatch (logoutAction(data))
-  
-  }
-
+  const {authContext, AppUserData} = useContext(AuthContext);
+  const LogOutAlertOccurred = (title, body, btnTxt, btnTxt2) => {
+    Alert.alert(title, body, [
+      {
+        text: btnTxt,
+        onPress: () => {
+          authContext.signOut();
+        },
+      },
+      {
+        text: btnTxt2,
+        onPress: () => {
+          console.log('No Pressed');
+        },
+      },
+    ]);
+  };
   const {navigation} = props;
   return (
     <>
-      <DrawerContentScrollView style={{backgroundColor: '#ffffff',}} {...props}>
+      <DrawerContentScrollView style={{backgroundColor: '#ffffff'}} {...props}>
         <LinearGradient
           colors={['#2757C3', '#80406A', '#AD3231']}
           style={styles.gradient}>
@@ -59,7 +72,10 @@ function CustomDrawer(props) {
             <View>
               <Text style={styles.text}>Mrs. Adams Parker</Text>
               <Text style={styles.text}>MIT</Text>
-              <TouchableOpacity onPress={() => {navigation.navigate("EmployProfile")}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('EmployProfile');
+                }}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
                 </Text>
@@ -76,10 +92,10 @@ function CustomDrawer(props) {
           </View>
         </LinearGradient>
         <View style={styles.container}>
-          <ScrollView style={{height:730}}>
+          <ScrollView style={{height: 730}}>
             <DrawerItem
               label="Home"
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate('Home')}
               icon={({color, size}) => (
                 // <Icon
                 // name='home' color={'black'} size={20}/>
@@ -97,16 +113,16 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                source={require('../assets/Images/group.png')}
-                style={styles.icon}
-              />
+                  source={require('../assets/Images/group.png')}
+                  style={styles.icon}
+                />
               )}
               style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
             />
 
             <DrawerItem
               label="Attendance & Admin"
-              onPress={() => navigation.navigate("AttendanceAdmin")}
+              onPress={() => navigation.navigate('AttendanceAdmin')}
               icon={({color, size}) => (
                 //   <Foundation
                 //   name='torsos-all' color={'black'} size={20}/>
@@ -119,7 +135,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Compensatino and Benifits"
-              onPress={() => navigation.navigate("CompensationBenifits")}
+              onPress={() => navigation.navigate('CompensationBenifits')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -131,7 +147,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Hospital & Emergency"
-              onPress={() => navigation.navigate("HospitalNavs")}
+              onPress={() => navigation.navigate('HospitalNavs')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -144,7 +160,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Canteen Menu"
-              onPress={() => navigation.navigate("Canteen")}
+              onPress={() => navigation.navigate('Canteen')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -157,7 +173,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Other Mobile Apps"
-              onPress={() => navigation.navigate("More")}
+              onPress={() => navigation.navigate('More')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -169,7 +185,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Visitor Gatepass"
-              onPress={() => navigation.navigate("Gatepass")}
+              onPress={() => navigation.navigate('Gatepass')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -181,7 +197,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Buisness Travel"
-              onPress={() => navigation.navigate("BuisnessTravel")}
+              onPress={() => navigation.navigate('BuisnessTravel')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -193,7 +209,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Share App"
-              onPress={() =>myCustomeSharing()}
+              onPress={() => myCustomeSharing()}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -206,7 +222,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="App Tutorial"
-              onPress={() => navigation.navigate("More")}
+              onPress={() => navigation.navigate('More')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
@@ -218,7 +234,9 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="LogOut"
-              onPress={() =>{handleLogout()}}
+              onPress={() => {
+                LogOutAlertOccurred('Warning', 'Are You Sure?', 'yes', 'No');
+              }}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

@@ -1,5 +1,5 @@
 //import liraries
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -13,41 +13,48 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch, useSelector} from 'react-redux';
-import {ThunkPostAction} from '../ThunkAction/ThunkAction';
-import Snackbar from 'react-native-snackbar';
+import AuthService from '../Service/AuthService';
+import AuthContext from '../context/AuthContext';
 
 const SignIn = ({navigation}) => {
-  const dispatch = useDispatch();
-  const handleLogin = data => {
-    dispatch(ThunkPostAction('API/Login', data));
-    console.log('Error for unauthorize', AppData.apiError);
-     if(AppData.loader==false){
-      Snackbar.show({
-        text:AppData.apiError,
-        duration: Snackbar.LENGTH_LONG,
+  const {authContext, AppUserData} = useContext(AuthContext);
+  const [showPass, setShowPass] = useState(true);
+  const [Loader, setLoader] = useState(false);
+
+  const handleLogin = values => {
+    setLoader(true);
+    let data = {
+      UserName: values.UserName,
+      Password: values.Password,
+    };
+
+    console.log('api data', data);
+    AuthService.Post('Login', data)
+      .then(res => {
+        console.log('user Response', res);
+        authContext.signIn({
+          payload: res.token,
+        });
+        setLoader(false);
+      })
+      .catch(error => {
+        setLoader(false);
+        // return;
+        console.log('response data', JSON.stringify(error));
+        if (error.response) {
+          // client received an error response (5xx, 4xx)
+          console.log(error.response.data.error.message);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          console.log('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          console.log('Something Went Wrong');
+        }
       });
-     }
-     else{
-       return
-     }
-    // dispatch(ThunkPostAction('192.168.0.163:5000/api/users/login', data));
   };
 
-  useEffect(() => {
-    console.log(AppData);
-  }, []);
-
-  const AppData = useSelector(state => {
-    console.log('state of Current Redux', state.LoginThunkReducers);
-
-    return {
-      // userData: state.LoginThunkReducers.loginUserDetail,
-      loader: state.LoginThunkReducers.isLoading,
-      apiError: state.LoginThunkReducers.error,
-    };
-  });
-  const [showPass, setShowPass] = useState(true);
   const loginValidationSchema = yup.object().shape({
     UserName: yup
       .string()
@@ -60,223 +67,242 @@ const SignIn = ({navigation}) => {
       .required('Password is required'),
   });
 
-  return AppData.loader == true ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size={30} color="red" />
-      <Text>Loading ...</Text>
-    </View>
-  ) 
-   : (
+  return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={['#2757C3', '#80406A', '#ad3231']}
-        style={styles.gradient}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={require('../assets/Images/logoo.png')}
-            style={{width: '20%', height: 75, resizeMode: 'cover'}}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            paddingVertical: 8,
-            justifyContent: 'space-between',
-          }}>
+      {Loader == true ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} color={'#80406A'} />
           <Text
             style={{
-              fontSize: 30,
-              color: '#fff',
+              fontSize: 16,
+              color: '#000',
               fontWeight: 'bold',
+              marginVertical: 10,
             }}>
-            Welcome !
+            Loading ...
           </Text>
         </View>
-        <Text
-          style={{
-            fontSize: 30,
-            color: '#fff',
-            alignSelf: 'center',
-            letterSpacing: 1,
-            fontFamily: 'Montserrat-Bold',
-          }}>
-          In <Text style={{fontSize: 40, color: '#f7ebea'}}>M</Text>aruti
-          <Text style={{fontSize: 40, color: '#f7ebea'}}> S</Text>uzuki
-        </Text>
-      </LinearGradient>
-
-      <Formik
-        validationSchema={loginValidationSchema}
-        initialValues={{UserName: '', Password: ''}}
-        onSubmit={values => {
-          // console.log("values",values)
-          handleLogin(values);
-        }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          isValid,
-        }) => (
-          <View style={styles.login}>
-            <Image
-              source={require('../assets/Images/login2.png')}
+      ) : (
+        <View style={styles.container}>
+          <LinearGradient
+            colors={['#2757C3', '#80406A', '#ad3231']}
+            style={styles.gradient}>
+            <View
               style={{
-                width: '60%',
-                height: '50%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../assets/Images/logoo.png')}
+                style={{width: '20%', height: 75, resizeMode: 'cover'}}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
                 alignSelf: 'center',
-                top: 25,
-                resizeMode: 'contain',
-              }}
-            />
-            <View style={{paddingTop: 20}}>
-              <View style={{paddingVertical: 10}}>
-                <View
+                paddingVertical: 8,
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={{
+                  fontSize: 30,
+                  color: '#fff',
+                  fontWeight: 'bold',
+                }}>
+                Welcome !
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: 30,
+                color: '#fff',
+                alignSelf: 'center',
+                letterSpacing: 1,
+                fontFamily: 'Montserrat-Bold',
+              }}>
+              In <Text style={{fontSize: 40, color: '#f7ebea'}}>M</Text>aruti
+              <Text style={{fontSize: 40, color: '#f7ebea'}}> S</Text>uzuki
+            </Text>
+          </LinearGradient>
+
+          <Formik
+            validationSchema={loginValidationSchema}
+            initialValues={{UserName: '', Password: ''}}
+            onSubmit={values => {
+              // console.log("values",values)
+              handleLogin(values);
+            }}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isValid,
+            }) => (
+              <View style={styles.login}>
+                <Image
+                  source={require('../assets/Images/login2.png')}
                   style={{
-                    width: '90%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 10,
-                    padding: 5,
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
-                    alignItems: 'center',
+                    width: '60%',
+                    height: '50%',
                     alignSelf: 'center',
-                    margin: 8,
-                    borderRadius: 8,
-                  }}>
-                  <Ionicons name="person-circle" size={25} color={'#ad3231'} />
-                  <TextInput
-                    placeholder="Login Id"
-                    secureTextEntry={false}
-                    onChangeText={handleChange('UserName')}
-                    onBlur={handleBlur('UserName')}
-                    value={values.UserName}
-                    style={{
-                      width: '90%',
-                      alignSelf: 'center',
-                      marginVertical: -2,
-                      paddingVertical: 10,
-                    }}
-                  />
-                </View>
-                {errors.UserName && touched.UserName && (
-                  <View
-                    style={{
-                      width: '90%',
-                      alignSelf: 'center',
-                      paddingVertical: 2,
-                    }}>
-                    <Text style={{fontSize: 12, color: 'red'}}>
-                      {errors.UserName}
-                    </Text>
-                  </View>
-                )}
-                <View
-                  style={{
-                    width: '90%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    padding: 5,
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    borderRadius: 8,
-                    margin: 8,
-                  }}>
-                  <Ionicons name="lock-closed" size={25} color={'#ad3231'} />
-                  <TextInput
-                    placeholder="Password"
-                    secureTextEntry={showPass}
-                    onChangeText={handleChange('Password')}
-                    onBlur={handleBlur('Password')}
-                    value={values.Password}
-                    style={{
-                      width: '80%',
-                      alignSelf: 'center',
-                      marginVertical: -2,
-                      paddingVertical: 10,
-                    }}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (showPass == false) {
-                        setShowPass(true);
-                      } else {
-                        setShowPass(false);
-                      }
-                    }}>
-                    {showPass == true ? (
-                      <Ionicons name="eye-off" size={25} color={'#000'} />
-                    ) : (
-                      <Ionicons name="eye" size={25} color={'#000'} />
-                    )}
-                  </TouchableOpacity>
-                </View>
-                {errors.Password && touched.Password && (
-                  <View
-                    style={{
-                      width: '90%',
-                      alignSelf: 'center',
-                      paddingVertical: 2,
-                    }}>
-                    <Text style={{fontSize: 12, color: 'red'}}>
-                      {errors.Password}
-                    </Text>
-                  </View>
-                )}
-                <View style={{paddingVertical: 10}}>
-                  <LinearGradient
-                    style={{
-                      margin: 5,
-                      borderRadius: 8,
-                      width: '90%',
-                      alignSelf: 'center',
-                    }}
-                    colors={['#2757C3', '#80406A', '#ad3231']}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleSubmit();
-                      }}
+                    top: 25,
+                    resizeMode: 'contain',
+                  }}
+                />
+                <View style={{paddingTop: 20}}>
+                  <View style={{paddingVertical: 10}}>
+                    <View
                       style={{
-                        width: '100%',
-                        paddingVertical: 10,
+                        width: '90%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 10,
+                        padding: 5,
+                        borderWidth: 1,
+                        borderTopColor: '#80406A',
+                        borderStartColor: '#ad3231',
+                        borderBottomColor: '#2757C3',
+                        borderEndColor: '#ad3231',
                         alignItems: 'center',
-                        marginTop: 5,
+                        alignSelf: 'center',
+                        margin: 8,
+                        borderRadius: 8,
                       }}>
-                      <Text
+                      <Ionicons
+                        name="person-circle"
+                        size={25}
+                        color={'#ad3231'}
+                      />
+                      <TextInput
+                        placeholder="Login Id"
+                        secureTextEntry={false}
+                        onChangeText={handleChange('UserName')}
+                        onBlur={handleBlur('UserName')}
+                        value={values.UserName}
                         style={{
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          color: '#fff',
-                          letterSpacing: 2,
+                          width: '90%',
+                          alignSelf: 'center',
+                          marginVertical: -2,
+                          paddingVertical: 10,
+                        }}
+                      />
+                    </View>
+                    {errors.UserName && touched.UserName && (
+                      <View
+                        style={{
+                          width: '90%',
+                          alignSelf: 'center',
+                          paddingVertical: 2,
                         }}>
-                        Submit
-                      </Text>
-                    </TouchableOpacity>
-                  </LinearGradient>
+                        <Text style={{fontSize: 12, color: 'red'}}>
+                          {errors.UserName}
+                        </Text>
+                      </View>
+                    )}
+                    <View
+                      style={{
+                        width: '90%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        padding: 5,
+                        borderWidth: 1,
+                        borderTopColor: '#80406A',
+                        borderStartColor: '#ad3231',
+                        borderBottomColor: '#2757C3',
+                        borderEndColor: '#ad3231',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                        borderRadius: 8,
+                        margin: 8,
+                      }}>
+                      <Ionicons
+                        name="lock-closed"
+                        size={25}
+                        color={'#ad3231'}
+                      />
+                      <TextInput
+                        placeholder="Password"
+                        secureTextEntry={showPass}
+                        onChangeText={handleChange('Password')}
+                        onBlur={handleBlur('Password')}
+                        value={values.Password}
+                        style={{
+                          width: '80%',
+                          alignSelf: 'center',
+                          marginVertical: -2,
+                          paddingVertical: 10,
+                        }}
+                      />
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (showPass == false) {
+                            setShowPass(true);
+                          } else {
+                            setShowPass(false);
+                          }
+                        }}>
+                        {showPass == true ? (
+                          <Ionicons name="eye-off" size={25} color={'#000'} />
+                        ) : (
+                          <Ionicons name="eye" size={25} color={'#000'} />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                    {errors.Password && touched.Password && (
+                      <View
+                        style={{
+                          width: '90%',
+                          alignSelf: 'center',
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={{fontSize: 12, color: 'red'}}>
+                          {errors.Password}
+                        </Text>
+                      </View>
+                    )}
+                    <View style={{paddingVertical: 10}}>
+                      <LinearGradient
+                        style={{
+                          margin: 5,
+                          borderRadius: 8,
+                          width: '90%',
+                          alignSelf: 'center',
+                        }}
+                        colors={['#2757C3', '#80406A', '#ad3231']}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            handleSubmit();
+                          }}
+                          style={{
+                            width: '100%',
+                            paddingVertical: 10,
+                            alignItems: 'center',
+                            marginTop: 5,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                              color: '#fff',
+                              letterSpacing: 2,
+                            }}>
+                            Submit
+                          </Text>
+                        </TouchableOpacity>
+                      </LinearGradient>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          </View>
-        )}
-      </Formik>
+            )}
+          </Formik>
+        </View>
+      )}
     </View>
   );
 
