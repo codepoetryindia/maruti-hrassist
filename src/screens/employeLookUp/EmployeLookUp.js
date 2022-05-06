@@ -18,6 +18,8 @@ import Birthdays from './Birthday/Birthdays';
 const FirstRoute = () => <EmployeeDirect />;
 
 const SecondRoute = () => <Birthdays />;
+
+
 const EmployeLookUp = ({navigation}) => {
   const renderScene = SceneMap({
     first: FirstRoute,

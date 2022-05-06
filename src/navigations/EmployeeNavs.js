@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EmployeeDirect from '../screens/employeLookUp/EmployeeDirect';
 import EmployeLookUp from '../screens/employeLookUp/EmployeLookUp';
 import Birthdays from '../screens/employeLookUp/Birthday/Birthdays';
+import EmployProfile from '../screens/employeLookUp/EmployeProfile';
 const Stack = createNativeStackNavigator();
 
 function EmployeeNavs() {
@@ -13,6 +14,7 @@ function EmployeeNavs() {
         <Stack.Screen name='EmployeLookUp' component={EmployeLookUp}/>
         <Stack.Screen name='EmployeeDirect' component={EmployeeDirect}/>
         <Stack.Screen name='Birthdays' component={Birthdays}/>
+        <Stack.Screen name='EmployProfile' component={EmployProfile}/>
       </Stack.Navigator>
   );
 }

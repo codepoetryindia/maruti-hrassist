@@ -1,19 +1,23 @@
 //import liraries
 import React, { useEffect, useState, useContext, } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import AuthContext from '../../context/AuthContext'
 import { ActivityIndicator } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 // create a component
 const EmployeeDirect = () => {
+  const myNavigation = useNavigation();
+
   const [search, setSearch] = useState('')
   const [loader, setLoader] = useState(false)
   const [searchedData, setSearchedData] = useState([])
   const { authContext, AppUserData } = useContext(AuthContext);
+  const [userProfile, setUserProfile] = useState();
   useEffect(() => {
-    console.log("use", AppUserData)
+    console.log("navigation", myNavigation)
   }, [])
 
   const SearchEmployee = () => {
@@ -81,19 +85,20 @@ const EmployeeDirect = () => {
           />
           <TouchableOpacity onPress={() => { SearchEmployee() }}>
             <Ionicons
-              style={[styles.searchIcon,{marginLeft: search==''? 35:null}]}
+              style={[styles.searchIcon, { marginLeft: search == '' ? 35 : null }]}
               name="send"
               size={20}
               color="#2757C3"
             />
           </TouchableOpacity>
           {search !== '' ? (
-            <TouchableOpacity onPress={() => { emptyList() }}>
+            <TouchableOpacity
+              style={{ backgroundColor: '#AD3231', borderRadius: 8, marginLeft: -5 }} onPress={() => { emptyList() }}>
               <Ionicons
                 style={styles.searchIcon}
                 name="close-circle-outline"
                 size={20}
-                color="#2757C3"
+                color="#fff"
               />
             </TouchableOpacity>
           ) : null}
@@ -119,7 +124,14 @@ const EmployeeDirect = () => {
                     {item.Desg} , {item.Dept} ({item['Staff No']})
                   </Text>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    // console.log('staff No', item['Staff No']);
+                    myNavigation.navigate('EmployProfile',{
+                      data:item['Staff No']
+                    })
+                  }
+                  }>
                   <Ionicons
                     style={styles.searchIcon}
                     name="chevron-forward-circle-outline"
@@ -131,7 +143,9 @@ const EmployeeDirect = () => {
             )}
           />
         ) : (<View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text>data not found</Text>
+          <Image source={require('../../assets/Images/dataNotFound.png')}
+            style={{ width: '100%', height: '80%', resizeMode: 'contain', marginLeft: -50 }} />
+          <Text style={{ fontSize: 20, textAlign: 'center', }}>No Searched Data</Text>
         </View>)
         }
       </View>

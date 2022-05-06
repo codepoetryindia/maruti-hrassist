@@ -1,113 +1,199 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ActivityIndicator } from 'react-native-paper';
+import AuthContext from '../../context/AuthContext';
+import * as ApiService from '../../Utils/Utils';
+import Toast from 'react-native-simple-toast';
 
 // create a component
-const EmployProfile = ({navigation}) => {
+const EmployProfile = ({ navigation, route }) => {
+  let userId = route.params.data
+
+  useEffect(() => {
+    employeProfile()
+  }, [])
+
+
+  const [loader, setLoader] = useState(false)
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [employeeData, setEmployeeData] = useState();
+  const [photo, setPhoto] = useState();
+
+
+  console.log("photo", photo)
+  const employeProfile = () => {
+    let apiData = {
+      UserName: userId
+    }
+    let token = AppUserData.token
+    setLoader(true);
+    ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
+      .then(result => {
+        setLoader(false);
+        console.log('ApiResult', result);
+        let responseData = result.Value.Table
+        setEmployeeData(responseData)
+        console.log('responseData', responseData)
+        console.log("image", responseData.profile_photo)
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        style={{flex: 0.25}}
-        colors={['#2757C3', '#80406A', '#AD3231']}>
-        <View style={{flexDirection: 'row', padding: 15, alignItems: 'center'}}>
-          <Ionicons
-            name="chevron-back-outline"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.goBack()}
-          />
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 25,
-            }}>
-            Profile
-          </Text>
-        </View>
-      </LinearGradient>
-      <View
-        style={{
-          backgroundColor: '#fff',
-          width: '90%',
-          alignSelf: 'center',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderRadius: 8,
-          position: 'absolute',
-          top: '10%',
-          bottom:5
-        }}>
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='red' size={30} />
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    ) : (
+      <View style={styles.container}>
+        <LinearGradient
+          style={{ flex: 0.25 }}
+          colors={['#2757C3', '#80406A', '#AD3231']}>
+          <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={30}
+              color={'white'}
+              onPress={() => navigation.goBack()}
+            />
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                letterSpacing: 1,
+                marginLeft: 25,
+              }}>
+              Profile
+            </Text>
+          </View>
+        </LinearGradient>
         <View
           style={{
-            borderWidth: 5,
-            borderColor: '#fff',
+            backgroundColor: '#fff',
+            width: '90%',
+            alignSelf: 'center',
             shadowColor: '#000',
             shadowOffset: {
-              width: 5,
-              height: 5,
+              width: 0,
+              height: 2,
             },
-            shadowOpacity: 0.5,
+            shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-            justifyContent: 'center',
-            alignSelf: 'center',
-            borderRadius: 100,
-            marginTop: '-12%',
+            borderRadius: 8,
+            position: 'absolute',
+            top: '10%',
+            bottom: 5
           }}>
-          <Image
-            source={require('../../assets/Images/smile.jpg')}
+          <View
             style={{
-              width: 100,
-              height: 100,
-              overflow: 'hidden',
-              borderRadius: 100,
+              borderWidth: 5,
+              borderColor: '#fff',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 5,
+                height: 5,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 3.84,
+              elevation: 5,
+              justifyContent: 'center',
               alignSelf: 'center',
-            }}
-          />
-        </View>
-     <View style={{height: '79%',}}>
-     <ScrollView>
-       <Text  style={{color:'gray',fontSize:20,textAlign:'center',padding:5,letterSpacing:1}}>Ms. Mansi Varma</Text>
-          <View style={styles.box}>
-            <Text style={styles.header}>Vertical / Div ./Department</Text>
-            <Text>IT / ITA-1 / AG3</Text>
+              borderRadius: 100,
+              marginTop: '-12%',
+            }}>
+            {employeeData && employeeData.filter((item) => {
+              let img = item.profile_photo
+              let base64Icon = `data:image/png;base64,${img}`;
+              setPhoto(base64Icon)
+              console.log('Base64', base64Icon);
+              return (
+                base64Icon!==''?(<Image
+                  source={{ uri: base64Icon }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    overflow: 'hidden',
+                    borderRadius: 100,
+                    alignSelf: 'center',
+                  }}
+                />) : (<Image
+                  source={{ uri: photo }}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    overflow: 'hidden',
+                    borderRadius: 100,
+                    alignSelf: 'center',
+                  }}
+                />
+                )
+              )
+            })
+            }
+
           </View>
-          <View style={styles.box}>
-          <Text style={styles.header}>Personal phone Number</Text>
-            <Text>9897643210</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.header}>Offical Phone Number</Text>
-            <Text>N.A</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.header}>Email Id</Text>
-            <Text>Mansivarma@123maruti.com</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.header}>HRBP</Text>
-            <Text>5462586 - MS. SHREYA SINHA (AM)</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.header}>Permanent Address</Text>
-            <Text>MK jain nagrakata , jalpaiguri , 735202</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.header}>Present Address</Text>
-            <Text>Siliguri , dabgram Aashighar , west bengal , 734004</Text>
-          </View>
-          <View style={styles.box}>
+          <View style={{ height: '79%', }}>
+            <FlatList
+              data={employeeData}
+              keyExtractor={({ item, index }) => item}
+              renderItem={({ item, index }) => (
+                <View>
+                  <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Vertical / Div ./Department</Text>
+                    <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Personal phone Number</Text>
+                    <Text>{item.PRESENT_PHONE}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Offical Phone Number</Text>
+                    <Text> {item.Phone ? (item.Phone) : "N.A"}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Email Id</Text>
+                    <Text> {item.Email ? (item.Email) : "N.A"}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>HRBP</Text>
+                    <Text>{item.HRBP}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Permanent Address</Text>
+
+                    <Text>{item.PERMANENT_ADDRESS}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Present Address</Text>
+                    <Text>{item.PRESENT_ADDRESS}</Text>
+                  </View>
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Location</Text>
+                    <Text>{item.LOCN_DESC}</Text>
+                  </View>
+                  {/* <View style={styles.box}>
             <Text style={styles.header}>Nominies</Text>
            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
            <Text>Check in Details</Text>
@@ -118,20 +204,24 @@ const EmployProfile = ({navigation}) => {
             
           />
              </View>
+          </View> */}
+                </View>
+              )} />
           </View>
-        </ScrollView>
-       </View>
-       <TouchableOpacity>
+          {/* <TouchableOpacity>
        <LinearGradient
         style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
         colors={['#2757C3', '#80406A', '#AD3231']}>
          
             <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
           </LinearGradient>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+        </View>
       </View>
-    </View>
-  );
+    )
+
+
+  )
 };
 
 // define your styles
@@ -156,10 +246,10 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
   },
-  header:{
-    fontSize:12,
-    color:'gray',
-    paddingVertical:5,
+  header: {
+    fontSize: 12,
+    color: 'gray',
+    paddingVertical: 5,
   }
 });
 
