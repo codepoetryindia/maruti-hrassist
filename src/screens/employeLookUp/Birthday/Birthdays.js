@@ -302,7 +302,7 @@ const Birthdays = () => {
           <View>
             
               <View>
-                <View style={{height: '96%', paddingVertical: 10}}>
+                <View style={{height: '97%', paddingVertical: 10}}>
               <FlatList
                 showsVerticalScrollIndicator={false}
                 data={tomorrowBirthday}
@@ -405,7 +405,7 @@ const Birthdays = () => {
                       }}>
                       <TouchableOpacity
                       onPress={()=>{
-                        Linking.openURL(`mailto:${modalItem.Email}`)
+                        Linking.openURL(`mailto:${secondModal.Email}`)
                       }}
                         style={{
                           borderWidth: 1,

@@ -3,7 +3,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Tabs from './TabNavigation';
 import CustomDrawer from '../components/CustomDrawer';
 // import EmployeLookUp from '../screenss/employeLookUp/EmployeLookUp';
-import CompensationBenifits from '../screens/CompensationAndBenifits/CompensationBenifits';
+import CompensationBenifitsNav from '../../src/navigations/CompensationBenifitsNav';
 import HospitalNavs from './HospitalNavigator';
 import Canteen from '../screens/Canteen/Canteen';
 import CanteenMenu from '../screens/Canteen/CanteenMenu';
@@ -29,7 +29,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="Tabs" component={Tabs} />
       <Drawer.Screen name="EmployeeNavs" component={EmployeeNavs} />
       <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
-      <Drawer.Screen name="CompensationBenifits" component={CompensationBenifits}/>
+      <Drawer.Screen name="CompensationBenifitsNav" component={CompensationBenifitsNav}/>
       <Drawer.Screen name="HospitalNavs" component={HospitalNavs} />
       <Drawer.Screen name="Canteen" component={Canteen} />
       <Drawer.Screen name="CanteenMenu" component={CanteenMenu} />

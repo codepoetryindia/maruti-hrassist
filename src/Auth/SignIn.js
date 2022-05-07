@@ -32,8 +32,12 @@ const SignIn = ({navigation}) => {
     AuthService.Post('Login', data)
       .then(res => {
         console.log('user Response', res);
+        let contextData = {
+          token: res.token,
+          user: values.UserName,
+        };
         authContext.signIn({
-          payload: res.token,
+          payload: contextData,
         });
         setLoader(false);
       })

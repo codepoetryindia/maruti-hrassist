@@ -21,10 +21,9 @@ const EmployProfile = ({ navigation, route }) => {
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
   const [employeeData, setEmployeeData] = useState();
-  const [photo, setPhoto] = useState();
+  const [empphoto, setPhoto] = useState();
 
 
-  console.log("photo", photo)
   const employeProfile = () => {
     let apiData = {
       UserName: userId
@@ -33,12 +32,13 @@ const EmployProfile = ({ navigation, route }) => {
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
+        console.log(result);
         setLoader(false);
-        console.log('ApiResult', result);
         let responseData = result.Value.Table
-        setEmployeeData(responseData)
-        console.log('responseData', responseData)
-        console.log("image", responseData.profile_photo)
+        let profileImage = result.Value.Table[0].profile_photo;
+        setEmployeeData(responseData);
+        setPhoto(profileImage);
+        // console.log("image", responseData.profile_photo)
       })
       .catch(error => {
         setLoader(false);
@@ -122,40 +122,36 @@ const EmployProfile = ({ navigation, route }) => {
               borderRadius: 100,
               marginTop: '-12%',
             }}>
-            {employeeData && employeeData.filter((item) => {
-              let img = item.profile_photo
-              let base64Icon = `data:image/png;base64,${img}`;
-              setPhoto(base64Icon)
-              console.log('Base64', base64Icon);
-              return (
-                base64Icon!==''?(<Image
-                  source={{ uri: base64Icon }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    overflow: 'hidden',
-                    borderRadius: 100,
-                    alignSelf: 'center',
-                  }}
-                />) : (<Image
-                  source={{ uri: photo }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    overflow: 'hidden',
-                    borderRadius: 100,
-                    alignSelf: 'center',
-                  }}
-                />
-                )
-              )
-            })
-            }
+
+            {
+              empphoto ? (
+                <Image
+                source={{ uri:`data:image/png;base64, ${empphoto}`}}
+                style={{
+                  width: 100,
+                  height: 100,
+                  overflow: 'hidden',
+                  borderRadius: 100,
+                  alignSelf: 'center',
+                }}
+              />
+              ):(<Image
+                source={require('../../assets/Images/Avtar.png')}
+                style={{
+                  width: 100,
+                  height: 100,
+                  overflow: 'hidden',
+                  borderRadius: 100,
+                  alignSelf: 'center',
+                }}
+              />
+              )}
 
           </View>
-          <View style={{ height: '79%', }}>
+          <View style={{ height: '90%', }}>
             <FlatList
               data={employeeData}
+              showsVerticalScrollIndicator={false}
               keyExtractor={({ item, index }) => item}
               renderItem={({ item, index }) => (
                 <View>

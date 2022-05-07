@@ -1,41 +1,159 @@
 //import liraries
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
-import {FlatList} from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
+import { ActivityIndicator } from 'react-native-paper';
+import AuthContext from '../../context/AuthContext';
+import * as ApiService from '../../Utils/Utils';
+import Toast from 'react-native-simple-toast';
+import { useNavigation } from '@react-navigation/native';
 
 // create a component
 const Payroll = () => {
-  // >Tax Computation Slip
-  const data = [
-    {Component: 'Gross Salary', Amount: '876540'},
-    {Component: 'Standard Deduction', Amount: '8784'},
-    {Component: 'Net Salary', Amount: '87654'},
-    {Component: 'Declared Income', Amount: '0'},
-    {Component: 'NPS CONTRI BY EMPLOYER', Amount: '0'},
-    {Component: 'TOTAL INCOME', Amount: '554754657'},
-    {Component: 'TOTAL DEDUCTION', Amount: '847654'},
-    {Component: 'GROSS INCOME', Amount: '66637654'},
-    {Component: 'total saving', Amount: '1187654'},
-    {Component: 'REBATE (MAX 1500000)', Amount: '15000000'},
-    {Component: 'Net income', Amount: '6257220'},
-    {Component: 'Tax Payable', Amount: '3695'},
-    {Component: 'Tax Paid', Amount: '30654'},
-    {Component: 'Tax Due', Amount: '8754'},
-  ];
+  const myNavigation = useNavigation();
+
+  const [loader, setLoader] = useState(false)
+  const [taxData, setTaxData] = useState();
+   const [month, setMonth] = useState();
+   const[pfBal,setPfBal] = useState();
+  const { authContext, AppUserData } = useContext(AuthContext);
+
+// tax Saving Api
+  const GetTaxSavings = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
+      EmplID: EmplID,
+      FNYR: 2122
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetTaxSavings', apiData, token)
+      .then(result => {
+        setLoader(false);
+        // console.log('ApiResult', result);
+        let responseData = result.Value
+        setTaxData(responseData)
+        console.log('GetTaxSavings', responseData)
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+
+  // financial year Api
+  const GetMonth = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
+        EmplID: EmplID
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetSalaryMonth', apiData, token)
+        .then(result => {
+            setLoader(false);
+            // console.log('ApiResult', result);
+            let responseData = result.Value[0].SHIS_YYMM_CODE
+            console.log('GetMonth', responseData)
+            setMonth(responseData)
+           
+        })
+        .catch(error => {
+            setLoader(false);
+            // console.log('Error occurred==>', error);
+            if (error.response) {
+                if (error.response.status == 401) {
+                    console.log('error from api', error.response);
+                }
+                Toast.show(error.response.data.title);
+            } else if (error) {
+                Toast.show('Network Error');
+            } else {
+                Toast.show('Something Went Wrong');
+            }
+        });
+};
+
+// Pf Balance Api 
+const PfBalance = () => {
+  let token = AppUserData.token
+  let EmplID = AppUserData.data
+  let apiData = {
+      EmplID: EmplID,
+      FNYR:month
+  }
+  setLoader(true);
+  ApiService.PostMethode('/GetPFStatement', apiData, token)
+      .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value.Table1
+          console.log('PfBalance', responseData)
+          setPfBal(responseData)
+         
+      })
+      .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+              if (error.response.status == 401) {
+                  console.log('error from api', error.response);
+              }
+              Toast.show(error.response.data.title);
+          } else if (error) {
+              Toast.show('Network Error');
+          } else {
+              Toast.show('Something Went Wrong');
+          }
+      });
+};
+
+useEffect(() => {
+  GetMonth()
+  PfBalance()
+  GetTaxSavings()
+}, [])
+
   //   end >Tax Computation Slip
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [taxModalVisible, setTaxModalVisible] = useState(false);
+  const [pfModalVisible, setPfModalVisible] = useState(false);
+  const [savingModalVisible, setSevingModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.box}>
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='red' size={30} />
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    ) :(
+      <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          myNavigation.navigate('SalarySlip')
+        }}
+        style={styles.box}>
         <View style={styles.iconBox}>
           <View
             style={{
@@ -58,7 +176,8 @@ const Payroll = () => {
 
       {/* Tax  */}
 
-      <TouchableOpacity onPress={toggleModal}>
+      <TouchableOpacity onPress={() => {
+      }}>
         <View style={styles.box}>
           <View style={styles.iconBox}>
             <View
@@ -89,39 +208,41 @@ const Payroll = () => {
           coverScreen={true}
           isVisible={isModalVisible}>
           <View style={styles.modal}>
-            <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+            <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
               <Feather
                 name="x-circle"
                 color={'#000'}
                 size={20}
                 onPress={toggleModal}
-                style={{margin: 10}}
+                style={{ margin: 10 }}
               />
             </TouchableOpacity>
             <View style={styles.textContainer}>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>Component</Text>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                 Amount(Rs.)
               </Text>
             </View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={data}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <View style={styles.textContainer}>
-                  <Text>{item.Component}</Text>
-                  <Text>{item.Amount}</Text>
-                </View>
-              )}
-            />
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={taxData}
+                keyExtractor={({item,index})=>index}
+                renderItem={({ item,index }) => (
+                  <View style={styles.textContainer}>
+                    <Text>{item.SALARY_HEAD}</Text>
+                    <Text>{item.AMOUNT}</Text>
+                  </View>
+                )}
+              />
           </View>
         </Modal>
       </TouchableOpacity>
 
       {/* PF */}
 
-      <TouchableOpacity>
+      <TouchableOpacity 
+      onPress={()=>{
+       setPfModalVisible(true)}}>
         <View style={styles.box}>
           <View style={styles.iconBox}>
             <View
@@ -142,11 +263,68 @@ const Payroll = () => {
             <Feather name="corner-up-right" size={20} />
           </View>
         </View>
+
+           {/* tax saving modal */}
+
+           <Modal
+        backdropOpacity={0.1}
+        animationInTiming={300}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationOutTiming={500}
+        coverScreen={true}
+        isVisible={pfModalVisible}>
+        <View style={styles.modal}>
+          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            <Feather
+              name="x-circle"
+              color={'#000'}
+              size={20}
+              onPress={() =>{setPfModalVisible(false)}}
+              style={{ margin: 10 }}
+            />
+          </TouchableOpacity>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={pfBal}
+            keyExtractor={({item,index})=>index}
+            renderItem={({ item,index }) => (
+             <View>
+                 <View style={styles.textContainer}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employee's</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+            Rs.{item.CB1_CB2}
+            </Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employer's</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+            Rs.{item.PFST_MUL_CB3}
+            </Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>NetBalance</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+              Rs.
+            </Text>
+          </View>
+              </View>
+            )}
+          />
+        </View>
+      </Modal>
+
+      {/* tax saving modal close */}
+
       </TouchableOpacity>
 
       {/* Tax Saving */}
 
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity
+        onPress={() => {
+        setSevingModalVisible(true)
+        }
+        } style={styles.box}>
         <View style={styles.iconBox}>
           <View
             style={{
@@ -166,7 +344,47 @@ const Payroll = () => {
           <Feather name="corner-up-right" size={20} />
         </View>
       </TouchableOpacity>
+      <Modal
+        backdropOpacity={0.1}
+        animationInTiming={300}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationOutTiming={500}
+        coverScreen={true}
+        isVisible={savingModalVisible}>
+        <View style={styles.modal}>
+          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            <Feather
+              name="x-circle"
+              color={'#000'}
+              size={20}
+              onPress={() =>{setSevingModalVisible(false)}}
+              style={{ margin: 10 }}
+            />
+          </TouchableOpacity>
+          <View style={styles.textContainer}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+              Amount(Rs.)
+            </Text>
+          </View>
+      
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={taxData}
+                keyExtractor={({item,index})=>index}
+                renderItem={({ item,index }) => (
+                  <View style={styles.textContainer}>
+                    <Text>{item.SALARY_HEAD}</Text>
+                    <Text>{item.AMOUNT}</Text>
+                  </View>
+                )}
+              />
+        </View>
+      </Modal>
     </View>
+    )
+   
   );
 };
 
@@ -212,7 +430,7 @@ const styles = StyleSheet.create({
     flex: 0.9,
     width: '100%',
     alignSelf: 'center',
-    backgroundColor: '#f8edec',
+    backgroundColor: '#fff',
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: {

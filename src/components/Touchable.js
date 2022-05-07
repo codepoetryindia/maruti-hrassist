@@ -81,7 +81,7 @@ const TouchableCard = ({navigation}) => {
                 navigation.navigate('AttendanceAdmin');
               }
              else if(item.name==='Compliances & Benifis') {
-                navigation.navigate('CompensationBenifits');
+                navigation.navigate('CompensationBenifitsNav');
               }
               else if(item.name==='Hospital & Emergency') {
                 navigation.navigate('HospitalNavs');

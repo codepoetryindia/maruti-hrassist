@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Payroll from './Payroll';
 import Benifits from './Benifits';
-import Home from '../Home';
 import TouchID from 'react-native-touch-id';
 
 const FirstRoute = () => <Payroll />;

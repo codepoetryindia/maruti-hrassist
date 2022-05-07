@@ -15,7 +15,6 @@ const EmployeeDirect = () => {
   const [loader, setLoader] = useState(false)
   const [searchedData, setSearchedData] = useState([])
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [userProfile, setUserProfile] = useState();
   useEffect(() => {
     console.log("navigation", myNavigation)
   }, [])
@@ -83,17 +82,9 @@ const EmployeeDirect = () => {
             value={search}
             onChangeText={(data) => { setSearch(data) }}
           />
-          <TouchableOpacity onPress={() => { SearchEmployee() }}>
-            <Ionicons
-              style={[styles.searchIcon, { marginLeft: search == '' ? 35 : null }]}
-              name="send"
-              size={20}
-              color="#2757C3"
-            />
-          </TouchableOpacity>
           {search !== '' ? (
             <TouchableOpacity
-              style={{ backgroundColor: '#AD3231', borderRadius: 8, marginLeft: -5 }} onPress={() => { emptyList() }}>
+              style={{ backgroundColor: '#AD3231', borderRadius: 8, marginLeft: -3 }} onPress={() => { emptyList() }}>
               <Ionicons
                 style={styles.searchIcon}
                 name="close-circle-outline"
@@ -102,6 +93,14 @@ const EmployeeDirect = () => {
               />
             </TouchableOpacity>
           ) : null}
+          <TouchableOpacity onPress={() => { SearchEmployee() }}>
+            <Ionicons
+              style={[styles.searchIcon, { marginLeft: search == '' ? 35 : null }]}
+              name="send"
+              size={20}
+              color="#2757C3"
+            />
+          </TouchableOpacity>
         </View>
         {searchedData.length > 0 ? (
           <FlatList

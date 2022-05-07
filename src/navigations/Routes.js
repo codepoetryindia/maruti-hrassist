@@ -9,7 +9,6 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import MyDrawer from './Drawer';
 import AuthNavigator from './AuthNavigator';
-import {useSelector} from 'react-redux';
 import AuthContext from '../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignIn from '../Auth/SignIn';
@@ -20,20 +19,23 @@ const Routes = () => {
     isLoading: true,
     isSignOut: false,
     userToken: null,
+    userData: null,
   };
+
   let options = {AppUserData, setAppUserData};
 
   const LoginReducer = (prevState, action) => {
     switch (action.type) {
       case 'RETRIEVE_TOKEN':
+        console.log('user Action', action);
+        // return;
         return {
           ...prevState,
           isSignOut: false,
           userToken: action.payload.token,
           isLoading: false,
+          userData: action.payload.user,
         };
-        break;
-
       case 'LOGIN':
         console.log('user Action', action);
         return {
@@ -41,6 +43,7 @@ const Routes = () => {
           isSignOut: false,
           userToken: action.payload.token,
           isLoading: false,
+          userData: action.payload.user,
         };
       case 'LOGOUT':
         return {
@@ -48,7 +51,7 @@ const Routes = () => {
           isSignOut: true,
           userToken: null,
           isLoading: false,
-    
+          userData: null,
         };
       default:
         return prevState;
@@ -56,25 +59,31 @@ const Routes = () => {
   };
 
   const [loginState, dispatch] = useReducer(LoginReducer, initialLoginState);
-
   const authContext = useMemo(
     () => ({
       signIn: async data => {
-        console.log('User Token', data.payload);
-        // return;
-        let userToken = data.payload;
+        // console.log('User Data', data);
+        let userToken = null;
         let contextData;
+        userToken = data.payload.token;
+        let userData = null;
+        userData = data.payload.user;
         console.log('User Token', userToken);
-
-        if (userToken !== null) {
+        console.log('User Data', userData);
+        // return;
+        if (userToken && userData !== null) {
           try {
             await AsyncStorage.setItem('userToken', userToken);
-            contextData = {token: userToken};
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            contextData = {token: userToken, data: userData};
             console.log('contextData', contextData);
+
             setAppUserData({
               token: userToken,
+              data: userData,
             });
-            if (userToken) {
+
+            if ((userToken, userData)) {
               dispatch({type: 'LOGIN', payload: contextData});
             } else {
               dispatch({type: 'LOGIN', payload: contextData});
@@ -83,14 +92,14 @@ const Routes = () => {
             console.log('Error Occurred while login', error);
           }
         } else {
-          contextData = {token: userToken};
+          contextData = {token: userToken, data: userData};
           dispatch({type: 'LOGIN', payload: contextData}),
             setAppUserData({
               token: userToken,
+              data: userData,
             });
         }
       },
-
       signOut: async () => {
         try {
           await AsyncStorage.removeItem('userToken').then(
@@ -109,31 +118,37 @@ const Routes = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
-
   const fetchUserData = async () => {
     let userToken = null;
+    let userData = null;
     let dataFound;
     try {
       userToken = await AsyncStorage.getItem('userToken');
-      // console.log('User Token found ==>', userToken);
+      userData = await AsyncStorage.getItem('userData');
+      userData = JSON.parse(userData);
+      console.log('User Token found ==>', userToken);
+      console.log('User Data found ==>', userData);
     } catch (error) {
       console.log('Error Occurred while fetching user Data', error);
     }
-    if (userToken !== null) {
+    if (userToken && userData !== null) {
       setAppUserData({
         token: userToken,
+        data: userData,
         signUpFlow: false,
       });
       dataFound = {
         token: userToken,
+        user: userData,
       };
       dispatch({type: 'RETRIEVE_TOKEN', payload: dataFound});
       console.log('fetchUserData called');
     } else {
       dataFound = {
         token: userToken,
+        user: userData,
       };
-      // console.log('dataFound', dataFound);
+      console.log('dataFound', dataFound);
       dispatch({type: 'RETRIEVE_TOKEN', payload: dataFound});
     }
   };
