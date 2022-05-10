@@ -56,6 +56,7 @@ const EmergencyHospital = ({navigation}) => {
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
+           
           </View>
 
           <Text
@@ -67,6 +68,13 @@ const EmergencyHospital = ({navigation}) => {
             }}>
            Emergency & Hospital
           </Text>
+          <Ionicons
+          style ={{marginLeft:80}}
+              name="ios-filter"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.openDrawer()}
+            />
         </View>
       </LinearGradient>
       <TabView

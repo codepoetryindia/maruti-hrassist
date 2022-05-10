@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView} from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
-
+import { useNavigation } from '@react-navigation/native';
 
 // create a component
 const Benifits = () => {
+  const myNavigation = useNavigation();
   const data = [
     {id: '1', text: 'PL Encashment'},
     {id: '2', text: 'LTA Encashment'},
@@ -19,7 +20,18 @@ const Benifits = () => {
         data={data}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity style={styles.box} 
+          onPress={()=> {
+            if(item.text==='Conveyance Bills (SMGR & Above)'){
+              alert(`Payroll \nYou are not Authorized`)
+              return
+            }
+            else{
+              myNavigation.navigate("Plencashment" , {
+                pageName: item.text == "PL Encashment" ? "PL Encashment" : (item.text == 'LTA Encashment' ? "LTA Encashment":null)
+              })
+            }
+          }}>
             <View style={styles.iconBox}>
               <View
                 style={{
