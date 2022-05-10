@@ -2,13 +2,16 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 import SelectDropdown from 'react-native-select-dropdown';
+import { ActivityIndicator } from 'react-native-paper';
+import AuthContext from '../../context/AuthContext';
+import * as ApiService from '../../Utils/Utils';
 import { date } from 'yup';
 // import * as Animatable from 'react-native-animatable';
 // create a component
@@ -18,7 +21,8 @@ const Attendance = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
   const [MarkAttandance, setMarkAttandance] = useState(0);
-  const [horizental, setHorizental] = useState(false);
+  const [loader, setLoader] = useState(false)
+  const { authContext, AppUserData } = useContext(AuthContext);
 
   const handleMarkAttandance = index => {
     setMarkAttandance(index);
@@ -32,6 +36,38 @@ const Attendance = ({navigation}) => {
      alert('sucessfull');
    }
   }
+
+  const SubmitPunchRO = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
+        EmplID: EmplID
+    }
+    setLoader(true);
+    ApiService.PostMethode('/SubmitPunchRO', apiData, token)
+        .then(result => {
+            setLoader(false);
+            // console.log('ApiResult', result);
+            let responseData = result.Value[0].SHIS_YYMM_CODE
+            console.log('GetMonth', responseData)
+            setMonth(responseData)
+           
+        })
+        .catch(error => {
+            setLoader(false);
+            // console.log('Error occurred==>', error);
+            if (error.response) {
+                if (error.response.status == 401) {
+                    console.log('error from api', error.response);
+                }
+                Toast.show(error.response.data.title);
+            } else if (error) {
+                Toast.show('Network Error');
+            } else {
+                Toast.show('Something Went Wrong');
+            }
+        });
+};
   const FinancialYear = ['2021', '2022', '1999'];
   const [location, setLocation] = useState('');
   const punch = () => {
@@ -120,6 +156,9 @@ const Attendance = ({navigation}) => {
         {MarkAttandance == 0 ? (
           <View>
             <TouchableOpacity style={styles.content}>
+            <Text>Live Location
+                <Icon name='map-marker-radius'size={25} color={'green'}/>  
+                </Text>
               <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
@@ -127,9 +166,9 @@ const Attendance = ({navigation}) => {
                 }}>
                 <Text>Punch</Text>
               </TouchableOpacity>
-              <Text>Live Location</Text>
               <Text>{location.latitude}</Text>
               <Text>{location.longitude}</Text>
+              <Ionicons name='ios-locate-outline'size={25} color={'green'}/>
             </TouchableOpacity>
           </View>
         ) : (
@@ -316,23 +355,24 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
-
     elevation: 5,
+    marginVertical:10
   },
   circle: {
     height: 100,
     width: 100,
     borderWidth: 3,
-    borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#80406A',
+    borderColor:'green',
+    // borderTopColor: '#80406A',
+    // borderStartColor: '#ad3231',
+    // borderBottomColor: '#2757C3',
+    // borderEndColor: '#80406A',
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
-    marginVertical: 10,
+    marginVertical: 30,
   },
 });
 

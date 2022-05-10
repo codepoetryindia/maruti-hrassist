@@ -26,7 +26,6 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown';
 import {DataTable} from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
 // create a component
@@ -64,14 +63,7 @@ const Leave = () => {
     comment: yup.string().required('post one comment'),
   });
   const fromRef = useRef(null);
-  const token = useSelector(state => {
-    // console.log('Token', state.LoginThunkReducers.token);
-    return {
-      token: state.LoginThunkReducers.token,
-      loader: state.AllApiReducer.isLoading,
-    };
-  });
-// console.log('Token', state.LoginThunkReducers.token);
+
   const PostSubmitLeave = data => {
     console.log('post data' , data);
     setLoader(true);

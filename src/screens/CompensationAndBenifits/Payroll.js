@@ -16,27 +16,32 @@ const Payroll = () => {
   const myNavigation = useNavigation();
 
   const [loader, setLoader] = useState(false)
-  const [taxData, setTaxData] = useState();
+  const [taxData, setTaxData] = useState([]);
+  const[taxSaving,setTaxSaving] = useState();
    const [month, setMonth] = useState();
-   const[pfBal,setPfBal] = useState();
+   const[employeePf,setEmployeePf] = useState();
+   const[employerPf,setEmployerPf] = useState();
+   const[netBalance,setNetBalance] = useState();
   const { authContext, AppUserData } = useContext(AuthContext);
 
 // tax Saving Api
-  const GetTaxSavings = () => {
+  const GetTaxAppApi = () => {
     let token = AppUserData.token
     let EmplID = AppUserData.data
     let apiData = {
-      EmplID: EmplID,
-      FNYR: 2122
+      EmplID: EmplID
+    }
+    if(EmplID==null){
+      return alert("employee id not found")
     }
     setLoader(true);
-    ApiService.PostMethode('/GetTaxSavings', apiData, token)
+    ApiService.PostMethode('/GetTaxApp', apiData, token)
       .then(result => {
         setLoader(false);
-        // console.log('ApiResult', result);
+        console.log('GetTaxAppApiResult', result);
         let responseData = result.Value
         setTaxData(responseData)
-        console.log('GetTaxSavings', responseData)
+        console.log('GetTaxApp', responseData)
       })
       .catch(error => {
         setLoader(false);
@@ -55,7 +60,7 @@ const Payroll = () => {
   };
 
 
-  // financial year Api
+//   // financial year Api
   const GetMonth = () => {
     let token = AppUserData.token
     let EmplID = AppUserData.data
@@ -88,7 +93,7 @@ const Payroll = () => {
         });
 };
 
-// Pf Balance Api 
+// // Pf Balance Api 
 const PfBalance = () => {
   let token = AppUserData.token
   let EmplID = AppUserData.data
@@ -100,11 +105,48 @@ const PfBalance = () => {
   ApiService.PostMethode('/GetPFStatement', apiData, token)
       .then(result => {
           setLoader(false);
+          let responseData = result.Value
+          let CB1_CB2 = responseData.Table1[0].CB1_CB2
+          let PFST_MUL_CB3 = responseData.Table2[0].PFST_MUL_CB3
+          let NetBalance = CB1_CB2+PFST_MUL_CB3
+          console.log('CB1_CB2', CB1_CB2)
+          console.log('PFST_MUL_CB3', PFST_MUL_CB3)
+          console.log('NetBalance', NetBalance)
+          setEmployeePf(CB1_CB2)
+          setEmployerPf(PFST_MUL_CB3)
+          setNetBalance(NetBalance)
+      })
+      .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+              if (error.response.status == 401) {
+                  console.log('error from api', error.response);
+              }
+              Toast.show(error.response.data.title);
+          } else if (error) {
+              Toast.show('Network Error');
+          } else {
+              Toast.show('Something Went Wrong');
+          }
+      });
+};
+const GetTaxSavings = () => {
+  let token = AppUserData.token
+  let EmplID = AppUserData.data
+  let apiData = {
+      EmplID: EmplID,
+      FNYR:month,
+      // SAVG_DESC
+  }
+  setLoader(true);
+  ApiService.PostMethode('/GetTaxSavings', apiData, token)
+      .then(result => {
+          setLoader(false);
           // console.log('ApiResult', result);
-          let responseData = result.Value.Table1
-          console.log('PfBalance', responseData)
-          setPfBal(responseData)
-         
+          let responseData = result.Value.Table2
+          console.log('responseData', responseData)
+          setTaxSaving(responseData)
       })
       .catch(error => {
           setLoader(false);
@@ -123,10 +165,12 @@ const PfBalance = () => {
 };
 
 useEffect(() => {
+  GetTaxAppApi()
   GetMonth()
   PfBalance()
   GetTaxSavings()
 }, [])
+
 
   //   end >Tax Computation Slip
 
@@ -135,9 +179,9 @@ useEffect(() => {
   const [pfModalVisible, setPfModalVisible] = useState(false);
   const [savingModalVisible, setSevingModalVisible] = useState(false);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  // const toggleModal = () => {
+  //   setModalVisible(!isModalVisible);
+  // };
 
   return (
     loader == true ? (
@@ -177,6 +221,7 @@ useEffect(() => {
       {/* Tax  */}
 
       <TouchableOpacity onPress={() => {
+        setTaxModalVisible(true)
       }}>
         <View style={styles.box}>
           <View style={styles.iconBox}>
@@ -206,14 +251,15 @@ useEffect(() => {
           animationOut="fadeOut"
           animationOutTiming={500}
           coverScreen={true}
-          isVisible={isModalVisible}>
+          isVisible={taxModalVisible}>
           <View style={styles.modal}>
             <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
               <Feather
                 name="x-circle"
                 color={'#000'}
                 size={20}
-                onPress={toggleModal}
+                onPress={()=>
+                  setTaxModalVisible(false)}
                 style={{ margin: 10 }}
               />
             </TouchableOpacity>
@@ -223,17 +269,21 @@ useEffect(() => {
                 Amount(Rs.)
               </Text>
             </View>
+            {taxData.length>0 ? ( 
               <FlatList
-                showsVerticalScrollIndicator={false}
-                data={taxData}
-                keyExtractor={({item,index})=>index}
-                renderItem={({ item,index }) => (
-                  <View style={styles.textContainer}>
-                    <Text>{item.SALARY_HEAD}</Text>
-                    <Text>{item.AMOUNT}</Text>
-                  </View>
-                )}
-              />
+              showsVerticalScrollIndicator={false}
+              data={taxData}
+              keyExtractor={({item,index})=>index}
+              renderItem={({ item,index }) => (
+                <View style={styles.textContainer}>
+                  <Text>{item.SALARY_HEAD}</Text>
+                  <Text>{item.AMOUNT}</Text>
+                </View>
+              )}
+            />)
+          
+        :( <Text style={{textAlign:'center',justifyContent:'center',alignItems:'center'}}>something went wrong</Text>)}
+             
           </View>
         </Modal>
       </TouchableOpacity>
@@ -264,7 +314,7 @@ useEffect(() => {
           </View>
         </View>
 
-           {/* tax saving modal */}
+           {/* Pf saving modal */}
 
            <Modal
         backdropOpacity={0.1}
@@ -284,33 +334,28 @@ useEffect(() => {
               style={{ margin: 10 }}
             />
           </TouchableOpacity>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={pfBal}
-            keyExtractor={({item,index})=>index}
-            renderItem={({ item,index }) => (
              <View>
                  <View style={styles.textContainer}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employee's</Text>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            Rs.{item.CB1_CB2}
+            Rs.{employeePf}
             </Text>
           </View>
           <View style={styles.textContainer}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employer's</Text>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            Rs.{item.PFST_MUL_CB3}
+            Rs.{employerPf}
             </Text>
           </View>
           <View style={styles.textContainer}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>NetBalance</Text>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-              Rs.
+              Rs.{netBalance}
             </Text>
           </View>
               </View>
-            )}
-          />
+            {/* )}
+          /> */}
         </View>
       </Modal>
 
@@ -363,7 +408,7 @@ useEffect(() => {
             />
           </TouchableOpacity>
           <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Description</Text>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
               Amount(Rs.)
             </Text>
@@ -371,12 +416,13 @@ useEffect(() => {
       
               <FlatList
                 showsVerticalScrollIndicator={false}
-                data={taxData}
+                data={taxSaving}
                 keyExtractor={({item,index})=>index}
                 renderItem={({ item,index }) => (
                   <View style={styles.textContainer}>
-                    <Text>{item.SALARY_HEAD}</Text>
-                    <Text>{item.AMOUNT}</Text>
+                   <View style={{width:'50%'}}><Text>{item.SAVG_DESC}</Text></View>
+                   <Text>{item.SVDT_AMT}</Text>
+                   {/* <View style={{width:'50%',justifyContent:'flex-end'}}>></View> */}
                   </View>
                 )}
               />
