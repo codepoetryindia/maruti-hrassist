@@ -7,6 +7,7 @@ import EmergencyContacts from '../screens/EmergencyAndHospital/EmergencyContact'
 import Hospital from '../screens/EmergencyAndHospital/Hospital';
 import NearByHospital from '../screens/EmergencyAndHospital/NearByHospital';
 import DoctorsContacts from '../components/DoctorsContacts';
+import HosLocation from '../screens/EmergencyAndHospital/HosLocation';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function HospitalNavs() {
         <Stack.Screen name='Hospital' component={Hospital}/>
         <Stack.Screen name='NearByHospital' component={NearByHospital}/>
         <Stack.Screen name='DoctorsContacts' component={DoctorsContacts}/>
+        <Stack.Screen name='HosLocation' component={HosLocation}/>
       </Stack.Navigator>
   );
 }

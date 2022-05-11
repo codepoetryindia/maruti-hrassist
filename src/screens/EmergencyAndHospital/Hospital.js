@@ -5,50 +5,60 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 // create a component
-const Hospital = () => {
-
+const Hospital = ({navigation,route}) => {
+  let ApiFilterData = "ABOHAR";
+//   let data = route.params.selectedLoc;
+// {data!=='' ? ( console.log("data",data)):null}
+const  Mynavigation = useNavigation({route})
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
-  const[hospitalLoc,setHospitalLoc] = useState(null);
+  // const[hospitalLoc,setHospitalLoc] = useState(null);
   const[hospitalList,setHospitallList] = useState(null);
 
-  const GetHospLocnApi = () => {
-    let token = AppUserData.token
-    let apidata = {}
-    setLoader(true);
-    ApiService.PostMethode('/GetHospLocn', apidata, token)
-      .then(result => {
-        setLoader(false);
-        console.log("Apiresult",result);
-        let ApiValue = result.Value.LOCN_DESC
-        console.log("setHospitalLoc", ApiValue);
-        setHospitalLoc(ApiValue)
-      })
-      .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
-      });
-  };
+  // const GetHospLocnApi = () => {
+  //   let token = AppUserData.token
+  //   let apidata = {}
+  //   setLoader(true);
+  //   ApiService.PostMethode('/GetHospLocn', apidata, token)
+  //     .then(result => {
+  //       setLoader(false);
+  //       console.log("Apiresult",result);
+  //       let ApiValue = result.Value.LOCN_DESC
+  //       console.log("setHospitalLoc", ApiValue);
+  //       setHospitalLoc(ApiValue)
+  //     })
+  //     .catch(error => {
+  //       setLoader(false);
+  //       console.log('Error occurred==>', error);
+  //       if (error.response) {
+  //         if (error.response.status == 401) {
+  //           console.log('error from api', error.response);
+  //         }
+  //         // client received an error response (5xx, 4xx)
+  //         Toast.show(error.response.data.title);
+  //       } else if (error.request) {
+  //         // client never received a response, or request never left
+  //         Toast.show('Network Error');
+  //         // console.log("error.request", error.request._response);
+  //       } else {
+  //         // anything else
+  //         Toast.show('Something Went Wrong');
+  //       }
+  //     });
+  // };
 
   // Hospital list 
   const GetHospListApi = () => {
     let token = AppUserData.token
-    let apidata = {}
+    // let FilterData =  {LOCN_DESC:ABOHAR}
+    let apidata;
+    if(ApiFilterData==null){
+      apidata = {}
+    }else{
+      apidata ={LOCN_DESC:ApiFilterData} 
+    }
     setLoader(true);
     ApiService.PostMethode('/GetHospList', apidata, token)
       .then(result => {
@@ -81,7 +91,6 @@ const Hospital = () => {
   // const dispatch = useDispatch();
 
   useEffect(() =>{
-    GetHospLocnApi();
     GetHospListApi();
   },[]);
  

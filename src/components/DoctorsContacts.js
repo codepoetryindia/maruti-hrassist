@@ -16,7 +16,6 @@ const DoctorsContacts = ({ navigation, route }) => {
 
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
-  const [emergency, setEmergency] = useState();
   const [chairperson, setChairperson] = useState(null);
   const [CoChairperson, setCoChairperson] = useState(null)
   const [ExternalMem, setExternalMem] = useState([])

@@ -1,56 +1,99 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import {FlatList, TextInput} from 'react-native-gesture-handler';
+import React,{ useState,useEffect ,useContext} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity,FlatList,TextInput, ScrollView,ActivityIndicator} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import BuisnessTravel from './BuisnessTravel';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext';
 // create a component
 const Gst = ({navigation}) => {
-  const gstdata = [
-    {
-      stateName: 'ANDAMAN AND NICOBAR ISLAND',
-      gstNumber: '068461sdfv648',
-      companyName: 'Maruti suzuki india Limited ',
+  const[gst,setGst] = useState([])
+  const [loader, setLoader] = useState(false);
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const[filteredDataSource,setFilteredDataSource]=useState(null);
+  const[searchText,setSearchText] = useState('');
 
-      Adress:
-        'PALAM GURGAON ROAD , MARUTI SUZUKI INDIA LIMITED , PALAM GURGAON ROAD , GURAGAON , 1122151',
-    },
-    {
-      stateName: 'ANDAMAN AND NICOBAR ISLAND',
-      gstNumber: '068461sdfv648',
-      companyName: 'Maruti suzuki india Limited ',
+  // const searchFilterFunction = (text) => {
+  //   let filterSearchData = gst
+  //   setSearchText(text);
+  //   // console.log(text);
+  //   const newData = filterSearchData.filter((item) => {
+  //     // ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}
+  //     const itemData = `${item.MAPP_GSTN_REG_NO.toUpperCase()}`;
+  //     const textData = text.toUpperCase();
+  //     return itemData.indexOf(textData) > -1;
+  //   });
 
-      Adress:
-        'PALAM GURGAON ROAD , MARUTI SUZUKI INDIA LIMITED , PALAM GURGAON ROAD , GURAGAON , 1122151',
-    },
-    {
-      stateName: 'ANDAMAN AND NICOBAR ISLAND',
-      gstNumber: '068461sdfv648',
-      companyName: 'Maruti suzuki india Limited ',
+  //   if(filterSearchData.length > 0){
+  //     let data = [];
+  //     newData.forEach(element => {
+  //       if(element===searchText){
+  //         console.log("newDara",newData);
+  //         data.push(newData)
+  //       }
+  //     });
+  //     // console.log("filtered Data" , data);
+  //     setGst(data);
+  //   }else{
+  //     setGst([]);    
+  //   }
+  //   // setEnquiryList(newData);  
+  // };
 
-      Adress:
-        'PALAM GURGAON ROAD , MARUTI SUZUKI INDIA LIMITED , PALAM GURGAON ROAD , GURAGAON , 1122151',
-    },
-    {
-      stateName: 'ANDAMAN AND NICOBAR ISLAND',
-      gstNumber: '068461sdfv648',
-      companyName: 'Maruti suzuki india Limited ',
+  
+  const GetGSTDetailstApi = () => {
+  let token = AppUserData.token
+  let UserId = AppUserData.data
+  setLoader(true);
+  ApiService.PostMethode('/GetGSTDetails', UserId, token)
+    .then(result => {
+      setLoader(false);
+      let ApiValue = result.Value
+      console.log("setMenu", ApiValue);
+      setGst(ApiValue)
+    })
+    .catch(error => {
+      setLoader(false);
+      console.log('Error occurred==>', error);
+      if (error.response) {
+        if (error.response.status == 401) {
+          console.log('error from api', error.response);
+        }
+        // client received an error response (5xx, 4xx)
+        Toast.show(error.response.data.title);
+      } else if (error.request) {
+        // client never received a response, or request never left
+        Toast.show('Network Error');
+        // console.log("error.request", error.request._response);
+      } else {
+        // anything else
+        Toast.show('Something Went Wrong');
+      }
+    });
+  };
+  const filterdData = 
+    searchText ? gst.filter(item => {
+        const itemData = item.MAPP_GSTN_REG_NO.toUpperCase();
+        const textData = searchText.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      })
+    : gst;
+    console.log("gst",gst);
 
-      Adress:
-        'PALAM GURGAON ROAD , MARUTI SUZUKI INDIA LIMITED , PALAM GURGAON ROAD , GURAGAON , 1122151',
-    },
-    {
-      stateName: 'ANDAMAN AND NICOBAR ISLAND',
-      gstNumber: '068461sdfv648',
-      companyName: 'Maruti suzuki india Limited ',
-
-      Adress:
-        'PALAM GURGAON ROAD , MARUTI SUZUKI INDIA LIMITED , PALAM GURGAON ROAD , GURAGAON , 1122151',
-    },
-  ];
+useEffect(() => {
+  GetGSTDetailstApi()
+}, [])
   return (
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color='red' size={30} />
+        <Text>
+          Loading...
+        </Text>
+      </View>
+    ) :(
     <View style={styles.container}>
       <LinearGradient
         style={{padding: 20}}
@@ -115,6 +158,11 @@ const Gst = ({navigation}) => {
         </View>
         <TextInput
           placeholder="Search By Name/Dept/Staff/ID"
+          autoCapitalize='characters'
+          onChangeText={(searchText) => {
+            setSearchText(searchText)
+          }}
+          value={searchText}
           style={{
             width: '70%',
             paddingVertical: 5,
@@ -133,8 +181,8 @@ const Gst = ({navigation}) => {
       {/* FLATLIST */}
 
       <FlatList
-        data={gstdata}
-        keyExtractor={item => item.gstNumber}
+        data={filterdData}
+        keyExtractor={item => item.MAPP_GSTN_REG_NO}
         renderItem={({item}) => {
           return (
             <View>
@@ -147,16 +195,16 @@ const Gst = ({navigation}) => {
                     paddingBottom: 5,
                   }}>
                   <Text style={{fontSize: 16, color: '#000', padding: 10}}>
-                    {item.stateName}
+                    {item.MAPP_GSTN_STATE_NAME}
                   </Text>
                 </View>
                 <View style={{paddingHorizontal: 15, paddingVertical: 10}}>
                   <Text style={styles.GStBox}>GST Number</Text>
-                  <Text>{item.gstNumber}</Text>
+                  <Text>{item.MAPP_GSTN_REG_NO}</Text>
                   <Text style={styles.GStBox}>Company Name</Text>
-                  <Text>{item.companyName}</Text>
+                  <Text>{item.MAPP_GSTN_COMPANY_NAME}</Text>
                   <Text style={styles.GStBox}>Address</Text>
-                  <Text>{item.Adress}</Text>
+                  <Text>{item.MAPP_GSTN_ADDRESS}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -164,6 +212,7 @@ const Gst = ({navigation}) => {
         }}
       />
     </View>
+    )
   );
 };
 

@@ -176,7 +176,7 @@ const ShuttleBooking = ({navigation}) => {
               letterSpacing: 1,
               marginLeft: 30,
             }}>
-            Visito Details
+           Shuttle Booking
           </Text>
         </View>
       </LinearGradient>

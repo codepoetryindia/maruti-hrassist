@@ -1,12 +1,30 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useContext,useEffect} from 'react';
+import axios from "axios";
 import {View, Text, StyleSheet,Image,FlatList,TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import AuthContext from '../context/AuthContext';
 
 // create a component
 const Notification = ({navigation}) => {
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const NotifiApi = () => {
+    let token = AppUserData.token
+    axios.get('https://onesignal.com/api/v1/notifications?app_id=42fcb50a-922f-4b0e-9ba3-701d663beede',
+    {
+      headers:{
+        'Authorization': token
+      }
+    })
+    .then(resp => {
+      console.log("notification",resp);
+  });
+  }
+useEffect(() => {
+  NotifiApi()
+}, [])
+
   const notification = [
     {
       id: '1',

@@ -73,7 +73,7 @@ const EmergencyHospital = ({navigation}) => {
               name="ios-filter"
               size={25}
               color={'white'}
-              onPress={() => navigation.openDrawer()}
+              onPress={() => navigation.navigate("HosLocation")}
             />
         </View>
       </LinearGradient>

@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React,{ useState,useEffect ,useContext} from 'react';
 import {
   View,
   Text,
@@ -11,15 +11,64 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext';
 
-const CanteenMenu = ({navigation}) => {
+
+const CanteenMenu = ({ navigation }) => {
+  
+  const[menu,setMenu] = useState([])
+  const [loader, setLoader] = useState(false);
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const GetMenuCanttApi = () => {
+  let token = AppUserData.token
+  // let FilterData =  {LOCN_DESC:ABOHAR}
+  let apidata = {
+    MenuType: "Canteen",
+    MenuDate: "01-APR-2021",
+    MenuLocation: "002"
+  }
+  setLoader(true);
+  ApiService.PostMethode('/GetMenuCant', apidata, token)
+    .then(result => {
+      setLoader(false);
+      let ApiValue = result.Value
+      console.log("setMenu", ApiValue);
+      setMenu(ApiValue)
+    })
+    .catch(error => {
+      setLoader(false);
+      console.log('Error occurred==>', error);
+      if (error.response) {
+        if (error.response.status == 401) {
+          console.log('error from api', error.response);
+        }
+        // client received an error response (5xx, 4xx)
+        Toast.show(error.response.data.title);
+      } else if (error.request) {
+        // client never received a response, or request never left
+        Toast.show('Network Error');
+        // console.log("error.request", error.request._response);
+      } else {
+        // anything else
+        Toast.show('Something Went Wrong');
+      }
+    });
+};
+useEffect(() => {
+GetMenuCanttApi()
+}, [])
+
+
   const Calander = () => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
 
+   
     return (
       <View>
         <DatePicker
@@ -37,21 +86,21 @@ const CanteenMenu = ({navigation}) => {
         />
         <View
           style={{
-            width:'100%',
-            marginTop:10,
-            backgroundColor:'#a9bce7',
+            width: '100%',
+            marginTop: 10,
+            backgroundColor: '#a9bce7',
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingHorizontal: 22,
-            paddingVertical:6
+            paddingVertical: 6
           }}>
-          <Text style={{color: 'gray',fontWeight:'800'}}>
+          <Text style={{ color: 'gray', fontWeight: '800' }}>
             (Todays Menu ) -- {moment(date).format('MMM Do YYYY')}
           </Text>
           <View>
             <View>
-              <TouchableOpacity onPress={() => (setOpen(true), handelDate())}>
+              <TouchableOpacity onPress={() => (setOpen(true))}>
                 <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
               </TouchableOpacity>
             </View>
@@ -63,10 +112,13 @@ const CanteenMenu = ({navigation}) => {
 
   // Gurgaon
 
-  const Gurgaon = ({navigation}) => {
+  const Gurgaon = ({ navigation }) => {
+
     const [lunch, setLunch] = useState(false);
     const [snacks, setSnacks] = useState(false);
     const [dinner, setDinner] = useState(false);
+
+
     const handleDropDown = () => {
       if (lunch == true) {
         setLunch(false);
@@ -91,15 +143,15 @@ const CanteenMenu = ({navigation}) => {
       }
     };
     const foodLunch = [
-      {lunchCatogory: 'Ag-Shift'},
-      {data: 'Jeera Rice'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { lunchCatogory: 'Ag-Shift' },
+      { data: 'Jeera Rice' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
     const foodSnacks = [
       {
@@ -120,35 +172,40 @@ const CanteenMenu = ({navigation}) => {
       },
     ];
     const foodDinner = [
-      {data: 'Jeera'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
 
-    const renderfoodLunch = ({item, index}) => {
+    const renderfoodLunch = ({ item, index }) => {
       return (
         <View>
-          <Text>{item.lunchCatogory}</Text>
-          <Text>{item.data}</Text>
+          <Text style={{ fontSize: 16 }}>{item.CANT_SHFT}</Text>
+          <Text>{item.CANT_ITEM1}</Text>
+          <Text>{item.CANT_ITEM2}</Text>
+          <Text>{item.CANT_ITEM3}</Text>
+          <Text>{item.CANT_ITEM4}</Text>
+          <Text>{item.CANT_ITEM5}</Text>
+          <Text>{item.CANT_ITEM6}</Text>
+          <Text>{item.CANT_ITEM7}</Text>
         </View>
       );
     };
-    const renderfoodSnacks = ({item, index}) => {
+    const renderfoodSnacks = ({ item, index }) => {
       return (
         <View style={{}}>
-          <Text style={{fontSize: 16}}>{item.catogory}</Text>
-          <Text>{item.data}</Text>
-          <Text>{item.subData}</Text>
-          <Text>{item.subData2}</Text>
+          <Text style={{ fontSize: 16 }}>{item.CANT_SHFT}</Text>
+          <Text>{item.CANT_ITEM1}</Text>
+          <Text>{item.CANT_ITEM2}</Text>
         </View>
       );
     };
-    const renderfoodDinner = ({item, index}) => {
+    const renderfoodDinner = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
@@ -163,7 +220,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDown()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> LUNCH </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> LUNCH </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {lunch == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -182,13 +239,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {lunch ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
-                data={foodLunch}
-                keyExtractor={({item, index}) => index}
+                data={menu}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodLunch}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -201,7 +258,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownSeond()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> SNACKS </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> SNACKS </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {snacks == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -219,13 +276,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
+            <View style={{ padding: 15, justifyContent: 'space-evenly' }}>
               <FlatList
                 data={foodSnacks}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodSnacks}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -238,7 +295,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownThird()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> DINNER </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> DINNER </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {dinner == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -257,13 +314,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {dinner ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodDinner}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodDinner}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -276,7 +333,7 @@ const CanteenMenu = ({navigation}) => {
   // GURGAON End
 
   // MANSEAR START
-  const Manesar = ({navigation}) => {
+  const Manesar = ({ navigation }) => {
     const [lunch, setLunch] = useState(false);
     const [snacks, setSnacks] = useState(false);
     const [dinner, setDinner] = useState(false);
@@ -304,14 +361,14 @@ const CanteenMenu = ({navigation}) => {
       }
     };
     const foodLunch = [
-      {data: 'Jeera Rice'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera Rice' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
     const foodSnacks = [
       {
@@ -332,34 +389,34 @@ const CanteenMenu = ({navigation}) => {
       },
     ];
     const foodDinner = [
-      {data: 'Jeera'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
 
-    const renderfoodLunch = ({item, index}) => {
+    const renderfoodLunch = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
         </View>
       );
     };
-    const renderfoodSnacks = ({item, index}) => {
+    const renderfoodSnacks = ({ item, index }) => {
       return (
         <View style={{}}>
-          <Text style={{fontSize: 16}}>{item.catogory}</Text>
+          <Text style={{ fontSize: 16 }}>{item.catogory}</Text>
           <Text>{item.data}</Text>
           <Text>{item.subData}</Text>
           <Text>{item.subData2}</Text>
         </View>
       );
     };
-    const renderfoodDinner = ({item, index}) => {
+    const renderfoodDinner = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
@@ -374,7 +431,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDown()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> LUNCH </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> LUNCH </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {lunch == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -393,13 +450,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {lunch ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodLunch}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodLunch}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -412,7 +469,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownSeond()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> SNACKS </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> SNACKS </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {snacks == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -430,13 +487,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
+            <View style={{ padding: 15, justifyContent: 'space-evenly' }}>
               <FlatList
                 data={foodSnacks}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodSnacks}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -449,7 +506,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownThird()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> DINNER </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> DINNER </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {dinner == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -468,13 +525,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {dinner ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodDinner}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodDinner}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -484,7 +541,7 @@ const CanteenMenu = ({navigation}) => {
     );
   };
 
-  const Mpt = ({navigation}) => {
+  const Mpt = ({ navigation }) => {
     const [lunch, setLunch] = useState(false);
     const [snacks, setSnacks] = useState(false);
     const [dinner, setDinner] = useState(false);
@@ -512,14 +569,14 @@ const CanteenMenu = ({navigation}) => {
       }
     };
     const foodLunch = [
-      {data: 'Jeera Rice'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera Rice' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
     const foodSnacks = [
       {
@@ -540,34 +597,34 @@ const CanteenMenu = ({navigation}) => {
       },
     ];
     const foodDinner = [
-      {data: 'Jeera'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
 
-    const renderfoodLunch = ({item, index}) => {
+    const renderfoodLunch = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
         </View>
       );
     };
-    const renderfoodSnacks = ({item, index}) => {
+    const renderfoodSnacks = ({ item, index }) => {
       return (
         <View style={{}}>
-          <Text style={{fontSize: 16}}>{item.catogory}</Text>
+          <Text style={{ fontSize: 16 }}>{item.catogory}</Text>
           <Text>{item.data}</Text>
           <Text>{item.subData}</Text>
           <Text>{item.subData2}</Text>
         </View>
       );
     };
-    const renderfoodDinner = ({item, index}) => {
+    const renderfoodDinner = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
@@ -582,7 +639,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDown()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> LUNCH </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> LUNCH </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {lunch == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -601,13 +658,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {lunch ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodLunch}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodLunch}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -620,7 +677,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownSeond()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> SNACKS </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> SNACKS </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {snacks == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -638,13 +695,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
+            <View style={{ padding: 15, justifyContent: 'space-evenly' }}>
               <FlatList
                 data={foodSnacks}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodSnacks}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -657,7 +714,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownThird()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> DINNER </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> DINNER </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {dinner == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -676,13 +733,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {dinner ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodDinner}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodDinner}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -692,7 +749,7 @@ const CanteenMenu = ({navigation}) => {
     );
   };
 
-  const Rothak = ({navigation}) => {
+  const Rothak = ({ navigation }) => {
     const [lunch, setLunch] = useState(false);
     const [snacks, setSnacks] = useState(false);
     const [dinner, setDinner] = useState(false);
@@ -720,14 +777,14 @@ const CanteenMenu = ({navigation}) => {
       }
     };
     const foodLunch = [
-      {data: 'Jeera Rice'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera Rice' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
     const foodSnacks = [
       {
@@ -748,34 +805,34 @@ const CanteenMenu = ({navigation}) => {
       },
     ];
     const foodDinner = [
-      {data: 'Jeera'},
-      {data: 'Dal Punjabi'},
-      {data: 'Began Bharta'},
-      {data: ' plain Chapatti'},
-      {data: 'plain curd'},
-      {data: 'khichidi , Kheera ,Gajar'},
-      {data: 'Green Chatney'},
-      {data: 'Banana'},
+      { data: 'Jeera' },
+      { data: 'Dal Punjabi' },
+      { data: 'Began Bharta' },
+      { data: ' plain Chapatti' },
+      { data: 'plain curd' },
+      { data: 'khichidi , Kheera ,Gajar' },
+      { data: 'Green Chatney' },
+      { data: 'Banana' },
     ];
 
-    const renderfoodLunch = ({item, index}) => {
+    const renderfoodLunch = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
         </View>
       );
     };
-    const renderfoodSnacks = ({item, index}) => {
+    const renderfoodSnacks = ({ item, index }) => {
       return (
         <View style={{}}>
-          <Text style={{fontSize: 16}}>{item.catogory}</Text>
+          <Text style={{ fontSize: 16 }}>{item.catogory}</Text>
           <Text>{item.data}</Text>
           <Text>{item.subData}</Text>
           <Text>{item.subData2}</Text>
         </View>
       );
     };
-    const renderfoodDinner = ({item, index}) => {
+    const renderfoodDinner = ({ item, index }) => {
       return (
         <View>
           <Text>{item.data}</Text>
@@ -790,7 +847,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDown()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> LUNCH </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> LUNCH </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {lunch == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -809,13 +866,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {lunch ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodLunch}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodLunch}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -828,7 +885,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownSeond()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> SNACKS </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> SNACKS </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {snacks == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -846,13 +903,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {snacks ? (
-            <View style={{padding: 15, justifyContent: 'space-evenly'}}>
+            <View style={{ padding: 15, justifyContent: 'space-evenly' }}>
               <FlatList
                 data={foodSnacks}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodSnacks}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -865,7 +922,7 @@ const CanteenMenu = ({navigation}) => {
           <TouchableOpacity
             style={styles.lunchBox}
             onPress={() => handleDropDownThird()}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}> DINNER </Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> DINNER </Text>
             {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
             {dinner == true ? (
               <Ionicons name={'ios-chevron-up'} size={20} />
@@ -884,13 +941,13 @@ const CanteenMenu = ({navigation}) => {
             />
           ) : null}
           {dinner ? (
-            <View style={{padding: 15}}>
+            <View style={{ padding: 15 }}>
               <FlatList
                 data={foodDinner}
-                keyExtractor={({item, index}) => index}
+                keyExtractor={({ item, index }) => index}
                 renderItem={renderfoodDinner}
                 ItemSeparatorComponent={() => (
-                  <View style={{marginVertical: 5}} />
+                  <View style={{ marginVertical: 5 }} />
                 )}
               />
             </View>
@@ -908,13 +965,13 @@ const CanteenMenu = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'Gurgaon'},
-    {key: 'second', title: 'Manesar'},
-    {key: 'third', title: 'MPT'},
-    {key: 'fourth', title: 'Rothak'},
+    { key: 'first', title: 'Gurgaon' },
+    { key: 'second', title: 'Manesar' },
+    { key: 'third', title: 'MPT' },
+    { key: 'fourth', title: 'Rothak' },
   ]);
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <View style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
         colors={['#2757C3', '#80406A', '#ad3231']}
         style={styles.gradient}>
@@ -956,18 +1013,18 @@ const CanteenMenu = ({navigation}) => {
           return (
             <LinearGradient
               colors={['#ad3231', '#bd5b5a']}
-              style={{marginTop: -1, zIndex: -1}}>
+              style={{ marginTop: -1, zIndex: -1 }}>
               <TabBar
                 {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
+                style={{ backgroundColor: 'transparent', elevation: 0 }}
               />
             </LinearGradient>
           );
         }}
-        navigationState={{index, routes}}
+        navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
+        initialLayout={{ width: layout.width }}
       />
     </View>
   );
