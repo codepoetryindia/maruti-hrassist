@@ -1,5 +1,5 @@
 //import liraries
-import React,{ useState,useEffect ,useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -17,58 +17,82 @@ import DatePicker from 'react-native-date-picker';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
+import Accordion from './CanteenComponent/Accordion';
 
 
 const CanteenMenu = ({ navigation }) => {
-  
-  const[menu,setMenu] = useState([])
+
+  const [menu, setMenu] = useState([])
   const [loader, setLoader] = useState(false);
   const { authContext, AppUserData } = useContext(AuthContext);
+  const [lunch, setLunch] = useState([]);
+  const [snacks, setSnacks] = useState([]);
+  const [dinner, setDinner] = useState([]);
   const GetMenuCanttApi = () => {
-  let token = AppUserData.token
-  // let FilterData =  {LOCN_DESC:ABOHAR}
-  let apidata = {
-    MenuType: "Canteen",
-    MenuDate: "01-APR-2021",
-    MenuLocation: "002"
-  }
-  setLoader(true);
-  ApiService.PostMethode('/GetMenuCant', apidata, token)
-    .then(result => {
-      setLoader(false);
-      let ApiValue = result.Value
-      console.log("setMenu", ApiValue);
-      setMenu(ApiValue)
-    })
-    .catch(error => {
-      setLoader(false);
-      console.log('Error occurred==>', error);
-      if (error.response) {
-        if (error.response.status == 401) {
-          console.log('error from api', error.response);
+    let token = AppUserData.token
+    // let FilterData =  {LOCN_DESC:ABOHAR}
+    let apidata = {
+      MenuType: "Canteen",
+      MenuDate: "01-APR-2021",
+      MenuLocation: "002"
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetMenuCant', apidata, token)
+      .then(result => {
+        setLoader(false);
+        let ApiValue = result.Value
+        console.log("setMenu", ApiValue);
+        let lunch = result.Value.filter(item => {
+          if (item.CANT_MEAL === "Lunch") {
+            return item
+          }
+        })
+
+        let snacks = result.Value.filter(item => {
+          if (item.CANT_MEAL === "Snacks") {
+            return item
+          }
+        })
+
+        let dinner = result.Value.filter(item => {
+          if (item.CANT_MEAL === "Dinner") {
+            return item
+          }
+        })
+
+        setLunch(lunch);
+        setSnacks(snacks);
+        setDinner(dinner);
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
         }
-        // client received an error response (5xx, 4xx)
-        Toast.show(error.response.data.title);
-      } else if (error.request) {
-        // client never received a response, or request never left
-        Toast.show('Network Error');
-        // console.log("error.request", error.request._response);
-      } else {
-        // anything else
-        Toast.show('Something Went Wrong');
-      }
-    });
-};
-useEffect(() => {
-GetMenuCanttApi()
-}, [])
+      });
+  };
+  useEffect(() => {
+    GetMenuCanttApi()
+  }, [])
 
 
   const Calander = () => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
 
-   
+
     return (
       <View>
         <DatePicker
@@ -113,222 +137,26 @@ GetMenuCanttApi()
   // Gurgaon
 
   const Gurgaon = ({ navigation }) => {
-
-    const [lunch, setLunch] = useState(false);
-    const [snacks, setSnacks] = useState(false);
-    const [dinner, setDinner] = useState(false);
-
-
-    const handleDropDown = () => {
-      if (lunch == true) {
-        setLunch(false);
-      } else if (lunch != true) {
-        setLunch(true);
-      }
-    };
-
-    const handleDropDownSeond = () => {
-      if (snacks == true) {
-        setSnacks(false);
-      } else if (snacks != true) {
-        setSnacks(true);
-      }
-    };
-
-    const handleDropDownThird = () => {
-      if (dinner == true) {
-        setDinner(false);
-      } else if (dinner != true) {
-        setDinner(true);
-      }
-    };
-    const foodLunch = [
-      { lunchCatogory: 'Ag-Shift' },
-      { data: 'Jeera Rice' },
-      { data: 'Dal Punjabi' },
-      { data: 'Began Bharta' },
-      { data: ' plain Chapatti' },
-      { data: 'plain curd' },
-      { data: 'khichidi , Kheera ,Gajar' },
-      { data: 'Green Chatney' },
-      { data: 'Banana' },
-    ];
-    const foodSnacks = [
-      {
-        catogory: 'AG-Shift',
-        data: 'Tea & Bread Butter',
-        subData: 'Tea & Buiscuits Parle-G',
-      },
-      {
-        catogory: 'B-Shift',
-        data: 'Tea , Samosa & Ketchup',
-        subData: 'Tea & Buiscuits Parle-G',
-      },
-      {
-        catogory: 'C-Shift',
-        data: 'Tea paneer braed pakora & Ketchup',
-        subData: 'Milk & Poha',
-        subData2: 'Bread Butter',
-      },
-    ];
-    const foodDinner = [
-      { data: 'Jeera' },
-      { data: 'Dal Punjabi' },
-      { data: 'Began Bharta' },
-      { data: ' plain Chapatti' },
-      { data: 'plain curd' },
-      { data: 'khichidi , Kheera ,Gajar' },
-      { data: 'Green Chatney' },
-      { data: 'Banana' },
-    ];
-
-    const renderfoodLunch = ({ item, index }) => {
-      return (
-        <View>
-          <Text style={{ fontSize: 16 }}>{item.CANT_SHFT}</Text>
-          <Text>{item.CANT_ITEM1}</Text>
-          <Text>{item.CANT_ITEM2}</Text>
-          <Text>{item.CANT_ITEM3}</Text>
-          <Text>{item.CANT_ITEM4}</Text>
-          <Text>{item.CANT_ITEM5}</Text>
-          <Text>{item.CANT_ITEM6}</Text>
-          <Text>{item.CANT_ITEM7}</Text>
-        </View>
-      );
-    };
-    const renderfoodSnacks = ({ item, index }) => {
-      return (
-        <View style={{}}>
-          <Text style={{ fontSize: 16 }}>{item.CANT_SHFT}</Text>
-          <Text>{item.CANT_ITEM1}</Text>
-          <Text>{item.CANT_ITEM2}</Text>
-        </View>
-      );
-    };
-    const renderfoodDinner = ({ item, index }) => {
-      return (
-        <View>
-          <Text>{item.data}</Text>
-        </View>
-      );
-    };
+    const [isOpen, setIsOpen] = useState('');
     return (
       <View>
         <Calander />
-        {/* Lunch */}
-        <View style={styles.lunchBoxContainer}>
-          <TouchableOpacity
-            style={styles.lunchBox}
-            onPress={() => handleDropDown()}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> LUNCH </Text>
-            {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
-            {lunch == true ? (
-              <Ionicons name={'ios-chevron-up'} size={20} />
-            ) : (
-              <Ionicons name={'ios-chevron-down'} size={20} />
-            )}
-          </TouchableOpacity>
-          {lunch == true ? (
-            <View
-              style={{
-                borderWidth: 0.5,
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: 10,
-              }}
-            />
-          ) : null}
-          {lunch ? (
-            <View style={{ padding: 15 }}>
-              <FlatList
-                data={menu}
-                keyExtractor={({ item, index }) => index}
-                renderItem={renderfoodLunch}
-                ItemSeparatorComponent={() => (
-                  <View style={{ marginVertical: 5 }} />
-                )}
-              />
-            </View>
-          ) : null}
-        </View>
-
-        {/* SNACKS */}
-
-        <View style={styles.lunchBoxContainer}>
-          <TouchableOpacity
-            style={styles.lunchBox}
-            onPress={() => handleDropDownSeond()}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> SNACKS </Text>
-            {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
-            {snacks == true ? (
-              <Ionicons name={'ios-chevron-up'} size={20} />
-            ) : (
-              <Ionicons name={'ios-chevron-down'} size={20} />
-            )}
-          </TouchableOpacity>
-          {snacks == true ? (
-            <View
-              style={{
-                borderTopWidth: 0.5,
-                width: '90%',
-                alignSelf: 'center',
-              }}
-            />
-          ) : null}
-          {snacks ? (
-            <View style={{ padding: 15, justifyContent: 'space-evenly' }}>
-              <FlatList
-                data={foodSnacks}
-                keyExtractor={({ item, index }) => index}
-                renderItem={renderfoodSnacks}
-                ItemSeparatorComponent={() => (
-                  <View style={{ marginVertical: 5 }} />
-                )}
-              />
-            </View>
-          ) : null}
-        </View>
-
-        {/* DINNER */}
-
-        <View style={styles.lunchBoxContainer}>
-          <TouchableOpacity
-            style={styles.lunchBox}
-            onPress={() => handleDropDownThird()}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}> DINNER </Text>
-            {/* <Ionicons name="chevron-down" size={30} color={'#ad3231'} /> */}
-            {dinner == true ? (
-              <Ionicons name={'ios-chevron-up'} size={20} />
-            ) : (
-              <Ionicons name={'ios-chevron-down'} size={20} />
-            )}
-          </TouchableOpacity>
-          {dinner == true ? (
-            <View
-              style={{
-                borderTopWidth: 0.5,
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: 10,
-              }}
-            />
-          ) : null}
-          {dinner ? (
-            <View style={{ padding: 15 }}>
-              <FlatList
-                data={foodDinner}
-                keyExtractor={({ item, index }) => index}
-                renderItem={renderfoodDinner}
-                ItemSeparatorComponent={() => (
-                  <View style={{ marginVertical: 5 }} />
-                )}
-              />
-            </View>
-          ) : null}
-        </View>
+        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
       </View>
     );
   };
+
+      // let menuType = [
+    //   'lunch',
+    //   'sancks',
+    //   'dinner'
+    // ]
+    // function handelOpen(item){
+    //   setIsOpen
+    // }
+     {/* {menuType.map(item => <Accordion data={apiitem} name={item} handleDropDown={() => handelOpen(item)} isOpen={isOen} />)} */}
 
   // GURGAON End
 
