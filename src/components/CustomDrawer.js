@@ -56,7 +56,7 @@ function CustomDrawer(props) {
     <>
       <DrawerContentScrollView style={{backgroundColor: '#ffffff'}} {...props}>
         <LinearGradient
-          colors={['#2757C3', '#80406A', '#AD3231']}
+          colors={['#4174D0','#6ef7ff']}
           style={styles.gradient}>
           <View
             style={{

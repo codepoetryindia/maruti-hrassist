@@ -104,7 +104,7 @@ const InitMEDEncashment = () => {
             <ScrollView style={styles.container}>
             <LinearGradient
                 style={{ padding: 20 }}
-                colors={['#2757C3', '#80406A', '#ad3231']}>
+             colors={['#4174D0','#6ef7ff']}>
                 <View style={{ flexDirection: 'row' }}>
                     <View
                         style={{
@@ -179,7 +179,7 @@ const InitMEDEncashment = () => {
                                     alignSelf: 'center',
                                     marginVertical: 10,
                                 }}
-                                colors={['#2757C3', '#80406A', '#AD3231']}>
+                             colors={['#4174D0','#6ef7ff']}>
                                 <Text style={{ fontSize: 16, color: '#fff' }}>
                                     CLAIM
                                 </Text>
@@ -227,7 +227,7 @@ const InitMEDEncashment = () => {
                                 alignSelf: 'center',
                                 marginVertical: 10,
                             }}
-                            colors={['#2757C3', '#80406A', '#AD3231']}>
+                         colors={['#4174D0','#6ef7ff']}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>
                                 ENCASh
                             </Text>

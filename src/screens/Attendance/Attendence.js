@@ -1,5 +1,5 @@
 //import liraries
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -298,7 +298,7 @@ const Attendance = ({navigation}) => {
                   borderRadius: 8,
                   alignItems: 'center',
                 }}
-                colors={['#2757C3', '#80406A', '#AD3231']}>
+             colors={['#4174D0','#6ef7ff']}>
                 <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
               </LinearGradient>
             </TouchableOpacity>

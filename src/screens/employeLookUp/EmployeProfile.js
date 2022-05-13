@@ -68,7 +68,7 @@ const EmployProfile = ({ navigation, route }) => {
       <View style={styles.container}>
         <LinearGradient
           style={{ flex: 0.25 }}
-          colors={['#2757C3', '#80406A', '#AD3231']}>
+       colors={['#4174D0','#6ef7ff']}>
           <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
             <Ionicons
               name="chevron-back-outline"
@@ -207,7 +207,7 @@ const EmployProfile = ({ navigation, route }) => {
           {/* <TouchableOpacity>
        <LinearGradient
         style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
-        colors={['#2757C3', '#80406A', '#AD3231']}>
+     colors={['#4174D0','#6ef7ff']}>
          
             <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
           </LinearGradient>

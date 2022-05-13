@@ -87,7 +87,7 @@ useEffect(() => {
     <View style={styles.container}>
       <LinearGradient
         style={{flex: 1}}
-        colors={['#2757C3', '#80406A', '#AD3231']}>
+     colors={['#4174D0','#6ef7ff']}>
         <View style={{flexDirection: 'row', paddingVertical: 15, padding: 10}}>
           <View
             style={{

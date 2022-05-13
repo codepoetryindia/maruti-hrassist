@@ -205,7 +205,7 @@ const VisitDetails = ({navigation}) => {
         </View>
         <TouchableOpacity style={{padding: 10, paddingStart: 20}}>
           <LinearGradient
-            colors={['#2757C3', '#80406A', '#ad3231']}
+         colors={['#4174D0','#6ef7ff']}
             style={{padding: 10, width: '40%', borderRadius: 5}}>
             <Text style={{color: '#fff', textAlign: 'center'}}>
               Add More Person
@@ -221,7 +221,7 @@ const VisitDetails = ({navigation}) => {
               width: '90%',
               alignSelf: 'center',
             }}
-            colors={['#2757C3', '#80406A', '#ad3231']}>
+         colors={['#4174D0','#6ef7ff']}>
             <TouchableOpacity
               style={{
                 width: '100%',

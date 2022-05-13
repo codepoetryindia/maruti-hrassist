@@ -99,7 +99,7 @@ const More = ({navigation}) => {
     <View style={styles.container}>
       <LinearGradient
         style={{padding: 20}}
-        colors={['#2757C3', '#80406A', '#ad3231']}>
+     colors={['#4174D0','#6ef7ff']}>
         <View style={{flexDirection: 'row'}}>
           <View
             style={{

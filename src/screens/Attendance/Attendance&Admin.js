@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import {
   View,
   Text,
@@ -50,7 +50,7 @@ const AttendanceAdmin = ({navigation}) => {
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
-        colors={['#2757C3', '#80406A', '#ad3231']}
+     colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
         <View style={styles.container}>
         {horizental == true ? (
@@ -156,7 +156,8 @@ const AttendanceAdmin = ({navigation}) => {
         renderTabBar={props => {
           return (
             <LinearGradient
-              colors={['#ad3231', '#bd5b5a']}
+            
+              colors={['#4174D0','#6ef7ff']}
               style={{marginTop: -1, zIndex: -1}}>
               <TabBar
                 renderLabel={({route, focused, color}) => (
