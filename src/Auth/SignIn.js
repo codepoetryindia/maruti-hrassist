@@ -8,13 +8,17 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import AuthService from '../Service/AuthService';
+import * as ApiService from './../Utils/Utils';
 import AuthContext from '../context/AuthContext';
+import Toast from 'react-native-simple-toast'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const SignIn = ({navigation}) => {
   const {authContext, AppUserData} = useContext(AuthContext);
@@ -27,21 +31,19 @@ const SignIn = ({navigation}) => {
       UserName: values.UserName,
       Password: values.Password,
     };
-
-    console.log('api data', data);
+    // console.log('api data', data);
     AuthService.Post('Login', data)
       .then(res => {
-        console.log('user Response', res);
+        console.log(res);
         let contextData = {
           token: res.token,
-          user: values.UserName,
+          user: values.UserName,          
         };
-        authContext.signIn({
-          payload: contextData,
-        });
-        setLoader(false);
+
+        GetUserDetails(contextData);
       })
       .catch(error => {
+        console.log(error);
         setLoader(false);
         // return;
         console.log('response data', JSON.stringify(error));
@@ -59,6 +61,58 @@ const SignIn = ({navigation}) => {
       });
   };
 
+  const GetUserDetails = ({token, user}) =>{
+    console.log(token, user);
+    let data = {"UserName" : user};
+    // return;
+    ApiService.PostMethode('/GetEmployeeProfile', data, token)
+    .then(res => {
+      console.log('user Response', res);
+      let response = res.Value;
+
+      // return console.log(response);
+
+      if(response.Table){
+        let userData = {
+          EMPL_NAME: response.Table[0].EMPL_NAME,
+          profile_photo:response.Table[0].profile_photo,
+
+        };
+      let contextData = {
+        token: token,
+        user: userData         
+      };
+
+      authContext.signIn({
+        payload: contextData,
+      });
+      }else{
+        Toast.show('Please Retry');
+      }
+      setLoader(false);
+    })
+    .catch(error => {
+      console.log(error);
+      setLoader(false);
+      // return;
+      console.log('response data', JSON.stringify(error));
+      if (error.response) {
+        // client received an error response (5xx, 4xx)
+        console.log(error.response.data.error.message);
+      } else if (error.request) {
+        // client never received a response, or request never left
+        console.log('Network Error');
+        // console.log("error.request", error.request._response);
+      } else {
+        // anything else
+        console.log('Something Went Wrong');
+      }
+    });
+  }
+
+
+
+
   const loginValidationSchema = yup.object().shape({
     UserName: yup
       .string()
@@ -72,6 +126,11 @@ const SignIn = ({navigation}) => {
   });
 
   return (
+    <SafeAreaView style={{flexGrow: 1}}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={{flexGrow: 1}}>
+
     <View style={styles.container}>
       {Loader == true ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -91,49 +150,52 @@ const SignIn = ({navigation}) => {
           <LinearGradient
             colors={['#2757C3', '#80406A', '#ad3231']}
             style={styles.gradient}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../assets/Images/logoo.png')}
-                style={{width: '20%', height: 75, resizeMode: 'cover'}}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'center',
-                paddingVertical: 8,
-                justifyContent: 'space-between',
-              }}>
+              <View>
+                <View
+                style={{
+                  // flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={require('../assets/Images/logoo.png')}
+                  style={{width: 80, height:80, resizeMode: 'contain'}}
+                />
+              </View>
+
+              <View
+                style={{
+                  // flexDirection: 'row',
+                  alignSelf: 'center',
+                  // paddingVertical: 8,
+                  justifyContent: 'space-between',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    color: '#fff',
+                    fontWeight: 'bold',
+                  }}>
+                  Welcome!
+                </Text>
+              </View>
               <Text
                 style={{
-                  fontSize: 30,
+                  fontSize: 28,
                   color: '#fff',
-                  fontWeight: 'bold',
+                  alignSelf: 'center',
+                  fontFamily: 'Montserrat-Bold',
+                  marginBottom:50
                 }}>
-                Welcome !
+                In <Text style={{fontSize: 40, color: '#f7ebea'}}>M</Text>aruti
+                <Text style={{fontSize: 40, color: '#f7ebea'}}> S</Text>uzuki
               </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 30,
-                color: '#fff',
-                alignSelf: 'center',
-                letterSpacing: 1,
-                fontFamily: 'Montserrat-Bold',
-              }}>
-              In <Text style={{fontSize: 40, color: '#f7ebea'}}>M</Text>aruti
-              <Text style={{fontSize: 40, color: '#f7ebea'}}> S</Text>uzuki
-            </Text>
+              </View>
           </LinearGradient>
 
           <Formik
             validationSchema={loginValidationSchema}
-            initialValues={{UserName: '', Password: ''}}
+            initialValues={{UserName: '222852', Password: 'Maruti@131'}}
             onSubmit={values => {
               // console.log("values",values)
               handleLogin(values);
@@ -151,14 +213,13 @@ const SignIn = ({navigation}) => {
                 <Image
                   source={require('../assets/Images/login2.png')}
                   style={{
-                    width: '60%',
-                    height: '50%',
+                    width: 200,
+                    height: 200,
                     alignSelf: 'center',
-                    top: 25,
                     resizeMode: 'contain',
                   }}
                 />
-                <View style={{paddingTop: 20}}>
+                <View style={{paddingTop: 0}}>
                   <View style={{paddingVertical: 10}}>
                     <View
                       style={{
@@ -308,45 +369,31 @@ const SignIn = ({navigation}) => {
         </View>
       )}
     </View>
+    </KeyboardAwareScrollView>
+  </SafeAreaView>
   );
-
-  // </ScrollView>
-  // </SafeAreaView>
-  // </KeyboardAvoidingView>
 };
 
 // define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   gradient: {
-    flex: 0.45,
+    flex:0.5,
     width: '100%',
     paddingVertical: 10,
+    marginBottom:-50
   },
   login: {
-    justifyContent: 'flex-end',
+    flex:1,
     width: '100%',
-    height: '67%',
-    overflow: 'hidden',
     backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
-    marginBottom: 20,
     borderTopRightRadius: 50,
     borderTopLeftRadius: 50,
     alignSelf: 'center',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 0,
-    // },
-    // shadowOpacity: 1.29,
-    // shadowRadius: 10.65,
-
-    // elevation: 7,
+    borderWidth:1, 
+    borderColor:'#fff'
   },
 });
 

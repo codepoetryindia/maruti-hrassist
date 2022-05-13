@@ -20,7 +20,7 @@ const EmergencyContacts = ({ navigation }) => {
   const GetEmerMain = () => {
     let apiData = {}
     let token = AppUserData.token
-    console.log(apiData)
+    // console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetEmerMain', apiData, token)
       .then(result => {
@@ -56,25 +56,27 @@ const EmergencyContacts = ({ navigation }) => {
   const iconBox = (type) => {
     switch (type) {
       case "Doctor":
-        return '../../assets/Images/doctorr.png'
+        return require('../../assets/Images/doctorr.png')
         break;
       case "Vigilance":
-        return '../../assets/Images/security-cameraa.png'
+        return require('../../assets/Images/security-cameraa.png')
         break;
       case "Fire Control":
-        return '../../assets/Images/fire-extinguisher.png'
+        return require('../../assets/Images/fire-extinguisher.png')
         break;
       case "Electricity":
-        return '../../assets/Images/electrical-energy.png'
+        return require('../../assets/Images/electrical-energy.png')
         break;
       case "POSH Cell":
-        return '../../assets/Images/user-interface.png'
+        return require('../../assets/Images/user-interface.png')
         break;
       default:
-        return '../../assets/Images/user-interface.png'
+        return require('../../assets/Images/user-interface.png')
         break;
     }
   }
+
+
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -90,7 +92,7 @@ const EmergencyContacts = ({ navigation }) => {
           // keyExtractor={({item})=>item.EMER_CODE}
           renderItem={({ item }) => {
             let image = iconBox(item.EMER_DESC);
-            console.log('post + image==>', image, item.EMER_DESC);
+            // console.log('post + image==>', image, item.EMER_DESC);
             return (
               <TouchableOpacity
                 style={styles.box}
@@ -110,10 +112,11 @@ const EmergencyContacts = ({ navigation }) => {
                       borderColor: '#ad3231',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      overflow:'hidden'
                     }}>
                     <Image
-                      source={{ uri: image }}
-                      style={{ width: 30, height: 30 }}
+                      source={image}
+                      style={{ width: 45, height: 45 }}
                     />
                   </View>
                 </View>

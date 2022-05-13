@@ -1,15 +1,18 @@
 //import liraries
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, useWindowDimensions} from 'react-native';
+import {View, Text, StyleSheet, useWindowDimensions, SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Payroll from './Payroll';
 import Benifits from './Benifits';
 import TouchID from 'react-native-touch-id';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const FirstRoute = () => <Payroll />;
 const SecondRoute = () => <Benifits />;
+
+
 const CompensationBenifits = ({navigation}) => {
   const [isAuth, setIsAuth] = useState();
   const optionalConfigObject = {
@@ -42,11 +45,13 @@ const CompensationBenifits = ({navigation}) => {
               console.log('state data',isAuth)
             })
             .catch(error => {
+              navigation.goBack();
               console.log('Authentication Failed', error);
             });
         }
       })
       .catch(error => {
+        navigation.goBack();
         // Failure code
         console.log('not supported', error);
       });
@@ -62,7 +67,10 @@ const CompensationBenifits = ({navigation}) => {
     {key: 'first', title: 'Payroll'},
     {key: 'second', title: 'Benifits'},
   ]);
+
+
   return (
+    <SafeAreaView style={{flexGrow:1}}>
     <View style={{flex:1}}>
       {isAuth == true ? ( <View style={{flex:1}}>
         <View style={{flex: 1, width: '100%', height: '100%'}}>
@@ -121,12 +129,18 @@ const CompensationBenifits = ({navigation}) => {
             initialLayout={{width: layout.width}}
           />
         </View>
-      </View>
-        
-      ) : 
-       null
+      </View>        
+      ) : (
+        <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
+            <Text>Please Run in a real device </Text>
+            <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
+              <Text>Go Back</Text>
+            </TouchableOpacity>
+        </View>
+      )      
       }
     </View>
+    </SafeAreaView>
   );
 };
 

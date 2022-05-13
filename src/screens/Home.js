@@ -1,6 +1,6 @@
 //import liraries
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import React, {Component, useContext} from 'react';
+import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchableCard from '../components/Touchable';
@@ -9,8 +9,13 @@ import {SliderBox} from 'react-native-image-slider-box';
 import Notification from './Notification';
 import IconBadge from 'react-native-icon-badge';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import AuthContext from './../context/AuthContext';
+
+
+
 // create a component
 const Home = ({navigation}) => {
+  const { authContext, AppUserData } = useContext(AuthContext);
   // images for carousel
   const image = [
     'https://1qkeyv41u1op36vgbm47q0i6-wpengine.netdna-ssl.com/wp-content/uploads/2021/07/Mobile-App-Design-Cost-1024x512.png',
@@ -20,6 +25,7 @@ const Home = ({navigation}) => {
 
   // end array
   return (
+    <SafeAreaView style={{flexGrow: 1}}>
     <View style={styles.container}>
       <LinearGradient
         colors={['#2757C3', '#80406A', '#AD3231']}
@@ -64,10 +70,18 @@ const Home = ({navigation}) => {
             </View>
           </View>
           <View style={{flexDirection: 'row', marginHorizontal: 20, top: '5%'}}>
-            <Image
-              source={require('../assets/Images/smile.jpg')}
-              style={{width: 60, height: 60, borderRadius: 50}}
-            />
+            
+            {AppUserData.data.profile_photo ? (
+              <Image
+                source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
+                style={{width: 60, height: 60, borderRadius: 50}}
+              />
+            ):(
+              <Image
+                source={require('../assets/Images/smile.jpg')}
+                style={{width: 60, height: 60, borderRadius: 50}}
+              />
+            )}
             <View style={{marginHorizontal: 20}}>
               <Text
                 style={{
@@ -76,7 +90,7 @@ const Home = ({navigation}) => {
                   fontWeight: 'bold',
                   letterSpacing: 1,
                 }}>
-                Hello, Manisha Verma!
+                {AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
               <Text style={{fontSize: 16, color: '#fff', letterSpacing: 1}}>
                 Monday, 24 jan 2022
@@ -96,6 +110,7 @@ const Home = ({navigation}) => {
 
       <TouchableCard navigation={navigation} />
     </View>
+    </SafeAreaView>
   );
 };
 

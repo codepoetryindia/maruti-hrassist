@@ -63,11 +63,9 @@ const Routes = () => {
     () => ({
       signIn: async data => {
         // console.log('User Data', data);
-        let userToken = null;
+        let userToken = data.payload.token;
         let contextData;
-        userToken = data.payload.token;
-        let userData = null;
-        userData = data.payload.user;
+        let userData = data.payload.user;
         console.log('User Token', userToken);
         console.log('User Data', userData);
         // return;
@@ -77,12 +75,10 @@ const Routes = () => {
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             contextData = {token: userToken, data: userData};
             console.log('contextData', contextData);
-
             setAppUserData({
               token: userToken,
               data: userData,
             });
-
             if ((userToken, userData)) {
               dispatch({type: 'LOGIN', payload: contextData});
             } else {
@@ -118,6 +114,8 @@ const Routes = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+
+
   const fetchUserData = async () => {
     let userToken = null;
     let userData = null;
@@ -152,6 +150,7 @@ const Routes = () => {
       dispatch({type: 'RETRIEVE_TOKEN', payload: dataFound});
     }
   };
+
   if (loginState.isLoading == true) {
     console.log('Login State loading', loginState.isLoading);
     return (

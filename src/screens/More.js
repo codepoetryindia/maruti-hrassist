@@ -19,7 +19,7 @@ const More = ({navigation}) => {
   var SendIntentAndroid = require('react-native-send-intent');
 
   const SAPSF = () => {
-    let url = 'skype://app';
+    let url = 'com.successfactors.successfactors';
     Linking.openURL(url).catch(err => {
       if (err.code === 'EUNSPECIFIED') {
         if (Platform.OS === 'android') {
@@ -31,7 +31,7 @@ const More = ({navigation}) => {
             } else {
               console.log('is installed false');
               Linking.openURL(
-                'https://play.google.com/store/apps/details?id=com.skype.raider&hl=en_IN&gl=US',
+                'https://play.google.com/store/apps/details?id=com.successfactors.successfactors',
               ).catch(err => {
                 console.log(err);
               });
@@ -63,7 +63,7 @@ const More = ({navigation}) => {
   // };
   const AskHr = () => {
   
-    SendIntentAndroid.isAppInstalled('symphonysummit://app').then(
+    SendIntentAndroid.isAppInstalled('air.com.symphonysummit.marutisuzukihr').then(
       isInstalled => {
         console.log('check',isInstalled)
         if (isInstalled == false) {
@@ -82,6 +82,8 @@ const More = ({navigation}) => {
       },
     );
   };
+
+
   const Wellness = () => {
     SendIntentAndroid.isAppInstalled('in/WellnessMitra/').then(isInstalled => { 
       
@@ -95,6 +97,8 @@ const More = ({navigation}) => {
       }
     });
   };
+
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -163,7 +167,7 @@ const More = ({navigation}) => {
             borderRadius: 18,
           }}>
           <Image
-            source={require('../assets/Images/man.png')}
+            source={require('../assets/Images/neevmy.png')}
             style={{width: 50, height: 50}}
           />
           <Text style={{fontSize: 20, paddingVertical: 5, color: 'grey'}}>
@@ -196,7 +200,7 @@ const More = ({navigation}) => {
             borderRadius: 18,
           }}>
           <Image
-            source={require('../assets/Images/smile.jpg')}
+            source={require('../assets/Images/askhrlogo.jpeg')}
             style={{width: 50, height: 50, borderRadius: 40}}
           />
           <Text style={{fontSize: 20, paddingVertical: 5}}>Ask HR</Text>
@@ -227,7 +231,7 @@ const More = ({navigation}) => {
             borderRadius: 18,
           }}>
           <Image
-            source={require('../assets/Images/profile2.jpg')}
+            source={require('../assets/Images/wellnessmitra.png')}
             style={{width: 50, height: 50, borderRadius: 40}}
           />
           <Text style={{fontSize: 20, paddingVertical: 5}}>Wellness Mitra</Text>

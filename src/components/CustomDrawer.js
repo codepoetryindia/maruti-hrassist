@@ -4,7 +4,6 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-
 import {
   View,
   Text,
@@ -13,6 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Linking
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
@@ -65,16 +65,23 @@ function CustomDrawer(props) {
               top: 30,
               padding: 10,
             }}>
-            <Image
-              style={[styles.avtar, {marginRight: 5}]}
-              source={require('../assets/Images/avtar.webp')}
-            />
+            {AppUserData.data.profile_photo ? (
+              <Image
+                source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
+                style={[styles.avtar, {marginRight: 5}]}
+              />
+            ):(
+              <Image
+                source={require('../assets/Images/Avtar.png')}
+                style={[styles.avtar, {marginRight: 5}]}
+              />
+            )}
             <View>
-              <Text style={styles.text}>Mrs. Adams Parker</Text>
-              <Text style={styles.text}>MIT</Text>
+              <Text style={styles.text}>{AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
+              {/* <Text style={styles.text}>MIT</Text> */}
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('EmployProfile');
+                  // navigation.navigate('EmployProfile');
                 }}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
@@ -222,7 +229,14 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="App Tutorial"
-              onPress={() => navigation.navigate('More')}
+              onPress={() => {                
+                Linking.openURL(
+                  'https://marutistoragenew.blob.core.windows.net/ag3mobileapp/HrAssist%20Tutorial.mp4',
+                ).catch(err => {
+                  console.log(err);
+                });
+                // navigation.navigate('More')
+              }}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
