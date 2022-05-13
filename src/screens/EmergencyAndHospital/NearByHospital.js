@@ -1,12 +1,56 @@
 //import liraries
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, PermissionsAndroid, Platform,} from 'react-native';
+import React, {Component, useEffect, useState,useContext} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, PermissionsAndroid, ActivityIndicator,Linking} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext';
 
 
 // create a component
 const NearByHospital = () => {
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false);
+  const [hosLink,setHosLink] = useState('');
+  const GetHospitalLinkApi = () => {
+    let token = AppUserData.token
+    let UserId = AppUserData.data
+    setLoader(true);
+    ApiService.PostMethode('/GetHospitalLink', UserId, token)
+      .then(result => {
+        setLoader(false);
+        let ApiValue = result.Value[0].LINK
+        console.log("setHospitallList", ApiValue);
+        setHosLink(ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+  const linkList = () => {
+    Linking.openURL(hosLink)
+  }
+
+  useEffect(() => {
+    GetHospitalLinkApi()
+  }, [])
+  
   // const [
   //   currentLongitude,
   //   setCurrentLongitude
@@ -130,7 +174,8 @@ const NearByHospital = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.box} 
-       onPress={() => {GetHospital()}}>
+       onPress={() => {linkList()
+         }}>
         <Text style={{fontSize:16, fontWeight:'bold'}}></Text>
         <View style={styles.circle}>
           <Text>Click here to</Text>

@@ -34,7 +34,7 @@ const EmergencyHospital = ({navigation}) => {
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
-     colors={['#4174D0','#6ef7ff']}
+     colors={['#4174D0','#74f5fa']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -80,7 +80,7 @@ const EmergencyHospital = ({navigation}) => {
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient colors={['#6ef7ff', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient colors={['#74f5fa','#62cfec']} style={{marginTop:-1,zIndex:-1,elevation:-1}}>
               <TabBar
                renderLabel={({ route, focused, color }) => (
                 <Text style={{ fontSize:13,color:'#fff' }}>

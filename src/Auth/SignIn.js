@@ -356,7 +356,7 @@ const SignIn = ({navigation}) => {
                               color: '#fff',
                               letterSpacing: 2,
                             }}>
-                            Submit
+                             
                           </Text>
                         </TouchableOpacity>
                       </LinearGradient>
