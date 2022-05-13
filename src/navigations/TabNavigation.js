@@ -17,31 +17,31 @@ function Tabs() {
     screenOptions={{
 
       headerShown: false,
-      tabBarActiveTintColor: '#fff',
+      tabBarActiveTintColor: '#000',
       tabBarStyle:{position:'absolute', height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
       tabBarBackground:() =>(
-        <LinearGradient  colors={['#AD3231',  '#2757C3']} style={{height:80,borderTopLeftRadius:15,borderTopRightRadius:15}}/>
+        <LinearGradient    colors={['#fff', '#fff']} style={{height:80,borderTopLeftRadius:15,borderTopRightRadius:15}}/>
       )
     }}>
       <Tab.Screen name="Home" component={Home} 
       options={{
         tabBarLabel: 'Home',
         tabBarIcon: ({ color, size }) => (
-          <Icon name="home" color={'white'} size={size} />
+          <Icon name="home" color={'#2D79AD'} size={size} />
         ),
       }}/>
       <Tab.Screen name="AttendanceAdmin" component={AttendanceAdminNav}
        options={{
         tabBarLabel: 'AttendanceAdmin',
         tabBarIcon: ({ color, size }) => (
-          <Icon name="calendar" color={'white'} size={size} />
+          <Icon name="calendar" color={'#2D79AD'} size={size} />
         ),
       }} />
       <Tab.Screen name="Gatepass" component={Gatepass}
       options={{
         tabBarLabel: 'Gatepass',
         tabBarIcon: ({ color, size }) => (
-          <Material name="portrait" color={'white'} size={size} />
+          <Material name="portrait" color={'#2D79AD'} size={size} />
         ),
       }}
        />
@@ -50,7 +50,7 @@ function Tabs() {
         tabBarLabel: 'More',
        
         tabBarIcon: ({ color, size }) => (
-          <Material name="sort" color={'white'} size={size} />
+          <Material name="sort" color={'#2D79AD'} size={size} />
         ),
       }}/>
     </Tab.Navigator>

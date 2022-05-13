@@ -223,7 +223,7 @@ const Gatepass = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <LinearGradient
-        colors={['#2757C3', '#80406A', '#ad3231']}
+     colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -339,7 +339,7 @@ const Gatepass = ({navigation}) => {
                       style={{width: '90%', justifyContent: 'space-evenly'}}>
                       <LinearGradient
                         style={{margin: 5, borderRadius: 8}}
-                        colors={['#2757C3', '#80406A', '#ad3231']}>
+                     colors={['#4174D0','#6ef7ff']}>
                         <TouchableOpacity
                           style={{
                             width: '90%',
@@ -371,7 +371,7 @@ const Gatepass = ({navigation}) => {
 
                       <LinearGradient
                         style={{margin: 5, borderRadius: 8}}
-                        colors={['#2757C3', '#80406A', '#ad3231']}>
+                     colors={['#4174D0','#6ef7ff']}>
                         <TouchableOpacity
                           onPress={() => {
                             handleRadioStatus('B');
@@ -594,7 +594,7 @@ const Gatepass = ({navigation}) => {
                         paddingBottom: 10,
                         paddingHorizontal: 10,
                       }}
-                      colors={['#2757C3', '#80406A', '#ad3231']}>
+                   colors={['#4174D0','#6ef7ff']}>
                       <RadioButtonRN
                         boxStyle={{backgroundColor: 'transparent'}}
                         textStyle={{color: '#fff'}}
@@ -799,7 +799,7 @@ const Gatepass = ({navigation}) => {
                     dropdownBackgroundColor={
                       <LinearGradient
                         style={{margin: 5, borderRadius: 8}}
-                        colors={['#2757C3', '#80406A', '#ad3231']}
+                     colors={['#4174D0','#6ef7ff']}
                       />
                     }
                     data={options}

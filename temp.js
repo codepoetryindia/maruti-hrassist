@@ -107,7 +107,7 @@
 //   ) : (
 //     <View style={styles.container}>
 //       <LinearGradient
-//         colors={['#2757C3', '#80406A', '#ad3231']}
+//      colors={['#4174D0','#6ef7ff']}
 //         style={styles.gradient}>
 //         <View
 //           style={{
@@ -287,7 +287,7 @@
 //                       width: '90%',
 //                       alignSelf: 'center',
 //                     }}
-//                     colors={['#2757C3', '#80406A', '#ad3231']}>
+//                  colors={['#4174D0','#6ef7ff']}>
 //                     <TouchableOpacity
 //                       onPress={() => {
 //                         handleSubmit();

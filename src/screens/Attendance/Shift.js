@@ -288,7 +288,7 @@ const Shift = () => {
                 width: '90%',
                 alignSelf: 'center',
               }}
-              colors={['#2757C3', '#80406A', '#AD3231']}>
+           colors={['#4174D0','#6ef7ff']}>
               <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -354,7 +354,7 @@ const Shift = () => {
               <Modal isVisible={isModalVisible}>
                 <View>
                   <LinearGradient
-                    colors={['#2757C3', '#80406A', '#ad3231']}
+                 colors={['#4174D0','#6ef7ff']}
                     style={{
                       height: '100%',
                       backgroundColor: 'red',
@@ -449,7 +449,7 @@ const Shift = () => {
                 alignItems: 'center',
                 marginVertical: '5%',
               }}
-              colors={['#2757C3', '#80406A', '#AD3231']}>
+           colors={['#4174D0','#6ef7ff']}>
               <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
             </LinearGradient>
           </TouchableOpacity>

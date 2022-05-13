@@ -34,7 +34,7 @@ const EmergencyHospital = ({navigation}) => {
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
-        colors={['#2757C3', '#80406A', '#ad3231']}
+     colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View

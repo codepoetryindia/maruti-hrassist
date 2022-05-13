@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList} from 'react-native';
 import Share from 'react-native-share';
-
+import LinearGradient from 'react-native-linear-gradient';
 const myCustomeSharing =async () =>{
   const shareOption = {
     message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
@@ -103,7 +103,13 @@ const TouchableCard = ({navigation}) => {
                myCustomeSharing()
               }
             }}>
+              <LinearGradient
+         colors={['#53AFE2','#6ef7ff']}
+        style={{padding:5,borderRadius:8}}>
+
             <Image source={item.images} style={styles.cardimg} />
+        </LinearGradient>
+
             <Text style={{fontSize:10,color:'#000'}}>{item.name}</Text>
           </TouchableOpacity>
            

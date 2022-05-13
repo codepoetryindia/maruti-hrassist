@@ -722,7 +722,7 @@ const Leave = () => {
                       <Modal isVisible={isModalVisible}>
                         <View>
                           <LinearGradient
-                            colors={['#2757C3', '#80406A', '#ad3231']}
+                         colors={['#4174D0','#6ef7ff']}
                             style={{
                               height: '100%',
                               backgroundColor: 'red',
@@ -816,7 +816,7 @@ const Leave = () => {
                           alignSelf: 'center',
                           marginVertical: 10,
                         }}
-                        colors={['#2757C3', '#80406A', '#AD3231']}>
+                     colors={['#4174D0','#6ef7ff']}>
                         <Text style={{fontSize: 16, color: '#fff'}}>
                           SUBMIT
                         </Text>
@@ -915,7 +915,7 @@ const Leave = () => {
                           <Modal isVisible={isModalVisible}>
                             <View>
                               <LinearGradient
-                                colors={['#2757C3', '#80406A', '#ad3231']}
+                             colors={['#4174D0','#6ef7ff']}
                                 style={{
                                   height: '100%',
                                   backgroundColor: 'red',

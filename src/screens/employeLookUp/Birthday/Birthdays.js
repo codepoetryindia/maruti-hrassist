@@ -208,7 +208,7 @@ const Birthdays = () => {
                 coverScreen={true}
                 isVisible={isModalVisible}>
                 <LinearGradient
-                  colors={['#2757C3', '#80406A', '#ad3231']}
+               colors={['#4174D0','#6ef7ff']}
                   style={{flex: 0.53, borderRadius: 15}}>
                   <View style={styles.modal}>
                     {/* <Text>{JSON.stringify(modalItem)}</Text> */}
@@ -346,7 +346,7 @@ const Birthdays = () => {
                 coverScreen={true}
                 isVisible={isModalVisible}>
                 <LinearGradient
-                  colors={['#2757C3', '#80406A', '#ad3231']}
+               colors={['#4174D0','#6ef7ff']}
                   style={{flex: 0.53, borderRadius: 15}}>
                   <View style={styles.modal}>
                     {/* <Text>{JSON.stringify(modalItem)}</Text> */}
