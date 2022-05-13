@@ -35,7 +35,7 @@
           <View>
             <View>
               <TouchableOpacity onPress={() => (setOpen(true))}>
-                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+                <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
               </TouchableOpacity>
             </View>
           </View>

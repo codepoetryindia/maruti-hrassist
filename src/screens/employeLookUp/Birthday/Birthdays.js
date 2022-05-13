@@ -10,7 +10,8 @@ import {
   StatusBar,
   Animated,
   ActivityIndicator,
-  Linking
+  Linking,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -36,6 +37,7 @@ const Birthdays = () => {
     setLoader(true);
     ApiService.PostMethode('/GetEmplBirthday', apiData, token)
       .then(result => {
+        console.log("APiresult",result);
         setLoader(false);
         let tommorowData = []
         let todayData = []
@@ -100,7 +102,7 @@ const Birthdays = () => {
         </Text>
       </View>
     ) : (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar hidden />
       <View style={{width: '100%'}}>
         <SegmentedControlTab
@@ -444,7 +446,7 @@ const Birthdays = () => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
     )
   );
 };
@@ -465,9 +467,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
   },
   tabTextStyle: {
     //custom styles

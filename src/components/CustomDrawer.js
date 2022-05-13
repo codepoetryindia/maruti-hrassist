@@ -65,7 +65,7 @@ function CustomDrawer(props) {
               top: 30,
               padding: 10,
             }}>
-            {AppUserData.data.profile_photo ? (
+            {AppUserData.data.profile_photo && AppUserData.data.profile_photo ? (
               <Image
                 source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
                 style={[styles.avtar, {marginRight: 5}]}
@@ -78,7 +78,6 @@ function CustomDrawer(props) {
             )}
             <View>
               <Text style={styles.text}>{AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
-              {/* <Text style={styles.text}>MIT</Text> */}
               <TouchableOpacity
                 onPress={() => {
                   // navigation.navigate('EmployProfile');

@@ -125,9 +125,9 @@ const Gst = ({ navigation }) => {
             flexDirection: 'row',
             borderWidth: 1,
             borderTopColor: '#80406A',
-            borderStartColor: '#ad3231',
+            borderStartColor: '#6ef7ff',
             borderBottomColor: '#2757C3',
-            borderEndColor: '#ad3231',
+            borderEndColor: '#6ef7ff',
             borderRadius: 5,
             alignSelf: 'center',
           }}>
@@ -137,7 +137,7 @@ const Gst = ({ navigation }) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Feather name="search" size={20} color={'#ad3231'} onPress={() => { filterdData() }} />
+            <Feather name="search" size={20} color={'#6ef7ff'} onPress={() => { filterdData() }} />
           </View>
           <TextInput
             placeholder="Search By StateName"
@@ -157,7 +157,7 @@ const Gst = ({ navigation }) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Ionicons name="send" size={20} color={'#ad3231'} />
+            <Ionicons name="send" size={20} color={'#6ef7ff'} />
           </TouchableOpacity>
         </View>
 
@@ -224,9 +224,9 @@ const styles = StyleSheet.create({
     elevation: 7,
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
 
     borderRadius: 8,
   },

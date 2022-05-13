@@ -470,7 +470,7 @@ const Leave = () => {
                             styles.circle,
                             {
                               backgroundColor:
-                                checked == item.id ? '#ad3231' : null,
+                                checked == item.id ? '#6ef7ff' : null,
                             },
                           ]}>
                           <Text
@@ -641,7 +641,7 @@ const Leave = () => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#ad3231'}
+                          color={'#6ef7ff'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -683,7 +683,7 @@ const Leave = () => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#ad3231'}
+                          color={'#6ef7ff'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -1006,9 +1006,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
   },
   tabTextStyle: {
     //custom styles

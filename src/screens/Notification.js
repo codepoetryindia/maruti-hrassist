@@ -129,7 +129,7 @@ useEffect(() => {
 
           }}>
           <FlatList
-            data={notification}
+            data={Notification}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
@@ -163,7 +163,7 @@ useEffect(() => {
                  <Ionicons
                     name="notifications-circle-outline"
                     size={25}
-                    color={'#AD3231'}
+                    color={'#6ef7ff'}
                   />
                  </TouchableOpacity>
                 </View>

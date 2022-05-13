@@ -47,7 +47,7 @@ const FoodCount = ({navigation}) => {
           }}>
           <Text style={{color: '#fff'}}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
           <TouchableOpacity onPress={() => setOpen(true)}>
-            <Ionicons name="calendar-outline" size={30} color={'#fff'} />
+            <Ionicons name="calendar-outline" size={30} color={'#4174D0'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -145,14 +145,14 @@ const FoodCount = ({navigation}) => {
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient
-             colors={['#4174D0','#6ef7ff']}
-              style={{marginTop: -1, zIndex: -1}}>
+            <View
+            
+              style={{marginTop: -1, zIndex: -1,backgroundColor:'#5dc0e9'}}>
               <TabBar
                 {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
+                style={{backgroundColor: 'transparent', elevation: 10}}
               />
-            </LinearGradient>
+            </View>
           );
         }}
         navigationState={{index, routes}}

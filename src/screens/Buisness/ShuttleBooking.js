@@ -29,9 +29,9 @@ const Book = () => {
           alignItems: 'center',
           borderWidth: 1,
           borderTopColor: '#80406A',
-          borderStartColor: '#ad3231',
+          borderStartColor: '#6ef7ff',
           borderBottomColor: '#2757C3',
-          borderEndColor: '#ad3231',
+          borderEndColor: '#6ef7ff',
         }}>
         <Text>28 -feb 2022</Text>
       </TouchableOpacity>

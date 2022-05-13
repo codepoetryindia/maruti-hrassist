@@ -63,14 +63,13 @@ const Home = ({navigation}) => {
                   BadgeElement={<Text style={{color: '#fff'}}>5</Text>}
                   IconBadgeStyle={{
                     paddingVerticle: 5,
-                    backgroundColor: '#AD3231',
+                    backgroundColor: '#6ef7ff',
                   }}
                 />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{flexDirection: 'row', marginHorizontal: 20, top: '5%'}}>
-            
+          <View style={{flexDirection: 'row', marginHorizontal: 20, top: '3%'}}>
             {AppUserData.data.profile_photo ? (
               <Image
                 source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}

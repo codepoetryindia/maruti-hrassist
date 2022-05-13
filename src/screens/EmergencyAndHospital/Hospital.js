@@ -123,7 +123,7 @@ const  Mynavigation = useNavigation({route})
               onPress={() => {
                   Linking.openURL(`tel:${item.HOSP_PHONE_NO}`)
               }}>
-                <Feather name="phone-call" size={20} color={'#ad3231'} />
+                <Feather name="phone-call" size={20} color={'#6ef7ff'} />
               </TouchableOpacity> 
             </View>
           )}

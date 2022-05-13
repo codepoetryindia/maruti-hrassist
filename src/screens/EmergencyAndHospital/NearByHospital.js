@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     width: 100,
     borderWidth: 3,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
     borderEndColor: '#80406A',
     borderRadius: 100,

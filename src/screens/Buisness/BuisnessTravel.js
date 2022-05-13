@@ -57,7 +57,7 @@ const BuisnessTravel = ({navigation}) => {
               height: 50,
               borderRadius: 100,
               borderWidth: 1,
-              borderColor: '#ad3231',
+              borderColor: '#6ef7ff',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -84,7 +84,7 @@ const BuisnessTravel = ({navigation}) => {
               height: 50,
               borderRadius: 100,
               borderWidth: 1,
-              borderColor: '#ad3231',
+              borderColor: '#6ef7ff',
               justifyContent: 'center',
               alignItems: 'center',
             }}>

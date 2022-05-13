@@ -230,9 +230,9 @@ const SignIn = ({navigation}) => {
                         padding: 5,
                         borderWidth: 1,
                         borderTopColor: '#80406A',
-                        borderStartColor: '#ad3231',
+                        borderStartColor: '#6ef7ff',
                         borderBottomColor: '#2757C3',
-                        borderEndColor: '#ad3231',
+                        borderEndColor: '#6ef7ff',
                         alignItems: 'center',
                         alignSelf: 'center',
                         margin: 8,
@@ -241,7 +241,7 @@ const SignIn = ({navigation}) => {
                       <Ionicons
                         name="person-circle"
                         size={25}
-                        color={'#ad3231'}
+                        color={'#4174D0'}
                       />
                       <TextInput
                         placeholder="Login Id"
@@ -277,9 +277,9 @@ const SignIn = ({navigation}) => {
                         padding: 5,
                         borderWidth: 1,
                         borderTopColor: '#80406A',
-                        borderStartColor: '#ad3231',
+                        borderStartColor: '#6ef7ff',
                         borderBottomColor: '#2757C3',
-                        borderEndColor: '#ad3231',
+                        borderEndColor: '#6ef7ff',
                         alignItems: 'center',
                         alignSelf: 'center',
                         borderRadius: 8,
@@ -288,7 +288,7 @@ const SignIn = ({navigation}) => {
                       <Ionicons
                         name="lock-closed"
                         size={25}
-                        color={'#ad3231'}
+                        color={'#4174D0'}
                       />
                       <TextInput
                         placeholder="Password"

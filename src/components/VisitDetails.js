@@ -51,9 +51,9 @@ const VisitDetails = ({navigation}) => {
               padding: 5,
               borderRadius: 5,
               borderTopColor: '#80406A',
-              borderStartColor: '#ad3231',
+              borderStartColor: '#6ef7ff',
               borderBottomColor: '#2757C3',
-              borderEndColor: '#ad3231',
+              borderEndColor: '#6ef7ff',
             }}
           />
           <TextInput
@@ -63,9 +63,9 @@ const VisitDetails = ({navigation}) => {
               padding: 5,
               borderRadius: 5,
               borderTopColor: '#80406A',
-              borderStartColor: '#ad3231',
+              borderStartColor: '#6ef7ff',
               borderBottomColor: '#2757C3',
-              borderEndColor: '#ad3231',
+              borderEndColor: '#6ef7ff',
             }}
           />
         </View>
@@ -97,9 +97,9 @@ const VisitDetails = ({navigation}) => {
                 backgroundColor: 'transparent',
                 borderWidth: 1,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
                 width: '30%',
                 height: 40,
                 borderRadius: 5,
@@ -130,9 +130,9 @@ const VisitDetails = ({navigation}) => {
                 padding: 5,
                 borderRadius: 5,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
               }}
             />
           </View>
@@ -166,9 +166,9 @@ const VisitDetails = ({navigation}) => {
                 padding: 5,
                 borderRadius: 5,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
               }}
             />
             <TextInput
@@ -178,9 +178,9 @@ const VisitDetails = ({navigation}) => {
                 padding: 5,
                 borderRadius: 5,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
               }}
             />
           </View>
@@ -196,9 +196,9 @@ const VisitDetails = ({navigation}) => {
               padding: 5,
               borderRadius: 5,
               borderTopColor: '#80406A',
-              borderStartColor: '#ad3231',
+              borderStartColor: '#6ef7ff',
               borderBottomColor: '#2757C3',
-              borderEndColor: '#ad3231',
+              borderEndColor: '#6ef7ff',
               alignSelf: 'center',
             }}
           />

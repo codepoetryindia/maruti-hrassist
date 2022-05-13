@@ -80,7 +80,7 @@ const EmergencyHospital = ({navigation}) => {
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient colors={['#6ef7ff', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
                renderLabel={({ route, focused, color }) => (
                 <Text style={{ fontSize:13,color:'#fff' }}>
