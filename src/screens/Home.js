@@ -6,7 +6,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchableCard from '../components/Touchable';
 import LinearGradient from 'react-native-linear-gradient';
 import {SliderBox} from 'react-native-image-slider-box';
-import Notification from './Notification';
 import IconBadge from 'react-native-icon-badge';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AuthContext from './../context/AuthContext';
@@ -70,7 +69,7 @@ const Home = ({navigation}) => {
             </View>
           </View>
           <View style={{flexDirection: 'row', marginHorizontal: 20, top: '3%'}}>
-            {AppUserData.data.profile_photo ? (
+            {AppUserData.data && AppUserData.data.profile_photo ? (
               <Image
                 source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
                 style={{width: 60, height: 60, borderRadius: 50}}
@@ -89,7 +88,7 @@ const Home = ({navigation}) => {
                   fontWeight: 'bold',
                   letterSpacing: 1,
                 }}>
-                {AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
+                {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
               <Text style={{fontSize: 16, color: '#fff', letterSpacing: 1}}>
                 Monday, 24 jan 2022

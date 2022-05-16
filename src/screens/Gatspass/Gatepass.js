@@ -1,6 +1,5 @@
 // /import liraries
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,6 +8,7 @@ import {
   TextInput,
   FlatList,
   ScrollView,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -17,19 +17,24 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useRef } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext'
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const Gatepass = ({ navigation }) => {
+const {authContext ,AppUserData} = useContext(AuthContext)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
   const [isSelected, setSelection] = useState(false);
   const [state, setState] = useState(false);
   const [searchLevel, setSearchLevel] = useState('');
+  const [loader, setLoader] = useState(false)
   const options = ['Yes', 'No'];
   const [selectBuilding, setSelectBuilding] = useState([]);
   const [BuildingData, setBuildingData] = useState([
@@ -108,6 +113,45 @@ const Gatepass = ({ navigation }) => {
   const [reason, setReason] = useState('');
   const [employ, setEmploy] = useState('');
   const [show, setShow] = useState(false);
+
+  const GetLocationListVGPSApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data
+    let apiData = { "UserName":userId }
+    console.log(apiData)
+    setLoader(true);
+    ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
+      .then(result => {
+        // console.log("APiresult", result);
+        setLoader(false);
+        let ApiValue = result.Value
+        console.log("Apivaue",ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+useEffect(() => {
+  GetLocationListVGPSApi()
+}, [])
+
+
 
   const fromReff = useRef(null);
   const gatePassScheema = yup.object().shape({
@@ -197,7 +241,17 @@ const Gatepass = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, }}>
+
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) : (
+    <SafeAreaView style={{ flex: 1, }}>
       <LinearGradient
         colors={['#4174D0', '#6ef7ff']}
         style={styles.gradient}>
@@ -1057,7 +1111,8 @@ const Gatepass = ({ navigation }) => {
           </ScrollView>
         )}
       </Formik>
-    </View>
+    </SafeAreaView>
+    )
   );
 };
 
