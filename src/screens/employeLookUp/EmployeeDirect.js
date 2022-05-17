@@ -19,6 +19,8 @@ const EmployeeDirect = () => {
     console.log("navigation", myNavigation)
   }, [])
 
+  GetEmpllookupVGPS
+  
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {

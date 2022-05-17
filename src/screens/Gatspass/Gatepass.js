@@ -31,9 +31,11 @@ const Gatepass = ({ navigation }) => {
 const {authContext ,AppUserData} = useContext(AuthContext)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
-  const [isSelected, setSelection] = useState(false);
-  const [state, setState] = useState(false);
-  const [searchLevel, setSearchLevel] = useState('');
+  const [empLoc, setEmpLoc] = useState([]);
+  const [empLocCode, setEmpLocCode] = useState([]);
+  const [searchedData, setSearchedData] = useState([])
+  const [searchLevel] = useState();
+  const[searchLevelData,setSearchLevelData] = useState([])
   const [loader, setLoader] = useState(false)
   const options = ['Yes', 'No'];
   const [selectBuilding, setSelectBuilding] = useState([]);
@@ -113,19 +115,56 @@ const {authContext ,AppUserData} = useContext(AuthContext)
   const [reason, setReason] = useState('');
   const [employ, setEmploy] = useState('');
   const [show, setShow] = useState(false);
-
+  const[searchEmp,setSearchEmp] = useState ();
+  
   const GetLocationListVGPSApi = () => {
     let token = AppUserData.token
     let userId = AppUserData.data
-    let apiData = { "UserName":userId }
+    console.log("UserName",userId);
+    let apiData = { "UserName":548596 }
     console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
       .then(result => {
         // console.log("APiresult", result);
         setLoader(false);
-        let ApiValue = result.Value
-        console.log("Apivaue",ApiValue)
+        let Location = result.Value[0].LOCN
+        let LocationCode = result.Value[0].CODE
+        console.log("Apivaue",Location , LocationCode)
+        setEmpLoc(Location)
+        setEmpLocCode(LocationCode)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const GetSearchLevelsListVGPSApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data
+    console.log("UserName",userId);
+    let apiData = { "UserName":548596 }
+    console.log(apiData)
+    setLoader(true);
+    ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
+      .then(result => {
+        setLoader(false);
+        let arrData = result.Value.map((item)=> {return{'label': item.MEANING}})
+        setSearchLevelData(arrData)
       })
       .catch(error => {
         setLoader(false);
@@ -147,8 +186,86 @@ const {authContext ,AppUserData} = useContext(AuthContext)
       });
   };
 
+  // saerch by name 
+
+  const getEmpllookupVGPSApi = (values) => {
+   
+    if (searchEmp === '') {
+      <Text style={{color:'red'}}>please enter a valid keyWord</Text>
+      return
+    } else {
+      let apiData = {
+        Search:'222852' 
+        // values.searchEmp
+      }
+      console.log('post data', apiData);
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/getEmpllookupVGPS', apiData, token)
+        .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value
+          // setSearchedData(responseData)
+          console.log('responseData', responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+  };
+  const GetAccessListVGPSApi = () => {
+    let userId = AppUserData.data.EMPL_NAME
+      let apiData = {
+          UserName :userId,
+          LocationCode : empLocCode,
+          LevelID : "1"
+      }
+      console.log('post data', apiData);
+      console.log('post userId', userId);
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/GetAccessListVGPS', apiData, token)
+        .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value
+          // setSearchedData(responseData)
+          console.log('building data', responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+
+
 useEffect(() => {
   GetLocationListVGPSApi()
+  GetSearchLevelsListVGPSApi()
+  getEmpllookupVGPSApi()
+  GetAccessListVGPSApi()
 }, [])
 
 
@@ -167,41 +284,28 @@ useEffect(() => {
     persionalVehical: yup.string().required('post one comment'),
     internalVehical: yup.string().required('select one period'),
     building: yup.string().required('selectDate  is required'),
-    vehicalNumber: yup.string().required('Provide Your reason please'),
+    searchEmp: yup.string().required('Provide Your reason please'),
   });
   const fromRef = useRef(null);
 
-  const handleRadioStatus = value => {
-    switch (value) {
-      case 'A':
-        setSelection(true);
-        setState(false);
-        break;
-      case 'B':
-        setSelection(false);
-        setState(true);
-      default:
-        break;
-    }
-  };
+  // const handleRadioStatus = value => {
+  //   switch (value) {
+  //     case 'A':
+  //       setSelection(true);
+  //       setState(false);
+  //       break;
+  //     case 'B':
+  //       setSelection(false);
+  //       setState(true);
+  //     default:
+  //       break;
+  //   }
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const toggleBuilding = () => {
     setShow(!show);
   };
-
-  const radioData = [
-    {
-      label: 'NO SEARCH REQUIRED',
-    },
-    {
-      label: 'INDIVIDUAL AND BELONGING TO BE',
-    },
-    {
-      label: 'INDIVIDUAL AND BELONGING TO BE',
-    },
-  ];
 
   // data for Select Building
 
@@ -302,18 +406,18 @@ useEffect(() => {
           persionalVehical: '',
           internalVehical: '',
           building: '',
-          vehicalNumber: '',
+          searchEmp: '',
         }}
         onSubmit={values => {
 
           // console.log('values', values);
           console.log('values', values);
-          // if(values){
-          //   navigation.navigate("VisitorDetails")
-          // }
-          // else{
-          //   alert('error')
-          // }
+          if(values){
+            navigation.navigate("VisitorDetails")
+          }
+          else{
+            alert('error')
+          }
         }}>
         {({
           handleChange,
@@ -351,12 +455,11 @@ useEffect(() => {
                 }}
                 onPress={toggleModal}>
                 <Text>
-                  {isSelected == true
-                    ? 'GURGAON FACTORY'
-                    : 'HEAD OFFICE - DELHI'}
+                  {empLoc}
                 </Text>
                 <Feather name="chevron-down" size={20} />
-                <Modal isVisible={isModalVisible} SLI>
+
+                 <Modal isVisible={isModalVisible} SLI>
                   <View
                     style={{
                       flex: 0.2,
@@ -379,11 +482,11 @@ useEffect(() => {
                             padding: 10,
                           }}
                           onPress={() => {
-                            handleRadioStatus('A');
+                            // handleRadioStatus('A');
                             setModalVisible(false);
                           }}>
-                          <Text style={{ color: 'white' }}>GURGAON FACTORY</Text>
-                          {isSelected == true ? (
+                          <Text style={{ color: 'white' }}>{empLoc}</Text>
+                          {empLoc == true ? (
                             <Ionicons
                               name="checkbox"
                               size={20}
@@ -399,7 +502,7 @@ useEffect(() => {
                         </TouchableOpacity>
                       </LinearGradient>
 
-                      <LinearGradient
+                      {/* <LinearGradient
                         style={{ margin: 5, borderRadius: 8 }}
                         colors={['#4174D0', '#6ef7ff']}>
                         <TouchableOpacity
@@ -431,7 +534,7 @@ useEffect(() => {
                             />
                           )}
                         </TouchableOpacity>
-                      </LinearGradient>
+                      </LinearGradient> */}
                     </View>
                   </View>
                 </Modal>
@@ -552,6 +655,7 @@ useEffect(() => {
                   <TextInput
                     style={{
                       width: '30%', borderWidth: 1,
+                      padding:6,
                       borderTopColor: '#2757C3',
                       borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
@@ -577,7 +681,7 @@ useEffect(() => {
               </View>
 
               {/* Search Level */}
-              <View style={{ width: '100%' }}>
+              <View style={{width: '100%'}}>
                 <Text
                   style={{
                     paddingHorizontal: 20,
@@ -596,23 +700,23 @@ useEffect(() => {
                     backgroundColor: 'transparent',
                     borderWidth: 1,
                     borderTopColor: '#80406A',
-                    borderStartColor: '#4174D0',
+                    borderStartColor: '#ad3231',
                     borderBottomColor: '#2757C3',
-                    borderEndColor: '#4174D0',
+                    borderEndColor: '#ad3231',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     flexDirection: 'row',
                     padding: 6,
                     alignSelf: 'center',
                   }}>
-                  <Text style={{ color: 'gray' }}>{values.searchLevel}</Text>
+                  <Text style={{color: 'gray'}}>{values.searchLevel}</Text>
                   <View>
-                    <Feather name="chevron-down" size={20} color={'#4174D0'} />
+                    <Feather name="chevron-down" size={20} color={'#ad3231'} />
                   </View>
                 </TouchableOpacity>
 
                 <Modal isVisible={modalVisibleSecond}>
-                  <View style={{ flex: 0.5, paddingVertical: 10 }}>
+                  <View style={{flex: 0.5, paddingVertical: 10}}>
                     <LinearGradient
                       style={{
                         borderRadius: 8,
@@ -621,10 +725,10 @@ useEffect(() => {
                       }}
                       colors={['#4174D0', '#6ef7ff']}>
                       <RadioButtonRN
-                        boxStyle={{ backgroundColor: 'transparent' }}
-                        textStyle={{ color: '#fff' }}
+                        boxStyle={{backgroundColor: 'transparent'}}
+                        textStyle={{color: '#fff'}}
                         duration={100}
-                        data={radioData}
+                        data={searchLevelData}
                         selectedBtn={e => {
                           console.log(e);
                           let data = e.label;
@@ -987,9 +1091,9 @@ useEffect(() => {
                     <Feather name="search" size={20} color={'#4174D0'} />
                   </View>
                   <TextInput
-                    onChangeText={handleChange('vehicalNumber')}
-                    onBlur={handleBlur('vehicalNumber')}
-                    value={values.vehicalNumber}
+                    onChangeText={handleChange('searchEmp')}
+                    onBlur={handleBlur('searchEmp')}
+                    value={values.searchEmp}
                     placeholder="Search By Name/Dept/Staff/ID"
                     style={{
                       width: '70%',
@@ -998,6 +1102,7 @@ useEffect(() => {
                   />
 
                   <TouchableOpacity
+                  onPress={() => {GetSearchLevelsListVGPSApi()}}
                     style={{
                       width: '15%',
                       alignItems: 'center',
@@ -1094,6 +1199,8 @@ useEffect(() => {
                     }}
                     onPress={() => {
                       handleSubmit();
+                      navigation.navigate("VisitorDetails")
+                      
                     }}>
                     <Text
                       style={{
@@ -1114,8 +1221,8 @@ useEffect(() => {
     </SafeAreaView>
     )
   );
-};
-
+  
+ }
 // define your styles
 const styles = StyleSheet.create({
   gradient: {

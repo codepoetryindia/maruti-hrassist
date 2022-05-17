@@ -72,17 +72,16 @@ const SignIn = ({ navigation }) => {
 
         // return console.log(response);
 
-        if (response.Table) {
+        if(response.Table){
           let userData = {
             EMPL_NAME: response.Table[0].EMPL_NAME,
-            profile_photo: response.Table[0].profile_photo,
-
+            profile_photo:response.Table[0].profile_photo,
+  
           };
           let contextData = {
             token: token,
             user: userData
           };
-
           authContext.signIn({
             payload: contextData,
           });
