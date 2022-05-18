@@ -80,7 +80,7 @@ const Home = ({navigation}) => {
                 style={{width: 60, height: 60, borderRadius: 50}}
               />
             )}
-            <View style={{marginHorizontal: 20}}>
+            <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
                   fontSize: 20,
