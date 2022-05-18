@@ -26,26 +26,33 @@ const CanteenMenu = ({ navigation }) => {
   const [lunch, setLunch] = useState([]);
   const [snacks, setSnacks] = useState([]);
   const [dinner, setDinner] = useState([]);
-  const [currentInd,setCurrentInd]=useState(0)
+  const [currentInd,setCurrentInd]= useState(0);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const[selectedDate,setSelectedDate] = useState ();
 
 
-  const GetMenuCanttApi = () => {
+  const GetMenuCanttApi = () => { 
     let token = AppUserData.token
     let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase();
     console.log("currentdate",formatedDate);
     let apidata;
+
     if(currentInd==0) {
+      // apidata={
+      // MenuType: "Canteen",
+      // MenuDate: currentInd==0 || selectedDate== undefined ? formatedDate: selectedDate,
+      // // MenuDate: formatedDate.toUpperCase(),
+      // // MenuDate:"12-APR-2022",
+      // MenuLocation: "002"
+      // }
+      // console.log("index 0 ",apidata);
       apidata={
-      MenuType: "Canteen",
-      MenuDate: currentInd==0 || selectedDate== undefined ? formatedDate: selectedDate,
-      // MenuDate: formatedDate.toUpperCase(),
-      // MenuDate:"12-APR-2022",
-      MenuLocation: "002"
-      }
-      console.log("index 0 ",apidata);
+        MenuType: "Canteen",
+        // MenuDate: formatedDate,
+        MenuDate:"11-APR-2022",
+        MenuLocation: "002"
+        }
     }
     else if (currentInd==1){
       apidata={
@@ -122,11 +129,14 @@ const CanteenMenu = ({ navigation }) => {
         }
       });
   };
+
+
+
   useEffect(() => {
     GetMenuCanttApi()
-    console.log('index',currentInd);
-    console.log("GetMenuCanttApi",GetMenuCanttApi);
-  }, [currentInd])
+    // console.log('index',currentInd);
+    // console.log("GetMenuCanttApi",GetMenuCanttApi);
+  }, [currentInd, date])
 
 
   // const Calander = () => {
@@ -339,10 +349,11 @@ const CanteenMenu = ({ navigation }) => {
           date={date}
           onConfirm={date => {
             setOpen(false);
-            let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase()
-            setSelectedDate(formatedDate)
-            GetMenuCanttApi()
-            console.log("new",formatedDate);
+            setDate(date);
+            // let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase()
+            // setSelectedDate(formatedDate)
+            // GetMenuCanttApi()
+            // console.log("new",formatedDate);
           }}
           onCancel={() => {
             setOpen(false);
