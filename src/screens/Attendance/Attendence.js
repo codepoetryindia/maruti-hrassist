@@ -218,7 +218,7 @@ const Attendance = ({navigation}) => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#ad3231'}
+                          color={'#6ef7ff'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -249,7 +249,7 @@ const Attendance = ({navigation}) => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#ad3231'}
+                          color={'#6ef7ff'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     //custom styles
    
     paddingVertical: 10,
-    borderColor: '#ad3231',
+    borderColor: '#6ef7ff',
   },
   tabTextStyle: {
     //custom styles
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor:'green',
     // borderTopColor: '#80406A',
-    // borderStartColor: '#ad3231',
+    // borderStartColor: '#6ef7ff',
     // borderBottomColor: '#2757C3',
     // borderEndColor: '#80406A',
     borderRadius: 100,
@@ -388,7 +388,7 @@ export default Attendance;
                    name="calendar-outline"
                    onPress={showDatepicker}
                    size={30}
-                   color={'#ad3231'}
+                   color={'#6ef7ff'}
                  />
                </View>
                {show && (

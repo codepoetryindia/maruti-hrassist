@@ -1,152 +1,81 @@
 //import liraries
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, PermissionsAndroid, Platform,} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-
-
+import React, {Component, useEffect, useState,useContext} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView, ActivityIndicator,Linking} from 'react-native';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
 const NearByHospital = () => {
-  // const [
-  //   currentLongitude,
-  //   setCurrentLongitude
-  // ] = useState('...');
-  // const [
-  //   currentLatitude,
-  //   setCurrentLatitude
-  // ] = useState('...');
-  // const [
-  //   locationStatus,
-  //   setLocationStatus
-  // ] = useState('');
-
-  // useEffect(() => {
-  //   const requestLocationPermission = async () => {
-  //     if (Platform.OS === 'ios') {
-  //       getOneTimeLocation();
-  //       subscribeLocationLocation();
-  //     } else {
-  //       try {
-  //         const granted = await PermissionsAndroid.request(
-  //           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //           {
-  //             title: 'Location Access Required',
-  //             message: 'This App needs to Access your location',
-  //           },
-  //         );
-  //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //           //To Check, If Permission is granted
-  //           getOneTimeLocation();
-  //           subscribeLocationLocation();
-  //         } else {
-  //           setLocationStatus('Permission Denied');
-  //         }
-  //       } catch (err) {
-  //         console.warn(err);
-  //       }
-  //     }
-  //   };
-  //   requestLocationPermission();
-  //   return () => {
-  //     Geolocation.clearWatch(watchID);
-  //   };
-  // }, []);
-
-  // const getOneTimeLocation = () => {
-  //   setLocationStatus('Getting Location ...');
-  //   Geolocation.getCurrentPosition(
-  //     //Will give you the current location
-  //     (position) => {
-  //       setLocationStatus('You are Here');
-
-  //       //getting the Longitude from the location json
-  //       const currentLongitude = 
-  //         JSON.stringify(position.coords.longitude);
-
-  //       //getting the Latitude from the location json
-  //       const currentLatitude = 
-  //         JSON.stringify(position.coords.latitude);
-
-  //       //Setting Longitude state
-  //       setCurrentLongitude(currentLongitude);
-        
-  //       //Setting Longitude state
-  //       setCurrentLatitude(currentLatitude);
-  //     },
-  //     (error) => {
-  //       setLocationStatus(error.message);
-  //     },
-  //     {
-  //       enableHighAccuracy: false,
-  //       timeout: 30000,
-  //       maximumAge: 1000
-  //     },
-  //   );
-  // };
-
-  // const subscribeLocationLocation = () => {
-  //   watchID = Geolocation.watchPosition(
-  //     (position) => {
-  //       //Will give you the location on location change
-        
-  //       setLocationStatus('You are Here');
-  //       console.log(position);
-
-  //       //getting the Longitude from the location json        
-  //       const currentLongitude =
-  //         JSON.stringify(position.coords.longitude);
-
-  //       //getting the Latitude from the location json
-  //       const currentLatitude = 
-  //         JSON.stringify(position.coords.latitude);
-
-  //       //Setting Longitude state
-  //       setCurrentLongitude(currentLongitude);
-
-  //       //Setting Latitude state
-  //       setCurrentLatitude(currentLatitude);
-  //     },
-  //     (error) => {
-  //       setLocationStatus(error.message);
-  //     },
-  //     {
-  //       enableHighAccuracy: false,
-  //       maximumAge: 1000
-  //     },
-  //   );
-  // };
-  const [location ,setLocation] = useState('')
-  const GetHospital = () => {
-    Geolocation.getCurrentPosition(position => {
-      console.log('position',position)
-      const {latitude, longitude} = position.coords;
-      setLocation({
-        latitude,
-        longitude,
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false);
+  const [hosLink,setHosLink] = useState('');
+  const GetHospitalLinkApi = () => {
+    let token = AppUserData.token
+    let UserId = AppUserData.data
+    setLoader(true);
+    ApiService.PostMethode('/GetHospitalLink', UserId, token)
+      .then(result => {
+        setLoader(false);
+        let ApiValue = result.Value[0].LINK
+        console.log("setHospitallList", ApiValue);
+        setHosLink(ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
       });
-    });
-  }
-
+  };
+  useEffect(() => {
+    GetHospitalLinkApi()
+  }, [])
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.box} 
-       onPress={() => {GetHospital()}}>
-        <Text style={{fontSize:16, fontWeight:'bold'}}></Text>
-        <View style={styles.circle}>
-          <Text>Click here to</Text>
-          <Text>Search</Text>
-        </View>
-        <View>
-          <Text style={{lineHeight: 30}}>
-          Longitude: {location.longitude}
-          </Text>
-          <Text style={{lineHeight: 30}}>
-          Latitude: {location.latitude}
-          </Text>
-          <Text style={{textAlign:'center'}}>Hospital</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) :(
+      <SafeAreaView style={styles.container}>
+      <View style={styles.box}>
+        <Text style={{fontSize:16, fontWeight:'bold'}}>
+          Near By Panel Hospital
+        </Text>
+        <TouchableOpacity
+         onPress={() => {
+          console.log("hoslink",hosLink);
+         Linking.openURL(hosLink)
+          }}
+           style={styles.circle}>
+          <Text style={{textAlign:'center',}}>Click here to</Text>
+          <Text  style={{textAlign:'center',}}>Search</Text>
+        </TouchableOpacity>
+        <Image source={require('../.././assets/Images/pin.png')} style={{width:40,height:40,marginVertical:8}}/>
+        <Text>Use Any web browser/Google Maps for better experience</Text>
+       <View style={{width:'100%',paddingHorizontal:10, flexDirection:'row',justifyContent:'space-between',marginVertical:8}}>
+       <Image source={require('../.././assets/Images/medicine.png')} style={{width:30,height:30,marginLeft:-8}}/>
+        <Text>Symbols in the maps are Geo-location of our panel Hospital</Text>
+       </View>
+      </View>
+    </SafeAreaView>)
   );
 };
 
@@ -157,9 +86,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
   box: {
     padding: 10,
-    width: '90%',
+    width:'90%',
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
@@ -171,22 +103,21 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
     elevation: 8,
+    borderWidth:0.2,
+    borderRadius:10,
+    borderColor:'#fff'
   },
   circle: {
     height: 100,
     width: 100,
     borderWidth: 3,
-    borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#80406A',
+    borderColor: '#2757C3',
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 8,
+    padding: 12,
     marginVertical: 10,
   },
 });

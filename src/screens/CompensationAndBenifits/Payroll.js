@@ -1,10 +1,9 @@
 //import liraries
-import React, {useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
-import { FlatList } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
@@ -17,21 +16,21 @@ const Payroll = () => {
 
   const [loader, setLoader] = useState(false)
   const [taxData, setTaxData] = useState([]);
-  const[taxSaving,setTaxSaving] = useState();
-   const [month, setMonth] = useState();
-   const[employeePf,setEmployeePf] = useState();
-   const[employerPf,setEmployerPf] = useState();
-   const[netBalance,setNetBalance] = useState();
+  const [taxSaving, setTaxSaving] = useState();
+  const [month, setMonth] = useState();
+  const [employeePf, setEmployeePf] = useState();
+  const [employerPf, setEmployerPf] = useState();
+  const [netBalance, setNetBalance] = useState();
   const { authContext, AppUserData } = useContext(AuthContext);
 
-// tax Saving Api
+  // tax Saving Api
   const GetTaxAppApi = () => {
     let token = AppUserData.token
     let EmplID = AppUserData.data
     let apiData = {
       EmplID: EmplID
     }
-    if(EmplID==null){
+    if (EmplID == null) {
       return alert("employee id not found")
     }
     setLoader(true);
@@ -60,116 +59,116 @@ const Payroll = () => {
   };
 
 
-//   // financial year Api
+  //   // financial year Api
   const GetMonth = () => {
     let token = AppUserData.token
     let EmplID = AppUserData.data
     let apiData = {
-        EmplID: EmplID
+      EmplID: EmplID
     }
     setLoader(true);
     ApiService.PostMethode('/GetSalaryMonth', apiData, token)
-        .then(result => {
-            setLoader(false);
-            // console.log('ApiResult', result);
-            let responseData = result.Value[0].SHIS_YYMM_CODE
-            console.log('GetMonth', responseData)
-            setMonth(responseData)
-           
-        })
-        .catch(error => {
-            setLoader(false);
-            // console.log('Error occurred==>', error);
-            if (error.response) {
-                if (error.response.status == 401) {
-                    console.log('error from api', error.response);
-                }
-                Toast.show(error.response.data.title);
-            } else if (error) {
-                Toast.show('Network Error');
-            } else {
-                Toast.show('Something Went Wrong');
-            }
-        });
-};
-
-// // Pf Balance Api 
-const PfBalance = () => {
-  let token = AppUserData.token
-  let EmplID = AppUserData.data
-  let apiData = {
-      EmplID: EmplID,
-      FNYR:month
-  }
-  setLoader(true);
-  ApiService.PostMethode('/GetPFStatement', apiData, token)
       .then(result => {
-          setLoader(false);
-          let responseData = result.Value
-          let CB1_CB2 = responseData.Table1[0].CB1_CB2
-          let PFST_MUL_CB3 = responseData.Table2[0].PFST_MUL_CB3
-          let NetBalance = CB1_CB2+PFST_MUL_CB3
-          console.log('CB1_CB2', CB1_CB2)
-          console.log('PFST_MUL_CB3', PFST_MUL_CB3)
-          console.log('NetBalance', NetBalance)
-          setEmployeePf(CB1_CB2)
-          setEmployerPf(PFST_MUL_CB3)
-          setNetBalance(NetBalance)
+        setLoader(false);
+        // console.log('ApiResult', result);
+        let responseData = result.Value[0].SHIS_YYMM_CODE
+        console.log('GetMonth', responseData)
+        setMonth(responseData)
+
       })
       .catch(error => {
-          setLoader(false);
-          // console.log('Error occurred==>', error);
-          if (error.response) {
-              if (error.response.status == 401) {
-                  console.log('error from api', error.response);
-              }
-              Toast.show(error.response.data.title);
-          } else if (error) {
-              Toast.show('Network Error');
-          } else {
-              Toast.show('Something Went Wrong');
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
           }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
       });
-};
-const GetTaxSavings = () => {
-  let token = AppUserData.token
-  let EmplID = AppUserData.data
-  let apiData = {
+  };
+
+  // // Pf Balance Api 
+  const PfBalance = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
       EmplID: EmplID,
-      FNYR:month,
+      FNYR: month
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetPFStatement', apiData, token)
+      .then(result => {
+        setLoader(false);
+        let responseData = result.Value
+        let CB1_CB2 = responseData.Table1[0].CB1_CB2
+        let PFST_MUL_CB3 = responseData.Table2[0].PFST_MUL_CB3
+        let NetBalance = CB1_CB2 + PFST_MUL_CB3
+        console.log('CB1_CB2', CB1_CB2)
+        console.log('PFST_MUL_CB3', PFST_MUL_CB3)
+        console.log('NetBalance', NetBalance)
+        setEmployeePf(CB1_CB2)
+        setEmployerPf(PFST_MUL_CB3)
+        setNetBalance(NetBalance)
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const GetTaxSavings = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
+      EmplID: EmplID,
+      FNYR: month,
       // SAVG_DESC
-  }
-  setLoader(true);
-  ApiService.PostMethode('/GetTaxSavings', apiData, token)
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetTaxSavings', apiData, token)
       .then(result => {
-          setLoader(false);
-          // console.log('ApiResult', result);
-          let responseData = result.Value.Table2
-          console.log('responseData', responseData)
-          setTaxSaving(responseData)
+        setLoader(false);
+        // console.log('ApiResult', result);
+        let responseData = result.Value.Table2
+        console.log('responseData', responseData)
+        setTaxSaving(responseData)
       })
       .catch(error => {
-          setLoader(false);
-          // console.log('Error occurred==>', error);
-          if (error.response) {
-              if (error.response.status == 401) {
-                  console.log('error from api', error.response);
-              }
-              Toast.show(error.response.data.title);
-          } else if (error) {
-              Toast.show('Network Error');
-          } else {
-              Toast.show('Something Went Wrong');
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
           }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
       });
-};
+  };
 
-useEffect(() => {
-  GetTaxAppApi()
-  GetMonth()
-  PfBalance()
-  GetTaxSavings()
-}, [])
+  useEffect(() => {
+    GetTaxAppApi()
+    GetMonth()
+    PfBalance()
+    GetTaxSavings()
+  }, [])
 
 
   //   end >Tax Computation Slip
@@ -191,39 +190,13 @@ useEffect(() => {
           Loading...
         </Text>
       </View>
-    ) :(
+    ) : (
       <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          myNavigation.navigate('SalarySlip')
-        }}
-        style={styles.box}>
-        <View style={styles.iconBox}>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 100,
-              borderWidth: 1,
-              borderColor: '#ad3231',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Foundation name="page-export-pdf" size={20} color={'#ad3231'} />
-          </View>
-        </View>
-        <View style={styles.item}>
-          <Text>Salary Slip</Text>
-          <Feather name="corner-up-right" size={20} />
-        </View>
-      </TouchableOpacity>
-
-      {/* Tax  */}
-
-      <TouchableOpacity onPress={() => {
-        setTaxModalVisible(true)
-      }}>
-        <View style={styles.box}>
+        <TouchableOpacity
+          onPress={() => {
+            myNavigation.navigate('SalarySlip')
+          }}
+          style={styles.box}>
           <View style={styles.iconBox}>
             <View
               style={{
@@ -231,19 +204,200 @@ useEffect(() => {
                 height: 50,
                 borderRadius: 100,
                 borderWidth: 1,
-                borderColor: '#ad3231',
+                borderColor: '#4174D0',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Foundation name="page-export-pdf" size={20} color={'#ad3231'} />
+              <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
             </View>
           </View>
           <View style={styles.item}>
-            <Text>Tax Computation Slip</Text>
+            <Text>Salary Slip</Text>
             <Feather name="corner-up-right" size={20} />
           </View>
-        </View>
+        </TouchableOpacity>
 
+        {/* Tax  */}
+
+        <TouchableOpacity onPress={() => {
+          setTaxModalVisible(true)
+        }}>
+          <View style={styles.box}>
+            <View style={styles.iconBox}>
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: '#4174D0',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+              </View>
+            </View>
+            <View style={styles.item}>
+              <Text>Tax Computation Slip</Text>
+              <Feather name="corner-up-right" size={20} />
+            </View>
+          </View>
+
+          <Modal
+            backdropOpacity={0.1}
+            animationInTiming={300}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            animationOutTiming={500}
+            coverScreen={true}
+            isVisible={taxModalVisible}>
+            <View style={styles.modal}>
+              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <Feather
+                  name="x-circle"
+                  color={'#000'}
+                  size={20}
+                  onPress={() =>
+                    setTaxModalVisible(false)}
+                  style={{ margin: 10 }}
+                />
+              </TouchableOpacity>
+              <View style={styles.textContainer}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                  Amount(Rs.)
+                </Text>
+              </View>
+              {taxData.length > 0 ? (
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={taxData}
+                  ListEmptyComponent={() => {
+                    return (
+                      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require('../../assets/Images/dataNotFound.png')}
+                          style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                      </View>
+                    )
+                  }}
+                  keyExtractor={({ item, index }) => index}
+                  renderItem={({ item, index }) => (
+                    <View style={styles.textContainer}>
+                      <Text>{item.SALARY_HEAD}</Text>
+                      <Text>{item.AMOUNT}</Text>
+                    </View>
+                  )}
+                />)
+
+                : (<Text style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center' }}>something went wrong</Text>)}
+
+            </View>
+          </Modal>
+        </TouchableOpacity>
+
+        {/* PF */}
+
+        <TouchableOpacity
+          onPress={() => {
+            setPfModalVisible(true)
+          }}>
+          <View style={styles.box}>
+            <View style={styles.iconBox}>
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 100,
+                  borderWidth: 1,
+                  borderColor: '#4174D0',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+              </View>
+            </View>
+            <View style={styles.item}>
+              <Text>Pf Balance </Text>
+              <Feather name="corner-up-right" size={20} />
+            </View>
+          </View>
+
+          {/* Pf saving modal */}
+
+          <Modal
+            backdropOpacity={0.1}
+            animationInTiming={300}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            animationOutTiming={500}
+            coverScreen={true}
+            isVisible={pfModalVisible}>
+            <View style={styles.modal}>
+              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <Feather
+                  name="x-circle"
+                  color={'#000'}
+                  size={20}
+                  onPress={() => { setPfModalVisible(false) }}
+                  style={{ margin: 10 }}
+                />
+              </TouchableOpacity>
+              <View>
+                <View style={styles.textContainer}>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employee's</Text>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                    Rs.{employeePf}
+                  </Text>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employer's</Text>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                    Rs.{employerPf}
+                  </Text>
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>NetBalance</Text>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                    Rs.{netBalance}
+                  </Text>
+                </View>
+              </View>
+              {/* )}
+          /> */}
+            </View>
+          </Modal>
+
+          {/* tax saving modal close */}
+
+        </TouchableOpacity>
+
+        {/* Tax Saving */}
+
+        <TouchableOpacity
+          onPress={() => {
+            setSevingModalVisible(true)
+          }
+          } style={styles.box}>
+          <View style={styles.iconBox}>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: '#4174D0',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+            </View>
+          </View>
+          <View style={styles.item}>
+            <Text>Tax Saving</Text>
+            <Feather name="corner-up-right" size={20} />
+          </View>
+        </TouchableOpacity>
         <Modal
           backdropOpacity={0.1}
           animationInTiming={300}
@@ -251,186 +405,50 @@ useEffect(() => {
           animationOut="fadeOut"
           animationOutTiming={500}
           coverScreen={true}
-          isVisible={taxModalVisible}>
+          isVisible={savingModalVisible}>
           <View style={styles.modal}>
             <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
               <Feather
                 name="x-circle"
                 color={'#000'}
                 size={20}
-                onPress={()=>
-                  setTaxModalVisible(false)}
+                onPress={() => { setSevingModalVisible(false) }}
                 style={{ margin: 10 }}
               />
             </TouchableOpacity>
             <View style={styles.textContainer}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Description</Text>
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                 Amount(Rs.)
               </Text>
             </View>
-            {taxData.length>0 ? ( 
-              <FlatList
+
+            <FlatList
               showsVerticalScrollIndicator={false}
-              data={taxData}
-              keyExtractor={({item,index})=>index}
-              renderItem={({ item,index }) => (
+              data={taxSaving}
+              ListEmptyComponent={() => {
+                return (
+                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('../../assets/Images/dataNotFound.png')}
+                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                  </View>
+                )
+              }}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => (
                 <View style={styles.textContainer}>
-                  <Text>{item.SALARY_HEAD}</Text>
-                  <Text>{item.AMOUNT}</Text>
+                  <View style={{ width: '50%' }}><Text>{item.SAVG_DESC}</Text></View>
+                  <Text>{item.SVDT_AMT}</Text>
+                  {/* <View style={{width:'50%',justifyContent:'flex-end'}}>></View> */}
                 </View>
               )}
-            />)
-          
-        :( <Text style={{textAlign:'center',justifyContent:'center',alignItems:'center'}}>something went wrong</Text>)}
-             
+            />
           </View>
         </Modal>
-      </TouchableOpacity>
-
-      {/* PF */}
-
-      <TouchableOpacity 
-      onPress={()=>{
-       setPfModalVisible(true)}}>
-        <View style={styles.box}>
-          <View style={styles.iconBox}>
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 100,
-                borderWidth: 1,
-                borderColor: '#ad3231',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Foundation name="page-export-pdf" size={20} color={'#ad3231'} />
-            </View>
-          </View>
-          <View style={styles.item}>
-            <Text>Pf Balance </Text>
-            <Feather name="corner-up-right" size={20} />
-          </View>
-        </View>
-
-           {/* Pf saving modal */}
-
-           <Modal
-        backdropOpacity={0.1}
-        animationInTiming={300}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        animationOutTiming={500}
-        coverScreen={true}
-        isVisible={pfModalVisible}>
-        <View style={styles.modal}>
-          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-            <Feather
-              name="x-circle"
-              color={'#000'}
-              size={20}
-              onPress={() =>{setPfModalVisible(false)}}
-              style={{ margin: 10 }}
-            />
-          </TouchableOpacity>
-             <View>
-                 <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employee's</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            Rs.{employeePf}
-            </Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employer's</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-            Rs.{employerPf}
-            </Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>NetBalance</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-              Rs.{netBalance}
-            </Text>
-          </View>
-              </View>
-            {/* )}
-          /> */}
-        </View>
-      </Modal>
-
-      {/* tax saving modal close */}
-
-      </TouchableOpacity>
-
-      {/* Tax Saving */}
-
-      <TouchableOpacity
-        onPress={() => {
-        setSevingModalVisible(true)
-        }
-        } style={styles.box}>
-        <View style={styles.iconBox}>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              borderRadius: 100,
-              borderWidth: 1,
-              borderColor: '#ad3231',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Foundation name="page-export-pdf" size={20} color={'#ad3231'} />
-          </View>
-        </View>
-        <View style={styles.item}>
-          <Text>Tax Saving</Text>
-          <Feather name="corner-up-right" size={20} />
-        </View>
-      </TouchableOpacity>
-      <Modal
-        backdropOpacity={0.1}
-        animationInTiming={300}
-        animationIn="fadeIn"
-        animationOut="fadeOut"
-        animationOutTiming={500}
-        coverScreen={true}
-        isVisible={savingModalVisible}>
-        <View style={styles.modal}>
-          <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-            <Feather
-              name="x-circle"
-              color={'#000'}
-              size={20}
-              onPress={() =>{setSevingModalVisible(false)}}
-              style={{ margin: 10 }}
-            />
-          </TouchableOpacity>
-          <View style={styles.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Description</Text>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-              Amount(Rs.)
-            </Text>
-          </View>
-      
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={taxSaving}
-                keyExtractor={({item,index})=>index}
-                renderItem={({ item,index }) => (
-                  <View style={styles.textContainer}>
-                   <View style={{width:'50%'}}><Text>{item.SAVG_DESC}</Text></View>
-                   <Text>{item.SVDT_AMT}</Text>
-                   {/* <View style={{width:'50%',justifyContent:'flex-end'}}>></View> */}
-                  </View>
-                )}
-              />
-        </View>
-      </Modal>
-    </View>
+      </View>
     )
-   
+
   );
 };
 
@@ -456,8 +474,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 15,
+    borderRadius: 8
   },
   iconBox: {
     width: '20%',

@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     // Gurgaon Lunch section
     lunchBoxContainer: {
         width: '90%',
+       
         marginVertical: 10,
         backgroundColor: '#fff',
         borderRadius: 8,
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     },
     lunchBox: {
         flexDirection: 'row',
+        
         justifyContent: 'space-between',
         padding: 10,
         alignItems: 'center',

@@ -75,7 +75,7 @@ const CompensationBenifits = ({navigation}) => {
       {isAuth == true ? ( <View style={{flex:1}}>
         <View style={{flex: 1, width: '100%', height: '100%'}}>
           <LinearGradient
-         colors={['#4174D0','#6ef7ff']}
+          colors={['#4174D0','#5dc0e9']}
             style={styles.gradient}>
             <View style={styles.container}>
               <View
@@ -114,8 +114,8 @@ const CompensationBenifits = ({navigation}) => {
             renderTabBar={props => {
               return (
                 <LinearGradient
-                 colors={['#4174D0','#6ef7ff']}
-                  style={{marginTop: -1, zIndex: -1}}>
+              colors={['#5dc0e9', '#5dc0e9']}
+              style={{ marginTop: -1, zIndex: -1 }}>
                   <TabBar
                     {...props}
                     style={{backgroundColor: 'transparent', elevation: 0}}

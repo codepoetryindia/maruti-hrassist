@@ -116,7 +116,6 @@ const AttendanceAdmin = ({navigation}) => {
               width: manager == true ? '50%' : '8%',
               position: 'absolute',
               bottom: -5,
-
               right: -20,
               alignItems: 'center',
               backgroundColor: '#23f',
@@ -138,7 +137,6 @@ const AttendanceAdmin = ({navigation}) => {
             <TouchableOpacity
               style={{alignSelf: 'center'}}
               onPress={() => {
-                // navigation.navigate('ManagerMode');
                 navigation.navigate('ManagerMode');
               }}>
               {manager == true ? (
@@ -156,7 +154,6 @@ const AttendanceAdmin = ({navigation}) => {
         renderTabBar={props => {
           return (
             <LinearGradient
-            
               colors={['#4174D0','#6ef7ff']}
               style={{marginTop: -1, zIndex: -1}}>
               <TabBar

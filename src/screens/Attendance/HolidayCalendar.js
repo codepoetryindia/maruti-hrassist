@@ -32,7 +32,7 @@ const HolidayCalendar = () => {
         {HolidayCalendar == 0 ? (
           <View>
             <LinearGradient
-              colors={['#2757C3', '#c0a0b5', '#b54746']}
+              colors={['#4174D0','#6ef7ff']}
               style={{borderRadius: 10, marginVertical: 15}}>
               <Calendar
                 // Specify style for calendar container element. Default = {}
@@ -54,7 +54,7 @@ const HolidayCalendar = () => {
                 }}
                 markingType={'period'}
                 markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#ad3231'},
+                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
                   '2022-03-18': {
                     selected: true,
                     color: '#00adf5',
@@ -115,7 +115,7 @@ const HolidayCalendar = () => {
         ) : HolidayCalendar == 1 ? (
           <View>
             <LinearGradient
-              colors={['#c0a0b5', '#2757C3', '#b54746']}
+              colors={['#4174D0','#6ef7ff']}
               style={{borderRadius: 10, marginVertical: 15}}>
               <Calendar
                 // Specify style for calendar container element. Default = {}
@@ -137,7 +137,7 @@ const HolidayCalendar = () => {
                 }}
                 markingType={'period'}
                 markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#ad3231'},
+                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
                   '2022-03-18': {
                     selected: true,
                     color: '#00adf5',
@@ -180,7 +180,7 @@ const HolidayCalendar = () => {
         ) : HolidayCalendar == 2 ? (
           <View>
             <LinearGradient
-              colors={['#b54746', '#b54746']}
+               colors={['#4174D0','#6ef7ff']}
               style={{borderRadius: 10, marginVertical: 15}}>
               <Calendar
                 // Specify style for calendar container element. Default = {}
@@ -202,7 +202,7 @@ const HolidayCalendar = () => {
                 }}
                 markingType={'period'}
                 markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#ad3231'},
+                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
                   '2022-03-18': {
                     selected: true,
                     color: '#00adf5',
@@ -267,7 +267,7 @@ const HolidayCalendar = () => {
                 }}
                 markingType={'period'}
                 markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#ad3231'},
+                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
                   '2022-03-18': {
                     selected: true,
                     color: '#00adf5',
@@ -325,9 +325,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
   },
   tabTextStyle: {
     fontWeight: '700',

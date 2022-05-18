@@ -10,7 +10,7 @@ import AuthContext from '../context/AuthContext';
 const Notification = ({navigation}) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const NotifiApi = () => {
-    let token = AppUserData.token
+    let token = 'Basic ZDU5NjEyY2ItYTI3NS00ZTYzLTkyMGItNGE4ODJmYjFiOTVm'
     axios.get('https://onesignal.com/api/v1/notifications?app_id=42fcb50a-922f-4b0e-9ba3-701d663beede',
     {
       headers:{
@@ -18,71 +18,13 @@ const Notification = ({navigation}) => {
       }
     })
     .then(resp => {
-      console.log("notification",resp);
+      let result = resp.data.notifications
+      console.log("notification",result);
   });
   }
 useEffect(() => {
   NotifiApi()
 }, [])
-
-  const notification = [
-    {
-      id: '1',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '2',
-      title:
-        'The 2020/21 Vision Awards Annual Report Competition is organized by the League of American .',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '3',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '4',
-      title:
-        '1,000 global companies, across 24 countries spread evenly over Americas, Europe, Middle East and Asia Pacific regions.',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '5',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '6',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '7',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-    {
-      id: '8',
-      title:
-        'Maruti Suzuki India Announcement under Regulation 30 (LODR)-Press Release / Media Release',
-      type: 'Tech News',
-      image:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8",
-    },
-  ];
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -102,7 +44,6 @@ useEffect(() => {
               color={'white'}
               onPress={() => navigation.goBack()}
             />
-            
           </View>
 
           <Text
@@ -129,10 +70,19 @@ useEffect(() => {
 
           }}>
           <FlatList
-            data={notification}
+            data={NotifiApi}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
+                  <Image source={require('../assets/Images/dataNotFound.png')}
+                    style={{ width: 300, height: 300, resizeMode: 'contain',}} />
+                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                </View>
+              )
+            }}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
+            keyExtractor={({item,index})=>index}
+                renderItem={({ item,index }) => (
               <View
                 style={{
                   width: '100%',
@@ -150,7 +100,6 @@ useEffect(() => {
                   shadowRadius: 3.84,
                   elevation: 5,
                   borderRadius:8,
-                  
                 }}>
                 <View
                   style={{
@@ -158,17 +107,17 @@ useEffect(() => {
                     justifyContent: 'space-between',
                     paddingVertical:10,
                   }}>
-                  <Text style={{fontSize:18}}>{item.type}</Text>
+                  <Text style={{fontSize:16}}>{item.contents}</Text>
                  <TouchableOpacity>
                  <Ionicons
                     name="notifications-circle-outline"
                     size={25}
-                    color={'#AD3231'}
+                    color={'#6ef7ff'}
                   />
                  </TouchableOpacity>
                 </View>
-                <Text style={{fontSize:16}}>{item.title}</Text>
-                <Image  source={{ uri:item.image}}   style={{width:'100%',height:120,resizeMode:'stretch',borderRadius:8,marginVertical:10}}/>
+                <Image  source={{ uri:"https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8"}}
+                style={{width:'100%',height:120,resizeMode:'stretch',borderRadius:8,marginVertical:10}}/>
               </View>
             )}
           />

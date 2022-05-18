@@ -97,9 +97,9 @@ export const Taxi = () => {
                 flexDirection: 'row',
                 borderWidth: 1,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
                 borderRadius: 5,
                 alignSelf: 'center',
               }}>
@@ -109,7 +109,7 @@ export const Taxi = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Feather name="search" size={20} color={'#ad3231'} />
+                <Feather name="search" size={20} color={'#6ef7ff'} />
               </View>
               <TextInput
                 placeholder="Search By Slip No/Staff ID"
@@ -124,7 +124,7 @@ export const Taxi = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Ionicons name="send" size={20} color={'#ad3231'} />
+                <Ionicons name="send" size={20} color={'#6ef7ff'} />
               </TouchableOpacity>
             </View>
             <View style={{margin: '5%',}}>
@@ -154,9 +154,9 @@ export const Attendance = () => {
                 marginTop:'5%',
                 borderWidth: 1,
                 borderTopColor: '#80406A',
-                borderStartColor: '#ad3231',
+                borderStartColor: '#6ef7ff',
                 borderBottomColor: '#2757C3',
-                borderEndColor: '#ad3231',
+                borderEndColor: '#6ef7ff',
                 borderRadius: 5,
                 alignSelf: 'center',
               }}>
@@ -166,7 +166,7 @@ export const Attendance = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Feather name="search" size={20} color={'#ad3231'} />
+                <Feather name="search" size={20} color={'#6ef7ff'} />
               </View>
               <TextInput
                 placeholder="Search By Name/Dept/Staff/ID"
@@ -181,7 +181,7 @@ export const Attendance = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Ionicons name="send" size={20} color={'#ad3231'} />
+                <Ionicons name="send" size={20} color={'#6ef7ff'} />
               </TouchableOpacity>
             </View>
           </View>
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   tabStyle: {
     //custom styles
     paddingVertical: 10,
-    borderColor: '#ad3231',
+    borderColor: '#6ef7ff',
   },
   tabTextStyle: {
     //custom styles

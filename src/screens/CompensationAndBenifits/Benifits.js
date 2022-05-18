@@ -39,14 +39,14 @@ const Benifits = () => {
                   height: 50,
                   borderRadius: 100,
                   borderWidth: 1,
-                  borderColor: '#ad3231',
+                  borderColor: '#6ef7ff',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
                 <Foundation
                   name="page-export-pdf"
                   size={20}
-                  color={'#ad3231'}
+                  color={'#6ef7ff'}
                 />
               </View>
             </View>

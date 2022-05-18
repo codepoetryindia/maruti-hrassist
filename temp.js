@@ -1,4 +1,4 @@
-'#2757C3', '#80406A', '#AD3231';
+'#2757C3', '#80406A', '#6ef7ff';
 
 // //import liraries
 // import React, {useEffect, useState} from 'react';
@@ -187,15 +187,15 @@
 //                     padding: 5,
 //                     borderWidth: 1,
 //                     borderTopColor: '#80406A',
-//                     borderStartColor: '#ad3231',
+//                     borderStartColor: '#6ef7ff',
 //                     borderBottomColor: '#2757C3',
-//                     borderEndColor: '#ad3231',
+//                     borderEndColor: '#6ef7ff',
 //                     alignItems: 'center',
 //                     alignSelf: 'center',
 //                     margin: 8,
 //                     borderRadius: 8,
 //                   }}>
-//                   <Ionicons name="person-circle" size={25} color={'#ad3231'} />
+//                   <Ionicons name="person-circle" size={25} color={'#6ef7ff'} />
 //                   <TextInput
 //                     placeholder="Login Id"
 //                     secureTextEntry={false}
@@ -230,15 +230,15 @@
 //                     padding: 5,
 //                     borderWidth: 1,
 //                     borderTopColor: '#80406A',
-//                     borderStartColor: '#ad3231',
+//                     borderStartColor: '#6ef7ff',
 //                     borderBottomColor: '#2757C3',
-//                     borderEndColor: '#ad3231',
+//                     borderEndColor: '#6ef7ff',
 //                     alignItems: 'center',
 //                     alignSelf: 'center',
 //                     borderRadius: 8,
 //                     margin: 8,
 //                   }}>
-//                   <Ionicons name="lock-closed" size={25} color={'#ad3231'} />
+//                   <Ionicons name="lock-closed" size={25} color={'#6ef7ff'} />
 //                   <TextInput
 //                     placeholder="Password"
 //                     secureTextEntry={showPass}

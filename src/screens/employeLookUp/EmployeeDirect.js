@@ -19,6 +19,8 @@ const EmployeeDirect = () => {
     console.log("navigation", myNavigation)
   }, [])
 
+  GetEmpllookupVGPS
+  
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {
@@ -84,7 +86,7 @@ const EmployeeDirect = () => {
           />
           {search !== '' ? (
             <TouchableOpacity
-              style={{ backgroundColor: '#AD3231', borderRadius: 8, marginLeft: -3 }} onPress={() => { emptyList() }}>
+              style={{ backgroundColor: '#6ef7ff', borderRadius: 8, marginLeft: -3 }} onPress={() => { emptyList() }}>
               <Ionicons
                 style={styles.searchIcon}
                 name="close-circle-outline"
@@ -166,9 +168,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
     borderRadius: 7,
   },
   searchIcon: {
@@ -186,9 +188,9 @@ const styles = StyleSheet.create({
     width: '90%',
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
     borderRadius: 7,
     flexDirection: 'row',
     margin: 3,

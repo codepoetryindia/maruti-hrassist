@@ -1,6 +1,5 @@
 // /import liraries
-import React from 'react';
-import {useState} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,27 +8,35 @@ import {
   TextInput,
   FlatList,
   ScrollView,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import RadioButtonRN from 'radio-buttons-react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import {useRef} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext'
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
-const Gatepass = ({navigation}) => {
+const Gatepass = ({ navigation }) => {
+const {authContext ,AppUserData} = useContext(AuthContext)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
-  const [isSelected, setSelection] = useState(false);
-  const [state, setState] = useState(false);
-  const [searchLevel, setSearchLevel] = useState('');
+  const [empLoc, setEmpLoc] = useState([]);
+  const [empLocCode, setEmpLocCode] = useState([]);
+  const [searchedData, setSearchedData] = useState([])
+  const [searchLevel] = useState();
+  const[searchLevelData,setSearchLevelData] = useState([])
+  const [loader, setLoader] = useState(false)
   const options = ['Yes', 'No'];
   const [selectBuilding, setSelectBuilding] = useState([]);
   const [BuildingData, setBuildingData] = useState([
@@ -108,31 +115,161 @@ const Gatepass = ({navigation}) => {
   const [reason, setReason] = useState('');
   const [employ, setEmploy] = useState('');
   const [show, setShow] = useState(false);
-  // const handleRadioStatusSecond = value =>{}
+  const[searchEmp,setSearchEmp] = useState ();
+  
+  const GetLocationListVGPSApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data
+    console.log("UserName",userId);
+    let apiData = { "UserName":548596 }
+    console.log(apiData)
+    setLoader(true);
+    ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
+      .then(result => {
+        // console.log("APiresult", result);
+        setLoader(false);
+        let Location = result.Value[0].LOCN
+        let LocationCode = result.Value[0].CODE
+        console.log("Apivaue",Location , LocationCode)
+        setEmpLoc(Location)
+        setEmpLocCode(LocationCode)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const GetSearchLevelsListVGPSApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data
+    console.log("UserName",userId);
+    let apiData = { "UserName":548596 }
+    console.log(apiData)
+    setLoader(true);
+    ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
+      .then(result => {
+        setLoader(false);
+        let arrData = result.Value.map((item)=> {return{'label': item.MEANING}})
+        setSearchLevelData(arrData)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
 
-  // const handleSubmit = () => {
-  //   if (date == '') {
-  //     alert('select a date');
-  //   }
-  //   // else if(selectTime < 9 && selectTime>18){
-  //   //   alert('Duration should be less then ');
-  //   // }
-  //   else if (duration > 24) {
-  //     alert('Duration should be less then 24Hour');
-  //   } else if (duration == '') {
-  //     alert('select a duration please');
-  //   } else if (searchLevel == '') {
-  //     alert('select a search level please');
-  //   } else if (reason == '') {
-  //     alert('enter your vehical number please');
-  //   } else if (selectBuilding == '') {
-  //     alert('select buildings please');
-  //   } else if (employ == '') {
-  //     alert('enter staff ID/Name/Dept please');
-  //   } else {
-  //     navigation.navigate('VisitorDetails');
-  //   }
-  // };
+  // saerch by name 
+
+  const getEmpllookupVGPSApi = (values) => {
+   
+    if (searchEmp === '') {
+      <Text style={{color:'red'}}>please enter a valid keyWord</Text>
+      return
+    } else {
+      let apiData = {
+        Search:'222852' 
+        // values.searchEmp
+      }
+      console.log('post data', apiData);
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/getEmpllookupVGPS', apiData, token)
+        .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value
+          // setSearchedData(responseData)
+          console.log('responseData', responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+  };
+  const GetAccessListVGPSApi = () => {
+    let userId = AppUserData.data.EMPL_NAME
+      let apiData = {
+          UserName :userId,
+          LocationCode : empLocCode,
+          LevelID : "1"
+      }
+      console.log('post data', apiData);
+      console.log('post userId', userId);
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/GetAccessListVGPS', apiData, token)
+        .then(result => {
+          setLoader(false);
+          // console.log('ApiResult', result);
+          let responseData = result.Value
+          // setSearchedData(responseData)
+          console.log('building data', responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+
+
+useEffect(() => {
+  GetLocationListVGPSApi()
+  GetSearchLevelsListVGPSApi()
+  getEmpllookupVGPSApi()
+  GetAccessListVGPSApi()
+}, [])
+
+
+
   const fromReff = useRef(null);
   const gatePassScheema = yup.object().shape({
     office: yup.string().required('leave type is required'),
@@ -147,41 +284,28 @@ const Gatepass = ({navigation}) => {
     persionalVehical: yup.string().required('post one comment'),
     internalVehical: yup.string().required('select one period'),
     building: yup.string().required('selectDate  is required'),
-    vehicalNumber: yup.string().required('Provide Your reason please'),
+    searchEmp: yup.string().required('Provide Your reason please'),
   });
   const fromRef = useRef(null);
 
-  const handleRadioStatus = value => {
-    switch (value) {
-      case 'A':
-        setSelection(true);
-        setState(false);
-        break;
-      case 'B':
-        setSelection(false);
-        setState(true);
-      default:
-        break;
-    }
-  };
+  // const handleRadioStatus = value => {
+  //   switch (value) {
+  //     case 'A':
+  //       setSelection(true);
+  //       setState(false);
+  //       break;
+  //     case 'B':
+  //       setSelection(false);
+  //       setState(true);
+  //     default:
+  //       break;
+  //   }
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const toggleBuilding = () => {
     setShow(!show);
   };
-
-  const radioData = [
-    {
-      label: 'NO SEARCH REQUIRED',
-    },
-    {
-      label: 'INDIVIDUAL AND BELONGING TO BE',
-    },
-    {
-      label: 'INDIVIDUAL AND BELONGING TO BE',
-    },
-  ];
 
   // data for Select Building
 
@@ -221,9 +345,19 @@ const Gatepass = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) : (
+    <SafeAreaView style={{ flex: 1, }}>
       <LinearGradient
-     colors={['#4174D0','#6ef7ff']}
+        colors={['#4174D0', '#6ef7ff']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -272,18 +406,18 @@ const Gatepass = ({navigation}) => {
           persionalVehical: '',
           internalVehical: '',
           building: '',
-          vehicalNumber: '',
+          searchEmp: '',
         }}
         onSubmit={values => {
-       
+
           // console.log('values', values);
           console.log('values', values);
-          // if(values){
-          //   navigation.navigate("VisitorDetails")
-          // }
-          // else{
-          //   alert('error')
-          // }
+          if(values){
+            navigation.navigate("VisitorDetails")
+          }
+          else{
+            alert('error')
+          }
         }}>
         {({
           handleChange,
@@ -295,8 +429,8 @@ const Gatepass = ({navigation}) => {
           touched,
           isValid,
         }) => (
-          <ScrollView nestedScrollEnabled={true} style={{marginBottom: '18%'}}>
-            <View style={{paddingBottom: 20}}>
+          <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5 }}>
+            <View style={{ paddingBottom: 20 }}>
               <Text
                 style={{
                   paddingHorizontal: 20,
@@ -312,21 +446,20 @@ const Gatepass = ({navigation}) => {
                   width: '90%',
                   borderWidth: 1,
                   borderTopColor: '#80406A',
-                  borderStartColor: '#ad3231',
+                  borderStartColor: '#4174D0',
                   borderBottomColor: '#2757C3',
-                  borderEndColor: '#ad3231',
+                  borderEndColor: '#4174D0',
                   alignSelf: 'center',
                   padding: 10,
                   justifyContent: 'space-between',
                 }}
                 onPress={toggleModal}>
                 <Text>
-                  {isSelected == true
-                    ? 'GURGAON FACTORY'
-                    : 'HEAD OFFICE - DELHI'}
+                  {empLoc}
                 </Text>
                 <Feather name="chevron-down" size={20} />
-                <Modal isVisible={isModalVisible} SLI>
+
+                 <Modal isVisible={isModalVisible} SLI>
                   <View
                     style={{
                       flex: 0.2,
@@ -336,10 +469,10 @@ const Gatepass = ({navigation}) => {
                       borderRadius: 8,
                     }}>
                     <View
-                      style={{width: '90%', justifyContent: 'space-evenly'}}>
+                      style={{ width: '90%', justifyContent: 'space-evenly' }}>
                       <LinearGradient
-                        style={{margin: 5, borderRadius: 8}}
-                     colors={['#4174D0','#6ef7ff']}>
+                        style={{ margin: 5, borderRadius: 8 }}
+                        colors={['#4174D0', '#6ef7ff']}>
                         <TouchableOpacity
                           style={{
                             width: '90%',
@@ -349,11 +482,11 @@ const Gatepass = ({navigation}) => {
                             padding: 10,
                           }}
                           onPress={() => {
-                            handleRadioStatus('A');
+                            // handleRadioStatus('A');
                             setModalVisible(false);
                           }}>
-                          <Text style={{color: 'white'}}>GURGAON FACTORY</Text>
-                          {isSelected == true ? (
+                          <Text style={{ color: 'white' }}>{empLoc}</Text>
+                          {empLoc == true ? (
                             <Ionicons
                               name="checkbox"
                               size={20}
@@ -369,9 +502,9 @@ const Gatepass = ({navigation}) => {
                         </TouchableOpacity>
                       </LinearGradient>
 
-                      <LinearGradient
-                        style={{margin: 5, borderRadius: 8}}
-                     colors={['#4174D0','#6ef7ff']}>
+                      {/* <LinearGradient
+                        style={{ margin: 5, borderRadius: 8 }}
+                        colors={['#4174D0', '#6ef7ff']}>
                         <TouchableOpacity
                           onPress={() => {
                             handleRadioStatus('B');
@@ -384,7 +517,7 @@ const Gatepass = ({navigation}) => {
                             alignSelf: 'center',
                             padding: 10,
                           }}>
-                          <Text style={{color: 'white'}}>
+                          <Text style={{ color: 'white' }}>
                             HEAD OFFICE - DELHI
                           </Text>
                           {state == true ? (
@@ -401,7 +534,7 @@ const Gatepass = ({navigation}) => {
                             />
                           )}
                         </TouchableOpacity>
-                      </LinearGradient>
+                      </LinearGradient> */}
                     </View>
                   </View>
                 </Modal>
@@ -435,7 +568,7 @@ const Gatepass = ({navigation}) => {
                 is24Hour={true}
               />
 
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -475,20 +608,20 @@ const Gatepass = ({navigation}) => {
                       width: '69%',
                       backgroundColor: 'transparent',
                       borderWidth: 1,
-                      borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderTopColor: '#2757C3',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       flexDirection: 'row',
                       padding: 6,
                       alignSelf: 'center',
                     }}>
-                    <Text style={{color: 'gray'}}>
+                    <Text style={{ color: 'gray' }}>
                       {moment(date).subtract(10, 'days').calendar()}
                     </Text>
-                    <Text style={{color: 'gray'}}>
+                    <Text style={{ color: 'gray' }}>
                       {moment(selectTime).format('LT')}
                     </Text>
                     <View>
@@ -502,7 +635,7 @@ const Gatepass = ({navigation}) => {
                           <Ionicons
                             name="calendar-outline"
                             size={25}
-                            color={'#ad3231'}
+                            color={'#4174D0'}
                           />
                         </TouchableOpacity>
 
@@ -513,42 +646,38 @@ const Gatepass = ({navigation}) => {
                           <Ionicons
                             name="time-outline"
                             size={25}
-                            color={'#ad3231'}
+                            color={'#4174D0'}
                           />
                         </TouchableOpacity>
                       </View>
                     </View>
                   </TouchableOpacity>
                   <TextInput
-                    onChangeText={() => {
-                      handleChange('duration');
-                    }}
-                    value={duration}
-                    placeholder="Duration"
-                    keyboardType={'numeric'}
                     style={{
-                      width: '30%',
-                      borderWidth: 1,
-                      borderTopColor: '#80406A',
-                      borderLeftColor: '#a03231',
+                      width: '30%', borderWidth: 1,
+                      padding:6,
+                      borderTopColor: '#2757C3',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderRightColor: '#ad3231',
-                      paddingVertical: -1,
+                      borderEndColor: '#6ef7ff',
                     }}
-                  />
+                    onChangeText={handleChange('duration')}
+                    onBlur={handleBlur('duration')}
+                    value={values.duration}
+                    keyboardType={'number-pad'} />
                 </View>
-                {/* {errors.duration && touched.duration && (
+                {errors.duration && touched.duration && (
                   <View
                     style={{
                       width: '90%',
                       alignSelf: 'center',
                       paddingVertical: 2,
                     }}>
-                    <Text style={{fontSize: 12, color: 'red',textAlign:'right'}}>
+                    <Text style={{ fontSize: 12, color: 'red', textAlign: 'right' }}>
                       {errors.duration}
                     </Text>
                   </View>
-                )} */}
+                )}
               </View>
 
               {/* Search Level */}
@@ -594,12 +723,12 @@ const Gatepass = ({navigation}) => {
                         paddingBottom: 10,
                         paddingHorizontal: 10,
                       }}
-                   colors={['#4174D0','#6ef7ff']}>
+                      colors={['#4174D0', '#6ef7ff']}>
                       <RadioButtonRN
                         boxStyle={{backgroundColor: 'transparent'}}
                         textStyle={{color: '#fff'}}
                         duration={100}
-                        data={radioData}
+                        data={searchLevelData}
                         selectedBtn={e => {
                           console.log(e);
                           let data = e.label;
@@ -627,14 +756,14 @@ const Gatepass = ({navigation}) => {
                     alignSelf: 'center',
                     paddingVertical: 2,
                   }}>
-                  <Text style={{fontSize: 12, color: 'red'}}>
+                  <Text style={{ fontSize: 12, color: 'red' }}>
                     {errors.searchLevel}
                   </Text>
                 </View>
               )}
 
               {/* Vehicle number */}
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <Text
                   style={{
                     paddingHorizontal: 20,
@@ -654,9 +783,9 @@ const Gatepass = ({navigation}) => {
                     alignSelf: 'center',
                     borderWidth: 1,
                     borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
+                    borderStartColor: '#4174D0',
                     borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
+                    borderEndColor: '#4174D0',
                     borderRadius: 5,
                     paddingVertical: 5,
                   }}
@@ -669,7 +798,7 @@ const Gatepass = ({navigation}) => {
                       paddingVertical: 2,
                     }}>
                     <Text
-                      style={{fontSize: 12, color: 'red', textAlign: 'left'}}>
+                      style={{ fontSize: 12, color: 'red', textAlign: 'left' }}>
                       {errors.reason}
                     </Text>
                   </View>
@@ -678,7 +807,7 @@ const Gatepass = ({navigation}) => {
 
               {/* personal vehical */}
 
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -718,21 +847,21 @@ const Gatepass = ({navigation}) => {
                       backgroundColor: 'transparent',
                       borderWidth: 1,
                       borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       width: '50%',
                       height: 40,
                       borderRadius: 5,
                     }}
-                    buttonTextStyle={{fontSize: 16}}
+                    buttonTextStyle={{ fontSize: 16 }}
                     dropdownStyle={{
                       backgroundColor: '#fff',
                       borderWidth: 1,
                       borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       borderRadius: 5,
                     }}
                     renderDropdownIcon={isOpened => {
@@ -756,7 +885,7 @@ const Gatepass = ({navigation}) => {
                       <Feather
                         name="chevron-down"
                         size={20}
-                        color={'#ad3231'}
+                        color={'#4174D0'}
                       />
                     }
                   />
@@ -767,9 +896,9 @@ const Gatepass = ({navigation}) => {
                       backgroundColor: 'transparent',
                       borderWidth: 1,
                       borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       width: '50%',
                       height: 40,
                       borderRadius: 5,
@@ -778,9 +907,9 @@ const Gatepass = ({navigation}) => {
                       backgroundColor: '#fff',
                       borderWidth: 1,
                       borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       borderRadius: 5,
                     }}
                     renderDropdownIcon={isOpened => {
@@ -798,8 +927,8 @@ const Gatepass = ({navigation}) => {
                     }}
                     dropdownBackgroundColor={
                       <LinearGradient
-                        style={{margin: 5, borderRadius: 8}}
-                     colors={['#4174D0','#6ef7ff']}
+                        style={{ margin: 5, borderRadius: 8 }}
+                        colors={['#4174D0', '#6ef7ff']}
                       />
                     }
                     data={options}
@@ -818,16 +947,16 @@ const Gatepass = ({navigation}) => {
               {/* <View style={{backgroundColor:'red',marginVertical:20}}> */}
               <View>
                 <View
-                  style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
-                  <Text style={{fontSize: 16, top: 1}}>Select Building *</Text>
+                  style={{ width: '90%', alignSelf: 'center', marginTop: 10 }}>
+                  <Text style={{ fontSize: 16, top: 1 }}>Select Building *</Text>
                   <View
                     style={{
                       width: '100%',
                       borderWidth: 1,
                       borderTopColor: '#80406A',
-                      borderStartColor: '#ad3231',
+                      borderStartColor: '#6ef7ff',
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#ad3231',
+                      borderEndColor: '#6ef7ff',
                       borderRadius: 5,
                     }}>
                     <View
@@ -850,7 +979,7 @@ const Gatepass = ({navigation}) => {
                               justifyContent: 'space-between',
                               alignItems: 'center',
                             }}>
-                            <Text style={{color: '#fff', padding: 5}}>
+                            <Text style={{ color: '#fff', padding: 5 }}>
                               {item.data}
                             </Text>
                             {/* <Ionicons
@@ -877,15 +1006,15 @@ const Gatepass = ({navigation}) => {
                           padding: 10,
                           borderWidth: 0.5,
                           // borderTopColor: '#80406A',
-                          borderStartColor: '#ad3231',
+                          borderStartColor: '#6ef7ff',
                           borderBottomColor: '#2757C3',
-                          borderEndColor: '#ad3231',
+                          borderEndColor: '#6ef7ff',
                           borderRadius: 5,
                         }}>
                         <FlatList
                           data={BuildingData}
                           keyExtractor={item => item.id}
-                          renderItem={({item, index}) => (
+                          renderItem={({ item, index }) => (
                             <View
                               style={{
                                 width: '100%',
@@ -896,9 +1025,9 @@ const Gatepass = ({navigation}) => {
                                 margin: 2,
                                 alignSelf: 'center',
                                 borderTopColor: '#80406A',
-                                borderStartColor: '#ad3231',
+                                borderStartColor: '#6ef7ff',
                                 borderBottomColor: '#2757C3',
-                                borderEndColor: '#ad3231',
+                                borderEndColor: '#6ef7ff',
                                 borderRadius: 5,
                               }}>
                               <Text>{item.data}</Text>
@@ -910,13 +1039,13 @@ const Gatepass = ({navigation}) => {
                                   <Ionicons
                                     name="remove-circle"
                                     size={25}
-                                    color={'#ad3231'}
+                                    color={'#4174D0'}
                                   />
                                 ) : (
                                   <Ionicons
                                     name="add-circle"
                                     size={25}
-                                    color={'#ad3231'}
+                                    color={'#4174D0'}
                                   />
                                 )}
                               </TouchableOpacity>
@@ -926,53 +1055,12 @@ const Gatepass = ({navigation}) => {
                       </View>
                     ) : null}
                   </View>
-                  {/* <SelectBox
-              ScrollView={true}
-                toggleIconColor={'#ad3231'}
-                optionsLabelStyle={{paddingHorizontal: 10}}
-                selectedItemStyle={{backgroundColor: 'transparent'}}
-                label=""
-                options={BuildingData}
-                selectedValues={selectBuilding}
-                onMultiSelect={onMultiChange()}
-                onTapClose={onMultiChange()}
-                isMulti
-                containerStyle={{
-                  backgroundColor: 'transparent',
-                  alignItems: 'center',
-                  marginTop: -10,
-                  borderWidth: 1,
-                  borderTopColor: '#80406A',
-                  borderStartColor: '#ad3231',
-                  borderBottomColor: '#2757C3',
-                  borderEndColor: '#ad3231',
-                  borderRadius: 5,
-                }}
-                optionContainerStyle={{
-                  margin: 1,
-                  borderWidth: 1,
-                  borderTopColor: '#80406A',
-                  borderStartColor: '#ad3231',
-                  borderBottomColor: '#2757C3',
-                  borderEndColor: '#ad3231',
-                  borderRadius: 5,
-                }}
-                listOptionProps={{
-                 paddingVertical:10,
-                  borderWidth: 1,
-                  borderTopColor: '#80406A',
-                  borderStartColor: '#ad3231',
-                  borderBottomColor: '#2757C3',
-                  borderEndColor: '#ad3231',
-                  borderRadius: 5,
-                }}
-                inputFilterContainerStyle={{width: 0, display: 'none'}}
-              /> */}
+
                 </View>
               </View>
 
               {/* SEARCH BOX */}
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <Text
                   style={{
                     paddingHorizontal: 20,
@@ -988,9 +1076,9 @@ const Gatepass = ({navigation}) => {
                     flexDirection: 'row',
                     borderWidth: 1,
                     borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
+                    borderStartColor: '#6ef7ff',
                     borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
+                    borderEndColor: '#6ef7ff',
                     borderRadius: 5,
                     alignSelf: 'center',
                   }}>
@@ -1000,29 +1088,30 @@ const Gatepass = ({navigation}) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Feather name="search" size={20} color={'#ad3231'} />
+                    <Feather name="search" size={20} color={'#4174D0'} />
                   </View>
                   <TextInput
-                    onChangeText={handleChange('vehicalNumber')}
-                    onBlur={handleBlur('vehicalNumber')}
-                    value={values.vehicalNumber}
+                    onChangeText={handleChange('searchEmp')}
+                    onBlur={handleBlur('searchEmp')}
+                    value={values.searchEmp}
                     placeholder="Search By Name/Dept/Staff/ID"
                     style={{
                       width: '70%',
                       paddingVertical: 5,
                     }}
                   />
-                  
+
                   <TouchableOpacity
+                  onPress={() => {GetSearchLevelsListVGPSApi()}}
                     style={{
                       width: '15%',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <Ionicons name="send" size={20} color={'#ad3231'} />
+                    <Ionicons name="send" size={20} color={'#4174D0'} />
                   </TouchableOpacity>
                 </View>
-                  {errors.vehicalNumber && touched.vehicalNumber && (
+                {errors.vehicalNumber && touched.vehicalNumber && (
                   <View
                     style={{
                       width: '90%',
@@ -1030,7 +1119,7 @@ const Gatepass = ({navigation}) => {
                       paddingVertical: 2,
                     }}>
                     <Text
-                      style={{fontSize: 12, color: 'red', textAlign: 'left'}}>
+                      style={{ fontSize: 12, color: 'red', textAlign: 'left' }}>
                       {errors.vehicalNumber}
                     </Text>
                   </View>
@@ -1038,7 +1127,7 @@ const Gatepass = ({navigation}) => {
               </View>
 
               {/* TExtInput */}
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <Text
                   style={{
                     paddingHorizontal: 20,
@@ -1055,16 +1144,16 @@ const Gatepass = ({navigation}) => {
                     paddingVertical: 5,
                     borderWidth: 1,
                     borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
+                    borderStartColor: '#6ef7ff',
                     borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
+                    borderEndColor: '#6ef7ff',
                     borderRadius: 5,
                     alignSelf: 'center',
                   }}
                 />
               </View>
 
-              <View style={{width: '100%'}}>
+              <View style={{ width: '100%' }}>
                 <Text
                   style={{
                     paddingHorizontal: 20,
@@ -1081,9 +1170,9 @@ const Gatepass = ({navigation}) => {
                     paddingVertical: 5,
                     borderWidth: 1,
                     borderTopColor: '#80406A',
-                    borderStartColor: '#ad3231',
+                    borderStartColor: '#6ef7ff',
                     borderBottomColor: '#2757C3',
-                    borderEndColor: '#ad3231',
+                    borderEndColor: '#6ef7ff',
                     borderRadius: 5,
                     alignSelf: 'center',
                   }}
@@ -1092,15 +1181,15 @@ const Gatepass = ({navigation}) => {
 
               {/* Next Button */}
 
-              <View style={{paddingVertical: 10}}>
+              <View style={{ paddingVertical: 10 }}>
                 <LinearGradient
+                  colors={['#4174D0', '#6ef7ff']}
                   style={{
                     margin: 5,
                     borderRadius: 8,
                     width: '90%',
                     alignSelf: 'center',
-                  }}
-                  colors={['#a67997', '#b54746']}>
+                  }}>
                   <TouchableOpacity
                     style={{
                       width: '100%',
@@ -1110,6 +1199,8 @@ const Gatepass = ({navigation}) => {
                     }}
                     onPress={() => {
                       handleSubmit();
+                      navigation.navigate("VisitorDetails")
+                      
                     }}>
                     <Text
                       style={{
@@ -1127,10 +1218,11 @@ const Gatepass = ({navigation}) => {
           </ScrollView>
         )}
       </Formik>
-    </View>
+    </SafeAreaView>
+    )
   );
-};
-
+  
+ }
 // define your styles
 const styles = StyleSheet.create({
   gradient: {

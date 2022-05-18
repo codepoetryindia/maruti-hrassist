@@ -234,7 +234,7 @@ const Shift = () => {
                 value={textinputDate}
               />
               <TouchableOpacity onPress={() => setOpen(true)}>
-                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+                <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
               </TouchableOpacity>
             </View>
             <DatePicker
@@ -268,7 +268,7 @@ const Shift = () => {
                 value={textinputSecondDate}
               />
               <TouchableOpacity onPress={() => setSecond(true)}>
-                <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+                <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
               </TouchableOpacity>
             </View>
           </View>
@@ -423,7 +423,7 @@ const Shift = () => {
               value={choseDate}
             />
             <TouchableOpacity onPress={() => setOpenThird(true)}>
-              <Ionicons name="calendar-outline" size={30} color={'#ad3231'} />
+              <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
             </TouchableOpacity>
           </View>
           <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
@@ -547,7 +547,7 @@ const styles = StyleSheet.create({
   tabStyle: {
     //custom styles
     paddingVertical: 10,
-    borderColor: '#ad3231',
+    borderColor: '#6ef7ff',
   },
   tabTextStyle: {
     //custom styles

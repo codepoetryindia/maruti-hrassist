@@ -26,62 +26,53 @@ const CanteenMenu = ({ navigation }) => {
   const [lunch, setLunch] = useState([]);
   const [snacks, setSnacks] = useState([]);
   const [dinner, setDinner] = useState([]);
-  const [currentInd,setCurrentInd]= useState(0);
+  const [currentInd, setCurrentInd] = useState(0)
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const[selectedDate,setSelectedDate] = useState ();
+  const [selectedDate, setSelectedDate] = useState();
 
 
   const GetMenuCanttApi = () => { 
     let token = AppUserData.token
     let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase();
-    console.log("currentdate",formatedDate);
+    console.log("currentdate", formatedDate);
     let apidata;
-
-    if(currentInd==0) {
-      // apidata={
-      // MenuType: "Canteen",
-      // MenuDate: currentInd==0 || selectedDate== undefined ? formatedDate: selectedDate,
-      // // MenuDate: formatedDate.toUpperCase(),
-      // // MenuDate:"12-APR-2022",
-      // MenuLocation: "002"
-      // }
-      // console.log("index 0 ",apidata);
-      apidata={
+    if (currentInd == 0) {
+      apidata = {
         MenuType: "Canteen",
-        // MenuDate: formatedDate,
-        MenuDate:"11-APR-2022",
+        MenuDate: formatedDate,
         MenuLocation: "002"
-        }
+      }
+      console.log("index 0 ", apidata);
     }
-    else if (currentInd==1){
-      apidata={
+    else if (currentInd == 1) {
+      apidata = {
         MenuType: "Canteen",
         // MenuDate:"12-APR-2022",
-        MenuDate: currentInd==1 ?  selectedDate :selectedDate==undefined ? formatedDate :formatedDate ,
+        MenuDate: formatedDate,
         MenuLocation: "010"
-        }
-        console.log("index 0 ",apidata);
+      }
+      console.log("index 0 ", apidata);
     }
-    else if (currentInd==2){
-      apidata={
+    else if (currentInd == 2) {
+      apidata = {
         MenuType: "Canteen",
         // MenuDate:"12-APR-2022",
-        MenuDate: currentInd==2 ?  selectedDate :selectedDate==undefined ? formatedDate :formatedDate ,
+        MenuDate: formatedDate,
         MenuLocation: "011"
-        }
-        console.log("index 0 ",apidata);
+      }
+      console.log("index 0 ", apidata);
     }
-    else if (currentInd==3){
-      apidata={
+    else if (currentInd == 3) {
+      apidata = {
         MenuType: "Canteen",
         // MenuDate:"12-APR-2022",
-        MenuDate: currentInd==3 ?  selectedDate :selectedDate==undefined ? formatedDate :formatedDate ,
+        MenuDate: formatedDate,
         MenuLocation: "041"
-        }
-        console.log("index 0 ",apidata);
+      }
+      console.log("index 0 ", apidata);
     }
-    console.log("apidata",apidata);
+    console.log("apidata", apidata);
     setLoader(true);
     ApiService.PostMethode('/GetMenuCant', apidata, token)
       .then(result => {
@@ -134,46 +125,10 @@ const CanteenMenu = ({ navigation }) => {
 
   useEffect(() => {
     GetMenuCanttApi()
-    // console.log('index',currentInd);
-    // console.log("GetMenuCanttApi",GetMenuCanttApi);
+    console.log('index', currentInd);
+    console.log("GetMenuCanttApi", GetMenuCanttApi);
   }, [currentInd, date])
 
-
-  // const Calander = () => {
-   
-  //   return (
-  //     <View>
-  //       <DatePicker
-  //         modal
-  //         open={open}
-  //         date={date}
-  //         onConfirm={date => {
-  //           setOpen(false);
-  //           setDate(date);
-  //           console.log("new",date);
-  //         }}
-  //         onCancel={() => {
-  //           setOpen(false);
-  //         }}
-  //       />
-  //       <View
-  //         style={{
-  //           width: '100%',
-  //           backgroundColor: '#9f9f9f',
-  //           justifyContent: 'space-between',
-  //           alignItems: 'center',
-  //           flexDirection: 'row',
-  //           padding: 10,
-  //           marginVertical: 10,
-  //         }}>
-  //         <Text style={{color: '#fff'}}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
-  //         <TouchableOpacity onPress={() => setOpen(true)}>
-  //           <Ionicons name="calendar-outline" size={30} color={'#fff'} />
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   );
-  // };
 
   // Gurgaon
 
@@ -187,20 +142,20 @@ const CanteenMenu = ({ navigation }) => {
             Loading...
           </Text>
         </View>
-      ) :(
-        
-        <View>
-        {/* <Calander /> */}
-        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-      </View>
+      ) : (
+
+        <View style={{ marginTop:70,}}>
+          {/* <Calander /> */}
+          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+        </View>
       )
     );
   };
-  
+
   // GURGAON End
-  
+
   // MANSEAR START
   const Manesar = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
@@ -212,14 +167,14 @@ const CanteenMenu = ({ navigation }) => {
             Loading...
           </Text>
         </View>
-      ) :(
-        
-      <View>
-        {/* <Calander /> */}
-        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-      </View>
+      ) : (
+
+        <View>
+          {/* <Calander /> */}
+          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+        </View>
       )
     );
   };
@@ -234,14 +189,14 @@ const CanteenMenu = ({ navigation }) => {
             Loading...
           </Text>
         </View>
-      ) :(
-        
-      <View>
-        {/* <Calander /> */}
-        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-      </View>
+      ) : (
+
+        <View>
+          {/* <Calander /> */}
+          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+        </View>
       )
     );
   };
@@ -256,14 +211,14 @@ const CanteenMenu = ({ navigation }) => {
             Loading...
           </Text>
         </View>
-      ) :(
-        
-      <View>
-        {/* <Calander /> */}
-        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-      </View>
+      ) : (
+
+        <View>
+          {/* <Calander /> */}
+          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+        </View>
       )
     );
   };
@@ -284,7 +239,7 @@ const CanteenMenu = ({ navigation }) => {
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-       colors={['#437cd5', '#5dc0e9']}
+        colors={['#437cd5', '#5dc0e9']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -323,7 +278,7 @@ const CanteenMenu = ({ navigation }) => {
         renderTabBar={props => {
           return (
             <LinearGradient
-              colors={['#437cd5', '#5dc0e9']}
+              colors={['#5dc0e9', '#5dc0e9']}
               style={{ marginTop: -1, zIndex: -1 }}>
               <TabBar
                 {...props}
@@ -335,25 +290,20 @@ const CanteenMenu = ({ navigation }) => {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={(screen) => {
-          console.log("screen",screen);
+          console.log("screen", screen);
           setCurrentInd(screen)
-          setIndex
         }}
         initialLayout={{ width: layout.width }}
       />
-
-      <View>
+      <View style={{position:'absolute',top:110}}>
         <DatePicker
           modal
           open={open}
           date={date}
           onConfirm={date => {
             setOpen(false);
-            setDate(date);
-            // let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase()
-            // setSelectedDate(formatedDate)
-            // GetMenuCanttApi()
-            // console.log("new",formatedDate);
+            setDate(date)
+            console.log("new", date);
           }}
           onCancel={() => {
             setOpen(false);
@@ -361,21 +311,23 @@ const CanteenMenu = ({ navigation }) => {
         />
         <View
           style={{
-            width: '100%',
+            width: '95%',
             backgroundColor: '#9f9f9f',
-            justifyContent: 'space-between',
+            justifyContent: 'space-around',
             alignItems: 'center',
             flexDirection: 'row',
-            padding: 10,
+            paddingHorizontal: 20,
+            alignSelf:'center',
+            paddingVertical:8,
             marginVertical: 10,
+            borderRadius:8,
           }}>
-          <Text style={{color: '#fff'}}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
+          <Text style={{ color: '#fff' }}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
           <TouchableOpacity onPress={() => setOpen(true)}>
-            <Ionicons name="calendar-outline" size={30} color={'#fff'} />
+            <Ionicons name="calendar-outline" size={30} color={'#5dc0e9'} />
           </TouchableOpacity>
         </View>
       </View>
-
     </View>
   );
 };

@@ -1,64 +1,19 @@
 //import liraries
 import React, {Component, useEffect, useState,useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity,FlatList,Linking, ScrollView,ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity,FlatList,Linking, Image,SafeAreaView, ActivityIndicator} from 'react-native';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Feather from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 // create a component
-const Hospital = ({navigation,route}) => {
-  let ApiFilterData = "ABOHAR";
-//   let data = route.params.selectedLoc;
-// {data!=='' ? ( console.log("data",data)):null}
-const  Mynavigation = useNavigation({route})
+const Hospital = ({locationName=''}) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
-  // const[hospitalLoc,setHospitalLoc] = useState(null);
   const[hospitalList,setHospitallList] = useState(null);
-
-  // const GetHospLocnApi = () => {
-  //   let token = AppUserData.token
-  //   let apidata = {}
-  //   setLoader(true);
-  //   ApiService.PostMethode('/GetHospLocn', apidata, token)
-  //     .then(result => {
-  //       setLoader(false);
-  //       console.log("Apiresult",result);
-  //       let ApiValue = result.Value.LOCN_DESC
-  //       console.log("setHospitalLoc", ApiValue);
-  //       setHospitalLoc(ApiValue)
-  //     })
-  //     .catch(error => {
-  //       setLoader(false);
-  //       console.log('Error occurred==>', error);
-  //       if (error.response) {
-  //         if (error.response.status == 401) {
-  //           console.log('error from api', error.response);
-  //         }
-  //         // client received an error response (5xx, 4xx)
-  //         Toast.show(error.response.data.title);
-  //       } else if (error.request) {
-  //         // client never received a response, or request never left
-  //         Toast.show('Network Error');
-  //         // console.log("error.request", error.request._response);
-  //       } else {
-  //         // anything else
-  //         Toast.show('Something Went Wrong');
-  //       }
-  //     });
-  // };
-
   // Hospital list 
-  const GetHospListApi = () => {
+  const GetHospListApi = ( apidata = {}) => {
     let token = AppUserData.token
-    // let FilterData =  {LOCN_DESC:ABOHAR}
-    let apidata;
-    if(ApiFilterData==null){
-      apidata = {}
-    }else{
-      apidata ={LOCN_DESC:ApiFilterData} 
-    }
     setLoader(true);
     ApiService.PostMethode('/GetHospList', apidata, token)
       .then(result => {
@@ -86,29 +41,32 @@ const  Mynavigation = useNavigation({route})
         }
       });
   };
-
-  // const {hospitalDetails} = useSelector (state => state.apiHospitalDetails);
-  // const dispatch = useDispatch();
-
   useEffect(() =>{
     GetHospListApi();
   },[]);
- 
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color='red' size={30} />
-        <Text>
-          Loading...
-        </Text>
-      </View>
+      <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+    </View>
     ) :(
-      
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.itemBox}>
-        
     <FlatList
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={() => {
+            return(
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image source={require('../../assets/Images/dataNotFound.png')}
+                  style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+          </View>
+          )
+          }}
           data={hospitalList}
           keyExtractor={({item,index})=>index}
           renderItem={({item,index}) => (
@@ -123,14 +81,13 @@ const  Mynavigation = useNavigation({route})
               onPress={() => {
                   Linking.openURL(`tel:${item.HOSP_PHONE_NO}`)
               }}>
-                <Feather name="phone-call" size={20} color={'#ad3231'} />
+                <Feather name="phone-call" size={20} color={'#4174D0'} />
               </TouchableOpacity> 
             </View>
           )}
         /> 
-        
       </View>
-    </View>
+    </SafeAreaView>
     )
   );
 };
@@ -159,7 +116,9 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
   box: {
     width: '90%',
     paddingVertical: 10,
@@ -171,6 +130,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 //make this component available to the app
 export default Hospital;

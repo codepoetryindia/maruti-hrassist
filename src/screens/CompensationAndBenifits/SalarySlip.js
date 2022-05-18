@@ -10,11 +10,13 @@ import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
+import moment from 'moment';
 
 const SalarySlip = ({ navigation }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [month, setMonth] = useState();
     const [loader, setLoader] = useState(false)
+    const[date,setDate] = useState(new Date())
     const { authContext, AppUserData } = useContext(AuthContext);
     const GetMonth = () => {
         let token = AppUserData.token
@@ -108,27 +110,16 @@ const SalarySlip = ({ navigation }) => {
                     onPress={() => {
                         toggleModal()
                     }}>
-                    <View style={{ width: '20%' }}>
-                        <Image
-                            style={{ width: 50, height: 50 }}
-                            source={require('../../assets/Images/cutlery.gif')}
-                        />
-                        {/* <GifImage
-            source={require('../../assets/Images/cutlery.gif')}
-            style={{width: 50, height: 50}}
-            resizeMode={'cover'}
-          /> */}
-                    </View>
                     <View
                         style={{
-                            width: '80%',
+                            width: '100%',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             paddingHorizontal: 10,
                         }}>
                         <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                            hlp
-                            {/* {month !== '' ? (<Text>{month.slice(0)}</Text>) : (<Text>Select Month</Text>)} */}
+                          {moment(date).format('YYYYMM')}
+                          
                         </Text>
                         <Feather name="corner-up-right" size={20} />
                     </View>
@@ -154,16 +145,18 @@ const SalarySlip = ({ navigation }) => {
                                 style={{ margin: 10 }}
                             />
                         </TouchableOpacity>
-                        {/* <View style={styles.textContainer}>
-                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>Component</Text>
-                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                    Amount(Rs.)
-                  </Text>
-                </View> */}
-
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             data={month}
+                            ListEmptyComponent={() => {
+                                return (
+                                  <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image source={require('../../assets/Images/dataNotFound.png')}
+                                      style={{ width: 300, height: 300, resizeMode: 'contain',}} />
+                                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                                  </View>
+                                )
+                              }}
                             keyExtractor={({ item, index }) => index}
                             renderItem={({ item, index }) => (
                                 <View style={styles.textContainer}>
@@ -174,22 +167,10 @@ const SalarySlip = ({ navigation }) => {
                     </View>
                 </Modal>
                 <TouchableOpacity
-                    style={styles.Salary}
-                    onPress={() => navigation.navigate("FoodCount")}>
-                    <View style={{ width: '20%' }}>
-                        <Image
-                            style={{ width: 50, height: 50 }}
-                            source={require('../../assets/Images/chicken.gif')}
-                        />
-                        {/* <GifImage
-           source={require('../../assets/Images/chicken.gif')}
-            style={{width: 50, height: 50}}
-            resizeMode={'cover'}
-          /> */}
-                    </View>
+                    style={styles.Salary}>
                     <View
                         style={{
-                            width: '80%',
+                            width: '100%',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             paddingHorizontal: 10,

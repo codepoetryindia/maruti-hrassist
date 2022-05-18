@@ -1,9 +1,9 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Image, SafeAreaView, ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
+import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
@@ -71,13 +71,14 @@ const Gst = ({ navigation }) => {
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color='red' size={30} />
-        <Text>
-          Loading...
-        </Text>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
       </View>
     ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           style={{ padding: 20 }}
        colors={['#4174D0','#6ef7ff']}>
@@ -114,6 +115,7 @@ const Gst = ({ navigation }) => {
             </Text>
           </View>
         </LinearGradient>
+        
 
         {/* BODY */}
 
@@ -124,21 +126,13 @@ const Gst = ({ navigation }) => {
             width: '90%',
             flexDirection: 'row',
             borderWidth: 1,
-            borderTopColor: '#80406A',
-            borderStartColor: '#ad3231',
+            borderTopColor: '#2757C3',
+            borderStartColor: '#6ef7ff',
             borderBottomColor: '#2757C3',
-            borderEndColor: '#ad3231',
+            borderEndColor: '#6ef7ff',
             borderRadius: 5,
             alignSelf: 'center',
           }}>
-          <View
-            style={{
-              width: '15%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Feather name="search" size={20} color={'#ad3231'} onPress={() => { filterdData() }} />
-          </View>
           <TextInput
             placeholder="Search By StateName"
             autoCapitalize='characters'
@@ -151,20 +145,21 @@ const Gst = ({ navigation }) => {
               paddingVertical: 5,
             }}
           />
-          <TouchableOpacity
-            style={{
-              width: '15%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Ionicons name="send" size={20} color={'#ad3231'} />
-          </TouchableOpacity>
         </View>
 
         {/* FLATLIST */}
 
         <FlatList
           data={filteredDataSource}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={require('.././../assets/Images/dataNotFound.png')}
+                  style={{ width: 300, height: 300, resizeMode: 'contain',}} />
+                <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+              </View>
+            )
+          }}
           keyExtractor={(item, index) => index}
           renderItem={({ item }) => {
             return (
@@ -173,7 +168,7 @@ const Gst = ({ navigation }) => {
                   <View
                     style={{
                       width: '100%',
-                      backgroundColor: '#f8eded',
+                      backgroundColor: '#6ef7ff',
                       alignSelf: 'center',
                       paddingBottom: 5,
                     }}>
@@ -194,7 +189,7 @@ const Gst = ({ navigation }) => {
             );
           }}
         />
-      </View>
+      </SafeAreaView>
     )
   );
 };
@@ -224,9 +219,9 @@ const styles = StyleSheet.create({
     elevation: 7,
     borderWidth: 1,
     borderTopColor: '#80406A',
-    borderStartColor: '#ad3231',
+    borderStartColor: '#6ef7ff',
     borderBottomColor: '#2757C3',
-    borderEndColor: '#ad3231',
+    borderEndColor: '#6ef7ff',
 
     borderRadius: 8,
   },
@@ -236,6 +231,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingBottom: 5,
     letterSpacing: 1,
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
   },
 });
 

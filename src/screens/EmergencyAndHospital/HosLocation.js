@@ -1,17 +1,18 @@
 
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView,Linking } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, Linking } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
-const HosLocation = ({navigation}) => {
+import Spinner from 'react-native-loading-spinner-overlay';
+const HosLocation = ({ navigation }) => {
 
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
-  const[hospitalLoc,setHospitalLoc] = useState([]);
+  const [hospitalLoc, setHospitalLoc] = useState([]);
 
   const GetHospLocnApi = () => {
     let token = AppUserData.token
@@ -47,69 +48,79 @@ const HosLocation = ({navigation}) => {
   useEffect(() => {
     GetHospLocnApi()
   }, [])
-  
+
   return (
     loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator color='red' size={30} />
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      ) :(
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
-      <LinearGradient
-     colors={['#4174D0','#6ef7ff']}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-          Select Area
-          </Text>
-        </View>
-      </LinearGradient>
-            
-            <View>
-                <FlatList 
-                data={hospitalLoc}
-                keyExtractor={({item,index})=>index}
-                renderItem={({item,index})=>{
-                    return(
-                       <TouchableOpacity 
-                       onPress={()=> {
-                           navigation.navigate("EmergencyHospital",{
-                               selectedLoc:item.LOCN_DESC,
-                               index:1,
-                           })
-                       }}
-                       style={{width:'100%',borderBottomWidth:0.5,padding:15}}>
-                           <Text style={{fontSize:16,paddingHorizontal:10}}>{item.LOCN_DESC}</Text>
-                       </TouchableOpacity>
-                    )
-                }}/>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) : (
+      <View style={{ flex: 1, width: '100%', height: '100%' }}>
+        <LinearGradient
+          colors={['#4174D0', '#6ef7ff']}
+          style={styles.gradient}>
+          <View style={styles.container}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: 40,
+                alignItems: 'center',
+              }}>
+              <Ionicons
+                name="chevron-back-outline"
+                size={25}
+                color={'white'}
+                onPress={() => navigation.goBack()}
+              />
             </View>
-    </View>
-      )
+
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 16,
+                letterSpacing: 1,
+                marginLeft: 30,
+              }}>
+              Select Area
+            </Text>
+          </View>
+        </LinearGradient>
+
+        <View>
+          <FlatList
+            data={hospitalLoc}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
+                  <Image source={require('../../assets/Images/dataNotFound.png')}
+                    style={{ width: 300, height: 300, resizeMode: 'contain',}} />
+                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                </View>
+              )
+            }}
+            keyExtractor={({ item, index }) => index}
+            renderItem={({ item, index }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("EmergencyHospital", {
+                      selectedLoc: item.LOCN_DESC,
+                      index: 1,
+                    })
+                  }}
+                  style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
+                  <Text style={{ fontSize: 16, paddingHorizontal: 10 }}>{item.LOCN_DESC}</Text>
+                </TouchableOpacity>
+              )
+            }} />
+        </View>
+      </View>
+    )
 
   );
 };
@@ -121,6 +132,9 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
   },
   searchSection: {
     top: 10,

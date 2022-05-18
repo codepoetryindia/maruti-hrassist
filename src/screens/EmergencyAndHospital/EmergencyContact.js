@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
 const EmergencyContacts = ({ navigation }) => {
@@ -14,8 +15,8 @@ const EmergencyContacts = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
   const [emerList, setEmerList] = useState();
-  const [contact, setContact] = useState();
-  const [modal, setModal] = useState(false)
+  // const [contact, setContact] = useState();
+  // const [modal, setModal] = useState(false)
 
   const GetEmerMain = () => {
     let apiData = {}
@@ -80,16 +81,25 @@ const EmergencyContacts = ({ navigation }) => {
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color='red' size={30} />
-        <Text>
-          Loading...
-        </Text>
+        <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       </View>
     ) : (
       <View style={styles.container}>
         <FlatList
           data={emerList}
-          // keyExtractor={({item})=>item.EMER_CODE}
+          ListEmptyComponent={() => {
+            return(
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image source={require('../../assets/Images/dataNotFound.png')}
+                  style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+          </View>
+          )
+          }}
           renderItem={({ item }) => {
             let image = iconBox(item.EMER_DESC);
             // console.log('post + image==>', image, item.EMER_DESC);
@@ -109,7 +119,7 @@ const EmergencyContacts = ({ navigation }) => {
                       height: 50,
                       borderRadius: 100,
                       borderWidth: 1,
-                      borderColor: '#ad3231',
+                      borderColor: '#6ef7ff',
                       justifyContent: 'center',
                       alignItems: 'center',
                       overflow:'hidden'
@@ -138,6 +148,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  spinnerTextStyle: {
+    color: '#FFF'
   },
   box: {
     flexDirection: 'row',

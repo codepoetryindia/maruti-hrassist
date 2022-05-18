@@ -72,7 +72,7 @@ const EmployeLookUp = ({navigation}) => {
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient colors={['#ad3231', '#bd5b5a']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient   colors={['#6ef7ff','#4174D0']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
