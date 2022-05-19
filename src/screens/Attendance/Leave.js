@@ -802,11 +802,6 @@ const Leave = () => {
                       onPress={() => {
                         handleSubmit();
                       }}>
-                      {/* {handleSubmit == true
-                      ? alert('submitted succesfully')
-                      : handleSubmit == ''
-                      ? alert('please fill all field')
-                      : alert(token.loader)} */}
                       <LinearGradient
                         style={{
                           padding: 20,

@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -32,7 +33,7 @@ const EmployeLookUp = ({navigation}) => {
     {key: 'second', title: 'Birthdays'},
   ]);
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
      colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
@@ -72,7 +73,7 @@ const EmployeLookUp = ({navigation}) => {
       <TabView
         renderTabBar={props => {
           return (
-            <LinearGradient   colors={['#6ef7ff','#4174D0']} style={{marginTop:-1,zIndex:-1}}>
+            <LinearGradient  colors={['#5dc0e9', '#5dc0e9']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
                 {...props}
                 style={{backgroundColor: 'transparent', elevation: 0}}
@@ -85,8 +86,8 @@ const EmployeLookUp = ({navigation}) => {
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
       />
-    </View>
-  );
+    </SafeAreaView>
+  )
 };
 
 // define your styles

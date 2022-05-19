@@ -1,7 +1,7 @@
 
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView, Linking } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-simple-toast'
@@ -59,7 +59,7 @@ const HosLocation = ({ navigation }) => {
         />
       </View>
     ) : (
-      <View style={{ flex: 1, width: '100%', height: '100%' }}>
+      <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
         <LinearGradient
           colors={['#4174D0', '#6ef7ff']}
           style={styles.gradient}>
@@ -119,7 +119,7 @@ const HosLocation = ({ navigation }) => {
               )
             }} />
         </View>
-      </View>
+      </SafeAreaView>
     )
 
   );

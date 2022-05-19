@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -14,35 +14,76 @@ import {
   AppInstalledChecker,
   CheckPackageInstallation,
 } from 'react-native-check-app-install';
+import AuthContext from '../context/AuthContext';
+import * as ApiService from '../Utils/Utils';
+import Toast from 'react-native-simple-toast';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 // create a component
 const More = ({navigation}) => {
+
+  const [loader, setLoader] = useState(false)
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [appLink,setAppLink] = useState ();
+
+  const GetAPPLinkApi = () => {
+    // let userId = AppUserData.userData
+    // console.log("userId",userId);
+    let apiData = {
+      UserName : "222852",
+      LinkName : "HR_ASSIST"
+    }
+    let token = AppUserData.token
+    setLoader(true);
+    ApiService.PostMethode('/GetAPPLink', apiData, token)
+      .then(result => {
+        console.log("responseData",result);
+        setLoader(false);
+        // let responseData = result.Value
+        // setAppLink(responseData);
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
   var SendIntentAndroid = require('react-native-send-intent');
 
-  const SAPSF = () => {
-    let url = 'com.successfactors.successfactors';
-    Linking.openURL(url).catch(err => {
-      if (err.code === 'EUNSPECIFIED') {
-        if (Platform.OS === 'android') {
-          AppInstalledChecker.isAppInstalled(
-            'skype',
-          ).then(isInstalled => {
-            if (isInstalled) {
-              Linking.openURL('url');
-            } else {
-              console.log('is installed false');
-              Linking.openURL(
-                'https://play.google.com/store/apps/details?id=com.successfactors.successfactors',
-              ).catch(err => {
-                console.log(err);
-              });
-            }
-          });
-        }
-      } else {
-        console.log('Platform Is Ios');
-      }
-    });
-  };
+  // const SAPSF = () => {
+  //   let url = 'com.successfactors.successfactors';
+  //   Linking.openURL(url).catch(err => {
+  //     if (err.code === 'EUNSPECIFIED') {
+  //       if (Platform.OS === 'android') {
+  //         AppInstalledChecker.isAppInstalled(
+  //           'skype',
+  //         ).then(isInstalled => {
+  //           if (isInstalled) {
+  //             Linking.openURL('url');
+  //           } else {
+  //             console.log('is installed false');
+  //             Linking.openURL(
+  //               'https://play.google.com/store/apps/details?id=com.successfactors.successfactors',
+  //             ).catch(err => {
+  //               console.log(err);
+  //             });
+  //           }
+  //         });
+  //       }
+  //     } else {
+  //       console.log('Platform Is Ios');
+  //     }
+  //   });
+  // };
 
 
   // const SAPSF = () => {
@@ -61,27 +102,27 @@ const More = ({navigation}) => {
   //     },
   //   );
   // };
-  const AskHr = () => {
+  // const AskHr = () => {
   
-    SendIntentAndroid.isAppInstalled('air.com.symphonysummit.marutisuzukihr').then(
-      isInstalled => {
-        console.log('check',isInstalled)
-        if (isInstalled == false) {
-          console.log('check',isInstalled)
-          SendIntentAndroid.openApp('symphonysummit').then(
-            wasOpened => {},
-          );
-          console.log('is installed true',wasOpened);
-        } else {
-          Linking.openURL(
-            'https://play.google.com/store/apps/details?id=air.com.symphonysummit.marutisuzukihr',
-          ).catch(err => {
-            console.log(err);
-          });
-        }
-      },
-    );
-  };
+  //   SendIntentAndroid.isAppInstalled('air.com.symphonysummit.marutisuzukihr').then(
+  //     isInstalled => {
+  //       console.log('check',isInstalled)
+  //       if (isInstalled == false) {
+  //         console.log('check',isInstalled)
+  //         SendIntentAndroid.openApp('symphonysummit').then(
+  //           wasOpened => {},
+  //         );
+  //         console.log('is installed true',wasOpened);
+  //       } else {
+  //         Linking.openURL(
+  //           'https://play.google.com/store/apps/details?id=air.com.symphonysummit.marutisuzukihr',
+  //         ).catch(err => {
+  //           console.log(err);
+  //         });
+  //       }
+  //     },
+  //   );
+  // };
 
 
   const Wellness = () => {
@@ -98,8 +139,48 @@ const More = ({navigation}) => {
     });
   };
 
+  const AskHr = () => {
+    SendIntentAndroid.isAppInstalled('air.com.symphonysummit.marutisuzukihr').then(isInstalled => { 
+      
+      if (isInstalled) {
+        SendIntentAndroid.openApp('air.com.symphonysummit.marutisuzukihr')
+        console.log('is installed true');
+      } else {
+        Linking.openURL('https://play.google.com/store/apps/details?id=air.com.symphonysummit.marutisuzukihr').catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  };
+
+  const SAPSF = () => {
+    SendIntentAndroid.isAppInstalled('com.successfactors.successfactors').then(isInstalled => { 
+      if (isInstalled) {
+        SendIntentAndroid.openApp('com.successfactors.successfactors')
+        console.log('is installed true');
+      } else {
+        Linking.openURL('https://play.google.com/store/apps/details?id=com.successfactors.successfactors').catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    GetAPPLinkApi()
+  }, [])
+  
 
   return (
+    loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      </View>
+    ) : (
     <View style={styles.container}>
       <LinearGradient
         style={{padding: 20}}
@@ -237,7 +318,7 @@ const More = ({navigation}) => {
           <Text style={{fontSize: 20, paddingVertical: 5}}>Wellness Mitra</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </View> )
   );
 };
 

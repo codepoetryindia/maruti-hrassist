@@ -15,7 +15,7 @@ const VisitorDetails = ({navigation,route}) => {
   let visitorData =  route.params.visitorData
   console.log("visitorData",visitorData);
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
     <LinearGradient
    colors={['#4174D0','#6ef7ff']}
       style={styles.gradient}>
@@ -64,7 +64,7 @@ const VisitorDetails = ({navigation,route}) => {
             </TouchableOpacity> */}
     </ScrollView>
 
-    </View>
+    </SafeAreaView>
   );
   };
 

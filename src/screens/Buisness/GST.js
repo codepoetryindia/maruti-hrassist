@@ -150,7 +150,8 @@ const Gst = ({ navigation }) => {
         {/* FLATLIST */}
 
         <FlatList
-          data={filteredDataSource}
+        showsVerticalScrollIndicator={false}
+          data={filteredDataSource.length==0 ? gst : filteredDataSource}
           ListEmptyComponent={() => {
             return (
               <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -161,7 +162,7 @@ const Gst = ({ navigation }) => {
             )
           }}
           keyExtractor={(item, index) => index}
-          renderItem={({ item }) => {
+          renderItem={({ item,index }) => {
             return (
               <View>
                 <TouchableOpacity style={styles.TouchableOpacity}>
@@ -170,7 +171,11 @@ const Gst = ({ navigation }) => {
                       width: '100%',
                       backgroundColor: '#6ef7ff',
                       alignSelf: 'center',
-                      paddingBottom: 5,
+                      overflow:'hidden',
+                      borderWidth:0.5,
+                      borderColor:'#6ef7ff',
+                      borderTopLeftRadius:8,
+                      borderTopRightRadius:8
                     }}>
                     <Text style={{ fontSize: 16, color: '#000', padding: 10 }}>
                       {item.MAPP_GSTN_STATE_NAME}
@@ -215,13 +220,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-
     elevation: 7,
-    borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
+    // borderWidth: 1,
+    // borderTopColor: '#80406A',
+    // borderStartColor: '#6ef7ff',
+    // borderBottomColor: '#2757C3',
+    // borderEndColor: '#6ef7ff',
 
     borderRadius: 8,
   },

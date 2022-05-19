@@ -274,7 +274,7 @@ const Gatepass = ({ navigation }) => {
 
 
 
-  const fromReff = useRef(null);
+
   const gatePassScheema = yup.object().shape({
     office: yup.string().required('leave type is required'),
     date: yup.string().required('select one is required'),
@@ -287,7 +287,7 @@ const Gatepass = ({ navigation }) => {
     reason: yup.string().required('select one reason please'),
     persionalVehical: yup.string().required('post one comment'),
     internalVehical: yup.string().required('select one period'),
-    building: yup.string().required('selectDate  is required'),
+    BuildingData: yup.string().required('you must select any building it is required'),
     searchEmp: yup.string().required('Provide Your reason please'),
   });
   const fromRef = useRef(null);
@@ -374,11 +374,11 @@ const Gatepass = ({ navigation }) => {
             reason: '',
             persionalVehical: '',
             internalVehical: '',
-            building: '',
+            building: [],
             searchEmp: '',
           }}
           onSubmit={values => {
-            let data = {
+            let payload = {
               office: values.office,
               date: values.date,
               time: values.time,
@@ -390,9 +390,9 @@ const Gatepass = ({ navigation }) => {
               building: values.building,
               searchEmp: values.searchEmp,
             };
-            console.log("data", data);
+            console.log("payload", payload);
             navigation.navigate("VisitorDetails", {
-              visitorData: data,
+              visitorpayload: payload,
             })
           }}>
           {({
@@ -955,7 +955,8 @@ const Gatepass = ({ navigation }) => {
                         <ScrollView
                           horizontal
                           showsHorizontalScrollIndicator={false}>
-                          {selectBuilding.map((element) => {
+                          {
+                           selectBuilding.map((element) => {
                             console.log("element", element)
                             return (
                               <View
@@ -1026,10 +1027,11 @@ const Gatepass = ({ navigation }) => {
                                 }}>
                                 <Text>{item.BNAME}</Text>
                                 <TouchableOpacity
-                                  onPress={(index) => {
-                                    setSelectBuilding([...selectBuilding, item.BNAME]);
+                                  onPress={() => {
+                                    setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
+                                    // fromRef.current.setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
                                   }}>
-                                  {index == true ? (
+                                  {selectBuilding == true ? (
                                     <Ionicons
                                       name="remove-circle"
                                       size={25}
@@ -1046,10 +1048,24 @@ const Gatepass = ({ navigation }) => {
                               </View>
                             )}
                           />
+                      {errors.BuildingData && touched.BuildingData && (
+                        <View
+                          style={{
+                            width: '90%',
+                            alignSelf: 'center',
+                            paddingVertical: 2,
+                          }}>
+                          <Text style={{ fontSize: 12, color: 'red' }}>
+                            {errors.BuildingData}
+                          </Text>
+                        </View>
+                      )}
                         </View>
                       ) : null}
-                    </View>
 
+
+
+                    </View>
                   </View>
                 </View>
 
@@ -1105,7 +1121,7 @@ const Gatepass = ({ navigation }) => {
                       <Ionicons name="send" size={20} color={'#4174D0'} />
                     </TouchableOpacity>
                   </View>
-                  {errors.vehicalNumber && touched.vehicalNumber && (
+                  {errors.searchEmp && touched.searchEmp && (
                     <View
                       style={{
                         width: '90%',
@@ -1114,7 +1130,7 @@ const Gatepass = ({ navigation }) => {
                       }}>
                       <Text
                         style={{ fontSize: 12, color: 'red', textAlign: 'left' }}>
-                        {errors.vehicalNumber}
+                        {errors.searchEmp}
                       </Text>
                     </View>
                   )}
@@ -1193,6 +1209,7 @@ const Gatepass = ({ navigation }) => {
                       }}
                       onPress={() => {
                         handleSubmit();
+                        console.log("done")
                       }}>
                       <Text
                         style={{

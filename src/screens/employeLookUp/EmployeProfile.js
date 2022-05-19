@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList,SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -35,7 +35,7 @@ const EmployProfile = ({ navigation, route }) => {
         console.log(result);
         setLoader(false);
         let responseData = result.Value.Table
-        let profileImage = result.Value.Table[0].profile_photo;
+        let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
         setEmployeeData(responseData);
         setPhoto(profileImage);
         // console.log("image", responseData.profile_photo)
@@ -65,7 +65,7 @@ const EmployProfile = ({ navigation, route }) => {
         </Text>
       </View>
     ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           style={{ flex: 0.25 }}
        colors={['#4174D0','#6ef7ff']}>
@@ -213,7 +213,7 @@ const EmployProfile = ({ navigation, route }) => {
           </LinearGradient>
           </TouchableOpacity> */}
         </View>
-      </View>
+      </SafeAreaView>
     )
 
 
