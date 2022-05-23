@@ -76,6 +76,7 @@ const SignIn = ({ navigation }) => {
           let userData = {
             EMPL_NAME: response.Table[0].EMPL_NAME,
             profile_photo:response.Table[0].profile_photo,
+            userId:user,
   
           };
           let contextData = {

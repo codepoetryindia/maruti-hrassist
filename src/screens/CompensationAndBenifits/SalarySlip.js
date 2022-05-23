@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,14 +13,17 @@ import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 
 const SalarySlip = ({ navigation }) => {
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [month, setMonth] = useState();
+    const [selectedMonth,setSelectedMonth] = useState('');
     const [loader, setLoader] = useState(false)
     const[date,setDate] = useState(new Date())
     const { authContext, AppUserData } = useContext(AuthContext);
+
     const GetMonth = () => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data
+        let EmplID = AppUserData.data.userId
         let apiData = {
             EmplID: EmplID
         }
@@ -31,8 +34,43 @@ const SalarySlip = ({ navigation }) => {
                 // console.log('ApiResult', result);
                 let responseData = result.Value
                 setMonth(responseData)
-                // console.log('responseData', responseData)
-                let current
+                console.log('responseData', responseData)
+            })
+            .catch(error => {
+                setLoader(false);
+                // console.log('Error occurred==>', error);
+                if (error.response) {
+                    if (error.response.status == 401) {
+                        console.log('error from api', error.response);
+                    }
+                    Toast.show(error.response.data.title);
+                } else if (error) {
+                    Toast.show('Network Error');
+                } else {
+                    Toast.show('Something Went Wrong');
+                }
+            });
+    };
+
+    const GetSalaryTypeApi = () => {
+        let token = AppUserData.token
+        let EmplID = AppUserData.data.userId
+        let formatedNewDate =  moment(date).format('YYYYMM')
+        let formatedSelectedDate = moment(selectedMonth).format('YYYYMM')
+        let apiData = {
+            "SalaryMonth":  formatedNewDate,
+            // "SalaryMonth": formatedSelectedDate=='' ? formatedNewDate :formatedSelectedDate,
+            "EmplID" : EmplID,
+        }
+        
+        setLoader(true);
+        ApiService.PostMethode('/GetSalaryType', apiData, token)
+        .then(result => {
+            setLoader(false);
+            console.log("formatedNewDate",formatedNewDate , formatedSelectedDate);
+                console.log('ApiResult', result);
+                let responseData = result.Value
+                console.log('GetSalaryTypeApi', responseData)
             })
             .catch(error => {
                 setLoader(false);
@@ -52,6 +90,7 @@ const SalarySlip = ({ navigation }) => {
 
     useEffect(() => {
         GetMonth()
+        GetSalaryTypeApi()
     }, [])
     console.log("month data",month);
 
@@ -66,7 +105,7 @@ const SalarySlip = ({ navigation }) => {
                     Loading...
                 </Text>
             </View>) : (
-            <View style={{ flex: 1, width: '100%', height: '100%' }}>
+            <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
                 <LinearGradient
                  colors={['#4174D0','#6ef7ff']}
                     style={styles.gradient}>
@@ -118,8 +157,8 @@ const SalarySlip = ({ navigation }) => {
                             paddingHorizontal: 10,
                         }}>
                         <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                          {moment(date).format('YYYYMM')}
-                          
+                          {selectedMonth=='' ?  moment(date).format('YYYYMM'):selectedMonth}
+    
                         </Text>
                         <Feather name="corner-up-right" size={20} />
                     </View>
@@ -159,9 +198,16 @@ const SalarySlip = ({ navigation }) => {
                               }}
                             keyExtractor={({ item, index }) => index}
                             renderItem={({ item, index }) => (
-                                <View style={styles.textContainer}>
+                                <TouchableOpacity
+                                onPress={() => {
+                                    console.log(item.SHIS_YYMM_CODE)
+                                    setSelectedMonth(item.SHIS_YYMM_CODE)
+                                    toggleModal()
+                                    GetSalaryTypeApi()
+                                }}
+                                 style={styles.textContainer}>
                                     <Text>{item.SHIS_YYMM_CODE}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )}
                         />
                     </View>
@@ -179,7 +225,7 @@ const SalarySlip = ({ navigation }) => {
                         <Feather name="corner-up-right" size={20} />
                     </View>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         )
     );
 };
@@ -234,6 +280,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         marginVertical: 8.5,
+        borderBottomWidth:1,
+        borderBottomColor:'#4174D0'
     },
 });
 

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import Home from '../screens/Home';
 import Gatepass from '../screens/Gatspass/Gatepass';
-import More from '../screens/More';
+import OtherApps from '../screens/OtherApps';
 import LinearGradient from 'react-native-linear-gradient';
 import AttendanceAdminNav from './AttendanceAdminNav';
 
@@ -15,7 +15,6 @@ function Tabs() {
     <Tab.Navigator
     initialRouteName="Home"
     screenOptions={{
-
       headerShown: false,
       tabBarActiveTintColor: '#000',
       tabBarStyle:{position:'absolute', height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
@@ -45,9 +44,9 @@ function Tabs() {
         ),
       }}
        />
-      <Tab.Screen name="More" component={More} 
+      <Tab.Screen name="OtherApps" component={OtherApps} 
       options={{
-        tabBarLabel: 'More',
+        tabBarLabel: 'OtherApps',
        
         tabBarIcon: ({ color, size }) => (
           <Material name="sort" color={'#2D79AD'} size={size} />

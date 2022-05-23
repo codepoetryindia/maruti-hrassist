@@ -93,7 +93,7 @@ const TouchableCard = ({navigation}) => {
                  navigation.navigate('Gatepass');
                }
              else if(item.name==='Other Mobile Apps') {
-                navigation.navigate('More');
+                navigation.navigate('OtherApps');
               }
               else if(item.name==='Buisness Travel') {
                 navigation.navigate('BuisnessTravel');

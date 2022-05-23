@@ -121,9 +121,9 @@ const Gatepass = ({ navigation }) => {
 
   const GetLocationListVGPSApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data
+    let userId = AppUserData.data.userId
     console.log("UserName", userId);
-    let apiData = { "UserName": 548596 }
+    let apiData = { "UserName": userId }
     console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
@@ -157,9 +157,9 @@ const Gatepass = ({ navigation }) => {
   };
   const GetSearchLevelsListVGPSApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data
+    let userId = AppUserData.data.userId
     console.log("UserName", userId);
-    let apiData = { "UserName": 548596 }
+    let apiData = { "UserName": userId }
     console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
@@ -191,17 +191,17 @@ const Gatepass = ({ navigation }) => {
   // saerch by name 
 
   const getEmpllookupVGPSApi = (values) => {
-
+    let token = AppUserData.token
+    let userData = AppUserData.data.userId
     if (searchEmp === '') {
       <Text style={{ color: 'red' }}>please enter a valid keyWord</Text>
       return
     } else {
       let apiData = {
-        Search: '548596'
+        Search: userData
         // values.searchEmp
       }
       console.log('post data', apiData);
-      let token = AppUserData.token
       setLoader(true);
       ApiService.PostMethode('/getEmpllookupVGPS', apiData, token)
         .then(result => {

@@ -15,22 +15,62 @@ let pageName = route.params.pageName
     console.log("pagename", pageName);
     const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
-  const[encashment,setEncashment] = useState();
+  const[encashment,setEncashment] = useState([]);
   const[lta,setLta] = useState();
+  const[result,setResult] = useState ()
+  const [encashDays,setEncashDays] = useState()
 
   const InitPLEncashmenApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data
+    let userId = AppUserData.data.userId
     let apidata = {
-        UserName:userId
+        "UserName":userId
     }
     setLoader(true);
-    ApiService.PostMethode('/InitPLEncashmen', apidata, token)
+    ApiService.PostMethode('/initPLEncashment', apidata, token)
       .then(result => {
         setLoader(false);
         let ApiValue = result.Value
-        console.log("APi value", ApiValue);
-        setEncashment(ApiValue)
+        console.log("setEncashment", ApiValue);
+        {ApiValue.map((item) => {
+            return setEncashment(item)
+        
+        })}
+        // setEncashment(ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const SubmitPLEncashmentApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
+    let apidata = {
+        "UserName":userId,
+        "Encashdays":encashDays
+    }
+    setLoader(true);
+    ApiService.PostMethode('/SubmitPLEncashment', apidata, token)
+      .then(result => {
+        setLoader(false);
+        let ApiValue = result.Value
+        console.log("SubmitPLEncashmentApi", ApiValue);
+        setResult(ApiValue)
       })
       .catch(error => {
         setLoader(false);
@@ -56,16 +96,16 @@ let pageName = route.params.pageName
 
 const InitMEDEncashment = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data
+    let userId = AppUserData.data.userId
     let apidata = {
-        UserName:userId
+        "UserName":userId
     }
     setLoader(true);
     ApiService.PostMethode('/InitMEDEncashment', apidata, token)
       .then(result => {
         setLoader(false);
         let ApiValue = result.Value
-        console.log("APi value", ApiValue);
+        console.log("InitMEDEncashment", ApiValue);
         setLta(ApiValue)
       })
       .catch(error => {
@@ -87,6 +127,15 @@ const InitMEDEncashment = () => {
         }
       });
   };
+
+  const encashmentData  = () => {
+      if(encashDays==''){
+          alert("Payrol \n Please enter days")
+      }
+      else{
+        alert(" Your request has been submitted and encashed in next salary.")
+      }
+  }
   useEffect(() => {
     InitPLEncashmenApi()
     InitMEDEncashment()
@@ -161,15 +210,27 @@ const InitMEDEncashment = () => {
                     }}>
                         <View style={styles.box}>
                             <Text>Current Balance</Text>
-                            <Text>207</Text>
+                            <Text>{encashment.PL_BAL && encashment.PL_BAL}</Text>
+                        </View>
+                        <View style={styles.box}>
+                            <Text>Current Year Opening Balance</Text>
+                            <Text>{encashment.PL_CR_FWD && encashment.PL_CR_FWD}</Text>
+                        </View>
+                        <View style={styles.box}>
+                            <Text>PL Encashable</Text>
+                            <Text>{encashment.PL_ENCASHABLE && encashment.PL_ENCASHABLE}</Text>
                         </View>
                         <View style={styles.box}>
                             <Text>Encash</Text>
-                            <TextInput style={{ width: 50, borderBottomWidth: 1 }} />
+                            <TextInput style={{ width: 50, borderBottomWidth: 1 }} value={setEncashDays} />
                         </View>
                     </View>
                     <View style={{ height: 100, marginTop: 10 }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity 
+                        onPress={()=> {
+                            encashmentData()
+                            
+                        }}>
                             <LinearGradient
                                 style={{
                                     padding: 20,
