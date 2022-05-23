@@ -496,7 +496,7 @@ const FoodCount = ({ navigation }) => {
         }}
         initialLayout={{ width: layout.width }}
       />
-      <View style={{position:'absolute',top:110}}>
+      <View style={{position:'absolute',top:'17%'}}>
         <DatePicker
           modal
           open={open}

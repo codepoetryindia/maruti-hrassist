@@ -1,6 +1,6 @@
 //import liraries
 import React, { useEffect, useState, useContext, } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image,SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
@@ -18,9 +18,6 @@ const EmployeeDirect = () => {
   useEffect(() => {
     console.log("navigation", myNavigation)
   }, [])
-
-  GetEmpllookupVGPS
-  
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {
@@ -70,7 +67,7 @@ const EmployeeDirect = () => {
         </Text>
       </View>
     ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.searchSection}>
           <Ionicons
             style={styles.searchIcon}
@@ -149,7 +146,7 @@ const EmployeeDirect = () => {
           <Text style={{ fontSize: 20, textAlign: 'center', }}>No Searched Data</Text>
         </View>)
         }
-      </View>
+      </SafeAreaView>
     )
   );
 };

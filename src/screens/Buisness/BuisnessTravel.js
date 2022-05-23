@@ -12,7 +12,7 @@ const BuisnessTravel = ({navigation}) => {
     <View style={styles.container}>
       <LinearGradient
         style={{padding: 20}}
-     colors={['#4174D0','#6ef7ff']}>
+        colors={['#437cd5', '#5dc0e9']}>
         <View style={{flexDirection: 'row'}}>
           <View
             style={{

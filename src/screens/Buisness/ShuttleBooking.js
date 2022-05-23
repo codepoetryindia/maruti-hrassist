@@ -23,7 +23,7 @@ const Book = () => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [apiResult,setApiResult] = useState();
+  const [book,setbook] = useState();
   const [loader, setLoader] = useState(false)
 
   const GetShuttleRoutesApi = () => {
@@ -33,6 +33,48 @@ const Book = () => {
     console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetShuttleRoutes', apiData, token)
+      .then(result => {
+        console.log("book", result);
+        setLoader(false);
+        let ApiValue = result.Value
+        setbook(ApiValue)
+        console.log("book",book);
+      })
+      
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+  const GetSeatsAvailabilityApi = () => {
+    let payloadDate = moment(fromDate).format("DD-MMMM-YYYY").toUpperCase()
+    let payloadDateSecond = moment(toDate).format("DD-MMMM-YYYY").toUpperCase()
+    let token = AppUserData.token
+    let userId = AppUserData.data
+    let apiData = {
+      BKAVID :userId,
+      BKAVStartDate  : "P",
+      FromDate : payloadDate,
+      ToDate : payloadDateSecond,
+      }
+    console.log("apiPayload",apiData)
+    setLoader(true);
+    ApiService.PostMethode('/GetSeatsAvailability', apiData, token)
       .then(result => {
         console.log("APiresult", result);
         setLoader(false);
@@ -100,6 +142,8 @@ useEffect(() => {
           <Ionicons name="calendar-outline" size={30} color={'#5dc0e9'} />
         </TouchableOpacity>
       </TouchableOpacity>
+
+
       <Text style={{ paddingVertical: 10, fontSize: 16, fontWeight: 'bold' }}>
         Available Shuttle Routes
       </Text>
@@ -173,6 +217,8 @@ export const PastBooking = () => {
   const [textinputSecondDate, setTextinputSecondDate] = useState('');
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
+
+
   const GetShutlPastFutrReportApi = () => {
     let payloadDate = moment(fromDate).format("DD-MMMM-YYYY").toUpperCase()
     let payloadDateSecond = moment(toDate).format("DD-MMMM-YYYY").toUpperCase()
@@ -214,6 +260,7 @@ export const PastBooking = () => {
         }
       });
   };
+ 
 
 useEffect(() => {
   GetShutlPastFutrReportApi();
@@ -392,7 +439,7 @@ const ShuttleBooking = ({ navigation }) => {
         renderTabBar={props => {
           return (
             <LinearGradient
-            colors={['#74f5fa', '#62cfec']}
+            colors={[ '#6ef7fa','#5dc0e8']}
               style={{ marginTop: -1, zIndex: -1 }}>
               <TabBar
                 renderLabel={({ route, focused, color }) => (

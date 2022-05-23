@@ -189,7 +189,8 @@ const SignIn = ({ navigation }) => {
 
               <Formik
                 validationSchema={loginValidationSchema}
-                initialValues={{ UserName: '222852', Password: 'Maruti@131' }}
+                // initialValues={{ UserName: '222852', Password: 'Maruti@131' }}
+                initialValues={{ UserName: '548596', Password: 'Maruti@04@22' }}
                 onSubmit={values => {
                   // console.log("values",values)
                   handleLogin(values);
@@ -248,6 +249,7 @@ const SignIn = ({ navigation }) => {
                               alignSelf: 'center',
                               marginVertical: -2,
                               paddingVertical: 10,
+                              color:'#000'
                             }}
                           />
                         </View>
@@ -295,6 +297,7 @@ const SignIn = ({ navigation }) => {
                               alignSelf: 'center',
                               marginVertical: -2,
                               paddingVertical: 10,
+                              color:'#000'
                             }}
                           />
                           <TouchableOpacity

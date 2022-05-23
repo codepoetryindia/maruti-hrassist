@@ -11,10 +11,11 @@ import { ScrollView } from 'react-native-gesture-handler';
   
 //   setCount (count =>[...count , <VisitDetails/>]);
 // }
-const VisitorDetails = ({navigation}) => {
+const VisitorDetails = ({navigation,route}) => {
+  let visitorData =  route.params.visitorData
+  console.log("visitorData",visitorData);
   return (
-    <View style={{flex: 1}}>
-        
+    <SafeAreaView style={{flex: 1}}>
     <LinearGradient
    colors={['#4174D0','#6ef7ff']}
       style={styles.gradient}>
@@ -63,7 +64,7 @@ const VisitorDetails = ({navigation}) => {
             </TouchableOpacity> */}
     </ScrollView>
 
-    </View>
+    </SafeAreaView>
   );
   };
 

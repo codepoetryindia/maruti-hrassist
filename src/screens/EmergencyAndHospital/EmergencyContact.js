@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ActivityIndicator, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView, Modal, Pressable } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast'
@@ -88,7 +88,7 @@ const EmergencyContacts = ({ navigation }) => {
       />
       </View>
     ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <FlatList
           data={emerList}
           ListEmptyComponent={() => {
@@ -138,7 +138,7 @@ const EmergencyContacts = ({ navigation }) => {
             )
           }}
         />
-      </View>
+      </SafeAreaView>
     )
   );
 };

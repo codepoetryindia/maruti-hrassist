@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   useWindowDimensions,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -39,7 +40,7 @@ const EmergencyHospital = ({ navigation,route }) => {
     { key: 'third', title: 'NearByHospital' },
   ]);
   return (
-    <View style={{ flex: 1, width: '100%', height: '100%' }}>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
         colors={['#4174D0', '#74f5fa']}
         style={styles.gradient}>
@@ -107,7 +108,7 @@ const EmergencyHospital = ({ navigation,route }) => {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
-    </View>
+    </SafeAreaView>
 
 
 
