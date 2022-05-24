@@ -79,22 +79,32 @@ const Birthdays = () => {
       });
   };
 
-  // emp Profile Data  
 
-  const GetUserDetails = () => {
-    let apiData = { "UserName": staffNo }
+
+  // emp Profile Data  
+  const GetUserDetails = (item) => {
+    console.log(item);
+    let apiData = { "UserName": item['Staff No']};
     let token = AppUserData.token
-    console.log("apiData", apiData)
+    // console.log("apiData", apiData)
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
         let response = result.Value
         if (response.Table) {
-          console.log("employeeresult", response.Table[0].profile_photo,);
+          // console.log("employeeresult", response.Table[0].profile_photo,);
           let profile = response.Table[0].profile_photo;
-          setEmpPhoto(profile)
+          
+          setModalItem(item);
+          setEmpPhoto(profile);
+          setLoader(false);
+          setModalVisible(true);
+        }else{
+          setLoader(false);
+          setModalVisible(false);
+          Toast.show("User not found");
         }
-        setLoader(false);
+
       })
       .catch(error => {
         setLoader(false);
@@ -115,37 +125,40 @@ const Birthdays = () => {
         }
       });
   };
+
+
   useEffect(() => {
     PostBirthdayData()
-    GetUserDetails()
-  }, [])
+    // GetUserDetails()
+  }, []);
 
-  const scrollY = useRef(new Animated.Value(0)).current;
 
-  const SPACING = 20;
-  const AVATAR_SIZE = 70;
-  const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+
 
   const [CurrentPage, setCurrentPage] = useState(0);
 
   const handleCurrentPage = index => {
     setCurrentPage(index);
   };
-  return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
+  return ( 
       <SafeAreaView style={styles.container}>
-        <StatusBar hidden />
+
+        {
+          loader ? (
+            <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={{color:'#fff'}}
+            overlayColor={'rgba(0, 0, 0, 0.50)'}
+
+          />
+          ): null
+        }
         <View style={{ width: '100%' }}>
           <SegmentedControlTab
             borderRadius={8}
@@ -162,25 +175,23 @@ const Birthdays = () => {
           />
           {/* modal for showing user data */}
           <Modal
-            backdropOpacity={0.1}
-            animationInTiming={300}
-            animationIn="zoomInUp"
-            animationOut="fadeOut"
-            animationOutTiming={500}
+            backdropOpacity={0.7}
+            // animationInTiming={300}
+            // animationIn="zoomInUp"
+            // animationOut="fadeOut"
+            // animationOutTiming={500}
             coverScreen={true}
             isVisible={isModalVisible}>
             <LinearGradient
               colors={['#4174D0', '#6ef7ff']}
-              style={{ flex: 0.53, borderRadius: 15 }}>
+              style={{ minHeight:400, borderRadius: 15 }}>
               <View style={styles.modal}>
-                {/* <Text>{JSON.stringify(modalItem)}</Text> */}
-                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <TouchableOpacity style={styles.ModalCloseIcon}>
                   <Feather
                     name="x-circle"
                     color={'#000'}
-                    size={20}
+                    size={30}
                     onPress={toggleModal}
-                    style={{ margin: 10 }}
                   />
                 </TouchableOpacity>
                 <View
@@ -193,7 +204,7 @@ const Birthdays = () => {
                     borderWidth: 20,
                     borderColor: '#6ef7ff',
                     borderRadius: 60,
-                    marginTop: 30,
+                    marginTop: 80,
                   }}>
                   {empPhoto ? (
                     <Image
@@ -225,7 +236,7 @@ const Birthdays = () => {
                 </View>
                 <View
                   style={{
-                    height: '23%',
+                    // height: '23%',
                     marginTop: 5,
                     // backgroundColor:'yellow',
                     flexDirection: 'row',
@@ -234,6 +245,8 @@ const Birthdays = () => {
                     width: '50%',
                     alignItems: 'flex-end',
                   }}>
+
+
                   <TouchableOpacity
                     onPress={() => {
                       Linking.openURL(`mailto:${modalItem.Email}`)
@@ -249,6 +262,8 @@ const Birthdays = () => {
                     }}>
                     <Feather name="mail" size={20} color={'#fff'} />
                   </TouchableOpacity>
+
+
                   <TouchableOpacity
                     style={{
                       borderWidth: 1,
@@ -258,14 +273,17 @@ const Birthdays = () => {
                       borderRadius: 100,
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                    onPress={()=>{
+                      Linking.openURL(`tel:${modalItem.MOB_NO}`)
+                    }}
+                    >
                     <Feather name="phone-call" size={20} color={'#fff'} />
                   </TouchableOpacity>
                 </View>
               </View>
             </LinearGradient>
           </Modal>
-
         </View>
 
         <View>
@@ -278,11 +296,7 @@ const Birthdays = () => {
                 style={styles.img}
               />
               <View style={{ height: '67%', marginTop: 10, marginBottom: '30%' }}>
-                <Animated.FlatList
-                  onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                    { useNativeDriver: true },
-                  )}
+                <FlatList
                   ListEmptyComponent={() => {
                     return (
                       <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -296,36 +310,11 @@ const Birthdays = () => {
                   data={todayBirthday}
                   keyExtractor={({ item, index }) => index}
                   renderItem={({ item, index }) => {
-
-                    const inputRange = [
-                      -1,
-                      0,
-                      ITEM_SIZE * index,
-                      ITEM_SIZE * (index + 2),
-                    ];
-                    const opacityInputRange = [
-                      -1,
-                      0,
-                      ITEM_SIZE * index,
-                      ITEM_SIZE * (index + 0.7),
-                    ];
-                    const scale = scrollY.interpolate({
-                      inputRange,
-                      outputRange: [1, 1, 1, 0],
-                    });
-                    const opacity = scrollY.interpolate({
-                      inputRange: opacityInputRange,
-                      outputRange: [1, 1, 1, 0],
-                    });
                     return (
-                      <Animated.View style={{ flex: 1 }}>
+                      <View style={{ flex: 1 }}>
                         <TouchableOpacity
                           onPress={() => {
-                            setModalItem(item)
-                            setModalVisible(true)
-                            setStaffNo(item['Staff No'])
-                            console.log("staffNo", staffNo);
-                            GetUserDetails()
+                            GetUserDetails(item);
                           }}>
                           <View
                             style={[
@@ -357,7 +346,7 @@ const Birthdays = () => {
                             </View>
                           </View>
                         </TouchableOpacity>
-                      </Animated.View>
+                      </View>
                     );
                   }}
                 />
@@ -385,11 +374,7 @@ const Birthdays = () => {
                     renderItem={({ item, index }) => (
                       <View style={{ flex: 1 }}>
                         <TouchableOpacity onPress={() => {
-                          setModalItem(item)
-                          setModalVisible(true)
-                          setStaffNo(item['Staff No'])
-                          console.log("staffNo", staffNo);
-                          GetUserDetails()
+                          GetUserDetails(item);
                         }}>
                           <View style={styles.itemView}>
                             <View
@@ -422,7 +407,7 @@ const Birthdays = () => {
           )}
         </View>
       </SafeAreaView>
-    )
+    
   );
 };
 
@@ -471,6 +456,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   itemView: {
+    backgroundColor:'#fff',
     width: '100%',
     borderLeftWidth: 5,
     borderLeftColor: 'gray',
@@ -494,7 +480,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
   },
   modal: {
-    flex: 0.39,
+    height: 150,
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#f8edec',
@@ -502,6 +488,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
+    position:'relative'
   },
   profileImg: {
     height: 100,
@@ -509,6 +496,12 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginLeft: 5,
   },
+  ModalCloseIcon:{
+    position:'absolute',
+    top:10,
+    right:10,
+    zIndex:55
+  }
 });
 
 //make this component available to the app

@@ -68,12 +68,13 @@ const EmployeeDirect = () => {
       </View>
     ) : (
       <SafeAreaView style={styles.container}>
+
         <View style={styles.searchSection}>
           <Ionicons
             style={styles.searchIcon}
             name="ios-search"
-            size={20}
-            color="#2757C3"
+            size={25}
+            color="#b2bec3"
           />
           <TextInput
             style={styles.input}
@@ -83,12 +84,12 @@ const EmployeeDirect = () => {
           />
           {search !== '' ? (
             <TouchableOpacity
-              style={{ backgroundColor: '#6ef7ff', borderRadius: 8, marginLeft: -3 }} onPress={() => { emptyList() }}>
+              style={{ borderRadius: 8, marginLeft: -3 }} onPress={() => { emptyList() }}>
               <Ionicons
                 style={styles.searchIcon}
                 name="close-circle-outline"
-                size={20}
-                color="#fff"
+                size={25}
+                color="#b2bec3"
               />
             </TouchableOpacity>
           ) : null}
@@ -96,14 +97,16 @@ const EmployeeDirect = () => {
             <Ionicons
               style={[styles.searchIcon, { marginLeft: search == '' ? 35 : null }]}
               name="send"
-              size={20}
-              color="#2757C3"
+              size={25}
+              color='#2980b9'
             />
           </TouchableOpacity>
         </View>
+
+
         {searchedData.length > 0 ? (
           <FlatList
-            style={{ height: '70%', marginTop: 15 }}
+            style={{ width:"100%",marginHorizontal:0 }}
             data={searchedData}
             keyExtractor={({ item, index }) => index}
             renderItem={({ item, index }) => (
@@ -140,9 +143,11 @@ const EmployeeDirect = () => {
               </TouchableOpacity>
             )}
           />
-        ) : (<View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        ) : 
+        (
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1 }}>
           <Image source={require('../../assets/Images/dataNotFound.png')}
-            style={{ width: '100%', height: '80%', resizeMode: 'contain', marginLeft: -50 }} />
+            style={{ width: '100%', height: 180, width:180, resizeMode: 'contain', marginLeft: -50 }} />
           <Text style={{ fontSize: 20, textAlign: 'center', }}>No Searched Data</Text>
         </View>)
         }
@@ -155,34 +160,44 @@ const EmployeeDirect = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width:"100%",
+    // backgroundColor:'#fff',
+    marginTop:10,
+    // margin:5
   },
   searchSection: {
-    top: 10,
     backgroundColor: '#fff',
-    width: '90%',
+    // width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
+    margin:10,
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
-    borderRadius: 7,
+    borderColor:'#cacaca',
+    backgroundColor:'#fff',
+    shadowColor: "#444",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   searchIcon: {
     padding: 10,
   },
   input: {
     width: '67%',
-    paddingTop: 10,
+    paddingTop: 12,
     paddingRight: 10,
-    paddingBottom: 10,
+    paddingBottom: 12,
     paddingLeft: 0,
     backgroundColor: '#fff',
+    fontSize:16
   },
   FlatListData: {
-    width: '90%',
+    width:"95%",
     borderWidth: 1,
     borderTopColor: '#80406A',
     borderStartColor: '#6ef7ff',
@@ -190,12 +205,14 @@ const styles = StyleSheet.create({
     borderEndColor: '#6ef7ff',
     borderRadius: 7,
     flexDirection: 'row',
-    margin: 3,
+    // margin:10,
+    // width: '100%',
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 5,
-    marginTop: 5
+    marginBottom: 10,
+    backgroundColor:'#fff'
   }
 });
 

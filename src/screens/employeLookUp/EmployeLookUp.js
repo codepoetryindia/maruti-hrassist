@@ -29,13 +29,13 @@ const EmployeLookUp = ({navigation}) => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'EmployeeDirect'},
+    {key: 'first', title: 'Employee Direct'},
     {key: 'second', title: 'Birthdays'},
   ]);
   return (
     <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
-     colors={['#4174D0','#6ef7ff']}
+     colors={['#00B4DB','#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -62,7 +62,7 @@ const EmployeLookUp = ({navigation}) => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 18,
               letterSpacing: 1,
               marginLeft: 30,
             }}>
@@ -70,13 +70,24 @@ const EmployeLookUp = ({navigation}) => {
           </Text>
         </View>
       </LinearGradient>
+
+
       <TabView
         renderTabBar={props => {
           return (
             <LinearGradient  colors={['#5dc0e9', '#5dc0e9']} style={{marginTop:-1,zIndex:-1}}>
               <TabBar
                 {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
+                style={{
+                  backgroundColor: '#2980b9', elevation: 5
+                }}
+                renderLabel={({ route, focused, color }) => (
+                  <Text style={{ color, fontWeight:'700', textTransform:'uppercase'}}>
+                    {route.title}
+                  </Text>
+                )}
+                indicatorContainerStyle={{backgroundColor:'#2980b9'}}
+                indicatorStyle={{color:"#f00", backgroundColor:'#fff',height:5}}
               />
             </LinearGradient>
           );
@@ -85,6 +96,8 @@ const EmployeLookUp = ({navigation}) => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
+        sceneContainerStyle={{backgroundColor:"#dfe6e9", width:"100%"}}
+        style={{backgroundColor:'#f00'}}
       />
     </SafeAreaView>
   )
@@ -97,29 +110,30 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+    // flex:1
   },
-  searchSection: {
-    top: 10,
-    width: '90%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#d9d9d9',
-    borderRadius: 7,
-  },
-  searchIcon: {
-    padding: 10,
-  },
-  input: {
-    width: '77%',
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    backgroundColor: '#fff',
-    color: '#424242',
-  },
+  // searchSection: {
+  //   top: 10,
+  //   width: '90%',
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   alignSelf: 'center',
+  //   borderWidth: 1,
+  //   borderColor: '#d9d9d9',
+  //   borderRadius: 7,
+  // },
+  // searchIcon: {
+  //   padding: 10,
+  // },
+  // input: {
+  //   width: '77%',
+  //   paddingTop: 10,
+  //   paddingRight: 10,
+  //   paddingBottom: 10,
+  //   paddingLeft: 0,
+  //   backgroundColor: '#fff',
+  //   color: '#424242',
+  // },
 });
 
 // //make this component available to the app
