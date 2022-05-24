@@ -179,7 +179,7 @@ function CustomDrawer(props) {
 
             <DrawerItem
               label="Other Mobile Apps"
-              onPress={() => navigation.navigate('More')}
+              onPress={() => navigation.navigate('OtherApps')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
