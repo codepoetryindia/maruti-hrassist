@@ -1,7 +1,7 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity,SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
@@ -49,16 +49,14 @@ const Notification = ({ navigation }) => {
   }, [])
   console.log("notifi", notifi);
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        {loader==true ? (
+           <Spinner
+           visible={loader}
+           textContent={'Loading...'}
+           textStyle={styles.spinnerTextStyle}
+         />
+        ):null}
         <LinearGradient
           style={{ flex: 1 }}
           colors={['#4174D0', '#6ef7ff']}>
@@ -158,8 +156,7 @@ const Notification = ({ navigation }) => {
             />
           </View>
         </LinearGradient>
-      </View>)
-  );
+      </SafeAreaView>)
 };
 
 // define your styles

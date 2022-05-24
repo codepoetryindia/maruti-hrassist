@@ -1,18 +1,15 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList,SafeAreaView } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, Image, FlatList,SafeAreaView,TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { ActivityIndicator } from 'react-native-paper';
-import AuthContext from '../../context/AuthContext';
-import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../context/AuthContext';
+import * as ApiService from '../Utils/Utils';
 import Toast from 'react-native-simple-toast';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
-const EmployProfile = ({ navigation, route }) => {
-  let userId = route.params.data
-
+const EditProfile = ({ navigation, route }) => {
   useEffect(() => {
     employeProfile()
   }, [])
@@ -25,10 +22,12 @@ const EmployProfile = ({ navigation, route }) => {
 
 
   const employeProfile = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
     let apiData = {
       UserName: userId
     }
-    let token = AppUserData.token
+    console.log(apiData);
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
@@ -136,7 +135,7 @@ const EmployProfile = ({ navigation, route }) => {
                 }}
               />
               ):(<Image
-                source={require('../../assets/Images/Avtar.png')}
+                source={require('../assets/Images/Avtar.png')}
                 style={{
                   width: 100,
                   height: 100,
@@ -250,4 +249,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default EmployProfile;
+export default EditProfile;

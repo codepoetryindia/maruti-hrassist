@@ -69,16 +69,15 @@ const Gst = ({ navigation }) => {
     filterdData()
   }, [])
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
+
       <SafeAreaView style={styles.container}>
+        {loader== true ? (
+           <Spinner
+           visible={loader}
+           textContent={'Loading...'}
+           textStyle={styles.spinnerTextStyle}
+         />
+        ):null}
         <LinearGradient
           style={{ padding: 20 }}
        colors={['#4174D0','#6ef7ff']}>
@@ -195,7 +194,6 @@ const Gst = ({ navigation }) => {
           }}
         />
       </SafeAreaView>
-    )
   );
 };
 

@@ -132,22 +132,19 @@ const CanteenMenu = ({ navigation }) => {
   const Gurgaon = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator color='red' size={30} />
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      ) : (
-
-        <View style={{ marginTop:70,}}>
-          {/* <Calander /> */}
-          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-        </View>
-      )
+      <SafeAreaView style={{ marginTop:70,}}>
+      {loader == true ? (
+            <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+          ):null }
+      {/* <Calander /> */}
+      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+    </SafeAreaView>
     );
   };
 
@@ -157,66 +154,57 @@ const CanteenMenu = ({ navigation }) => {
   const Manesar = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator color='red' size={30} />
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      ) : (
-
-        <View>
-          {/* <Calander /> */}
-          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-        </View>
-      )
+      <SafeAreaView style={{ marginTop:70,}}>
+      {loader == true ? (
+            <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+          ):null }
+      {/* <Calander /> */}
+      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+    </SafeAreaView>
     );
   };
 
   const Mpt = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator color='red' size={30} />
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      ) : (
-
-        <View>
-          {/* <Calander /> */}
-          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-        </View>
-      )
+      <SafeAreaView style={{ marginTop:70,}}>
+      {loader == true ? (
+            <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+          ):null }
+      {/* <Calander /> */}
+      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+    </SafeAreaView>
     );
   };
 
   const Rothak = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator color='red' size={30} />
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      ) : (
-
-        <View>
-          {/* <Calander /> */}
-          <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-          <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-          <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-        </View>
-      )
+      <SafeAreaView style={{ marginTop:70,}}>
+      {loader == true ? (
+            <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+          ):null }
+      {/* <Calander /> */}
+      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+    </SafeAreaView>
     );
   };
   const renderScene = SceneMap({

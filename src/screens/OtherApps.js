@@ -61,47 +61,18 @@ const OtherApps = ({ navigation }) => {
   };
 
   var SendIntentAndroid = require('react-native-send-intent');
-
-  const Wellness = () => {
-    SendIntentAndroid.isAppInstalled('in/WellnessMitra/').then(isInstalled => {
-
-      if (isInstalled) {
-        SendIntentAndroid.openApp('in/WellnessMitra/')
-        console.log('is installed true');
-      } else {
-        Linking.openURL('https://msilappstore.in/WellnessMitra/').catch(err => {
-          console.log(err);
-        });
-      }
-    });
-  };
-
-  const AskHr = () => {
-    SendIntentAndroid.isAppInstalled('air.com.symphonysummit.marutisuzukihr').then(isInstalled => {
-
-      if (isInstalled) {
-        SendIntentAndroid.openApp('air.com.symphonysummit.marutisuzukihr')
-        console.log('is installed true');
-      } else {
-        Linking.openURL('https://play.google.com/store/apps/details?id=air.com.symphonysummit.marutisuzukihr').catch(err => {
-          console.log(err);
-        });
-      }
-    });
-  };
-
-  const SAPSF = () => {
-    SendIntentAndroid.isAppInstalled('com.successfactors.successfactors').then(isInstalled => {
-      if (isInstalled) {
-        SendIntentAndroid.openApp('com.successfactors.successfactors')
-        console.log('is installed true');
-      } else {
-        Linking.openURL('https://play.google.com/store/apps/details?id=com.successfactors.successfactors').catch(err => {
-          console.log(err);
-        });
-      }
-    });
-  };
+  // const SAPSF = () => {
+  //   SendIntentAndroid.isAppInstalled('com.successfactors.successfactors').then(isInstalled => {
+  //     if (isInstalled) {
+  //       SendIntentAndroid.openApp('com.successfactors.successfactors')
+  //       console.log('is installed true');
+  //     } else {
+  //       Linking.openURL('https://play.google.com/store/apps/details?id=com.successfactors.successfactors').catch(err => {
+  //         console.log(err);
+  //       });
+  //     }
+  //   });
+  // };
 
   const linkOpen = (link) => {
     Linking.openURL(link)
@@ -114,16 +85,15 @@ const OtherApps = ({ navigation }) => {
 
 
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      </View>
-    ) : (
+  
       <SafeAreaView style={styles.container}>
+        {loader== true ? (
+           <Spinner
+           visible={loader}
+           textContent={'Loading...'}
+           textStyle={styles.spinnerTextStyle}
+         />
+        ):null}
         <LinearGradient
           style={{ padding: 20 }}
           colors={['#4174D0', '#6ef7ff']}>
@@ -207,7 +177,6 @@ const OtherApps = ({ navigation }) => {
             )} />
         </ScrollView>
       </SafeAreaView>)
-  );
 };
 
 // define your styles

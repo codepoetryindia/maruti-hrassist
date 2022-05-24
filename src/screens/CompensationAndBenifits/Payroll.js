@@ -1,6 +1,6 @@
 //import liraries
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList,SafeAreaView } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
@@ -9,6 +9,7 @@ import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
+
 
 // create a component
 const Payroll = () => {
@@ -183,15 +184,15 @@ const Payroll = () => {
   // };
 
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color='red' size={30} />
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    ) : (
-      <View style={styles.container}>
+  
+      <SafeAreaView style={styles.container}>
+        {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
         <TouchableOpacity
           onPress={() => {
             myNavigation.navigate('SalarySlip')
@@ -446,8 +447,7 @@ const Payroll = () => {
             />
           </View>
         </Modal>
-      </View>
-    )
+      </SafeAreaView>
 
   );
 };

@@ -59,15 +59,15 @@ const EmployeeDirect = () => {
 
   // console.log('searchedData',searchedData)
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color='red' size={30} />
-        <Text>
-          Loading...
-        </Text>
-      </View>
-    ) : (
+ 
       <SafeAreaView style={styles.container}>
+        {loader==true? (
+           <Spinner
+           visible={loader}
+           textContent={'Loading...'}
+           textStyle={styles.spinnerTextStyle}
+         />
+        ):null}
         <View style={styles.searchSection}>
           <Ionicons
             style={styles.searchIcon}
@@ -147,7 +147,7 @@ const EmployeeDirect = () => {
         </View>)
         }
       </SafeAreaView>
-    )
+    
   );
 };
 

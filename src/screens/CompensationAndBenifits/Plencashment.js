@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator ,SafeAreaView} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import LinearGradient from 'react-native-linear-gradient';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Plencashment = ({ navigation, route }) => {
 
@@ -18,7 +17,7 @@ let pageName = route.params.pageName
   const[encashment,setEncashment] = useState([]);
   const[lta,setLta] = useState();
   const[result,setResult] = useState ()
-  const [encashDays,setEncashDays] = useState()
+  const [encashDays,setEncashDays] = useState('')
 
   const InitPLEncashmenApi = () => {
     let token = AppUserData.token
@@ -70,7 +69,7 @@ let pageName = route.params.pageName
         setLoader(false);
         let ApiValue = result.Value
         console.log("SubmitPLEncashmentApi", ApiValue);
-        setResult(ApiValue)
+        // setResult(ApiValue)
       })
       .catch(error => {
         setLoader(false);
@@ -129,6 +128,7 @@ const InitMEDEncashment = () => {
   };
 
   const encashmentData  = () => {
+    console.log("kusckgvdskdfdykudf",encashDays)
       if(encashDays==''){
           alert("Payrol \n Please enter days")
       }
@@ -139,17 +139,20 @@ const InitMEDEncashment = () => {
   useEffect(() => {
     InitPLEncashmenApi()
     InitMEDEncashment()
+    // SubmitPLEncashmentApi
   }, [])
   
     return (
-        loader == true ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <ActivityIndicator color='red' size={30} />
-              <Text>
-                Loading...
-              </Text>
-            </View>
-          ) :(
+      
+            <SafeAreaView>
+              {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
+
             <ScrollView style={styles.container}>
             <LinearGradient
                 style={{ padding: 20 }}
@@ -222,14 +225,14 @@ const InitMEDEncashment = () => {
                         </View>
                         <View style={styles.box}>
                             <Text>Encash</Text>
-                            <TextInput style={{ width: 50, borderBottomWidth: 1 }} value={setEncashDays} />
+                            <TextInput style={{ width: 50, borderBottomWidth: 1 }} onChangeText={(text)=>{setEncashDays(text)}} value={encashDays} />
                         </View>
                     </View>
                     <View style={{ height: 100, marginTop: 10 }}>
                         <TouchableOpacity 
                         onPress={()=> {
                             encashmentData()
-                            
+                            SubmitPLEncashmentApi()
                         }}>
                             <LinearGradient
                                 style={{
@@ -312,7 +315,8 @@ const InitMEDEncashment = () => {
                 </View>
             </View>}
         </ScrollView>
-          ) 
+            </SafeAreaView>
+          
     )
 }
 const styles = StyleSheet.create({
@@ -328,7 +332,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10,
         borderBottomWidth: 0.5
-    }
+    },
+    spinnerTextStyle: {
+      color: '#FFF'
+    },
 
 })
 export default Plencashment

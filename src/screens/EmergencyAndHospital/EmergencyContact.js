@@ -79,16 +79,15 @@ const EmergencyContacts = ({ navigation }) => {
 
 
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-      </View>
-    ) : (
+
       <SafeAreaView style={styles.container}>
+        {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
         <FlatList
           data={emerList}
           ListEmptyComponent={() => {
@@ -139,7 +138,7 @@ const EmergencyContacts = ({ navigation }) => {
           }}
         />
       </SafeAreaView>
-    )
+    
   );
 };
 

@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking,SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -164,7 +164,7 @@ const DoctorsContacts = ({ navigation, route }) => {
       />
     </View>
     ) : (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={['#4174D0', '#6ef7ff']}
           style={{ padding: 15 }}>
@@ -841,7 +841,7 @@ const DoctorsContacts = ({ navigation, route }) => {
           }
 
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   );
 };

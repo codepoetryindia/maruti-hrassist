@@ -1,13 +1,13 @@
 //import liraries
 import React, { useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView,TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 const ContactDetails = ({navigation}) => {
 
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
      colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
@@ -45,7 +45,7 @@ const ContactDetails = ({navigation}) => {
           </Text>
         </View>
       </LinearGradient>
-    </View>
+    </SafeAreaView>
   );
 };
 

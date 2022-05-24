@@ -45,16 +45,15 @@ const Hospital = ({locationName=''}) => {
     GetHospListApi();
   },[]);
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-    </View>
-    ) :(
+  
     <SafeAreaView style={styles.container}>
+      {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
       <View style={styles.itemBox}>
     <FlatList
           showsVerticalScrollIndicator={false}
@@ -88,7 +87,7 @@ const Hospital = ({locationName=''}) => {
         /> 
       </View>
     </SafeAreaView>
-    )
+    
   );
 };
 

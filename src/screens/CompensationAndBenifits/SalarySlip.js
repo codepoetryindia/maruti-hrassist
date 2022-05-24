@@ -98,14 +98,15 @@ const SalarySlip = ({ navigation }) => {
         setModalVisible(!isModalVisible);
     };
     return (
-        loader == true ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator color='red' size={30} />
-                <Text>
-                    Loading...
-                </Text>
-            </View>) : (
+     
             <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+                {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
                 <LinearGradient
                  colors={['#4174D0','#6ef7ff']}
                     style={styles.gradient}>
@@ -226,7 +227,7 @@ const SalarySlip = ({ navigation }) => {
                     </View>
                 </TouchableOpacity>
             </SafeAreaView>
-        )
+        
     );
 };
 

@@ -1,6 +1,6 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList,SafeAreaView } from 'react-native';
 import Share from 'react-native-share';
 import LinearGradient from 'react-native-linear-gradient';
 const myCustomeSharing =async () =>{
@@ -65,7 +65,7 @@ const TouchableCard = ({navigation}) => {
   ];
 
     return (
-      <View style={{height:'46%',marginBottom:"-5%",marginLeft:'1.5%',}}>
+      <SafeAreaView style={{height:'46%',marginBottom:"-5%",marginLeft:'1.5%',}}>
         <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -114,7 +114,7 @@ const TouchableCard = ({navigation}) => {
           </TouchableOpacity>
            
             )}/>
-            </View>
+            </SafeAreaView>
     )
           }
 // define your styles

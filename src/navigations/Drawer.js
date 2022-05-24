@@ -15,6 +15,7 @@ import ShuttleBooking from '../screens/Buisness/ShuttleBooking';
 import EmergencyContacts from '../screens/EmergencyAndHospital/EmergencyContact';
 import Notification from '../screens/Notification';
 import EmployProfile from '../screens/employeLookUp/EmployeProfile';
+import EditProfile from '../components/EditProfile'
 import EmployeeNavs from './EmployeeNavs';
 import AttendanceAdminNav from './AttendanceAdminNav';
 import DoctorsContacts from '../components/DoctorsContacts';
@@ -29,6 +30,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="Tabs" component={Tabs} />
       <Drawer.Screen name="EmployeeNavs" component={EmployeeNavs} />
       <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
+      <Drawer.Screen name='EditProfile' component={EditProfile}/>
       <Drawer.Screen name="CompensationBenifitsNav" component={CompensationBenifitsNav}/>
       <Drawer.Screen name="HospitalNavs" component={HospitalNavs} />
       <Drawer.Screen name="Canteen" component={Canteen} />

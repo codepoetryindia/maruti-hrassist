@@ -80,7 +80,7 @@ function CustomDrawer(props) {
               <Text style={styles.text}>{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
               <TouchableOpacity
                 onPress={() => {
-                  // navigation.navigate('EmployProfile');
+                  navigation.navigate('EditProfile');
                 }}>
                 <Text style={{color: 'skyblue', marginTop: 5}}>
                   Edit Profile
