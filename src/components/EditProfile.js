@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList,SafeAreaView,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../context/AuthContext';
@@ -17,8 +17,10 @@ const EditProfile = ({ navigation, route }) => {
 
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [employeeData, setEmployeeData] = useState();
+  const [employeeData, setEmployeeData] = useState([]);
   const [empphoto, setPhoto] = useState();
+  const [isEnabled, setIsEnabled] = useState(false);
+
 
 
   const employeProfile = () => {
@@ -31,13 +33,13 @@ const EditProfile = ({ navigation, route }) => {
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        console.log(result);
+        // console.log("tdhdd",result);
         setLoader(false);
         let responseData = result.Value.Table
         let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
         setEmployeeData(responseData);
         setPhoto(profileImage);
-        // console.log("image", responseData.profile_photo)
+        console.log("responseData", responseData)
       })
       .catch(error => {
         setLoader(false);
@@ -54,78 +56,79 @@ const EditProfile = ({ navigation, route }) => {
         }
       });
   };
-
+  console.log("employeeData", employeeData);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
-    
-      <SafeAreaView style={styles.container}>
-        {loader==true? (
-           <Spinner
-           visible={loader}
-           textContent={'Loading...'}
-           textStyle={styles.spinnerTextStyle}
-         />
-        ):null}
-        <LinearGradient
-          style={{ flex: 0.25 }}
-       colors={['#4174D0','#6ef7ff']}>
-          <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={30}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 25,
-              }}>
-              Profile
-            </Text>
-          </View>
-        </LinearGradient>
+
+    <SafeAreaView style={styles.container}>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      ) : null}
+      <LinearGradient
+        style={{ flex: 0.25 }}
+        colors={['#4174D0', '#6ef7ff']}>
+        <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
+          <Ionicons
+            name="chevron-back-outline"
+            size={30}
+            color={'white'}
+            onPress={() => navigation.goBack()}
+          />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              letterSpacing: 1,
+              marginLeft: 25,
+            }}>
+            Profile
+          </Text>
+        </View>
+      </LinearGradient>
+      <View
+        style={{
+          backgroundColor: '#fff',
+          width: '90%',
+          alignSelf: 'center',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+          borderRadius: 8,
+          position: 'absolute',
+          top: '10%',
+          bottom: 5
+        }}>
         <View
           style={{
-            backgroundColor: '#fff',
-            width: '90%',
-            alignSelf: 'center',
+            borderWidth: 5,
+            borderColor: '#fff',
             shadowColor: '#000',
             shadowOffset: {
-              width: 0,
-              height: 2,
+              width: 5,
+              height: 5,
             },
-            shadowOpacity: 0.25,
+            shadowOpacity: 0.5,
             shadowRadius: 3.84,
             elevation: 5,
-            borderRadius: 8,
-            position: 'absolute',
-            top: '10%',
-            bottom: 5
+            justifyContent: 'center',
+            alignSelf: 'center',
+            borderRadius: 100,
+            marginTop: '-12%',
           }}>
-          <View
-            style={{
-              borderWidth: 5,
-              borderColor: '#fff',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 5,
-                height: 5,
-              },
-              shadowOpacity: 0.5,
-              shadowRadius: 3.84,
-              elevation: 5,
-              justifyContent: 'center',
-              alignSelf: 'center',
-              borderRadius: 100,
-              marginTop: '-12%',
-            }}>
 
-            {
-              empphoto ? (
-                <Image
-                source={{ uri:`data:image/png;base64, ${empphoto}`}}
+          {
+            empphoto ? (
+              <Image
+                source={{ uri: `data:image/png;base64, ${empphoto}` }}
                 style={{
                   width: 100,
                   height: 100,
@@ -134,86 +137,119 @@ const EditProfile = ({ navigation, route }) => {
                   alignSelf: 'center',
                 }}
               />
-              ):(<Image
-                source={require('../assets/Images/Avtar.png')}
-                style={{
-                  width: 100,
-                  height: 100,
-                  overflow: 'hidden',
-                  borderRadius: 100,
-                  alignSelf: 'center',
-                }}
-              />
-              )}
+            ) : (<Image
+              source={require('../assets/Images/Avtar.png')}
+              style={{
+                width: 100,
+                height: 100,
+                overflow: 'hidden',
+                borderRadius: 100,
+                alignSelf: 'center',
+              }}
+            />
+            )}
 
-          </View>
-          <View style={{ height: '90%', }}>
-            <FlatList
-              data={employeeData}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={({ item, index }) => item}
-              renderItem={({ item, index }) => (
-                <View>
-                  <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Vertical / Div ./Department</Text>
-                    <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Personal phone Number</Text>
-                    <Text>{item.PRESENT_PHONE}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Offical Phone Number</Text>
-                    <Text> {item.Phone ? (item.Phone) : "N.A"}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Email Id</Text>
-                    <Text> {item.Email ? (item.Email) : "N.A"}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>HRBP</Text>
-                    <Text>{item.HRBP}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Permanent Address</Text>
-
-                    <Text>{item.PERMANENT_ADDRESS}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Present Address</Text>
-                    <Text>{item.PRESENT_ADDRESS}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Location</Text>
-                    <Text>{item.LOCN_DESC}</Text>
-                  </View>
-                  {/* <View style={styles.box}>
-            <Text style={styles.header}>Nominies</Text>
-           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-           <Text>Check in Details</Text>
-           <Ionicons
-            name="arrow-forward-outline"
-            size={30}
-            color={'red'}
-            
-          />
-             </View>
-          </View> */}
-                </View>
-              )} />
-          </View>
-          {/* <TouchableOpacity>
-       <LinearGradient
-        style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
-     colors={['#4174D0','#6ef7ff']}>
-         
-            <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
-          </LinearGradient>
-          </TouchableOpacity> */}
         </View>
-      </SafeAreaView>
-    
+        <View style={{ height: '90%', }}>
+          <FlatList
+            data={employeeData}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => {
+              return(
+                <Text  style={{textAlign:'center'}}>No Data Found</Text>
+              )
+            }}
+            keyExtractor={({ item, index }) => item}
+            renderItem={({ item, index }) => (
+              <View>
+                <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Vertical / Div ./Department</Text>
+                  <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Personal phone Number</Text>
+                  <View style={{ width: '100%', flexDirection: 'row',justifyContent:'space-between' }}>
+                    <Text>{item.PRESENT_PHONE}</Text>
+                    <Switch
+                      trackColor={{ false: "#767577", true: "#81b0ff" }}
+                      thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                      ios_backgroundColor="#3e3e3e"
+                      onValueChange={() => {
+                        toggleSwitch()
+                        if (toggleSwitch == true) {
+                          alert("sure")
+                        }
+                        else {
+                          return
+                        }
+                      }}
+                      value={isEnabled}
+                    />
+                  </View>
+
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Offical Phone Number</Text>
+                  <Text> {item.Phone ? (item.Phone) : "N.A"}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Email Id</Text>
+                  <Text> {item.Email ? (item.Email) : "N.A"}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>HRBP</Text>
+                  <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text>{item.HRBP}</Text>
+                    <Ionicons
+                      name="phone"
+                      size={30}
+                      color={'#4174D0'}
+                      onPress={() => {
+                        Linking.openURL(`tel:${item.HRBP_PHONE}`)
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Permanent Address</Text>
+
+                  <Text>{item.PERMANENT_ADDRESS}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Present Address</Text>
+                  <Text>{item.PRESENT_ADDRESS}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Location</Text>
+                  <Text>{item.LOCN_DESC}</Text>
+                </View>
+                <View style={styles.box}>
+                  <Text style={styles.header}>Nominies</Text>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text>Check in Details</Text>
+                    <Ionicons
+                      name="arrow-forward-outline"
+                      size={30}
+                      color={'red'}
+
+                    />
+                  </View>
+                </View>
+                <TouchableOpacity>
+                  <LinearGradient
+                    style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
+                    colors={['#4174D0', '#6ef7ff']}>
+
+                    <Text style={{ color: '#fff', fontSize: 16 }}>UPDATE</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            )} />
+        </View>
+      </View>
+    </SafeAreaView>
+
 
 
   )

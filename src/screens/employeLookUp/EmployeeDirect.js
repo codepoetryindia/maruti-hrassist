@@ -5,8 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import AuthContext from '../../context/AuthContext'
-import { ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 // create a component
 const EmployeeDirect = () => {
   const myNavigation = useNavigation();

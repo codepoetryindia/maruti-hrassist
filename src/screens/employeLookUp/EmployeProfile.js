@@ -189,29 +189,9 @@ const EmployProfile = ({ navigation, route }) => {
                     <Text style={styles.header}>Location</Text>
                     <Text>{item.LOCN_DESC}</Text>
                   </View>
-                  {/* <View style={styles.box}>
-            <Text style={styles.header}>Nominies</Text>
-           <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-           <Text>Check in Details</Text>
-           <Ionicons
-            name="arrow-forward-outline"
-            size={30}
-            color={'red'}
-            
-          />
-             </View>
-          </View> */}
                 </View>
               )} />
           </View>
-          {/* <TouchableOpacity>
-       <LinearGradient
-        style={{padding:20,margin:5,borderRadius:8,alignItems:'center'}}
-     colors={['#4174D0','#6ef7ff']}>
-         
-            <Text style={{color:'#fff',fontSize:16}}>UPDATE</Text>
-          </LinearGradient>
-          </TouchableOpacity> */}
         </View>
       </SafeAreaView>
     
