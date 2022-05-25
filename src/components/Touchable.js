@@ -19,7 +19,7 @@ const TouchableCard = ({navigation}) => {
     {
       id: '1',
       name: 'Employee Lookup',
-      images: require('../assets/Images/group.png'),
+      images: require('../assets/Images/teamwork.png'),
     },
     {
       id: '2',
@@ -65,7 +65,7 @@ const TouchableCard = ({navigation}) => {
   ];
 
     return (
-      <SafeAreaView style={{height:'46%',marginBottom:"-5%",marginLeft:'1.5%',}}>
+      <VSafeAreaViewiew style={{flex:1, marginBottom:80}}>
         <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -105,23 +105,24 @@ const TouchableCard = ({navigation}) => {
             }}>
               <LinearGradient
          colors={['#53AFE2','#6ef7ff']}
-        style={{padding:5,borderRadius:8}}>
+        style={{padding:5,borderRadius:5}}>
 
             <Image source={item.images} style={styles.cardimg} />
         </LinearGradient>
 
-            <Text style={{fontSize:10,color:'#000'}}>{item.name}</Text>
+            <Text style={styles.cardText}>{item.name}</Text>
           </TouchableOpacity>
            
             )}/>
-            </SafeAreaView>
+            </VSafeAreaViewiew>
+            
     )
           }
 // define your styles
 const styles = StyleSheet.create({
   card: {
     width: "30%",
-    paddingVertical:20,
+    padding:10,
     backgroundColor: '#fff',
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
@@ -136,15 +137,20 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    
-    elevation: 2,
+    elevation: 5,
     position: 'relative',
   },
   cardimg: {
-    width: 30,
-    height: 30,
-    margin:10,
+    width: 40,
+    height: 40,
+    margin:5,
   },
+  cardText:{
+    textAlign:'center',
+    marginTop:5, 
+    fontSize:14,
+    color:'#444'
+  }
 });
 
 //make this component available to the app

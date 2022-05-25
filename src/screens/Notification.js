@@ -1,7 +1,7 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity,SafeAreaView} from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Linking } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
@@ -21,6 +21,7 @@ const Notification = ({ navigation }) => {
         }
       })
       .then(resp => {
+        console.log(resp);
         setLoader(false);
         let result = resp.data.notifications
         let mapData = []
@@ -47,7 +48,7 @@ const Notification = ({ navigation }) => {
   useEffect(() => {
     NotifiApi()
   }, [])
-  console.log("notifi", notifi);
+  // console.log("notifi", notifi);
   return (
       <SafeAreaView style={styles.container}>
         {loader==true ? (
@@ -60,7 +61,7 @@ const Notification = ({ navigation }) => {
         <LinearGradient
           style={{ flex: 1 }}
           colors={['#4174D0', '#6ef7ff']}>
-          <View style={{ flexDirection: 'row', paddingVertical: 15, padding: 10 }}>
+          <View style={{ flexDirection: 'row', paddingVertical: 15, padding: 10, backgroundColor:'#4174D0' }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -75,28 +76,28 @@ const Notification = ({ navigation }) => {
                 onPress={() => navigation.goBack()}
               />
             </View>
-
             <Text
               style={{
                 color: '#fff',
                 fontSize: 18,
-                letterSpacing: 1,
+                // letterSpacing: 1,
                 marginLeft: 25,
               }}>
-              Notification
+              Notifications
             </Text>
           </View>
 
           {/* BODY */}
           <View
             style={{
-              backgroundColor: '#fff',
-              width: '97%',
-              height: '90%',
-              alignSelf: 'flex-end',
+              // backgroundColor: '#fff',
+              // width: '97%',
+              // height: '90%',
+              // alignSelf: 'flex-end',
+              marginHorizontal:10,
               padding: 10,
-              borderTopLeftRadius: 10,
-              borderBottomLeftRadius: 10,
+              // borderTopLeftRadius: 10,
+              // borderBottomLeftRadius: 10,
 
             }}>
             <FlatList
@@ -114,12 +115,13 @@ const Notification = ({ navigation }) => {
               keyExtractor={({ item, index }) => index}
               renderItem={({ item, index }) => (
                 <View
+                  key={index}
                   style={{
                     width: '100%',
                     backgroundColor: '#fff',
                     alignSelf: 'center',
-                    marginVertical: 8,
-                    padding: 10,
+                    marginBottom: 14,
+                    padding: 15,
                     paddingVertical: 10,
                     shadowColor: '#000',
                     shadowOffset: {
@@ -129,14 +131,14 @@ const Notification = ({ navigation }) => {
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
                     elevation: 5,
-                    borderRadius: 8,
+                    borderRadius: 5,
                   }}>
                   <View
                     style={{
                       width: '100%',
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      paddingVertical: 10,
+                      // paddingVertical: 10,
                     }}>
                     <View style={{ width: '80%' }}>
                       <Text style={{ fontSize: 16 }}>{item.contents.en}</Text>
@@ -144,13 +146,21 @@ const Notification = ({ navigation }) => {
                     <TouchableOpacity style={{ width: '20%',alignItems:'flex-end' }}>
                       <Ionicons
                         name="notifications-circle-outline"
-                        size={25}
+                        size={30}
                         color={'#4174D0'}
                       />
                     </TouchableOpacity>
                   </View>
-                  <Image source={{ uri: "https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2019/01/25/70507-maruti-suzuki-ians.jpg?itok=qdimqkst&c=c5af8c0f92ccc8e249257bf0f1cb18e8" }}
-                    style={{ width: '100%', height: 120, resizeMode: 'stretch', borderRadius: 8, marginVertical: 10 }} />
+                  <Image source={item.big_picture ? { uri: item.big_picture} : require('./../assets/Images/notification.png')}
+                    style={{ width: '100%', height: 180, resizeMode: 'cover', borderRadius: 0, marginVertical: 10 }} />
+                    
+                    {item.url ? (
+                    <TouchableOpacity onPress={()=>  Linking.openURL(item.url)}>
+                      <Text style={styles.Link}>
+                        {item.url ? item.url : ''}
+                      </Text>
+                    </TouchableOpacity>
+                    ): null }
                 </View>
               )}
             />
@@ -165,6 +175,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  Link:{
+    color:'blue',
+    fontWeight:'700',
+    fontSize:16,
+  }
 });
 
 //make this component available to the app

@@ -56,7 +56,7 @@ function CustomDrawer(props) {
     <>
       <DrawerContentScrollView style={{backgroundColor: '#ffffff'}} {...props}>
         <LinearGradient
-          colors={['#4174D0','#6ef7ff']}
+          colors={['#4174D0','#4EC4D0']}
           style={styles.gradient}>
           <View
             style={{
@@ -76,13 +76,13 @@ function CustomDrawer(props) {
                 style={[styles.avtar, {marginRight: 5}]}
               />
             )}
-            <View>
-              <Text style={styles.text}>{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
+            <View style={{ flex:1}}>
+              <Text style={styles.textTitle} >{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('EditProfile');
                 }}>
-                <Text style={{color: 'skyblue', marginTop: 5}}>
+                <Text style={{color: '#fff', marginTop: 5, textDecorationLine: 'underline',}}>
                   Edit Profile
                 </Text>
               </TouchableOpacity>
@@ -119,7 +119,7 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/group.png')}
+                  source={require('../assets/Images/teamwork.png')}
                   style={styles.icon}
                 />
               )}
@@ -288,10 +288,11 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 60,
   },
-  text: {
+  textTitle: {
     fontSize: 16,
     color: '#fff',
     letterSpacing: 1,
+    flexShrink: 1
   },
   container: {
     backgroundColor: '#fff',

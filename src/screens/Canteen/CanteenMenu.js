@@ -32,7 +32,7 @@ const CanteenMenu = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState();
 
 
-  const GetMenuCanttApi = () => {
+  const GetMenuCanttApi = () => { 
     let token = AppUserData.token
     let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase();
     console.log("currentdate", formatedDate);
@@ -120,6 +120,9 @@ const CanteenMenu = ({ navigation }) => {
         }
       });
   };
+
+
+
   useEffect(() => {
     GetMenuCanttApi()
     console.log('index', currentInd);

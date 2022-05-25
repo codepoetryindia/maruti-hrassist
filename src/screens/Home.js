@@ -17,9 +17,12 @@ const Home = ({navigation}) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   // images for carousel
   const image = [
-    'https://1qkeyv41u1op36vgbm47q0i6-wpengine.netdna-ssl.com/wp-content/uploads/2021/07/Mobile-App-Design-Cost-1024x512.png',
-    'https://static.wingify.com/gcp/uploads/sites/3/2015/10/OG-image_App-or-Website-10-Reasons-Why-Apps-are-Better.png',
-    'https://www.cubix.co/themes/responsiv-clean/assets/images/blog-images/app-designing-process-b.jpg',
+    // 'https://1qkeyv41u1op36vgbm47q0i6-wpengine.netdna-ssl.com/wp-content/uploads/2021/07/Mobile-App-Design-Cost-1024x512.png',
+    // 'https://static.wingify.com/gcp/uploads/sites/3/2015/10/OG-image_App-or-Website-10-Reasons-Why-Apps-are-Better.png',
+    // 'https://www.cubix.co/themes/responsiv-clean/assets/images/blog-images/app-designing-process-b.jpg',
+    "https://marutistoragenew.blob.core.windows.net/ag3mobileapp/1.png",
+    "https://marutistoragenew.blob.core.windows.net/ag3mobileapp/2.png",
+    "https://marutistoragenew.blob.core.windows.net/ag3mobileapp/3.png"
   ];
 
   // end array
@@ -27,9 +30,11 @@ const Home = ({navigation}) => {
     <SafeAreaView style={{flexGrow: 1}}>
     <View style={styles.container}>
       <LinearGradient
-         colors={['#4174D0','#6ef7ff']}
+         colors={['#4174D0','#4EC4D0']}
         style={styles.gradient}>
         <View>
+
+
           <View style={styles.headerText1}>
             <View
               style={{
@@ -43,10 +48,10 @@ const Home = ({navigation}) => {
                 color={'white'}
                 onPress={() => navigation.openDrawer()}
               />
-              <Text style={[styles.brand, {marginLeft: 15}]}>SUZUKI</Text>
+              <Text style={[styles.brand, {marginLeft: 15}]}>SUZUKI HR Assist</Text>
             </View>
-            <Text style={styles.brand}>HR Assist</Text>
-            <Text style={{color: 'white', margin: 10}}></Text>
+            {/* <Text style={styles.brand}>HR Assist</Text>
+            <Text style={{color: 'white', margin: 10}}></Text> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -58,17 +63,18 @@ const Home = ({navigation}) => {
                   navigation.navigate("Notification");
                 }}>
                 <IconBadge
-                  MainElement={<Feather name="bell" color={'#fff'} size={35} />}
-                  BadgeElement={<Text style={{color: '#fff'}}>5</Text>}
+                  MainElement={<Feather name="bell" color={'#fff'} size={30} />}
+                  BadgeElement={<Text style={{color: '#fff', fontWeight:'700'}}>5</Text>}
                   IconBadgeStyle={{
                     paddingVerticle: 5,
-                    backgroundColor: '#6ef7ff',
+                    backgroundColor: "#2D5C54",
                   }}
                 />
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{flexDirection: 'row', marginHorizontal: 20, top: '3%'}}>
+          
+          <View style={{flexDirection: 'row', marginHorizontal: 10,marginVertical:5, alignItems:'center'}}>
             {AppUserData.data && AppUserData.data.profile_photo ? (
               <Image
                 source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
@@ -83,18 +89,19 @@ const Home = ({navigation}) => {
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 16,
                   color: '#fff',
                   fontWeight: 'bold',
                   letterSpacing: 1,
                 }}>
                 {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
-              <Text style={{fontSize: 16, color: '#fff', letterSpacing: 1}}>
+              <Text style={{fontSize: 15, color: '#fff', letterSpacing: 1}}>
                 Monday, 24 jan 2022
               </Text>
             </View>
           </View>
+
         </View>
       </LinearGradient>
       <View style={styles.carousel}>
@@ -140,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 10,
     fontWeight: 'bold',
-    letterSpacing: 1,
+    // letterSpacing: 1,
   },
   carousel: {
     marginTop: '-11%',
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
     width: '92%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 3,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -158,6 +165,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 1,
     overflow: 'hidden',
+    marginBottom:5
   },
   carouselimg: {
     minHeight: '100%',

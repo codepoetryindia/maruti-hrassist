@@ -81,99 +81,99 @@ const Hospital = ({ locationName = '' }) => {
                 }}
                 style={{ width: '90%' }}>
 
-                   {/* Modal */}
-              <Modal
-            backdropOpacity={0.1}
-            coverScreen={true}
-            isVisible={modalVisible}>
-            <LinearGradient
-              colors={['#4174D0', '#6ef7ff']}
-              style={{ flex: 0.53, borderRadius: 15 }}>
-              <View style={styles.modal}>
-                {/* <Text>{JSON.stringify(modalItem)}</Text> */}
-                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                  <Feather
-                    name="x-circle"
-                    color={'#000'}
-                    size={20}
-                    onPress={setModalVisible(false)}
-                    style={{ margin: 10 }}
-                  />
-                </TouchableOpacity>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    width: 150,
-                    height: 150,
-                    borderWidth: 20,
-                    borderColor: '#6ef7ff',
-                    borderRadius: 60,
-                    marginTop: 30,
-                  }}>
-                 
-                    <Image
-                      source={require('../../assets/Images/Avtar.png')}
-                      style={[styles.profileImg, { marginRight: 5 }]}
-                    />
-                  
-                </View>
-                <View
-                  style={{
-                    paddingVertical: 15,
-                    alignSelf: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={{ color: '#fff', lineHeight: 20 }}>
-                    {modalItem && modalItem.HOSP_NAME && modalItem.HOSP_NAME}
-                  </Text>
-                  <Text style={{ color: '#fff', lineHeight: 20 }}>
-                    {modalItem && modalItem.ADDR && modalItem.ADDR}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    height: '23%',
-                    marginTop: 5,
-                    // backgroundColor:'yellow',
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                    justifyContent: 'space-around',
-                    width: '50%',
-                    alignItems: 'flex-end',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Linking.openURL(`mailto:${modalItem.Email}`)
-                    }}
-                    style={{
-                      borderWidth: 1,
-                      width: 40,
-                      height: 40,
-                      borderColor: '#fff',
-                      borderRadius: 100,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Feather name="mail" size={20} color={'#fff'} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: 1,
-                      width: 40,
-                      height: 40,
-                      borderColor: '#fff',
-                      borderRadius: 100,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Feather name="phone-call" size={20} color={'#fff'} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </LinearGradient>
-          </Modal>
+                {/* Modal */}
+                <Modal
+                  backdropOpacity={0.1}
+                  coverScreen={true}
+                  isVisible={modalVisible}>
+                  <LinearGradient
+                    colors={['#4174D0', '#6ef7ff']}
+                    style={{ flex: 0.53, borderRadius: 15 }}>
+                    <View style={styles.modal}>
+                      {/* <Text>{JSON.stringify(modalItem)}</Text> */}
+                      <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                        <Feather
+                          name="x-circle"
+                          color={'#000'}
+                          size={20}
+                          onPress={setModalVisible(false)}
+                          style={{ margin: 10 }}
+                        />
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          width: 150,
+                          height: 150,
+                          borderWidth: 20,
+                          borderColor: '#6ef7ff',
+                          borderRadius: 60,
+                          marginTop: 30,
+                        }}>
+
+                        <Image
+                          source={require('../../assets/Images/Avtar.png')}
+                          style={[styles.profileImg, { marginRight: 5 }]}
+                        />
+
+                      </View>
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          alignSelf: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text style={{ color: '#fff', lineHeight: 20 }}>
+                          {modalItem && modalItem.HOSP_NAME && modalItem.HOSP_NAME}
+                        </Text>
+                        <Text style={{ color: '#fff', lineHeight: 20 }}>
+                          {modalItem && modalItem.ADDR && modalItem.ADDR}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          height: '23%',
+                          marginTop: 5,
+                          // backgroundColor:'yellow',
+                          flexDirection: 'row',
+                          alignSelf: 'center',
+                          justifyContent: 'space-around',
+                          width: '50%',
+                          alignItems: 'flex-end',
+                        }}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            Linking.openURL(`mailto:${modalItem.Email}`)
+                          }}
+                          style={{
+                            borderWidth: 1,
+                            width: 40,
+                            height: 40,
+                            borderColor: '#fff',
+                            borderRadius: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Feather name="mail" size={20} color={'#fff'} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            borderWidth: 1,
+                            width: 40,
+                            height: 40,
+                            borderColor: '#fff',
+                            borderRadius: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Feather name="phone-call" size={20} color={'#fff'} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </Modal>
 
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
                   {item.HOSP_NAME}
@@ -187,7 +187,7 @@ const Hospital = ({ locationName = '' }) => {
                 <Feather name="phone-call" size={20} color={'#4174D0'} />
               </TouchableOpacity>
 
-             
+
 
             </View>
           )}
