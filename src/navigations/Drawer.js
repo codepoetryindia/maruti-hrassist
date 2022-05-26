@@ -18,7 +18,7 @@ import EmployProfile from '../screens/employeLookUp/EmployeProfile';
 import EditProfile from '../components/EditProfile'
 import EmployeeNavs from './EmployeeNavs';
 import AttendanceAdminNav from './AttendanceAdminNav';
-import DoctorsContacts from '../components/DoctorsContacts';
+import Nomination from '../components/Nomination';
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
   return (
@@ -31,6 +31,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="EmployeeNavs" component={EmployeeNavs} />
       <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
       <Drawer.Screen name='EditProfile' component={EditProfile}/>
+      <Drawer.Screen name='Nomination' component={Nomination}/>
       <Drawer.Screen name="CompensationBenifitsNav" component={CompensationBenifitsNav}/>
       <Drawer.Screen name="HospitalNavs" component={HospitalNavs} />
       <Drawer.Screen name="Canteen" component={Canteen} />

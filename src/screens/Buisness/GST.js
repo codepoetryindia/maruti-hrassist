@@ -176,17 +176,17 @@ const Gst = ({ navigation }) => {
                       borderTopLeftRadius:8,
                       borderTopRightRadius:8
                     }}>
-                    <Text style={{ fontSize: 16, color: '#000', padding: 10 }}>
+                    <Text style={{ fontSize: 16, color: '#000', padding: 10,color:'#000' }}>
                       {item.MAPP_GSTN_STATE_NAME}
                     </Text>
                   </View>
                   <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
                     <Text style={styles.GStBox}>GST Number</Text>
-                    <Text>{item.MAPP_GSTN_REG_NO}</Text>
+                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_REG_NO}</Text>
                     <Text style={styles.GStBox}>Company Name</Text>
-                    <Text>{item.MAPP_GSTN_COMPANY_NAME}</Text>
+                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
                     <Text style={styles.GStBox}>Address</Text>
-                    <Text>{item.MAPP_GSTN_ADDRESS}</Text>
+                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_ADDRESS}</Text>
                   </View>
                 </TouchableOpacity>
               </View>

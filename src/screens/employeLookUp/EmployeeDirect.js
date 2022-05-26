@@ -85,7 +85,9 @@ const EmployeeDirect = () => {
               />
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity onPress={() => { SearchEmployee() }}>
+          <TouchableOpacity onPress={() => { 
+            SearchEmployee() 
+            }}>
             <Ionicons
               style={[styles.searchIcon, { marginLeft: search == '' ? 35 : null }]}
               name="send"
@@ -95,8 +97,15 @@ const EmployeeDirect = () => {
           </TouchableOpacity>
         </View>
 
-
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={{color:'#fff'}}
+          />
+        ) : null}
         {searchedData.length > 0 ? (
+         
           <FlatList
             style={{ width:"100%",marginHorizontal:0 }}
             data={searchedData}

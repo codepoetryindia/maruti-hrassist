@@ -1,13 +1,14 @@
 //import liraries
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+
 const Canteen = ({navigation}) => {
   // ]);
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
      colors={['#4174D0','#6ef7ff']}
         style={styles.gradient}>
@@ -97,7 +98,7 @@ const Canteen = ({navigation}) => {
           <Feather name="corner-up-right" size={20} />
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

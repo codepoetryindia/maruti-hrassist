@@ -8,7 +8,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
-
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 // create a component
 const EmployProfile = ({ navigation, route }) => {
   let userId = route.params.data

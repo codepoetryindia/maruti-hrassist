@@ -14,7 +14,7 @@ const Hospital = ({ locationName = '' }) => {
   const [loader, setLoader] = useState(false);
   const [hospitalList, setHospitallList] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalItem, setModalItem] = useState()
+  const [modalItem, setModalItem] = useState('')
   // Hospital list 
   const GetHospListApi = (apidata = {}) => {
     let token = AppUserData.token
@@ -119,7 +119,7 @@ const Hospital = ({ locationName = '' }) => {
                         />
 
                       </View>
-                      <View
+                      {/* <View
                         style={{
                           paddingVertical: 15,
                           alignSelf: 'center',
@@ -131,7 +131,7 @@ const Hospital = ({ locationName = '' }) => {
                         <Text style={{ color: '#fff', lineHeight: 20 }}>
                           {modalItem && modalItem.ADDR && modalItem.ADDR}
                         </Text>
-                      </View>
+                      </View> */}
                       <View
                         style={{
                           height: '23%',
@@ -175,10 +175,10 @@ const Hospital = ({ locationName = '' }) => {
                   </LinearGradient>
                 </Modal>
 
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold',color:'#000' }}>
                   {item.HOSP_NAME}
                 </Text>
-                <Text>{item.ADDR}</Text>
+                <Text style={{color:'#000' }}>{item.ADDR}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{ width: '10%' }}
                 onPress={() => {
@@ -186,9 +186,6 @@ const Hospital = ({ locationName = '' }) => {
                 }}>
                 <Feather name="phone-call" size={20} color={'#4174D0'} />
               </TouchableOpacity>
-
-
-
             </View>
           )}
         />

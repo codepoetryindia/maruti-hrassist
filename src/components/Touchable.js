@@ -65,7 +65,7 @@ const TouchableCard = ({navigation}) => {
   ];
 
     return (
-      <VSafeAreaViewiew style={{flex:1, marginBottom:80}}>
+      <SafeAreaView style={{flex:1, marginBottom:80}}>
         <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -114,7 +114,7 @@ const TouchableCard = ({navigation}) => {
           </TouchableOpacity>
            
             )}/>
-            </VSafeAreaViewiew>
+            </SafeAreaView>
             
     )
           }

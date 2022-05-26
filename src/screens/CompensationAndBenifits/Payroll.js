@@ -9,7 +9,7 @@ import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
-
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 // create a component
 const Payroll = () => {

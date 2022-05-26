@@ -10,9 +10,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 // create a component
 const EditProfile = ({ navigation, route }) => {
-  useEffect(() => {
-    employeProfile()
-  }, [])
 
 
   const [loader, setLoader] = useState(false)
@@ -20,6 +17,7 @@ const EditProfile = ({ navigation, route }) => {
   const [employeeData, setEmployeeData] = useState([]);
   const [empphoto, setPhoto] = useState();
   const [isEnabled, setIsEnabled] = useState(false);
+  const [nominiData,setNominiData]= useState('')
 
 
 
@@ -33,13 +31,16 @@ const EditProfile = ({ navigation, route }) => {
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        // console.log("tdhdd",result);
+        console.log("tdhdd",result);
         setLoader(false);
-        let responseData = result.Value.Table
-        let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
+        let responseData = result.Value.Table;
+        let NominationData = result.Value.Table1
+        
+        setNominiData(NominationData)
+        // let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
         setEmployeeData(responseData);
-        setPhoto(profileImage);
-        console.log("responseData", responseData)
+        // setPhoto(profileImage);
+        console.log("profileImage", responseData)
       })
       .catch(error => {
         setLoader(false);
@@ -56,6 +57,11 @@ const EditProfile = ({ navigation, route }) => {
         }
       });
   };
+
+  useEffect(() => {
+    employeProfile()
+  }, [])
+
   console.log("employeeData", employeeData);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
@@ -177,7 +183,7 @@ const EditProfile = ({ navigation, route }) => {
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={() => {
                         toggleSwitch()
-                        if (toggleSwitch == true) {
+                        if (isEnabled) {
                           alert("sure")
                         }
                         else {
@@ -202,7 +208,7 @@ const EditProfile = ({ navigation, route }) => {
                   <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text>{item.HRBP}</Text>
                     <Ionicons
-                      name="phone"
+                      name="md-call-sharp"
                       size={30}
                       color={'#4174D0'}
                       onPress={() => {
@@ -232,7 +238,11 @@ const EditProfile = ({ navigation, route }) => {
                       name="arrow-forward-outline"
                       size={30}
                       color={'red'}
-
+                      onPress={()=> {
+                        navigation.navigate('Nomination', {
+                          data:nominiData
+                        })
+                      }}
                     />
                   </View>
                 </View>

@@ -1,7 +1,7 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Linking ,SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
