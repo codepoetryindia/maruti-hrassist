@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  Modal
+  Modal,
+  Pressable
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,16 +21,18 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { useNavigation } from '@react-navigation/native';
 
 // create a component
 const Book = () => {
+  const navigation = useNavigation();
   const { authContext, AppUserData } = useContext(AuthContext);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [book, setbook] = useState([]);
   const [loader, setLoader] = useState(false)
-  const[seatAvility,setSeatAvility] = useState('')
-  const [modalVisible,setModalVisible] = useState(false)
+  const [seatAvility, setSeatAvility] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
 
   const GetShuttleRoutesApi = () => {
     let payloadDate = moment(date).format("DD-MMMM-YYYY").toUpperCase()
@@ -77,7 +80,7 @@ const Book = () => {
     ApiService.PostMethode('/GetSeatsAvailability', apiData, token)
       .then(result => {
         setLoader(false);
-        let ApiValue = result
+        let ApiValue = result.Result
         setSeatAvility(ApiValue)
         console.log("GetSeatsAvailabilityApi", ApiValue);
       })
@@ -156,7 +159,6 @@ const Book = () => {
             </TouchableOpacity>
           </TouchableOpacity>
 
-
           <Text style={{ paddingVertical: 10, fontSize: 16, fontWeight: 'bold' }}>
             {book.length < 0 ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Text>No Available Shuttle Routes Sorry for intruption</Text>
@@ -207,10 +209,10 @@ const Book = () => {
                       <TouchableOpacity
                         onPress={() => {
                           GetSeatsAvailabilityApi()
-                          if(seatAvility!==''){
-                            alert("Available seat " ,seatAvility)
-                          }
-                          // setModalVisible(true)
+                          // if (seatAvility !== '') {
+                          //   alert("Available seat ", seatAvility)
+                          // }
+                          setModalVisible(true)
                         }} style={{
                           width: '100%',
                           flexDirection: 'row',
@@ -231,8 +233,47 @@ const Book = () => {
               </View>
 
               {/* SeatAvility Modal */}
-              
-              
+
+              <Modal transparent={true} visible={modalVisible}>
+                <Pressable
+                  onPress={() => {
+                    setModalVisible(false)
+                      (false);
+                  }}
+                  style={{
+                    backgroundColor: '#000000aa',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      padding: 20,
+                      borderRadius: 15,
+                      width: '70%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                      <Text>Available Seats in Shuttle : {seatAvility}</Text>
+                      <View style={{flexDirection:'row',marginVertical:10}}>
+                    <TouchableOpacity 
+                    style={{padding:10,backgroundColor:'#2757C3',marginHorizontal:10,borderRadius:8}} onPress={() => {
+                      setModalVisible(false)
+                    }}>
+                      <Text style={{color:'#fff'}}>
+                        Ok
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate("SeatBook")}
+                    style={{padding:10,backgroundColor:'#2757C3',marginLeft:30,borderRadius:8}}>
+                      <Text style={{color:'#fff'}}>BOOK NOW</Text>
+                    </TouchableOpacity>
+                  </View>
+                    </View>
+                </Pressable>
+              </Modal>
             </View>
           ) : null}
 
