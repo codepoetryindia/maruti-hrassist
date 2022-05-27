@@ -70,130 +70,140 @@ const Gst = ({ navigation }) => {
   }, [])
   return (
 
-      <SafeAreaView style={styles.container}>
-        {loader== true ? (
-           <Spinner
-           visible={loader}
-           textContent={'Loading...'}
-           textStyle={styles.spinnerTextStyle}
-         />
-        ):null}
-        <LinearGradient
-          style={{ padding: 20 }}
-       colors={['#4174D0','#6ef7ff']}>
-          <View style={{ flexDirection: 'row' }}>
+    <SafeAreaView style={styles.container}>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      ) : null}
+      <LinearGradient
+        style={{ padding: 20 }}
+        colors={['#4174D0', '#6ef7ff']}>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 40,
+              alignItems: 'center',
+            }}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.navigate("BuisnessTravel")}
+            />
+            <Ionicons
+              name="menu-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.openDrawer()}
+            />
+          </View>
+
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 16,
+              letterSpacing: 1,
+              marginLeft: 30,
+            }}>
+            GST Details
+          </Text>
+        </View>
+      </LinearGradient>
+
+
+      {/* BODY */}
+
+
+
+
+      {
+        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Please wait we are fetching your data</Text></View>) :
+          (<View>
+            {/* SEARCH BOX */}
             <View
               style={{
+                marginVertical: 10,
+                width: '90%',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: 40,
-                alignItems: 'center',
+                borderWidth: 1,
+                borderTopColor: '#2757C3',
+                borderStartColor: '#6ef7ff',
+                borderBottomColor: '#2757C3',
+                borderEndColor: '#6ef7ff',
+                borderRadius: 5,
+                alignSelf: 'center',
               }}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.navigate("BuisnessTravel")}
-              />
-              <Ionicons
-                name="menu-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.openDrawer()}
+              <TextInput
+                placeholder="Search By StateName"
+                autoCapitalize='characters'
+                onChangeText={(text) => {
+                  filterdData(text)
+                }}
+                value={searchText}
+                style={{
+                  width: '70%',
+                  paddingVertical: 5,
+                }}
               />
             </View>
-
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                letterSpacing: 1,
-                marginLeft: 30,
-              }}>
-              GST Details
-            </Text>
+            
+            {/* FLATLIST */}
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={filteredDataSource.length == 0 ? gst : filteredDataSource}
+              ListEmptyComponent={() => {
+                return (
+                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('.././../assets/Images/dataNotFound.png')}
+                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                  </View>
+                )
+              }}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item, index }) => {
+                return (
+                  <View>
+                    <TouchableOpacity style={styles.TouchableOpacity}>
+                      <View
+                        style={{
+                          width: '100%',
+                          backgroundColor: '#6ef7ff',
+                          alignSelf: 'center',
+                          overflow: 'hidden',
+                          borderWidth: 0.5,
+                          borderColor: '#6ef7ff',
+                          borderTopLeftRadius: 8,
+                          borderTopRightRadius: 8
+                        }}>
+                        <Text style={{ fontSize: 16, color: '#000', padding: 10, color: '#000' }}>
+                          {item.MAPP_GSTN_STATE_NAME}
+                        </Text>
+                      </View>
+                      <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                        <Text style={styles.GStBox}>GST Number</Text>
+                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_REG_NO}</Text>
+                        <Text style={styles.GStBox}>Company Name</Text>
+                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
+                        <Text style={styles.GStBox}>Address</Text>
+                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_ADDRESS}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+            />
           </View>
-        </LinearGradient>
-        
 
-        {/* BODY */}
-
-        {/* SEARCH BOX */}
-        <View
-          style={{
-            marginVertical: 10,
-            width: '90%',
-            flexDirection: 'row',
-            borderWidth: 1,
-            borderTopColor: '#2757C3',
-            borderStartColor: '#6ef7ff',
-            borderBottomColor: '#2757C3',
-            borderEndColor: '#6ef7ff',
-            borderRadius: 5,
-            alignSelf: 'center',
-          }}>
-          <TextInput
-            placeholder="Search By StateName"
-            autoCapitalize='characters'
-            onChangeText={(text) => {
-              filterdData(text)
-            }}
-            value={searchText}
-            style={{
-              width: '70%',
-              paddingVertical: 5,
-            }}
-          />
-        </View>
-
-        {/* FLATLIST */}
-
-        <FlatList
-        showsVerticalScrollIndicator={false}
-          data={filteredDataSource.length==0 ? gst : filteredDataSource}
-          ListEmptyComponent={() => {
-            return (
-              <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={require('.././../assets/Images/dataNotFound.png')}
-                  style={{ width: 300, height: 300, resizeMode: 'contain',}} />
-                <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-              </View>
-            )
-          }}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item,index }) => {
-            return (
-              <View>
-                <TouchableOpacity style={styles.TouchableOpacity}>
-                  <View
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#6ef7ff',
-                      alignSelf: 'center',
-                      overflow:'hidden',
-                      borderWidth:0.5,
-                      borderColor:'#6ef7ff',
-                      borderTopLeftRadius:8,
-                      borderTopRightRadius:8
-                    }}>
-                    <Text style={{ fontSize: 16, color: '#000', padding: 10,color:'#000' }}>
-                      {item.MAPP_GSTN_STATE_NAME}
-                    </Text>
-                  </View>
-                  <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                    <Text style={styles.GStBox}>GST Number</Text>
-                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_REG_NO}</Text>
-                    <Text style={styles.GStBox}>Company Name</Text>
-                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
-                    <Text style={styles.GStBox}>Address</Text>
-                    <Text style={{color:'#000'}}>{item.MAPP_GSTN_ADDRESS}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
-      </SafeAreaView>
+          )
+      }
+    </SafeAreaView>
   );
 };
 
