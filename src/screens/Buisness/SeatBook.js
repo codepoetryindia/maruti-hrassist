@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, FlatList,Modal ,Pressable} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, FlatList, Modal, Pressable, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -28,6 +28,7 @@ const SeatBook = ({ navigation }) => {
     const [searchedDegData, setSearchedDegData] = useState('')
     const [Loader, setLoader] = useState(false);
     const [modalVisible, setModalVisible] = useState(false)
+    const [bookData, setBookData] = useState('')
 
 
     let inputNameData = AppUserData.data.EMPL_NAME
@@ -69,37 +70,37 @@ const SeatBook = ({ navigation }) => {
                 });
         }
     };
-    // const BookShuttleSeat = () => {
-        
-    //         let apiData = {
-    //             UserName
-    //         }
-           
-    //         let token = AppUserData.token
-    //         setLoader(true);
-    //         ApiService.PostMethode('/BookShuttleSeat', apiData, token)
-    //             .then(result => {
-    //                 setLoader(false);
-    //                 console.log('ApiResult', result);
-    //                 let responseData = result.Value;
-    //                 setUserList(responseData)
-    //                 setModalVisible(true)
-    //             })
-    //             .catch(error => {
-    //                 setLoader(false);
-    //                 // console.log('Error occurred==>', error);
-    //                 if (error.response) {
-    //                     if (error.response.status == 401) {
-    //                         console.log('error from api', error.response);
-    //                     }
-    //                     Toast.show(error.response.data.title);
-    //                 } else if (error) {
-    //                     Toast.show('Network Error');
-    //                 } else {
-    //                     Toast.show('Something Went Wrong');
-    //                 }
-    //             });
-    //     }
+    const BookShuttleSeatApi = () => {
+        let token = AppUserData.token
+        let userId = AppUserData.data.userId
+        let apiData = {
+            UserName: userId
+        }
+        setLoader(true);
+        ApiService.PostMethode('/BookShuttleSeat', apiData, token)
+            .then(result => {
+                setLoader(false);
+                let responseData = result.Result;
+                console.log('ApiResult', responseData);
+                // setBookData(responseData)
+                alert(responseData)
+            })
+            .catch(error => {
+                setLoader(false);
+                // console.log('Error occurred==>', error);
+                if (error.response) {
+                    if (error.response.status == 401) {
+                        console.log('error from api', error.response);
+                    }
+                    Toast.show(error.response.data.title);
+                } else if (error) {
+                    Toast.show('Network Error');
+                } else {
+                    Toast.show('Something Went Wrong');
+                }
+            });
+    }
+
 
     return (
         <View style={styles.container}>
@@ -179,7 +180,16 @@ const SeatBook = ({ navigation }) => {
                         style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
 
                     <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            BookShuttleSeatApi()
+                        }}>
+                            {Loader == true ? (
+                                <Spinner
+                                    visible={Loader}
+                                    textContent={'Loading...'}
+                                    textStyle={{ color: '#fff' }}
+                                />
+                            ) : null}
                             <LinearGradient
                                 style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                                 colors={['#4174D0', '#6ef7ff']}>
@@ -265,7 +275,16 @@ const SeatBook = ({ navigation }) => {
                             style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
 
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                BookShuttleSeatApi()
+                            }}>
+                                {Loader == true ? (
+                                    <Spinner
+                                        visible={Loader}
+                                        textContent={'Loading...'}
+                                        textStyle={{ color: '#fff' }}
+                                    />
+                                ) : null}
                                 <LinearGradient
                                     style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                                     colors={['#4174D0', '#6ef7ff']}>
@@ -289,7 +308,7 @@ const SeatBook = ({ navigation }) => {
                         <Pressable
                             style={{
                                 backgroundColor: '#000000aa',
-                                minHeight:"60%",
+                                minHeight: "60%",
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}>
@@ -299,44 +318,69 @@ const SeatBook = ({ navigation }) => {
                                     padding: 20,
                                     borderRadius: 15,
                                     width: '90%',
-                                      justifyContent: 'center',
+                                    justifyContent: 'center',
                                     alignItems: 'center',
                                 }}>
-                                <FlatList
-                                    style={{ width: "100%", marginHorizontal: 10 }}
-                                    data={userList}
-                                    keyExtractor={({ item, index }) => index}
-                                    renderItem={({ item, index }) => (
-                                        <TouchableOpacity style={styles.FlatListData} 
-                                        onPress={() => {
-                                            console.log(item);
-                                            setSearchedNameData(item)
-                                            setModalVisible(false)
-                                        }}>
-                                            <Ionicons
-                                                style={styles.searchIcon}
-                                                name="person-circle-outline"
-                                                size={25}
-                                                color="#2757C3"
-                                            />
-                                            <View style={{ flexDirection: 'column', width: '90%' }}>
-                                                <Text style={{ fontSize: 16 }}>
-                                                    {item.Name}
-                                                </Text>
-                                                <Text>
-                                                    {item.Desg} , {item.Dept} ({item['Staff No']})
-                                                </Text>
-                                            </View>
-                                            <TouchableOpacity>
+                                {userList.length > 0 ? (
+
+                                    <FlatList
+                                        style={{ width: "100%", marginHorizontal: 10 }}
+                                        data={userList}
+                                        ListEmptyComponent={() => {
+                                            return (
+                                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Image source={require('../../assets/Images/dataNotFound.png')}
+                                                        style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+                                                    <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                                                        <Ionicons
+                                                            style={styles.searchIcon}
+                                                            name="close"
+                                                            size={25}
+                                                            color="#2757C3"
+                                                            onPress={() => {
+                                                                setModalVisible(false)
+                                                            }}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            )
+                                        }}
+                                        keyExtractor={({ item, index }) => index}
+                                        renderItem={({ item, index }) => (
+                                            <TouchableOpacity style={styles.FlatListData}
+                                                onPress={() => {
+                                                    console.log(item);
+                                                    setSearchedNameData(item)
+                                                    setModalVisible(false)
+                                                }}>
                                                 <Ionicons
                                                     style={styles.searchIcon}
-                                                    name="chevron-forward-circle-outline"
+                                                    name="person-circle-outline"
                                                     size={25}
-                                                    color="#2757C3"/>
+                                                    color="#2757C3"
+                                                />
+                                                <View style={{ flexDirection: 'column', width: '90%' }}>
+                                                    <Text style={{ fontSize: 16 }}>
+                                                        {item.Name}
+                                                    </Text>
+                                                    <Text>
+                                                        {item.Desg} , {item.Dept} ({item['Staff No']})
+                                                    </Text>
+                                                </View>
+                                                <TouchableOpacity>
+                                                    <Ionicons
+                                                        style={styles.searchIcon}
+                                                        name="chevron-forward-circle-outline"
+                                                        size={25}
+                                                        color="#2757C3" />
+                                                </TouchableOpacity>
                                             </TouchableOpacity>
-                                        </TouchableOpacity>
-                                    )}
-                                />
+                                        )}
+                                    />
+                                ) : (
+                                    <Text>Searched Data not found</Text>
+                                )}
                             </View>
                         </Pressable>
                     </Modal>

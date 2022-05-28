@@ -132,10 +132,7 @@ const Gst = ({ navigation }) => {
                 width: '90%',
                 flexDirection: 'row',
                 borderWidth: 1,
-                borderTopColor: '#2757C3',
-                borderStartColor: '#6ef7ff',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#6ef7ff',
+                borderColor:'#4174D0',
                 borderRadius: 5,
                 alignSelf: 'center',
               }}>
@@ -157,6 +154,7 @@ const Gst = ({ navigation }) => {
             <FlatList
               showsVerticalScrollIndicator={false}
               data={filteredDataSource.length == 0 ? gst : filteredDataSource}
+              style={{height:'80%'}}
               ListEmptyComponent={() => {
                 return (
                   <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>

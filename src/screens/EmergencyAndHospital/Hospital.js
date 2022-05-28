@@ -58,6 +58,10 @@ const Hospital = ({ locationName = '' }) => {
           textStyle={styles.spinnerTextStyle}
         />
       ) : null}
+      {loader == true ? (<View style={{ flex: 1, justifyContent: 'center', marginTop: '40%', marginLeft: '20%' }}>
+        <Text>We are fetching your data Please wait</Text>
+      </View>) :(
+
       <View style={styles.itemBox}>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -190,6 +194,7 @@ const Hospital = ({ locationName = '' }) => {
           )}
         />
       </View>
+      )}
     </SafeAreaView>
 
   );
