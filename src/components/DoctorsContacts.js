@@ -155,15 +155,6 @@ const DoctorsContacts = ({ navigation, route }) => {
   }, [])
 
   return (
-    loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-    </View>
-    ) : (
       <SafeAreaView style={styles.container}>
         <LinearGradient
           colors={['#4174D0', '#6ef7ff']}
@@ -202,9 +193,20 @@ const DoctorsContacts = ({ navigation, route }) => {
           </View>
         </LinearGradient>
 
+       { loader == true ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+    </View>):(
+
         <ScrollView
           style={{
             width: '90%',
+            maxHeight:'60%',
+            marginTop:30,
             paddingVertical:10,
             marginVertical: 10,
             alignSelf: 'center',
@@ -841,8 +843,8 @@ const DoctorsContacts = ({ navigation, route }) => {
           }
 
         </ScrollView>
+    )}
       </SafeAreaView>
-    )
   );
 };
 
