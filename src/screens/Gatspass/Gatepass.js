@@ -37,21 +37,29 @@ const Gatepass = ({ navigation }) => {
   const [searchLevel] = useState();
   const [searchLevelData, setSearchLevelData] = useState([])
   const [loader, setLoader] = useState(false)
-  const options = ['Yes', 'No'];
+  const options = [{
+    label:"Yes",
+    value:"Y"
+  }, {
+    label:"No",
+    value:"N"
+  }];
   const [selectBuilding, setSelectBuilding] = useState([]);
   const [BuildingData, setBuildingData] = useState([]);
   const [removeBuilding, setRemoveBuilding] = useState()
-  const [date, setDate] = useState(new Date());
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectTime, setselectTime] = useState();
-  const [open, setOpen] = useState(false);
+  const [OpenDateTimePicker, setOpenDateTimePicker] = useState(false);
   const [duration, setDuration] = useState('');
   const [reason, setReason] = useState('');
   const [employ, setEmploy] = useState([]);
   const [show, setShow] = useState(false);
-  const [search, setSearch] = useState('')
-  const [searchedNameData, setSearchedNameData] = useState('')
-  const [empmodalVisible, setEmpModalVisible] = useState(false)
+  const [search, setSearch] = useState('');
+  const [searchedNameData, setSearchedNameData] = useState('');
+  const [empmodalVisible, setEmpModalVisible] = useState(false);
+
+
+  // Added by suman
+  const [Locations, setLocations] = useState([]);
 
 
   const GetLocationListVGPSApi = () => {
@@ -63,8 +71,10 @@ const Gatepass = ({ navigation }) => {
     setLoader(true);
     ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
       .then(result => {
-        // console.log("APiresult", result);
+        console.log("APiresult GetLocationListVGPS", result);
         setLoader(false);
+        // Added by suman
+        setLocations(result.Value);
         let Location = result.Value[0].LOCN
         let LocationCode = result.Value[0].CODE
         console.log("LocationCode",LocationCode)
@@ -90,6 +100,9 @@ const Gatepass = ({ navigation }) => {
         }
       });
   };
+
+
+
   const GetSearchLevelsListVGPSApi = () => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
@@ -99,6 +112,7 @@ const Gatepass = ({ navigation }) => {
     setLoader(true);
     ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
       .then(result => {
+        console.log(result);
         setLoader(false);
         let arrData = result.Value.map((item) => { return { 'label': item.MEANING } })
         setSearchLevelData(arrData)
@@ -179,6 +193,13 @@ const Gatepass = ({ navigation }) => {
         setLoader(false);
         let responseData = result.Value
         console.log('building data', responseData)
+        let responseDataNew = responseData.map(element=>{
+          return{
+            ...element,
+            isSelected:false
+          }
+        })
+        console.log(responseDataNew);
         setBuildingData(responseData)
       })
       .catch(error => {
@@ -213,17 +234,18 @@ const Gatepass = ({ navigation }) => {
 
 
   const gatePassScheema = yup.object().shape({
-    office: yup.string().required('leave type is required'),
+    office: yup.string().required('Location is required'),
     date: yup.string().required('select one is required'),
     time: yup.string().required('select one period'),
     duration: yup
       .string()
-      .required('duration  is required')
+      .required('Duration  is required')
       .max(24, 'duration should be less then 24 hours'),
     searchLevel: yup.string().required('select one searchLevel please'),
-    reason: yup.string().required('select one reason please'),
-    persionalVehical: yup.string().required('post one comment'),
-    internalVehical: yup.string().required('select one period'),
+    reason: yup.string().required('Reason is required'),
+    persionalVehical: yup.string().required('Select an option'),
+    internalVehical: yup.string().required('Select an option'),
+    vehicleNumber: yup.string().required('Vehicle Number is required'),
     selectBuilding: yup.string().required('you must select any building it is required'),
     searchEmp: yup.string().required('please enter a valid keyWord'),
   });
@@ -260,7 +282,7 @@ const Gatepass = ({ navigation }) => {
         />
       ) : null}
       <LinearGradient
-        colors={['#4174D0', '#6ef7ff']}
+        colors={['#00B4DB','#0083B0']}  
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -287,9 +309,10 @@ const Gatepass = ({ navigation }) => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              fontSize: 18,
               letterSpacing: 1,
               marginLeft: 30,
+              fontWeight:"700"
             }}>
             Visitor Gatepass
           </Text>
@@ -298,16 +321,17 @@ const Gatepass = ({ navigation }) => {
       {/* BODY */}
       <Formik
         innerRef={fromRef}
-        validationSchema={gatePassScheema}
+        // validationSchema={gatePassScheema}
         initialValues={{
           office: '',
-          date: '',
+          date: new Date(),
           time: '',
           duration: '',
           searchLevel: '',
           reason: '',
           persionalVehical: '',
           internalVehical: '',
+          vehicleNumber:'',
           building: [],
           searchEmp: '',
         }}
@@ -337,11 +361,11 @@ const Gatepass = ({ navigation }) => {
           touched,
           isValid,
         }) => (
-          <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5 }}>
-            <View style={{ paddingBottom: 20 }}>
+          <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5, paddingHorizontal:15 }}>
+            <View style={{ paddingBottom: 5 }}>
               <Text
                 style={{
-                  paddingHorizontal: 20,
+                  paddingHorizontal: 0,
                   paddingVertical: 5,
                   fontSize: 16,
                   fontWeight: 'bold',
@@ -349,136 +373,70 @@ const Gatepass = ({ navigation }) => {
                 Your Location
               </Text>
             </View>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                width: '90%',
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#4174D0',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#4174D0',
-                alignSelf: 'center',
-                padding: 10,
-                justifyContent: 'space-between',
-              }}
-              onPress={toggleModal}>
-              <Text>
-                {empLoc}
-              </Text>
-              <Feather name="chevron-down" size={20} />
 
-              <Modal isVisible={isModalVisible}>
+            <SelectDropdown
+              data={Locations}
+              onSelect={(selectedItem, index) => {
+                // console.log(selectedItem, index);
+                console.log(selectedItem);
+                setFieldValue('office',selectedItem.CODE);
+
+              }}
+              defaultButtonText={'Select Location'}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem.LOCN
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item.LOCN
+              }}
+              buttonStyle={styles.dropdown2BtnStyle}
+              buttonTextStyle={styles.dropdown2BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.dropdown2DropdownStyle}
+              rowStyle={styles.dropdown2RowStyle}
+              rowTextStyle={styles.dropdown2RowTxtStyle}
+            />
+            {errors.office && touched.office && (
                 <View
                   style={{
-                    flex: 0.2,
-                    backgroundColor: '#fff',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 8,
+                    width: '100%',
+                    alignSelf: 'center',
+                    paddingVertical: 2,
                   }}>
-                  <View
-                    style={{ width: '90%', justifyContent: 'space-evenly' }}>
-                    <LinearGradient
-                      style={{ margin: 5, borderRadius: 8 }}
-                      colors={['#4174D0', '#6ef7ff']}>
-                      <TouchableOpacity
-                        style={{
-                          width: '90%',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignSelf: 'center',
-                          padding: 10,
-                        }}
-                        onPress={() => {
-                          // handleRadioStatus('A');
-                          setModalVisible(false);
-                        }}>
-                        {empLoc != '' ? (
-                          <Text style={{ color: 'white' }}>{empLoc}</Text>
-                        ) : (
-                          <Text style={{ color: 'white' }}>Data Not Found</Text>
-                        )}
-                        {empLoc == true ? (
-                          <Ionicons
-                            name="checkbox"
-                            size={20}
-                            color={'#fff'}
-                          />
-                        ) : (
-                          <Ionicons
-                            name="square-outline"
-                            size={20}
-                            color={'#fff'}
-                          />
-                        )}
-                      </TouchableOpacity>
-                    </LinearGradient>
-
-                    {/* <LinearGradient
-                        style={{ margin: 5, borderRadius: 8 }}
-                        colors={['#4174D0', '#6ef7ff']}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            handleRadioStatus('B');
-                            setModalVisible(false);
-                          }}
-                          style={{
-                            width: '90%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignSelf: 'center',
-                            padding: 10,
-                          }}>
-                          <Text style={{ color: 'white' }}>
-                            HEAD OFFICE - DELHI
-                          </Text>
-                          {state == true ? (
-                            <Ionicons
-                              name="checkbox"
-                              size={20}
-                              color={'#fff'}
-                            />
-                          ) : (
-                            <Ionicons
-                              name="square-outline"
-                              size={20}
-                              color={'#fff'}
-                            />
-                          )}
-                        </TouchableOpacity>
-                      </LinearGradient> */}
-                  </View>
+                  <Text style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                    {errors.office}
+                  </Text>
                 </View>
-              </Modal>
-            </TouchableOpacity>
+              )}
+
+
+
+
 
             {/* Selct Date And Time */}
 
             <DatePicker
               modal
-              mode="date"
-              open={open}
-              date={date}
+              mode="datetime"
+              open={OpenDateTimePicker}
+              date={values.date}
               onConfirm={date => {
-                setOpen(false);
-                setDate(date);
                 console.log(date);
+                setFieldValue('date', date);
+                setOpenDateTimePicker(false);
+                // setDate(date);
+                // console.log(date);
               }}
               onCancel={() => {
-                setOpen(false);
+                setOpenDateTimePicker(false);
               }}
-            />
-
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="time"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-              locale="en_GB"
-              date={new Date()}
-              isDarkModeEnabled={true}
-              is24Hour={true}
             />
 
             <View style={{ width: '100%' }}>
@@ -486,107 +444,92 @@ const Gatepass = ({ navigation }) => {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  width: '99%',
+                  width: '100%',
                 }}>
-                <Text
+
+                <View style={{width:"70%", paddingRight:10}}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                      paddingTop: 10,
+                      paddingVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Select Date and Time
+                  </Text>
+                  <TouchableOpacity
                   style={{
-                    paddingHorizontal: 20,
-                    paddingTop: 10,
-                    paddingVertical: 5,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  }}>
-                  Select Date and Time
-                </Text>
-                <Text
-                  style={{
-                    paddingHorizontal: 20,
-                    paddingTop: 10,
-                    paddingVertical: 5,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  }}>
-                  Duration
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: '90%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignSelf: 'center',
-                }}>
-                <TouchableOpacity
-                  style={{
-                    width: '69%',
-                    backgroundColor: 'transparent',
+                    width: '100%',
+                    backgroundColor: '#fff',
                     borderWidth: 1,
-                    borderTopColor: '#2757C3',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     flexDirection: 'row',
                     padding: 6,
                     alignSelf: 'center',
-                  }}>
+                    borderColor:'#444'
+                  }}
+                  onPress={() => setOpenDateTimePicker(true)}
+                  >
                   <Text style={{ color: 'gray' }}>
-                    {moment(date).subtract(10, 'days').calendar()}
+                    {moment(values.date).format('YY/MM/DD hh:mm')}
                   </Text>
-                  <Text style={{ color: 'gray' }}>
+                  {/* <Text style={{ color: 'gray' }}>
                     {moment(selectTime).format('LT')}
-                  </Text>
+                  </Text> */}
                   <View>
                     <View
                       style={{
                         flexDirection: 'row',
-                        width: 65,
+                        // width: 65,
                         justifyContent: 'space-around',
                       }}>
-                      <TouchableOpacity onPress={() => setOpen(true)}>
                         <Ionicons
                           name="calendar-outline"
                           size={25}
-                          color={'#4174D0'}
+                          color={'#0083B0'}
                         />
-                      </TouchableOpacity>
-
-                      <TouchableOpacity
-                        onPress={() => {
-                          showDatePicker();
-                        }}>
-                        <Ionicons
-                          name="time-outline"
-                          size={25}
-                          color={'#4174D0'}
-                        />
-                      </TouchableOpacity>
                     </View>
                   </View>
                 </TouchableOpacity>
-                <TextInput
-                  style={{
-                    width: '30%', borderWidth: 1,
-                    padding: 6,
-                    borderTopColor: '#2757C3',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
-                  }}
-                  onChangeText={handleChange('duration')}
-                  onBlur={handleBlur('duration')}
-                  value={values.duration}
-                  keyboardType={'number-pad'} />
+                </View>
+
+
+                <View style={{width:"30%"}}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                      paddingTop: 10,
+                      paddingVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Duration
+                  </Text>
+                  <TextInput
+                    style={{
+                      width: '100%', 
+                      borderWidth: 1,
+                      padding: 6,
+                      backgroundColor: '#fff',
+                      borderColor:'#444'
+                    }}
+                    onChangeText={handleChange('duration')}
+                    onBlur={handleBlur('duration')}
+                    value={values.duration}
+                    keyboardType={'number-pad'} 
+                  />
+                </View>
               </View>
               {errors.duration && touched.duration && (
                 <View
                   style={{
-                    width: '90%',
+                    width: '100%',
                     alignSelf: 'center',
                     paddingVertical: 2,
                   }}>
-                  <Text style={{ fontSize: 12, color: 'red', textAlign: 'right' }}>
+                  <Text style={{ fontSize: 14, color: 'red', textAlign: 'right' }}>
                     {errors.duration}
                   </Text>
                 </View>
@@ -594,296 +537,305 @@ const Gatepass = ({ navigation }) => {
             </View>
 
             {/* Search Level */}
-            <View style={{ width: '100%' }}>
+            <View style={{marginVertical:5, }}>
+
+            <View style={{ marginBottom: 5 }}>
               <Text
                 style={{
-                  paddingHorizontal: 20,
-                  paddingVertical: 5,
+                  paddingHorizontal: 0,
+                  // paddingVertical: 5,
                   fontSize: 16,
                   fontWeight: 'bold',
                 }}>
-                Search Level *
+                Search Level*
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setmodalVisibleSecond(true);
-                }}
-                style={{
-                  width: '90%',
-                  backgroundColor: 'transparent',
-                  borderWidth: 1,
-                  borderTopColor: '#80406A',
-                  borderStartColor: '#ad3231',
-                  borderBottomColor: '#2757C3',
-                  borderEndColor: '#ad3231',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  padding: 6,
-                  alignSelf: 'center',
-                }}>
-                <Text style={{ color: 'gray' }}>{values.searchLevel}</Text>
-                <View>
-                  <Feather name="chevron-down" size={20} color={'#ad3231'} />
-                </View>
-              </TouchableOpacity>
-
-              <Modal isVisible={modalVisibleSecond}>
-                <View style={{ flex: 0.5, paddingVertical: 10 }}>
-                  <LinearGradient
-                    style={{
-                      borderRadius: 8,
-                      paddingBottom: 10,
-                      paddingHorizontal: 10,
-                    }}
-                    colors={['#4174D0', '#6ef7ff']}>
-                    {searchLevelData != '' ? (
-                      <RadioButtonRN
-                        boxStyle={{ backgroundColor: 'transparent' }}
-                        textStyle={{ color: '#fff' }}
-                        duration={100}
-                        data={searchLevelData}
-                        selectedBtn={e => {
-                          console.log(e);
-                          let data = e.label;
-                          setFieldValue('searchLevel', data);
-                          setmodalVisibleSecond(false);
-                        }}
-                        icon={
-                          searchLevel == true ? (
-                            <Feather
-                              name="check-circle"
-                              size={25}
-                              color="#2c9dd1"
-                            />
-                          ) : null
-                        }
-                      />
-                    ) : (<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Text style={{ textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>data not found</Text>
-                      <Ionicons name='close' size={30} onPress={() => {
-                        setmodalVisibleSecond(false);
-                      }} />
-                    </View>)}
-                  </LinearGradient>
-                </View>
-              </Modal>
             </View>
-            {errors.searchLevel && touched.searchLevel && (
-              <View
-                style={{
-                  width: '90%',
-                  alignSelf: 'center',
-                  paddingVertical: 2,
-                }}>
-                <Text style={{ fontSize: 12, color: 'red' }}>
-                  {errors.searchLevel}
-                </Text>
-              </View>
-            )}
 
-            {/* Vehicle number */}
+            <SelectDropdown
+              data={searchLevelData}
+              onSelect={(selectedItem, index) => {
+                // console.log(selectedItem, index);
+                console.log(selectedItem);
+                setFieldValue('searchLevel',selectedItem.VAL);
+
+              }}
+              defaultButtonText={'Select Search Level'}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem.label
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item.label
+              }}
+              buttonStyle={styles.dropdown2BtnStyle}
+              buttonTextStyle={styles.dropdown2BtnTxtStyle}
+              renderDropdownIcon={isOpened => {
+                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+              }}
+              dropdownIconPosition={'right'}
+              dropdownStyle={styles.dropdown2DropdownStyle}
+              rowStyle={styles.dropdown2RowStyle}
+              rowTextStyle={styles.dropdown2RowTxtStyle}
+            />
+            {errors.searchLevel && touched.searchLevel && (
+                <View
+                  style={{
+                    width: '100%',
+                    alignSelf: 'center',
+                    paddingVertical: 2,
+                  }}>
+                  <Text style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                    {errors.searchLevel}
+                  </Text>
+                </View>
+              )}
+          </View>
+
+
+
+
+            {/* Reason To come number */}
+            <View style={{marginVertical:5}}>
             <View style={{ width: '100%' }}>
               <Text
                 style={{
-                  paddingHorizontal: 20,
-                  paddingVertical: 5,
+                  paddingHorizontal: 0,
+                marginVertical: 5,
                   fontSize: 16,
                   fontWeight: 'bold',
                 }}>
                 Reason To Come *
               </Text>
               <TextInput
-                placeholder="reason"
+                placeholder="Reason"
                 onChangeText={handleChange('reason')}
                 onBlur={handleBlur('reason')}
                 value={values.reason}
                 style={{
-                  width: '90%',
-                  alignSelf: 'center',
+                  width: '100%',
+                  backgroundColor: '#fff',
                   borderWidth: 1,
-                  borderTopColor: '#80406A',
-                  borderStartColor: '#4174D0',
-                  borderBottomColor: '#2757C3',
-                  borderEndColor: '#4174D0',
-                  borderRadius: 5,
-                  paddingVertical: 5,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  padding: 6,
+                  alignSelf: 'center',
+                  borderColor:'#444',
+                  fontSize:16,
                 }}
               />
               {errors.reason && touched.reason && (
                 <View
                   style={{
-                    width: '90%',
+                    width: '100%',
                     alignSelf: 'center',
                     paddingVertical: 2,
                   }}>
                   <Text
-                    style={{ fontSize: 12, color: 'red', textAlign: 'left' }}>
+                    style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
                     {errors.reason}
                   </Text>
                 </View>
               )}
             </View>
-
-            {/* personal vehical */}
-
-            <View style={{ width: '100%' }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '99%',
-                }}>
-                <Text
-                  style={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  }}>
-                  personal vehical
-                </Text>
-
-                <Text
-                  style={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                  }}>
-                  Internal vehical
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: '90%',
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignSelf: 'center',
-                }}>
-                <SelectDropdown
-                  defaultButtonText="Yes"
-                  buttonStyle={{
-                    backgroundColor: 'transparent',
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
-                    width: '50%',
-                    height: 40,
-                    borderRadius: 5,
-                  }}
-                  buttonTextStyle={{ fontSize: 16 }}
-                  dropdownStyle={{
-                    backgroundColor: '#fff',
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
-                    borderRadius: 5,
-                  }}
-                  renderDropdownIcon={isOpened => {
-                    return (
-                      <FontAwesome
-                        name={isOpened ? 'chevron-up' : 'chevron-down'}
-                        color={'#444'}
-                        size={18}
-                      />
-                    );
-                  }}
-                  dropdownBackgroundColor={'transparent'}
-                  data={options}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  icon={
-                    <Feather
-                      name="chevron-down"
-                      size={20}
-                      color={'#4174D0'}
-                    />
-                  }
-                />
-
-                <SelectDropdown
-                  defaultButtonText="Yes"
-                  buttonStyle={{
-                    backgroundColor: 'transparent',
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
-                    width: '50%',
-                    height: 40,
-                    borderRadius: 5,
-                  }}
-                  dropdownStyle={{
-                    backgroundColor: '#fff',
-                    borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
-                    borderRadius: 5,
-                  }}
-                  renderDropdownIcon={isOpened => {
-                    return (
-                      <FontAwesome
-                        name={isOpened ? 'chevron-up' : 'chevron-down'}
-                        color={'#444'}
-                        size={18}
-                      />
-                    );
-                  }}
-                  buttonTextStyle={{
-                    fontSize: 16,
-                    justifyContent: 'flex-start',
-                  }}
-                  dropdownBackgroundColor={
-                    <LinearGradient
-                      style={{ margin: 5, borderRadius: 8 }}
-                      colors={['#4174D0', '#6ef7ff']}
-                    />
-                  }
-                  data={options}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
-                  }}
-                  buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
-                  }}
-                  icon={<Feather name="chevron-down" size={30} />}
-                />
-              </View>
             </View>
 
-            {/* Select Building / multiple selection*/}
+            {/* Personal Vehicle */}
+            <View style={{ width: '100%'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}>
+                <View style={{width:"48%"}}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                      paddingVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Personal Vehicle
+                  </Text>
+                  <SelectDropdown
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                    // text represented after item is selected
+                    // if data array is an array of objects then return selectedItem.property to render after item is selected
+                    return selectedItem.label
+                    }}
+                    rowTextForSelection={(item, index) => {
+                    // text represented for each item in dropdown
+                    // if data array is an array of objects then return item.property to represent item in dropdown
+                    return item.label
+                    }}
+                    // defaultButtonText="Yes"
+                    dropdownBackgroundColor={'transparent'}
+                    data={options}
+                    onSelect={(selectedItem, index) => {
+                      // console.log(selectedItem, index);
+                      setFieldValue("persionalVehical",selectedItem.value);
 
+                    }}
+                    buttonStyle={styles.dropdown2BtnStyle}
+                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                      return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown2DropdownStyle}
+                    rowStyle={styles.dropdown2RowStyle}
+                    rowTextStyle={styles.dropdown2RowTxtStyle}
+                  />
+                    {errors.persionalVehical && touched.persionalVehical && (
+                      <View
+                        style={{
+                          width: '100%',
+                          alignSelf: 'center',
+                          paddingVertical: 2,
+                        }}>
+                        <Text
+                          style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                          {errors.persionalVehical}
+                        </Text>
+                      </View>
+                    )}
+
+                </View>
+
+                <View style={{width:"48%"}}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                      paddingVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Internal Vehicle
+                  </Text>
+                  <SelectDropdown
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                    // text represented after item is selected
+                    // if data array is an array of objects then return selectedItem.property to render after item is selected
+                      return selectedItem.label
+                    }}
+                    rowTextForSelection={(item, index) => {
+                    // text represented for each item in dropdown
+                    // if data array is an array of objects then return item.property to represent item in dropdown
+                      return item.label
+                    }}
+                    data={options}
+                    onSelect={(selectedItem, index) => {
+                    // console.log(selectedItem, index);                    
+                    setFieldValue("internalVehical",selectedItem.value);
+                  }}
+                    buttonStyle={styles.dropdown2BtnStyle}
+                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                      return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                    }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown2DropdownStyle}
+                    rowStyle={styles.dropdown2RowStyle}
+                    rowTextStyle={styles.dropdown2RowTxtStyle}
+                  />
+                      {errors.internalVehical && touched.internalVehical && (
+                        <View
+                          style={{
+                            width: '100%',
+                            alignSelf: 'center',
+                            paddingVertical: 2,
+                          }}>
+                          <Text
+                            style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                            {errors.internalVehical}
+                          </Text>
+                        </View>
+                      )}
+
+                </View>
+              </View>
+            </View>
+            
+
+            {/* Vehicle number */}
+
+            {
+              values.persionalVehical == 'Y' ? (
+                <View style={{marginVertical:5}}>
+                <View style={{ width: '100%' }}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                    marginVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Vehicle Number *
+                  </Text>
+                  <TextInput
+                    placeholder="Vehicle Number"
+                    onChangeText={handleChange('vehicleNumber')}
+                    onBlur={handleBlur('vehicleNumber')}
+                    value={values.vehicleNumber}
+                    style={{
+                      width: '100%',
+                      backgroundColor: '#fff',
+                      borderWidth: 1,
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      padding: 6,
+                      alignSelf: 'center',
+                      borderColor:'#444',
+                      fontSize:16,
+                    }}
+                  />
+                  {errors.vehicleNumber && touched.vehicleNumber && (
+                    <View
+                      style={{
+                        width: '100%',
+                        alignSelf: 'center',
+                        paddingVertical: 2,
+                      }}>
+                      <Text
+                        style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                        {errors.vehicleNumber}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+                </View>    
+              ): null
+            }                          
+
+
+            {/* Select Building / multiple selection*/}
             <View>
               <View
-                style={{ width: '90%', alignSelf: 'center', marginTop: 10 }}>
-                <Text style={{ fontSize: 16, top: 1 }}>Select Building *</Text>
+                style={{ width: '100%', alignSelf: 'center', marginTop: 10 }}>
+                <Text 
+                    style={{                       
+                      paddingHorizontal: 0,
+                      marginVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold'
+                    }}
+                  >Select Building *</Text>
                 <View
                   style={{
                     width: '100%',
                     borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
                     borderRadius: 5,
+                    backgroundColor:'#fff'
                   }}>
                   <View
                     style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
+                      minHeight:40,
                     }}>
                     <ScrollView
                       horizontal
@@ -928,38 +880,45 @@ const Gatepass = ({ navigation }) => {
                       )}
                     </TouchableOpacity>
                   </View>
-                  {show == true ? (
-                    <View
-                      style={{
-                        width: '100%',
-                        padding: 10,
-                        borderWidth: 0.5,
-                        // borderTopColor: '#80406A',
-                        borderStartColor: '#6ef7ff',
-                        borderBottomColor: '#2757C3',
-                        borderEndColor: '#6ef7ff',
-                        borderRadius: 5,
-                      }}>
+
+                  <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={show}
+                    onRequestClose={() => {
+                      // Alert.alert("Modal has been closed.");
+                      // setModalVisible(!modalVisible);
+                      onPress={toggleBuilding}
+                    }}
+                  >
+                    <View style={styles.centeredView}>
+                    <TouchableOpacity style={styles.Modalclose} 
+                      onPress={toggleBuilding}
+                    > 
+                      <Text style={styles.Modalclosetxt}>Close</Text>
+                      {/* <Ionicons name="close" size={25} /> */}
+                    </TouchableOpacity>
+                      <Text style={styles.ModalHeading}>
+                        Select Buildings
+                      </Text>
+
+
                       <FlatList
                         data={BuildingData}
+                        numColumns={2}
                         keyExtractor={item => item.BID.toString()}
                         renderItem={({ item, index }) => (
-                          <View
+                          <TouchableOpacity
                             style={{
-                              width: '100%',
+                              width: '48%',
                               padding: 10,
                               borderWidth: 1,
+                              borderColor:'#6e6e6e',
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               margin: 2,
-                              alignSelf: 'center',
-                              borderTopColor: '#80406A',
-                              borderStartColor: '#6ef7ff',
-                              borderBottomColor: '#2757C3',
-                              borderEndColor: '#6ef7ff',
-                              borderRadius: 5,
                             }}>
-                            <Text>{item.BNAME}</Text>
+                            <Text style={styles.checkboxLabel}>{item.BNAME}</Text>
                             <TouchableOpacity
                               onPress={() => {
                                 // setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
@@ -984,10 +943,13 @@ const Gatepass = ({ navigation }) => {
                                 />
                               )}
                             </TouchableOpacity>
-                          </View>
+                          </TouchableOpacity>
                         )}
                       />
-                      {/* {selectBuilding.length < 0 ? 'hi':null } */}
+                    </View>
+                  </Modal>   
+
+                    {/* {selectBuilding.length < 0 ? 'hi':null } */}
                       {errors.selectBuilding && touched.selectBuilding && (
                         <View
                           style={{
@@ -1000,8 +962,6 @@ const Gatepass = ({ navigation }) => {
                           </Text>
                         </View>
                       )}
-                    </View>
-                  ) : null}
                 </View>
               </View>
             </View>
@@ -1012,15 +972,12 @@ const Gatepass = ({ navigation }) => {
               <View style={{ width: '100%', marginVertical: 10 }}>
                 <View
                   style={{
-                    width: '90%',
+                    width: '100%',
                     flexDirection: 'row',
                     borderWidth: 1,
-                    borderTopColor: '#80406A',
-                    borderStartColor: '#6ef7ff',
-                    borderBottomColor: '#2757C3',
-                    borderEndColor: '#6ef7ff',
                     borderRadius: 5,
                     alignSelf: 'center',
+                    backgroundColor:'#fff'
                   }}>
                   <View
                     style={{
@@ -1039,6 +996,7 @@ const Gatepass = ({ navigation }) => {
                     style={{
                       width: '70%',
                       paddingVertical: 5,
+                      fontSize:16
                     }}
                   />
                   {search !== '' ? (
@@ -1086,14 +1044,24 @@ const Gatepass = ({ navigation }) => {
                   textStyle={{ color: '#fff' }}
                 />
               ) : null}
-              <View style={{ width: '90%', alignSelf: 'center', marginVertical: 10 }}>
-                <Text>Name</Text>
+              <View style={{ width: '100%', alignSelf: 'center', marginVertical: 10 }}>
+                <Text style={{
+                      paddingHorizontal: 0,
+                      fontSize: 16,
+                      fontWeight: 'bold'
+                }}>Name</Text>
                 <TextInput
                   value={searchedNameData.Name}
                   editable={false}
                   style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
 
-                <Text>Designation</Text>
+                <Text
+                  style={{
+                    paddingHorizontal: 0,
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                  }}
+                >Designation</Text>
                 <TextInput
                   value={searchedNameData.Desg}
                   editable={false}
@@ -1104,7 +1072,7 @@ const Gatepass = ({ navigation }) => {
 
               <View style={{ paddingVertical: 10 }}>
                 <LinearGradient
-                  colors={['#4174D0', '#6ef7ff']}
+                  colors={['#00B4DB','#0083B0']}
                   style={{
                     margin: 5,
                     borderRadius: 8,
@@ -1235,14 +1203,60 @@ const styles = StyleSheet.create({
     borderEndColor: '#6ef7ff',
     borderRadius: 7,
     flexDirection: 'row',
-    // margin:10,
-    // width: '100%',
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 5,
     marginBottom: 10,
     backgroundColor: '#fff'
+  },
+
+  // Dropdown styles
+  dropdown2BtnStyle: {
+    width: '100%',
+    height: 40,
+    borderWidth:1,
+    borderRadius: 3,
+    backgroundColor: '#FFF',
+    borderColor:'#444',
+  },
+  dropdown2BtnTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
+  dropdown2DropdownStyle: {backgroundColor: '#EFEFEF'},
+  dropdown2RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
+  dropdown2RowTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
+  centeredView:{
+    // borderWidth:1,
+    flex:1,
+    position:'relative',
+    backgroundColor:'#fff'
+
+  },
+  Modalclose:{
+    position:'absolute',
+    // width:25,
+    // height:25,
+    right:0,
+    // borderRadius:20,
+    backgroundColor:'#f00',
+    justifyContent:'center',
+    alignItems:'center',
+    zIndex:55,
+    paddingHorizontal:5,
+    paddingVertical:2
+  },
+  Modalclosetxt:{
+    fontWeight:'700',
+    color:"#fff"
+  },
+  checkboxLabel:{
+    fontWeight:"700",
+    fontSize:16
+  },
+  ModalHeading:{
+    fontSize:20,
+    fontWeight:'700',
+    textAlign:'center',
+    marginBottom:15
   }
 });
 
