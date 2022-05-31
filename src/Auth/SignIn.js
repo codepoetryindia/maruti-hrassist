@@ -67,16 +67,17 @@ const SignIn = ({ navigation }) => {
     // return;
     ApiService.PostMethode('/GetEmployeeProfile', data, token)
       .then(res => {
-        console.log('user Response', res);
+        // console.log('user Response', res);
         let response = res.Value;
 
-        // return console.log(response);
+      console.log("response",response);
 
         if(response.Table){
           let userData = {
             EMPL_NAME: response.Table[0].EMPL_NAME,
             profile_photo:response.Table[0].profile_photo,
             userId:user,
+            EMPL_DESG_CODE:response.Table[0].EMPL_DESG_CODE,
   
           };
           let contextData = {

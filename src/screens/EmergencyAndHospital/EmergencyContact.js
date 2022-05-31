@@ -80,65 +80,65 @@ const EmergencyContacts = ({ navigation }) => {
 
   return (
 
-      <SafeAreaView style={styles.container}>
-        {loader == true ? (
-                <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
-              ):null }
-        <FlatList
-          data={emerList}
-          ListEmptyComponent={() => {
-            return(
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image source={require('../../assets/Images/dataNotFound.png')}
-                  style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-          </View>
-          )
-          }}
-          renderItem={({ item }) => {
-            let image = iconBox(item.EMER_DESC);
-            // console.log('post + image==>', image, item.EMER_DESC);
-            return (
-              <TouchableOpacity
-                style={styles.box}
-                onPress={() => {
-                  myNavigation.navigate("DoctorsContacts", {
-                    data: item,
-                    pageName: item.EMER_DESC == "Doctor" ? "Doctor" : (item.EMER_DESC == "Vigilance" ? "Vigilance" : (item.EMER_DESC == "Fire Control" ? "Fire Control" : (item.EMER_DESC == "Electricity" ? "Electricity" : "POSH Cell")))
-                  })
-                }}>
-                <View style={styles.iconBox}>
-                  <View
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: 100,
-                      borderWidth: 1,
-                      borderColor: '#6ef7ff',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      overflow:'hidden'
-                    }}>
-                    <Image
-                      source={image}
-                      style={{ width: 45, height: 45 }}
-                    />
-                  </View>
-                </View>
-                <View style={styles.item}>
-                  <Text>{item.EMER_DESC}</Text>
-                  <Feather name="corner-up-right" size={20} />
-                </View>
-              </TouchableOpacity>
-            )
-          }}
+    <SafeAreaView style={styles.container}>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
         />
-      </SafeAreaView>
-    
+      ) : null}
+      <FlatList
+        data={emerList}
+        ListEmptyComponent={() => {
+          return (
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image source={require('../../assets/Images/dataNotFound.png')}
+                style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+            </View>
+          )
+        }}
+        renderItem={({ item }) => {
+          let image = iconBox(item.EMER_DESC);
+          // console.log('post + image==>', image, item.EMER_DESC);
+          return (
+            <TouchableOpacity
+              style={styles.box}
+              onPress={() => {
+                myNavigation.navigate("DoctorsContacts", {
+                  data: item,
+                  pageName: item.EMER_DESC == "Doctor" ? "Doctor" : (item.EMER_DESC == "Vigilance" ? "Vigilance" : (item.EMER_DESC == "Fire Control" ? "Fire Control" : (item.EMER_DESC == "Electricity" ? "Electricity" : "POSH Cell")))
+                })
+              }}>
+              <View style={styles.iconBox}>
+                <View
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 100,
+                    borderWidth: 1,
+                    borderColor: '#6ef7ff',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    overflow: 'hidden'
+                  }}>
+                  <Image
+                    source={image}
+                    style={{ width: 45, height: 45 }}
+                  />
+                </View>
+              </View>
+              <View style={styles.item}>
+                <Text>{item.EMER_DESC}</Text>
+                <Feather name="corner-up-right" size={20} />
+              </View>
+            </TouchableOpacity>
+          )
+        }}
+      />
+    </SafeAreaView>
+
   );
 };
 

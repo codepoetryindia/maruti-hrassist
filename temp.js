@@ -413,3 +413,29 @@
 //       }
 //   }
 // }
+<View>
+<Ionicons
+            style={{ marginLeft: '35%' }}
+            name="ellipsis-vertical"
+            size={25}
+            color={'white'}
+            onPress={() => {
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }} />
+
+          {horizental == true ? (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Guidelines')}
+              style={{
+                padding: 10,
+                backgroundColor: '#fff',
+                position: 'absolute',
+                top: 20,
+                right: 30,
+                zIndex: 1000,
+                borderRadius: 8
+              }}>
+              <Text>Guidelines</Text>
+            </TouchableOpacity>
+          ) : null}
+</View>
