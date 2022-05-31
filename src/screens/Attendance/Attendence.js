@@ -1,6 +1,6 @@
 //import liraries
 import React, {useEffect, useState,useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -11,8 +11,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import SelectDropdown from 'react-native-select-dropdown';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
+import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import { date } from 'yup';
+import { useFocusEffect } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+
 // import * as Animatable from 'react-native-animatable';
 // create a component
 const Attendance = ({navigation}) => {
@@ -24,16 +28,139 @@ const Attendance = ({navigation}) => {
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
 
+  // To Hide or show based on getGpsAvailable
+  const [ShowAttandanceTabs, setShowAttandanceTabs] = useState(false);
+  const [RawPunches, setRawPunches] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = checkGpsAvailable();
+      return () => unsubscribe;
+    }, [])
+  );
+
+    const checkGpsAvailable = () =>{
+      let apiData = { "UserName":AppUserData.data.userId };
+      // AppUserData.data.userId 222852
+      let token = AppUserData.token;
+      setLoader(true);
+      ApiService.PostMethode('/GetValidGPSUser', apiData, token)
+        .then(result => {
+          console.log("APiresult GetValidGPSUser", result);
+          setLoader(false);
+          if(result.Result == "Y"){
+            setShowAttandanceTabs(true);
+            setMarkAttandance(0);
+            getUserCurrentLocation();
+          }else{
+            setShowAttandanceTabs(false);
+            setMarkAttandance(1);
+            GetRawPunch();
+          }
+        })
+        .catch(error => {
+          setLoader(false);
+          console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            // client received an error response (5xx, 4xx)
+            Toast.show(error.response.data.title);
+          } else if (error.request) {
+            // client never received a response, or request never left
+            Toast.show('Network Error');
+            // console.log("error.request", error.request._response);
+          } else {
+            // anything else
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+
+
+    const getUserCurrentLocation = () =>{
+      Geolocation.getCurrentPosition(position => {
+        console.log('position', position);
+        const {latitude, longitude} = position.coords;
+        setLocation({
+          latitude,
+          longitude,
+        });
+      });
+    }
+
+    const GetRawPunch = () =>{
+      let apiData = { 
+        "FromDate" : "24-MAR-2017",
+        "ToDate" : "24-MAY-2021",
+          "StaffNo" : 548596
+      };
+      console.log(apiData);
+      // AppUserData.data.userId
+      let token = AppUserData.token;
+      setLoader(true);
+      ApiService.PostMethode('/GetRawPunch', apiData, token)
+        .then(result => {
+          console.log("APiresult GetRawPunch", result);
+          setLoader(false);
+
+          // Dummy Data to continue work
+          let datadummy = {
+            "d": [
+                {
+                    "__type": "ADauthentication+RawpunchDetails",
+                    "Date": "09-MAY-2022 12:52",
+                    "source": "Mobile"
+                }
+            ]
+        };
+          setRawPunches(datadummy.d);
+        })
+        .catch(error => {
+          setLoader(false);
+          console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            // client received an error response (5xx, 4xx)
+            Toast.show(error.response.data.title);
+          } else if (error.request) {
+            // client never received a response, or request never left
+            Toast.show('Network Error');
+            // console.log("error.request", error.request._response);
+          } else {
+            // anything else
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+
+
+    const renderItem =({item})=>{
+      return(
+        <View style={styles.renderitem}>
+            <Text>{item.Date}</Text>
+            <Text>{item.Date}</Text>
+            <Text>{item.source}</Text>
+        </View>
+      )
+    }
+
+
+
   const handleMarkAttandance = index => {
     setMarkAttandance(index);
   };
+
+
   const handelDate = () => {
    if(fromDate >toDate)
    {
-     alert('from date should be less then to date');
-   }
-   else {
-     alert('sucessfull');
+    alert('from date should be less then to date');
+   }else {
+    GetRawPunch();
    }
   }
 
@@ -68,88 +195,57 @@ const Attendance = ({navigation}) => {
             }
         });
 };
+
+
   const FinancialYear = ['2021', '2022', '1999'];
   const [location, setLocation] = useState('');
+
   const punch = () => {
     setLocation([]);
   };
-  useEffect(() => {
-    Geolocation.getCurrentPosition(position => {
-      console.log('position', position);
-      const {latitude, longitude} = position.coords;
-      setLocation({
-        latitude,
-        longitude,
-      });
-    });
-  }, []);
+
+
+
+
+
+
+
+
   return (
     <View style={styles.container}>
+          {
+            loader ? (
+              <Text>Loading</Text>
+            ): null
+          }
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={{color:'#fff'}}
+            overlayColor={'rgba(0, 0, 0, 0.50)'}
+          />
+        
       <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-        <SegmentedControlTab
-           borderRadius={8}
-          values={['Mark Attendance', 'View Report']}
-          selectedIndex={MarkAttandance}
-          onTabPress={index => {
-            handleMarkAttandance(index);
-          }}
-          tabsContainerStyle={{ width:'100%',alignSelf:'center'}}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-         {/* <TouchableOpacity
-            style={{left:5}}
-            onPress={() => 
-           {horizental == true?  setHorizental(false) : setHorizental(true)}
-            }>
-            <Ionicons
-              name="ellipsis-vertical-circle"
-              size={25}
-              color={'red'}
-            />
-             
-             {horizental==true ? (<View style={{padding:5, backgroundColor: '#000',marginRight:10}}><Text>hello</Text></View>):null} 
-           
-          </TouchableOpacity> */}
-           {/* <SelectDropdown
-                // defaultButtonText="Select Any Year"
-                data={FinancialYear}
-                buttonStyle={{
-                  backgroundColor: 'transparent',
-                  width: '80%',
-                  height: 40,
-                  borderRadius: 5,
-                }}
-                dropdownStyle={{borderRadius: 10}}
-                rowTextStyle={{textAlign: 'left', marginLeft: 5}}
-                buttonTextStyle={{textAlign: 'left', marginLeft: 1}}
-                renderDropdownIcon={isOpened => {
-                  return (
-                    // <FontAwesome
-                    //   name={isOpened ? 'chevron-up' : 'chevron-down'}
-                    //   color={'#444'}
-                    //   size={18}
-                    // />
-                    <Ionicons
-                    name="ellipsis-vertical-circle"
-                    size={25}
-                    color={'red'}
-                  />
-                  );
-                }}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                
-                  return item;
-                }}
-              /> */}
+
+          {
+            ShowAttandanceTabs ? (
+              <SegmentedControlTab
+              borderRadius={8}
+             values={['Mark Attendance', 'View Report']}
+             selectedIndex={MarkAttandance}
+             onTabPress={index => {
+               handleMarkAttandance(index);
+             }}
+             tabsContainerStyle={{ width:'100%',alignSelf:'center'}}
+             tabStyle={styles.tabStyle}
+             tabTextStyle={styles.tabTextStyle}
+             activeTabStyle={styles.activeTabStyle}
+             activeTabTextStyle={styles.activeTabTextStyle}
+           />
+            ):(
+              <Text>View Report</Text>
+            )
+          }
       </View>
 
       <View>
@@ -305,7 +401,11 @@ const Attendance = ({navigation}) => {
 
             {/* Manager Mode */}
 
-          
+            <FlatList
+              data={RawPunches}
+              renderItem={renderItem}
+              keyExtractor={item => item.Date.toString()}
+            />
           </View>
         )}
       </View>
@@ -374,33 +474,15 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 30,
   },
+  renderitem:{
+    paddingVertical:10,
+    paddingHorizontal:5,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    backgroundColor:'#fff',
+    marginTop:10
+  }
 });
 
 //make this component available to the app
 export default Attendance;
-
-{
-  /* <View style={{width:'45%',backgroundColor:'green'}}>
-           <Text style={{color: 'gray'}}>{text}</Text>
-             <View>
-               <View>
-                 <Ionicons
-                   name="calendar-outline"
-                   onPress={showDatepicker}
-                   size={30}
-                   color={'#6ef7ff'}
-                 />
-               </View>
-               {show && (
-                 <DateTimePicker
-                   testID="dateTimePicker"
-                   value={date}
-                   mode={mode}
-                   is24Hour={true}
-                   display="default"
-                   onChange={onChange}
-                 />
-               )}
-             </View>
-             </View> */
-}

@@ -1,5 +1,5 @@
 //import liraries
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -28,6 +28,14 @@ import SelectDropdown from 'react-native-select-dropdown';
 import {DataTable} from 'react-native-paper';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
+import { useFocusEffect } from '@react-navigation/native';
+import AuthContext from '../../context/AuthContext';
+
+
+
+
+
+
 // create a component
 const Leave = () => {
   const [fromDate, setFromDate] = useState(new Date());
@@ -42,14 +50,32 @@ const Leave = () => {
   const [period, setPeriod] = useState('');
   const [checked, setChecked] = useState('');
   const [validReason, setValidReason] = useState('Select Reason');
+  const { authContext, AppUserData } = useContext(AuthContext);
   // const [comment, setComment] = useState('');
 
+  // added for leave page 
+  const [LeaveTypes, setLeaveTypes] = useState([]);
+  const [Leavereason, setLeavereason] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [FinancialYear, setFinancialYear] = useState([]);
+  const [EmpLeaveDetail, setEmpLeaveDetail] = useState([]);
+
+
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = getleavetypes();
+      return () => unsubscribe;
+    }, [])
+  )
+
   var radio_props = [
-    {label: 'Planned', value: 0},
-    {label: 'Unplanned', value: 1},
+    {label: 'Planned', value: "P"},
+    {label: 'Unplanned', value: "U"},
   ];
   var radio_propsSecond = [
-    {label: 'Full Day', value: 0},
+    {label: 'Full Day', value: 3},
     {label: '1st Half', value: 1},
     {label: '2nd Half', value: 2},
   ];
@@ -91,276 +117,188 @@ const Leave = () => {
         }
       });
   };
-  const financeData = [
-    {
-      id: '1',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'AEDFGRD',
-      period: 'full Day',
-      Status: 'Success',
-    },
-    {
-      id: '2',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'AJJJRD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '3',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARJJD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '4',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARYYD',
-      period: 'full Day',
-      Status: 'Success',
-    },
-    {
-      id: '5',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARGGD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '6',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARRRRD',
-      period: 'full Day',
-      Status: 'Success',
-    },
-    {
-      id: '7',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARGGD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '8',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARAAD',
-      period: 'full Day',
-      Status: 'Success',
-    },
-    {
-      id: '9',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ABRD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '10',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'A5RRD',
-      period: 'full Day',
-      Status: 'Success',
-    },
-    {
-      id: '11',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARGD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '12',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ADRD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '13',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARGD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '14',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARDF',
-      period: 'full Day',
-      Status: 'pending',
-    },
-    {
-      id: '15',
-      FromDate: '12-05-1999',
-      toDate: '24-09-2021',
-      type: 'ARD',
-      period: 'full Day',
-      Status: 'pending',
-    },
-  ];
-  const leave = [
-    {
-      id: '1',
-      Type: 'CBR',
-    },
-    {
-      id: '2',
-      Type: 'CBR',
-    },
-    {
-      id: '3',
-      Type: 'CBR',
-    },
-    {
-      id: '4',
-      Type: 'CBR',
-    },
-    {
-      id: '5',
-      Type: 'CBR',
-    },
-    {
-      id: '6',
-      Type: 'CBR',
-    },
-    {
-      id: '7',
-      Type: 'CBR',
-    },
-    {
-      id: '8',
-      Type: 'CBR',
-    },
-  ];
 
-  const reason = [
-    {
-      id: '1',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '2',
-      reason:
-        'Adverse House situations. You are urgently needed at home because there was a fire, structural damage to your home, a flooded bathroom, etc.',
-    },
-    {
-      id: '3',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '4',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '5',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '6',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '7',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '8',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '9',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '10',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '11',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '12',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '13',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '14',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '15',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '16',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '17',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '18',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '19',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-    {
-      id: '20',
-      reason:
-        'Someone at-home is sick (e.g. your husband, mother, father, son, daughter, etc.)',
-    },
-  ];
+  const getleavetypes= ()=>{
+    let apiData = { "UserName":AppUserData.data.userId };
+    // AppUserData.data.userId 222852
+    let token = AppUserData.token;
+    setLoader(true);
+    ApiService.PostMethode('/GetInitialLeave  ', apiData, token)
+      .then(result => {
+        console.log("APiresult getleave types", result);
+        setLoader(false);
+        if(result.Value){
+          let updatedArray= [];
+          result.Value.Table2.forEach((element, index) => {
+            updatedArray.push({...element, id:index, Type:element.SHORT_NAME, value: element.ABSENCE_ID.replace(/\D/g, "")});
+          });
+          console.log(updatedArray);
+          setLeaveTypes(updatedArray);
+        }else{
+          Toast.show('No Leave type found');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  const GetLeaveReason= (type)=>{
+    let apiData = { "LeaveType":type};
+    // AppUserData.data.userId 222852
+    let token = AppUserData.token;
+    setLoader(true);
+    ApiService.PostMethode('/GetLeaveReason  ', apiData, token)
+      .then(result => {
+        console.log("APiresult GetLeaveReason", result);
+        setLoader(false);
+        if(result.Value){
+          let reasons = [];
+          result.Value.forEach((element, index) => {
+            reasons.push({...element, id:index});
+          });
+          setLeavereason(reasons);
+        }else{
+          Toast.show('No Leave type found');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+
+  const getfinancialyear = ()=>{
+    let apiData = { 
+      "UserName" : AppUserData.data.userId
+  };
+    // AppUserData.data.userId 222852
+    let token = AppUserData.token;
+    setLoader(true);
+    ApiService.PostMethode('/LeaveStatus  ', apiData, token)
+      .then(result => {
+        console.log("APiresult getfinancialyear", result);
+        setLoader(false);
+        if(result.Value){
+          let reasons = [];
+          setFinancialYear(result.Value.Table);
+        }else{
+          Toast.show('No Leave type found');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+  const getEmpLeaveDetail = (fnyear)=>{
+
+    var curryear = ((new Date().getFullYear()).toString()).substring(0, 2);
+    var from;
+    if (parseInt(((fnyear.toString()).substring(0, 2))) == 99) {
+        from = '01-apr-' + (parseInt(curryear) - 10) + ((fnyear.toString()).substring(0, 2));
+    } else {
+        from = '01-apr-' + curryear + ((fnyear.toString()).substring(0, 2));
+    }
+    var to = '31-mar-' + curryear + ((fnyear.toString()).substring(2, 4));
+    let apiData = { 
+        "StaffNo" : AppUserData.data.userId,
+        "FromDate" :from,
+        "ToDate" : to
+    };
+
+    // AppUserData.data.userId 222852
+    let token = AppUserData.token;
+    setLoader(true);
+    ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
+      .then(result => {
+        console.log("APiresult GetEmplLevDetail", result);
+        setLoader(false);
+        if(result.Value){
+          setEmpLeaveDetail(result.Value);
+        }else{
+          Toast.show('No Leave type found');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
   const handleLeave = index => {
+    // console.log(index);
+    if(index == 1){
+      getfinancialyear()
+    }
     setapplyLeave(index);
   };
 
-  const FinancialYear = ['2021', '2022', '1999'];
+  
 
   const rederReason = ({item}) => {
     return (
@@ -375,24 +313,17 @@ const Leave = () => {
         <TouchableOpacity
           onPress={() => {
             // console.log('selected reason', item);
-            setValidReason(item.reason);
+            setValidReason(item.REASON);
             fromRef.current.setFieldValue('reason', item.reason);
             setModalVisible(false);
           }}>
-          <Text style={{color: '#fff', fontSize: 15}}>{item.reason}</Text>
+          <Text style={{color: '#fff', fontSize: 15}}>{item.REASON}</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
-  return loader == true ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator color={'red'} size={'large'} />
-      <Text style={{color: '#696969', marginVertical: 10}}>
-        Loading Data...
-      </Text>
-    </View>
-  ) : (
+  return (
     <View style={{flex: 1}}>
       <View showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={{width: '90%', alignSelf: 'center'}}>
@@ -410,6 +341,8 @@ const Leave = () => {
             activeTabTextStyle={styles.activeTabTextStyle}
           />
         </View>
+
+        
         <View>
           {applyLeave == 0 ? (
             <Formik
@@ -457,13 +390,14 @@ const Leave = () => {
                   <View style={styles.box}>
                     <FlatList
                       numColumns={4}
-                      data={leave}
-                      keyExtractor={item => item.id}
+                      data={LeaveTypes}
+                      keyExtractor={item => item.ABSENCE_ID.toString()}
                       renderItem={({item}) => (
                         <TouchableOpacity
                           onPress={() => {
+                            GetLeaveReason(item.value);
                             setChecked(item.id);
-                            fromRef.current.setFieldValue('leave', item.id);
+                            fromRef.current.setFieldValue('leave', item.ABSENCE_ID);
                             // setFieldValue(item.id);
                           }}
                           style={[
@@ -480,6 +414,8 @@ const Leave = () => {
                             {item.Type}
                           </Text>
                         </TouchableOpacity>
+
+
                       )}
                     />
                   </View>
@@ -753,7 +689,7 @@ const Leave = () => {
                               </TouchableOpacity>
                             </View>
                             <FlatList
-                              data={reason}
+                              data={Leavereason}
                               keyExtractor={item => item.id}
                               renderItem={rederReason}
                             />
@@ -822,6 +758,7 @@ const Leave = () => {
               )}
             </Formik>
           ) : (
+
             <ScrollView style={{paddingVertical: 10, height: '82%'}}>
               <Text style={{paddingHorizontal: 20}}>Select Financial Year</Text>
               <View
@@ -864,16 +801,19 @@ const Leave = () => {
                     );
                   }}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index);
+                    getEmpLeaveDetail(selectedItem.FNYR_YEAR);
+                    // console.log(selectedItem, index);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
-                    return selectedItem;
+                    return selectedItem.FNYR_YEAR;
                   }}
                   rowTextForSelection={(item, index) => {
-                    return item;
+                    return item.FNYR_YEAR;
                   }}
                 />
               </View>
+
+
               <Text style={{textAlign: 'center'}}>
                 Tap on Leave To View Details
               </Text>
@@ -902,12 +842,12 @@ const Leave = () => {
                     </DataTable.Title>
                   </DataTable.Header>
                   <FlatList
-                    data={financeData}
+                    data={EmpLeaveDetail}
                     keyExtractor={item => item.id}
                     renderItem={({item}) => (
                       <View>
                         <TouchableOpacity onPress={toggleModal}>
-                          <Modal isVisible={isModalVisible}>
+                          {/* <Modal isVisible={isModalVisible}>
                             <View>
                               <LinearGradient
                              colors={['#4174D0','#6ef7ff']}
@@ -947,7 +887,7 @@ const Leave = () => {
                                 />
                               </LinearGradient>
                             </View>
-                          </Modal>
+                          </Modal> */}
                           <DataTable.Row
                             style={{borderBottomWidth: 1, paddingVertical: 5}}>
                             <View
@@ -1022,8 +962,8 @@ const styles = StyleSheet.create({
   },
   circle: {
     borderWidth: 0.5,
-    width: 30,
-    height: 30,
+    // width: 30,
+    // height: 30,
     borderRadius: 50,
     padding: 5,
     alignItems: 'center',
@@ -1031,16 +971,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: '2%',
     marginHorizontal: 28,
-
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.18,
-    // shadowRadius: 2.0,
-
-    // elevation: 2,
   },
   box: {
     width: '90%',
