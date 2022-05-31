@@ -1,5 +1,5 @@
 //import liraries
-import React, {useEffect } from 'react';
+import React, { Component, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,36 +13,39 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Hospital from './Hospital';
 import NearByHospital from './NearByHospital';
 import EmergencyContacts from './EmergencyContact';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useIsFocused } from '@react-navigation/native'
+const Tab = createMaterialTopTabNavigator();
 
 
-const FirstRoute = () => <EmergencyContacts />;
-const SecondRoute = () => <Hospital locationName='hosFilterData'/>;
-const ThirdRoute = () => <NearByHospital />;
 
 
-const EmergencyHospital = ({ navigation,route }) => {
-  // let hosFilterData = route.params.selectedLoc
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-  });
+const EmergencyHospital = ({ navigation, route }) => {
+  let hosFilterData = route.params
+ 
+
+  // React.useEffect(() => {
+  //   const unsubscribe = navigation.addListener('tabPress', (e) => {
+  //     // Prevent default behavior
+  //     e.preventDefault();
+
+  //     alert('Default behavior prevented');
+  //     // Do something manually
+  //     // ...
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
 
   // useEffect(() => {
   //   console.log("hosFilterData",hosFilterData);
   // }, [])
-  
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'Emergency Contacts' },
-    { key: 'second', title: 'Hospital' },
-    { key: 'third', title: 'NearByHospital' },
-  ]);
+
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-        colors={['#4174D0', '#74f5fa']}
+        // colors={['#4174D0', '#74f5fa']}
+        colors={['#00B4DB', '#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -76,18 +79,33 @@ const EmergencyHospital = ({ navigation,route }) => {
             }}>
             Emergency & Hospital
           </Text>
-         {index==1 ? (
+          {/* {index == 1 ? (
             <Ionicons
-            style={{ marginLeft: 80 }}
-            name="ios-filter"
-            size={25}
-            color={'white'}
-            onPress={() => navigation.navigate("HosLocation")}
-          />
-         ):null}
+              style={{ marginLeft: 80 }}
+              name="ios-filter"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.navigate("HosLocation")}
+            />
+          ) : null} */}
         </View>
       </LinearGradient>
-      <TabView
+
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 14 },
+          tabBarActiveTintColor: '#fff',
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
+          tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+          
+        }}
+      >
+        <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
+        <Tab.Screen name="Hospital" component={Hospital} locationName='hosFilterData' onPress={() => console.log("pressed")} />
+        <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
+      </Tab.Navigator>
+
+      {/* <TabView
         renderTabBar={props => {
           return (
             <LinearGradient colors={['#74f5fa', '#62cfec']} style={{ marginTop: -1, zIndex: -1, elevation: -1 }}>
@@ -107,7 +125,7 @@ const EmergencyHospital = ({ navigation,route }) => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-      />
+      /> */}
     </SafeAreaView>
 
 
@@ -119,6 +137,7 @@ const EmergencyHospital = ({ navigation,route }) => {
 const styles = StyleSheet.create({
   gradient: {
     padding: 20,
+    elevation: 0
   },
   container: {
     flexDirection: 'row',

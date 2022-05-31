@@ -740,7 +740,7 @@ const ShuttleBooking = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#4174D0', '#6ef7ff']}
+        colors={['#00B4DB', '#0083B0']}
         style={{ padding: 20 }}>
         <View style={{ flexDirection: 'row' }}>
           <View
@@ -806,9 +806,8 @@ const ShuttleBooking = ({ navigation }) => {
         style={{ fontSize: 10 }}
         renderTabBar={props => {
           return (
-            <LinearGradient
-              colors={['#6ef7fa', '#5dc0e8']}
-              style={{ marginTop: -1, zIndex: -1 }}>
+            <View 
+              style={{ marginTop: -1, zIndex: -1 ,backgroundColor:'#0083B0'}}>
               <TabBar
                 renderLabel={({ route, focused, color }) => (
                   <Text style={{ fontSize: 13, color: '#fff' }}>
@@ -818,7 +817,7 @@ const ShuttleBooking = ({ navigation }) => {
                 {...props}
                 style={{ backgroundColor: 'transparent', elevation: 0 }}
               />
-            </LinearGradient>
+            </View>
           );
         }}
         navigationState={{ index, routes }}

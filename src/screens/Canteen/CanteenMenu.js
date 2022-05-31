@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +20,7 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Accordion from './CanteenComponent/Accordion';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const CanteenMenu = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
@@ -283,7 +285,7 @@ const CanteenMenu = ({ navigation }) => {
         }}
         initialLayout={{ width: layout.width }}
       />
-      <View style={{position:'absolute',top:'17%'}}>
+      <View style={{position:'absolute',top:'15%'}}>
         <DatePicker
           modal
           open={open}

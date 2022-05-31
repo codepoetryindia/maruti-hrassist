@@ -15,9 +15,7 @@ const EmployeeDirect = () => {
   const [loader, setLoader] = useState(false)
   const [searchedData, setSearchedData] = useState([])
   const { authContext, AppUserData } = useContext(AuthContext);
-  useEffect(() => {
-    console.log("navigation", myNavigation)
-  }, [])
+
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {
@@ -109,6 +107,15 @@ const EmployeeDirect = () => {
           <FlatList
             style={{ width:"100%",marginHorizontal:0 }}
             data={searchedData}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Image source={require('../../assets/Images/dataNotFound.png')}
+                    style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                </View>
+              )
+            }}
             keyExtractor={({ item, index }) => index}
             renderItem={({ item, index }) => (
               <TouchableOpacity style={styles.FlatListData}>
@@ -145,12 +152,7 @@ const EmployeeDirect = () => {
             )}
           />
         ) : 
-        (
-        <View style={{ justifyContent: 'center', alignItems: 'center', flex:1 }}>
-          <Image source={require('../../assets/Images/dataNotFound.png')}
-            style={{ width: '100%', height: 180, width:180, resizeMode: 'contain', marginLeft: -50 }} />
-          <Text style={{ fontSize: 20, textAlign: 'center', }}>No Searched Data</Text>
-        </View>)
+       null
         }
       </SafeAreaView>
     

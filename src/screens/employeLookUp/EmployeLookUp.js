@@ -15,23 +15,26 @@ import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import EmployeeDirect from './EmployeeDirect';
 import Birthdays from './Birthday/Birthdays';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const FirstRoute = () => <EmployeeDirect />;
+const Tab = createMaterialTopTabNavigator();
 
-const SecondRoute = () => <Birthdays />;
+
 
 
 const EmployeLookUp = ({navigation}) => {
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'Employee Direct'},
-    {key: 'second', title: 'Birthdays'},
-  ]);
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      // Prevent default behavior
+      e.preventDefault();
+
+      alert('Default behavior prevented');
+      // Do something manually
+      // ...
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   return (
     <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
@@ -71,8 +74,18 @@ const EmployeLookUp = ({navigation}) => {
         </View>
       </LinearGradient>
 
-
-      <TabView
+      <Tab.Navigator 
+      screenOptions={{
+        tabBarLabelStyle: { fontSize: 16 },
+        tabBarActiveTintColor:'#fff',
+        tabBarIndicatorStyle:{borderBottomWidth:5,borderBottomColor:'#fff'},
+        tabBarStyle: { backgroundColor: '#0083B0',elevation:0 },
+      }}
+      >
+        <Tab.Screen name="EmployeeDirect" component={EmployeeDirect} />
+        <Tab.Screen name="Birthdays" component={Birthdays} />
+      </Tab.Navigator>
+      {/* <TabView
         renderTabBar={props => {
           return (
             <LinearGradient  colors={['#5dc0e9', '#5dc0e9']} style={{marginTop:-1,zIndex:-1}}>
@@ -98,7 +111,7 @@ const EmployeLookUp = ({navigation}) => {
         initialLayout={{width: layout.width}}
         sceneContainerStyle={{backgroundColor:"#dfe6e9", width:"100%"}}
         style={{backgroundColor:'#f00'}}
-      />
+      /> */}
     </SafeAreaView>
   )
 };
@@ -107,6 +120,7 @@ const EmployeLookUp = ({navigation}) => {
 const styles = StyleSheet.create({
   gradient: {
     padding: 20,
+    elevation:0
   },
   container: {
     flexDirection: 'row',

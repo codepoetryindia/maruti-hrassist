@@ -67,7 +67,7 @@ const Gatepass = ({ navigation }) => {
         setLoader(false);
         let Location = result.Value[0].LOCN
         let LocationCode = result.Value[0].CODE
-        console.log("LocationCode",LocationCode)
+        console.log("LocationCode", LocationCode)
         setEmpLoc(Location)
         setEmpLocCode(LocationCode)
       })
@@ -312,6 +312,7 @@ const Gatepass = ({ navigation }) => {
           searchEmp: '',
         }}
         onSubmit={values => {
+          
           let payload = {
             office: values.office,
             date: values.date,
@@ -322,12 +323,16 @@ const Gatepass = ({ navigation }) => {
             persionalVehical: values.persionalVehical,
             internalVehical: values.internalVehical,
           };
-          console.log("payload", payload);
+          console.log("selectBuilding", payload);
           navigation.navigate("VisitorDetails", {
             visitorpayload: payload,
           })
         }}>
-        {({
+
+
+        {
+        
+        ({
           handleChange,
           handleBlur,
           handleSubmit,
@@ -888,7 +893,7 @@ const Gatepass = ({ navigation }) => {
                     <ScrollView
                       horizontal
                       showsHorizontalScrollIndicator={false}>
-                        {/* <Text>{JSON.stringify(selectBuilding)}</Text> */}
+                      {/* <Text>{JSON.stringify(selectBuilding)}</Text> */}
                       {
                         selectBuilding.length > 0 && selectBuilding.map((element) => {
                           console.log("element", element)
@@ -963,14 +968,14 @@ const Gatepass = ({ navigation }) => {
                             <TouchableOpacity
                               onPress={() => {
                                 // setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
-                              let bData =   setSelectBuilding(prev=>
+                                let bData = setSelectBuilding(prev =>
                                   [...prev,
                                   item.BNAME]
                                 );
                                 // fromRef.current.setFieldValue('BuildingData', bData);
                                 // fromRef.current.setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
                               }}>
-                              {selectBuilding.length> 0 ? (
+                              {selectBuilding.length > 0 ? (
                                 <Ionicons
                                   name="remove-circle"
                                   size={25}
@@ -988,7 +993,7 @@ const Gatepass = ({ navigation }) => {
                         )}
                       />
                       {/* {selectBuilding.length < 0 ? 'hi':null } */}
-                      {errors.selectBuilding && touched.selectBuilding && (
+                      {selectBuilding && selectBuilding.length < 0(
                         <View
                           style={{
                             width: '90%',
@@ -1043,7 +1048,7 @@ const Gatepass = ({ navigation }) => {
                   />
                   {search !== '' ? (
                     <TouchableOpacity
-                      style={{ borderRadius: 8, marginLeft: -10,alignSelf:'center' }} onPress={() => { emptyList() }}>
+                      style={{ borderRadius: 8, marginLeft: -10, alignSelf: 'center' }} onPress={() => { emptyList() }}>
                       <Ionicons
                         style={styles.searchIcon}
                         name="close-circle-outline"
