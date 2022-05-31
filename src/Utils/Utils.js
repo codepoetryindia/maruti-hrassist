@@ -3,7 +3,7 @@ import { API_SERVICES_URL } from "../API/Api";
 
 export const PostMethode =  async(url , data , token) => {
     let PostUrl = API_SERVICES_URL + url;
-    console.log("Api url",PostUrl,data,token)
+    console.log("Api url",PostUrl,data);
     try {
         let response = await axios.post (PostUrl, JSON.stringify(data),{
             headers : {

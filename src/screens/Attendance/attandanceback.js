@@ -17,22 +17,6 @@ import Leave from './Leave';
 import Shift from './Shift';
 import HolidayCalendar from './HolidayCalendar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-const Tab = createMaterialTopTabNavigator();
-
-// const AttendanceAdmin = ({}) =>{
-//   return(
-//     <Tab.Navigator>
-//       <Tab.Screen name="Home" component={Attendance} />
-//       <Tab.Screen name="Settings" component={Leave} />
-//     </Tab.Navigator>
-//   )
-// }
-
-
-
-
 
 const FirstRoute = () => <Attendance />;
 const SecondRoute = () => <Leave />;
@@ -164,14 +148,9 @@ const AttendanceAdmin = ({navigation}) => {
           </View>
           {/* </View> */}
         </View>
-      </LinearGradient>        
-      <Tab.Navigator>
-        <Tab.Screen name="Attendance" component={Attendance} />
-        <Tab.Screen name="Leave" component={Leave} />
-        <Tab.Screen name="Shift" component={Shift} />
-        <Tab.Screen name="Holiday" component={HolidayCalendar} />
-      </Tab.Navigator>
-      {/* <TabView
+      </LinearGradient>
+     
+      <TabView
         renderTabBar={props => {
           return (
             <LinearGradient
@@ -193,7 +172,7 @@ const AttendanceAdmin = ({navigation}) => {
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{width: layout.width}}
-      /> */}
+      />
     </View>
   );
 };
