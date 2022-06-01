@@ -114,7 +114,7 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         console.log(result);
         setLoader(false);
-        let arrData = result.Value.map((item) => { return { 'label': item.MEANING } })
+        let arrData = result.Value.map((item) => { return { 'label': item.MEANING, value: item.VAL } })
         setSearchLevelData(arrData)
       })
       .catch(error => {
@@ -176,12 +176,12 @@ const Gatepass = ({ navigation }) => {
         });
     }
   };
-  const GetAccessListVGPSApi = () => {
+  const GetAccessListVGPSApi = (locationcode ='001') => {
     let userId = AppUserData.data.userId
     // let newLoc = empLocCode.split(",")[0]
     let apiData = {
       UserName: userId,
-      LocationCode: '002',
+      LocationCode: locationcode,
       LevelID: "1"
     }
     console.log('post data', apiData);
@@ -192,15 +192,15 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         setLoader(false);
         let responseData = result.Value
-        console.log('building data', responseData)
+        // console.log('building data', responseData)
         let responseDataNew = responseData.map(element=>{
           return{
             ...element,
             isSelected:false
           }
         })
-        console.log(responseDataNew);
-        setBuildingData(responseData)
+        // console.log("response data new", responseDataNew);
+        setBuildingData(responseDataNew)
       })
       .catch(error => {
         setLoader(false);
@@ -274,13 +274,11 @@ const Gatepass = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, }}>
-      {loader == true ? (
         <Spinner
           visible={loader}
           textContent={'Loading...'}
           textStyle={styles.spinnerTextStyle}
         />
-      ) : null}
       <LinearGradient
         colors={['#00B4DB','#0083B0']}  
         style={styles.gradient}>
@@ -334,21 +332,54 @@ const Gatepass = ({ navigation }) => {
           vehicleNumber:'',
           building: [],
           searchEmp: '',
+          "perName":"",
+          "Desig":"",
+          "noOfPerson":"",
+          "empId":"",
         }}
         onSubmit={values => {
-          let payload = {
-            office: values.office,
-            date: values.date,
-            time: values.time,
-            duration: values.duration,
-            searchLevel: values.searchLevel,
-            reason: values.reason,
-            persionalVehical: values.persionalVehical,
-            internalVehical: values.internalVehical,
-          };
-          console.log("payload", payload);
+          console.log(values, BuildingData);
+
+          let buldings = BuildingData.filter(element=> {
+            if(element.isSelected){
+              return element.BID;
+            }
+          }).map(obj=> obj.BID)
+
+          // let payload = {
+          //   office: values.office,
+          //   date: values.date,
+          //   time: values.time,
+          //   duration: values.duration,
+          //   searchLevel: values.searchLevel,
+          //   reason: values.reason,
+          //   persionalVehical: values.persionalVehical,
+          //   internalVehical: values.internalVehical,
+          // };
+          let newdata = {
+            "id":"1",
+            "location":values.office.split(",")[0],
+            "visitDate": moment(values.date).format('YY/MM/DD'),
+            "authorizedPerson":AppUserData.data.userId,
+            "Pvehicle":values.persionalVehical,
+            "VisType":"O",
+            "visLevel":"1",
+            "buildings":buldings,
+            "duration":values.duration,
+            "exArrTime":moment(values.date).format('MM-DD-YY hh:mm'),
+            "SearchLevel":values.searchLevel,
+            "interVehicle":values.internalVehical,
+            "ReasonToCome":values.reason,
+            "perName":values.perName,
+            "Desig":values.Desig,
+            "noOfPerson":"5",
+            "empId":values.empId,
+            "vehicleNumber":values.vehicleNumber,
+            "dateDummy":values.date
+          }
+          console.log("payload", newdata);
           navigation.navigate("VisitorDetails", {
-            visitorpayload: payload,
+            visitorpayload: newdata,
           })
         }}>
         {({
@@ -379,7 +410,10 @@ const Gatepass = ({ navigation }) => {
               onSelect={(selectedItem, index) => {
                 // console.log(selectedItem, index);
                 console.log(selectedItem);
+                setBuildingData([]);
                 setFieldValue('office',selectedItem.CODE);
+                GetAccessListVGPSApi(selectedItem.CODE.split(',')[0]);
+
 
               }}
               defaultButtonText={'Select Location'}
@@ -556,7 +590,7 @@ const Gatepass = ({ navigation }) => {
               onSelect={(selectedItem, index) => {
                 // console.log(selectedItem, index);
                 console.log(selectedItem);
-                setFieldValue('searchLevel',selectedItem.VAL);
+                setFieldValue('searchLevel',selectedItem.value);
 
               }}
               defaultButtonText={'Select Search Level'}
@@ -840,11 +874,10 @@ const Gatepass = ({ navigation }) => {
                     <ScrollView
                       horizontal
                       showsHorizontalScrollIndicator={false}>
-                        {/* <Text>{JSON.stringify(selectBuilding)}</Text> */}
+                        {/* <Text>{JSON.stringify(BuildingData)}</Text> */}
                       {
-                        selectBuilding.length > 0 && selectBuilding.map((element) => {
-                          console.log("element", element)
-                          return (
+                        BuildingData.length > 0 && BuildingData.map((element, index) => 
+                          element.isSelected ? (                          
                             <View
                               style={{
                                 padding: 5,
@@ -856,21 +889,19 @@ const Gatepass = ({ navigation }) => {
                                 alignItems: 'center',
                               }}>
                               <Text style={{ color: '#fff', padding: 5 }}>
-                                {element}
+                                {element.BNAME}
                               </Text>
-                              <TouchableOpacity onPress={(element) => {
-                                let arr = selectBuilding.filter(item => {
-                                  if (item !== element) {
-                                    return item
-                                  }
-                                })
-                                setSelectBuilding(arr)
+                              <TouchableOpacity 
+                              onPress={(item) => {
+                                let newState = [...BuildingData];
+                                newState[index].isSelected = false;
+                                setBuildingData(newState);
                               }}>
                                 <Ionicons name="remove-circle" size={30} />
                               </TouchableOpacity>
                             </View>
-                          )
-                        })}
+                          ): null
+                        )}
                     </ScrollView>
                     <TouchableOpacity onPress={toggleBuilding}>
                       {show == true ? (
@@ -895,7 +926,7 @@ const Gatepass = ({ navigation }) => {
                     <TouchableOpacity style={styles.Modalclose} 
                       onPress={toggleBuilding}
                     > 
-                      <Text style={styles.Modalclosetxt}>Close</Text>
+                      <Text style={styles.Modalclosetxt}>Done</Text>
                       {/* <Ionicons name="close" size={25} /> */}
                     </TouchableOpacity>
                       <Text style={styles.ModalHeading}>
@@ -912,37 +943,40 @@ const Gatepass = ({ navigation }) => {
                             style={{
                               width: '48%',
                               padding: 10,
-                              borderWidth: 1,
+                              // borderWidth: 1,
                               borderColor:'#6e6e6e',
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               margin: 2,
+                              backgroundColor: item.isSelected ? '#C9EFD9' : "#eee",
+                            }}
+                            onPress={() => {
+                              let newState = [...BuildingData];
+
+                              if(item.isSelected){
+                                newState[index].isSelected = false;
+                                setBuildingData(newState);
+                              }else{
+                                newState[index].isSelected = true;
+                                setBuildingData(newState);
+                              }
                             }}>
                             <Text style={styles.checkboxLabel}>{item.BNAME}</Text>
-                            <TouchableOpacity
-                              onPress={() => {
-                                // setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
-                              let bData =   setSelectBuilding(prev=>
-                                  [...prev,
-                                  item.BNAME]
-                                );
-                                // fromRef.current.setFieldValue('BuildingData', bData);
-                                // fromRef.current.setSelectBuilding('BuildingData', [...selectBuilding, item.BNAME]);
-                              }}>
-                              {selectBuilding.length> 0 ? (
+                            <View>
+                              {item.isSelected ? (
                                 <Ionicons
                                   name="remove-circle"
                                   size={25}
-                                  color={'#4174D0'}
+                                  color={'#27ae60'}
                                 />
                               ) : (
                                 <Ionicons
                                   name="add-circle"
                                   size={25}
-                                  color={'#4174D0'}
+                                  color={'#4e4e4e'}
                                 />
                               )}
-                            </TouchableOpacity>
+                            </View>
                           </TouchableOpacity>
                         )}
                       />
@@ -1051,7 +1085,7 @@ const Gatepass = ({ navigation }) => {
                       fontWeight: 'bold'
                 }}>Name</Text>
                 <TextInput
-                  value={searchedNameData.Name}
+                  value={values.perName}
                   editable={false}
                   style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
 
@@ -1063,7 +1097,7 @@ const Gatepass = ({ navigation }) => {
                   }}
                 >Designation</Text>
                 <TextInput
-                  value={searchedNameData.Desg}
+                  value={values.Desig}
                   editable={false}
                   style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
               </View>
@@ -1104,7 +1138,7 @@ const Gatepass = ({ navigation }) => {
             </View>
 
             {/* MOdal for searchEMP List */}
-            <Modal transparent={true} visible={empmodalVisible}>
+            <Modal transparent={false} visible={empmodalVisible}>
               <Pressable
                 style={{
                   backgroundColor: '#000000aa',
@@ -1117,7 +1151,7 @@ const Gatepass = ({ navigation }) => {
                     backgroundColor: '#fff',
                     padding: 20,
                     borderRadius: 15,
-                    width: '90%',
+                    width: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
@@ -1142,8 +1176,12 @@ const Gatepass = ({ navigation }) => {
                       renderItem={({ item, index }) => (
                         <TouchableOpacity style={styles.FlatListData}
                           onPress={() => {
-                            console.log(item);
-                            setSearchedNameData(item)
+
+                            setFieldValue("perName", item.Name);
+                            setFieldValue("empId", item['Staff No']);
+                            setFieldValue("Desig", item['Desg']);
+                            // console.log(item);
+                            // setSearchedNameData(item)
                             setEmpModalVisible(false)
                           }}>
                           <Ionicons
@@ -1152,7 +1190,7 @@ const Gatepass = ({ navigation }) => {
                             size={25}
                             color="#2757C3"
                           />
-                          <View style={{ flexDirection: 'column', width: '100%' }}>
+                          <View style={{ flexDirection: 'column', flex:1, marginLeft:10 }}>
                             <Text style={{ fontSize: 16 }}>
                               {item.Name}
                             </Text>
@@ -1197,16 +1235,13 @@ const styles = StyleSheet.create({
   FlatListData: {
     width: "100%",
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
     borderRadius: 7,
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 5,
+    paddingHorizontal:10,
     marginBottom: 10,
     backgroundColor: '#fff'
   },
@@ -1225,7 +1260,6 @@ const styles = StyleSheet.create({
   dropdown2RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown2RowTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
   centeredView:{
-    // borderWidth:1,
     flex:1,
     position:'relative',
     backgroundColor:'#fff'
@@ -1233,10 +1267,7 @@ const styles = StyleSheet.create({
   },
   Modalclose:{
     position:'absolute',
-    // width:25,
-    // height:25,
     right:0,
-    // borderRadius:20,
     backgroundColor:'#f00',
     justifyContent:'center',
     alignItems:'center',

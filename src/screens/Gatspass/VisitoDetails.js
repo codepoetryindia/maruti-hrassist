@@ -1,5 +1,5 @@
 //import liraries
-import React, {Component, useState} from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
   View,
   Text,
@@ -18,9 +18,194 @@ import VisitDetails from '../../components/VisitDetails';
 import SelectDropdown from 'react-native-select-dropdown';
 import {Formik, Form, Field, ErrorMessage, FieldArray, getIn} from 'formik';
 import * as Yup from 'yup';
+import Toast from 'react-native-simple-toast'
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+import AuthContext from '../../context/AuthContext';
+import moment from 'moment';
+import * as ApiService from '../../Utils/Utils';
+
+
+
+
 
 
 const VisitorDetails = ({navigation,route}) => {
+  const [loader, setLoader] = useState(false);
+  const { authContext, AppUserData } = useContext(AuthContext);
+
+  const fromRef = useRef(null);
+
+  const insertVGPE = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
+    // let apiData = {
+    //   'ntLogin':route.params.visitorpayload.authorizedPerson,
+    //   'type':route.params.visitorpayload.VisType,
+    //   'visitDateTo':moment(new Date(route.params.visitorpayload.dateDummy)).format('MM/DD/YY'),
+    //   'visitDateFrom':moment(new Date(route.params.visitorpayload.dateDummy)).format('MM/DD/YY'),
+    //   'noOfPerson':'1',
+    //   'vehicleIndicator':route.params.visitorpayload.Pvehicle,
+    //   'vehicleNumber':route.params.visitorpayload.vehicleNumber,
+    //   'duration':route.params.visitorpayload.duration,
+    //   'reason':route.params.visitorpayload.ReasonToCome,
+    //   'internalVehicleIndicator':route.params.visitorpayload.interVehicle,
+    //   'expectedArrivalTime':route.params.visitorpayload.exArrTime,
+    //   'searchLevel':route.params.visitorpayload.SearchLevel,
+    //   'locationCode':route.params.visitorpayload.location,
+    //   'vglmId':route.params.visitorpayload.buildings,
+    //   'multipleEmployeeIndicator':route.params.visitorpayload.empId,
+    // };
+
+
+    let apiData = {
+        "UserName" : userId,
+        "Type" : route.params.visitorpayload.VisType,
+        "VisitDateFrom" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
+        "NoOfPerson" : "1",
+        "VehicleIndicator" : route.params.visitorpayload.Pvehicle,
+        "VehicleNumber" : route.params.visitorpayload.vehicleNumber,
+        "Duration" : route.params.visitorpayload.duration,
+        "Reason" : route.params.visitorpayload.ReasonToCome,
+        "InternalVehicleIndicator" : route.params.visitorpayload.interVehicle,
+        "ExpectedArrivalTime" : route.params.visitorpayload.exArrTime,
+        "SearchLevel" : route.params.visitorpayload.SearchLevel,
+        "LocationCode" : route.params.visitorpayload.location,
+        "VisitDateTo" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
+        "VglmID" : "",
+        "MultipleEmployeeIndicator" : route.params.visitorpayload.empId,     
+        }
+
+        // route.params.visitorpayload.buildings,
+    
+
+    setLoader(true);
+    ApiService.PostMethode('/SubmitVGPE', apiData, token)
+      .then(result => {
+        console.log("APiresult SubmitVGPE", result);
+        if(result.Result){
+          SubmitVSDT(result.Result);
+        }
+        setLoader(false);
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+  const GetVisitorPhoneBygps = (phone, index) => {
+    let token = AppUserData.token;
+    let userId = AppUserData.data.userId;
+    let apiData ={"Search": phone};
+    setLoader(true);
+    ApiService.PostMethode('/GetVisitorByPhoneVGPS', apiData, token)
+      .then(result => {
+        console.log(result.Value);
+        if(result.Value.length > 0){
+          console.log(fromRef, `actionPlans[${index}].vendor`);
+          fromRef.current.setFieldValue(`actionPlans[${index}].vendor`,result.Value[0].VENDOR);
+          fromRef.current.setFieldValue(`actionPlans[${index}].title`,result.Value[0].TITLE);
+          fromRef.current.setFieldValue(`actionPlans[${index}].name`, result.Value[0]['VISITOR NAME']);
+          fromRef.current.setFieldValue(`actionPlans[${index}].designation`, result.Value[0].DESG);
+          fromRef.current.setFieldValue(`actionPlans[${index}].laptop`, result.Value[0].LAPTOP);
+          fromRef.current.setFieldValue(`actionPlans[${index}].adddress`, result.Value[0].ADDR1);
+        }
+        setLoader(false);
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+
+  const SubmitVSDT = (controlno) => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
+    let apiData = [{
+      "ControlNo" : controlno,
+      "EmplID" : "270679",
+      "VisitorName" : "DEMO",
+      "AddressLine1" : "hsdbnok",
+      "AddressLine2" : "dfss",
+      "VisitorDesg" : "AM",
+      "VisitorPhone" : "52635263",
+      "VisitorLaptopID" : "",
+      "VisitorTitle" : "ewf",
+      "VisitorUserID" : "222852",
+      "VisitorVendor" : "asdf"
+      },
+      {
+        "ControlNo" : controlno,
+        "EmplID" : "270679",
+        "VisitorName" : "DEMO",
+        "AddressLine1" : "hsdbnok",
+        "AddressLine2" : "dfss",
+        "VisitorDesg" : "AM",
+        "VisitorPhone" : "52635263",
+        "VisitorLaptopID" : "",
+        "VisitorTitle" : "ewf",
+        "VisitorUserID" : "222852",
+        "VisitorVendor" : "asdf"
+        }, ]
+        // route.params.visitorpayload.buildings
+    setLoader(true);
+    ApiService.PostMethode('/SubmitVSDT', apiData, token)
+      .then(result => {
+        console.log("APiresult SubmitVSDT", result);
+        setLoader(false);
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+
+
+
   const [ActionPlans, setActionPlans] = useState([
     {
       phone: '',
@@ -84,6 +269,12 @@ const VisitorDetails = ({navigation,route}) => {
   // console.log("visitorData",visitorData);
   return (
     <SafeAreaView style={{flex: 1}}>
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+
         <LinearGradient
           colors={['#00B4DB','#0083B0']}
           style={styles.gradient}>
@@ -124,13 +315,17 @@ const VisitorDetails = ({navigation,route}) => {
         {/* Body */}
         <ScrollView nestedScrollEnabled={true} style={{paddingHorizontal:10}}>
 
-        <Formik
+            <Formik
+              innerRef={fromRef}
               enableReinitialize
               initialValues={{
                 actionPlans: ActionPlans,
               }}
               validationSchema={schema}
               onSubmit={(values) => {
+
+                insertVGPE();
+
                 console.log(values);
                 return;
                 if (!values.actionPlans.length) {
@@ -160,7 +355,7 @@ const VisitorDetails = ({navigation,route}) => {
                 return (
                   <FieldArray name="actionPlans">
                     {(arrayHelpers) => {
-                      console.log(errors);
+                      // console.log(errors);
                       return (
                         <View>
                           {
@@ -203,6 +398,8 @@ const VisitorDetails = ({navigation,route}) => {
                                               handleBlur(
                                                 `actionPlans[${index}].phone`,
                                               );
+                                              GetVisitorPhoneBygps(values.actionPlans[index].phone, index);
+
                                             }}
                                           />
                                           {errors.actionPlans &&
@@ -230,6 +427,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               key={index.ColourQuentity}
                                               // maxLength={5}
                                               style={styles.input}
+                                              value={values.actionPlans[index].vendor}
                                               // placeholder="Enter vendor"
                                               onChangeText={handleChange(
                                                 `actionPlans[${index}].vendor`,
@@ -340,6 +538,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               key={index.ColourQuentity}
                                               // maxLength={5}
                                               style={styles.input}
+                                              value={values.actionPlans[index].name}
                                               // placeholder="Enter name"
                                               onChangeText={handleChange(
                                                 `actionPlans[${index}].name`,
@@ -377,6 +576,7 @@ const VisitorDetails = ({navigation,route}) => {
                                             key={index.ColourQuentity}
                                             // maxLength={5}
                                             style={styles.input}
+                                            value={values.actionPlans[index].designation}
                                             // placeholder="Enter designation"
                                             onChangeText={handleChange(
                                               `actionPlans[${index}].designation`,
@@ -412,6 +612,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               key={index.ColourQuentity}
                                               // maxLength={5}
                                               style={styles.input}
+                                              value={values.actionPlans[index].laptop}
                                               // placeholder="Enter laptop"
                                               onChangeText={handleChange(
                                                 `actionPlans[${index}].laptop`,
@@ -448,6 +649,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               key={index.ColourQuentity}
                                               // maxLength={5}
                                               style={styles.input}
+                                              value={values.actionPlans[index].adddress}
                                               // placeholder="Enter adddress"
                                               onChangeText={handleChange(
                                                 `actionPlans[${index}].adddress`,
