@@ -58,7 +58,6 @@ const Gatepass = ({ navigation }) => {
   const [empmodalVisible, setEmpModalVisible] = useState(false);
 
 
-  // Added by suman
   const [Locations, setLocations] = useState([]);
 
 
@@ -73,7 +72,7 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         console.log("APiresult GetLocationListVGPS", result);
         setLoader(false);
-        // Added by suman
+     
         setLocations(result.Value);
         let Location = result.Value[0].LOCN
         let LocationCode = result.Value[0].CODE

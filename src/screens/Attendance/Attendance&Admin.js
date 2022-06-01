@@ -34,10 +34,10 @@ const Tab = createMaterialTopTabNavigator();
 
 
 
-const FirstRoute = () => <Attendance />;
-const SecondRoute = () => <Leave />;
-const ThirdRoute = () => <Shift />;
-const FourthdRoute = () => <HolidayCalendar />;
+// const FirstRoute = () => <Attendance />;
+// const SecondRoute = () => <Leave />;
+// const ThirdRoute = () => <Shift />;
+// const FourthdRoute = () => <HolidayCalendar />;
 
 const AttendanceAdmin = ({navigation}) => {
   const [horizental, setHorizental] = useState(false);
@@ -46,23 +46,23 @@ const AttendanceAdmin = ({navigation}) => {
     setManager(false);
   }, []);
 
-  const handelHorizental = () => {
-    setHorizental(!horizental);
-  };
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-    fourth: FourthdRoute,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'Attendance'},
-    {key: 'second', title: 'Leave'},
-    {key: 'third', title: 'Shift'},
-    {key: 'fourth', title: 'HoliCalendar'},
-  ]);
+  // const handelHorizental = () => {
+  //   setHorizental(!horizental);
+  // };
+  // const renderScene = SceneMap({
+  //   first: FirstRoute,
+  //   second: SecondRoute,
+  //   third: ThirdRoute,
+  //   fourth: FourthdRoute,
+  // });
+  // const layout = useWindowDimensions();
+  // const [index, setIndex] = React.useState(0);
+  // const [routes] = React.useState([
+  //   {key: 'first', title: 'Attendance'},
+  //   {key: 'second', title: 'Leave'},
+  //   {key: 'third', title: 'Shift'},
+  //   {key: 'fourth', title: 'HoliCalendar'},
+  // ]);
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
