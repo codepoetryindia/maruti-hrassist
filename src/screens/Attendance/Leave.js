@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -324,7 +325,7 @@ const Leave = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={{width: '90%', alignSelf: 'center'}}>
           <SegmentedControlTab
@@ -924,7 +925,7 @@ const Leave = () => {
           )}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

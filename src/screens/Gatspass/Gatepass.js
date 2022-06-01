@@ -345,6 +345,9 @@ const Gatepass = ({ navigation }) => {
             reason: values.reason,
             persionalVehical: values.persionalVehical,
             internalVehical: values.internalVehical,
+            vehicleNumber:values.vehicleNumber,
+            building:values.building,
+            searchEmp:values.searchEmp,
           };
           console.log("selectBuilding", payload);
           navigation.navigate("VisitorDetails", {

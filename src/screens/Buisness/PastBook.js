@@ -32,7 +32,7 @@ const  PastBook = () => {
     const [second, setSecond] = useState(false);
     const [textinputDate, setTextinputDate] = useState('');
     const [textinputSecondDate, setTextinputSecondDate] = useState('');
-    const [data, setData] = useState([])
+    const [pastFudata, setPastFuData] = useState([])
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -46,7 +46,7 @@ const  PastBook = () => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
-                setData(ApiValue)
+                setPastFuData(ApiValue)
             })
 
             .catch(error => {
@@ -71,7 +71,7 @@ const  PastBook = () => {
     const BookingDetailApi = (data) => {
         let token = AppUserData.token
         let apiData = {
-            BKDTID: data,
+            BKDTID: 'BKNG185',
         }
         console.log("apiPayload", apiData)
         setLoader(true);
@@ -285,7 +285,7 @@ const  PastBook = () => {
                 </LinearGradient>
             </TouchableOpacity>
 
-            {data.length > 0 ? (
+            {pastFudata.length > 0 ? (
                 <View
                     style={{
                         width: '110%',
@@ -321,7 +321,7 @@ const  PastBook = () => {
                     </View>
                     <View>
                         {
-                            data.map((item) => {
+                            pastFudata.map((item) => {
                                 return (
                                     <TouchableOpacity
                                         onPress={() => {
