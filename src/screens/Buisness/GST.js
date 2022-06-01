@@ -80,7 +80,7 @@ const Gst = ({ navigation }) => {
       ) : null}
       <LinearGradient
         style={{ padding: 20 }}
-        colors={['#4174D0', '#6ef7ff']}>
+        colors={['#00B4DB', '#0083B0']}>
         <View style={{ flexDirection: 'row' }}>
           <View
             style={{

@@ -15,7 +15,7 @@ import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 // create a component
 const SeatBook = ({ navigation }) => {
-    var radio_props = [
+    let radio_props = [
         { label: 'Self', value: 0 },
         { label: 'On Behalf', value: 1 },
     ];
@@ -24,11 +24,10 @@ const SeatBook = ({ navigation }) => {
     const [search, setSearch] = useState('')
     const { authContext, AppUserData } = useContext(AuthContext);
     const [userList, setUserList] = useState([])
-    const [searchedNameData, setSearchedNameData] = useState('')
-    const [searchedDegData, setSearchedDegData] = useState('')
+    const [searchedNameData, setSearchedNameData] = useState(true)
+    const [field, setField] = useState('')
     const [Loader, setLoader] = useState(false);
     const [modalVisible, setModalVisible] = useState(false)
-    const [bookData, setBookData] = useState('')
 
 
     let inputNameData = AppUserData.data.EMPL_NAME
@@ -73,9 +72,18 @@ const SeatBook = ({ navigation }) => {
     const BookShuttleSeatApi = () => {
         let token = AppUserData.token
         let userId = AppUserData.data.userId
-        let apiData = {
-            UserName: userId
+        let apiData;
+        if (isSelected == 0) {
+            apiData = {
+                UserName: userId
+            }
         }
+        else {
+            apiData = {
+                UserName: searchedNameData['Staff No']
+            }
+        }
+        console.log("apiData", apiData)
         setLoader(true);
         ApiService.PostMethode('/BookShuttleSeat', apiData, token)
             .then(result => {
@@ -100,13 +108,22 @@ const SeatBook = ({ navigation }) => {
                 }
             });
     }
-
+    const handleSubmit = () => {
+        if (search == '') {
+            alert("Search By Name/Dept/Staff/ID please")
+        }
+        else {
+            BookShuttleSeatApi()
+            setSearch('')
+            setSearchedNameData('')
+        }
+    }
 
     return (
         <View style={styles.container}>
             <LinearGradient
                 style={{ padding: 20 }}
-                colors={['#437cd5', '#5dc0e9']}>
+                colors={['#00B4DB', '#0083B0']}>
                 <View style={{ flexDirection: 'row' }}>
                     <View
                         style={{
@@ -156,6 +173,8 @@ const SeatBook = ({ navigation }) => {
                 initial={0}
                 onPress={() => {
                     setSelection(!isSelected);
+                    // setField(isSelected)
+                    // console.log(isSelected)
 
                 }}
                 borderWidth={0.5}
@@ -276,7 +295,8 @@ const SeatBook = ({ navigation }) => {
 
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
                             <TouchableOpacity onPress={() => {
-                                BookShuttleSeatApi()
+
+                                handleSubmit()
                             }}>
                                 {Loader == true ? (
                                     <Spinner
@@ -306,21 +326,29 @@ const SeatBook = ({ navigation }) => {
 
                     <Modal transparent={true} visible={modalVisible}>
                         <Pressable
+                            onPress={() => {
+                                setModalVisible(false)
+                            }}
                             style={{
                                 backgroundColor: '#000000aa',
-                                minHeight: "60%",
+                                flex: 1,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                             }}>
+
                             <View
                                 style={{
+                                    minHeight: '80%',
                                     backgroundColor: '#fff',
                                     padding: 20,
                                     borderRadius: 15,
                                     width: '90%',
                                     justifyContent: 'center',
                                     alignItems: 'center',
+                                    alignSelf: 'center',
+                                    marginTop: '18%'
                                 }}>
+
                                 {userList.length > 0 ? (
 
                                     <FlatList
@@ -383,6 +411,7 @@ const SeatBook = ({ navigation }) => {
                                 )}
                             </View>
                         </Pressable>
+
                     </Modal>
                 </View>
             ) : null}
@@ -440,8 +469,6 @@ const styles = StyleSheet.create({
         borderEndColor: '#6ef7ff',
         borderRadius: 7,
         flexDirection: 'row',
-        // margin:10,
-        // width: '100%',
         alignSelf: 'center',
         justifyContent: 'space-between',
         alignItems: 'center',

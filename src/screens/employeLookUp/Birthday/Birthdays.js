@@ -21,6 +21,7 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../../Utils/Utils';
 import AuthContext from '../../../context/AuthContext'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { useFocusEffect } from '@react-navigation/native';
 // create a component
 const Birthdays = () => {
   const { authContext, AppUserData } = useContext(AuthContext);
@@ -127,10 +128,12 @@ const Birthdays = () => {
   };
 
 
-  useEffect(() => {
-    PostBirthdayData()
-    // GetUserDetails()
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = PostBirthdayData();
+      return () => unsubscribe;
+    }, [])
+  )
 
 
 
@@ -158,8 +161,12 @@ const Birthdays = () => {
 
           />
           ): null
-        }
-        <View style={{ width: '100%' }}>
+        }{
+          loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Please wait we are fetching your data</Text></View>) :(
+<View>
+  
+<View style={{ width: '100%' }}>
           <SegmentedControlTab
             borderRadius={8}
             values={['Today', 'Tomorrow']}
@@ -406,6 +413,10 @@ const Birthdays = () => {
                 </View>
           )}
         </View>
+</View>
+            )}
+
+        
       </SafeAreaView>
     
   );

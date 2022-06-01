@@ -5,6 +5,7 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useFocusEffect } from '@react-navigation/native';
 
 // create a component
 const NearByHospital = () => {
@@ -41,9 +42,12 @@ const NearByHospital = () => {
         }
       });
   };
-  useEffect(() => {
-    GetHospitalLinkApi()
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = GetHospitalLinkApi();
+      return () => unsubscribe;
+    }, [])
+  )
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -61,8 +65,15 @@ const NearByHospital = () => {
         </Text>
         <TouchableOpacity
          onPress={() => {
-          console.log("hoslink",hosLink);
-         Linking.openURL(hosLink)
+           if(hosLink==''){
+             alert("URL Not Found")
+             return
+           }
+           else{
+
+             console.log("hoslink",hosLink);
+            Linking.openURL(hosLink)
+           }
           }}
            style={styles.circle}>
           <Text style={{textAlign:'center',}}>Click here to</Text>

@@ -8,6 +8,7 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useFocusEffect } from '@react-navigation/native';
 const HosLocation = ({ navigation }) => {
 
   const { authContext, AppUserData } = useContext(AuthContext);
@@ -45,9 +46,12 @@ const HosLocation = ({ navigation }) => {
         }
       });
   };
-  useEffect(() => {
-    GetHospLocnApi()
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = GetHospLocnApi();
+      return () => unsubscribe;
+    }, [])
+  )
 
   return (
 
@@ -59,7 +63,12 @@ const HosLocation = ({ navigation }) => {
             textStyle={styles.spinnerTextStyle}
           />
               ):null }
-        <LinearGradient
+              {loader == true ? (<View style={{ flex: 1, justifyContent: 'center', marginTop: '40%', marginLeft: '20%' }}>
+        <Text>We are fetching your data Please wait</Text>
+      </View>) : (
+
+    <View>
+          <LinearGradient
           colors={['#4174D0', '#6ef7ff']}
           style={styles.gradient}>
           <View style={styles.container}>
@@ -107,10 +116,11 @@ const HosLocation = ({ navigation }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("EmergencyHospital", {
-                      selectedLoc: item.LOCN_DESC,
-                      index: 1,
-                    })
+                    navigation.goBack();
+                    // navigation.navigate("EmergencyHospital", {
+                    //   selectedLoc: item.LOCN_DESC,
+                    //   index: 1,
+                    // })
                   }}
                   style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
                   <Text style={{ fontSize: 16, paddingHorizontal: 10 }}>{item.LOCN_DESC}</Text>
@@ -118,6 +128,8 @@ const HosLocation = ({ navigation }) => {
               )
             }} />
         </View>
+    </View>
+      )}
       </SafeAreaView>
     
 

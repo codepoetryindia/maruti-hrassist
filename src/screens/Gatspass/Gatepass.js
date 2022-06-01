@@ -58,7 +58,6 @@ const Gatepass = ({ navigation }) => {
   const [empmodalVisible, setEmpModalVisible] = useState(false);
 
 
-  // Added by suman
   const [Locations, setLocations] = useState([]);
 
 
@@ -73,11 +72,11 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         console.log("APiresult GetLocationListVGPS", result);
         setLoader(false);
-        // Added by suman
+     
         setLocations(result.Value);
         let Location = result.Value[0].LOCN
         let LocationCode = result.Value[0].CODE
-        console.log("LocationCode",LocationCode)
+        console.log("LocationCode", LocationCode)
         setEmpLoc(Location)
         setEmpLocCode(LocationCode)
       })
@@ -382,7 +381,11 @@ const Gatepass = ({ navigation }) => {
             visitorpayload: newdata,
           })
         }}>
-        {({
+
+
+        {
+        
+        ({
           handleChange,
           handleBlur,
           handleSubmit,
@@ -1035,7 +1038,7 @@ const Gatepass = ({ navigation }) => {
                   />
                   {search !== '' ? (
                     <TouchableOpacity
-                      style={{ borderRadius: 8, marginLeft: -10,alignSelf:'center' }} onPress={() => { emptyList() }}>
+                      style={{ borderRadius: 8, marginLeft: -10, alignSelf: 'center' }} onPress={() => { emptyList() }}>
                       <Ionicons
                         style={styles.searchIcon}
                         name="close-circle-outline"

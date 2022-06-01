@@ -5,25 +5,32 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Spinner from 'react-native-loading-spinner-overlay';
 import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal';
+import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 // create a component
 const Hospital = ({ locationName = '' }) => {
+  console.log('locationName', locationName);
+  const myNavigation = useNavigation();
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
   const [hospitalList, setHospitallList] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItem, setModalItem] = useState('')
+
   // Hospital list 
   const GetHospListApi = (apidata = {}) => {
     let token = AppUserData.token
     setLoader(true);
     ApiService.PostMethode('/GetHospList', apidata, token)
       .then(result => {
+        console.log("setHospitallList", result);
         setLoader(false);
         let ApiValue = result.Value
-        console.log("setHospitallList", ApiValue);
         setHospitallList(ApiValue)
       })
       .catch(error => {
@@ -45,12 +52,16 @@ const Hospital = ({ locationName = '' }) => {
         }
       });
   };
-  useEffect(() => {
-    GetHospListApi();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = GetHospListApi();
+      return () => unsubscribe;
+    }, [])
+  )
   return (
 
     <SafeAreaView style={styles.container}>
+      {/* Modal */}
       {loader == true ? (
         <Spinner
           visible={loader}
@@ -58,142 +69,108 @@ const Hospital = ({ locationName = '' }) => {
           textStyle={styles.spinnerTextStyle}
         />
       ) : null}
+
+
       {loader == true ? (<View style={{ flex: 1, justifyContent: 'center', marginTop: '40%', marginLeft: '20%' }}>
         <Text>We are fetching your data Please wait</Text>
-      </View>) :(
-      <View style={styles.itemBox}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={() => {
-            return (
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={require('../../assets/Images/dataNotFound.png')}
-                  style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-                <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-              </View>
-            )
-          }}
-          data={hospitalList}
-          keyExtractor={({ item, index }) => index}
-          renderItem={({ item, index }) => (
-            <View style={styles.box}>
-              <TouchableOpacity
-                onPress={(item) => {
-                  setModalItem(item)
-                  setModalVisible(true);
-                }}
-                style={{ width: '90%' }}>
+      </View>) : (
+        <View style={styles.itemBox}>
+          <Modal
+            backdropOpacity={0.5}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            coverScreen={true}
+            isVisible={modalVisible}>
+            <View style={styles.modalBox}>
+              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <Feather
+                  name="x-circle"
+                  color={'#000'}
+                  size={20}
+                  onPress={() =>
+                    setModalVisible(false)}
+                  style={{ margin: 10 }}
+                />
+              </TouchableOpacity>
 
-                {/* Modal */}
-                <Modal
-                  backdropOpacity={0.1}
-                  coverScreen={true}
-                  isVisible={modalVisible}>
-                  <LinearGradient
-                    colors={['#4174D0', '#6ef7ff']}
-                    style={{ flex: 0.53, borderRadius: 15 }}>
-                    <View style={styles.modal}>
-                      {/* <Text>{JSON.stringify(modalItem)}</Text> */}
-                      <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                        <Feather
-                          name="x-circle"
-                          color={'#000'}
-                          size={20}
-                          onPress={setModalVisible(false)}
-                          style={{ margin: 10 }}
-                        />
-                      </TouchableOpacity>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          alignSelf: 'center',
-                          width: 150,
-                          height: 150,
-                          borderWidth: 20,
-                          borderColor: '#6ef7ff',
-                          borderRadius: 60,
-                          marginTop: 30,
-                        }}>
-
-                        <Image
-                          source={require('../../assets/Images/Avtar.png')}
-                          style={[styles.profileImg, { marginRight: 5 }]}
-                        />
-
-                      </View>
-                      {/* <View
-                        style={{
-                          paddingVertical: 15,
-                          alignSelf: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Text style={{ color: '#fff', lineHeight: 20 }}>
-                          {modalItem && modalItem.HOSP_NAME && modalItem.HOSP_NAME}
-                        </Text>
-                        <Text style={{ color: '#fff', lineHeight: 20 }}>
-                          {modalItem && modalItem.ADDR && modalItem.ADDR}
-                        </Text>
-                      </View> */}
-                      <View
-                        style={{
-                          height: '23%',
-                          marginTop: 5,
-                          // backgroundColor:'yellow',
-                          flexDirection: 'row',
-                          alignSelf: 'center',
-                          justifyContent: 'space-around',
-                          width: '50%',
-                          alignItems: 'flex-end',
-                        }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            Linking.openURL(`mailto:${modalItem.Email}`)
-                          }}
-                          style={{
-                            borderWidth: 1,
-                            width: 40,
-                            height: 40,
-                            borderColor: '#fff',
-                            borderRadius: 100,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <Feather name="mail" size={20} color={'#fff'} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            borderWidth: 1,
-                            width: 40,
-                            height: 40,
-                            borderColor: '#fff',
-                            borderRadius: 100,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <Feather name="phone-call" size={20} color={'#fff'} />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </LinearGradient>
-                </Modal>
-
-                <Text style={{ fontSize: 16, fontWeight: 'bold',color:'#000' }}>
-                  {item.HOSP_NAME}
+              <View style={{ alignItems: 'center' }}>
+                <Image
+                  source={require('../../assets/Images/hospital.png')}
+                  style={styles.modalImage}
+                />
+                <Text style={styles.modalText}>
+                  {modalItem.HOSP_NAME}
                 </Text>
-                <Text style={{color:'#000' }}>{item.ADDR}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: '10%' }}
-                onPress={() => {
-                  Linking.openURL(`tel:${item.HOSP_PHONE_NO}`)
-                }}>
-                <Feather name="phone-call" size={20} color={'#4174D0'} />
-              </TouchableOpacity>
+                <Text style={[styles.modalText, { fontSize: 14, fontWeight: '500' }]}>{modalItem.ADDR}</Text>
+
+                <View style={styles.modalIcon}>
+                  <Feather name="phone-call" size={30} color={'#4174D0'}
+                    onPress={() => {
+                      Linking.openURL(`tel:${modalItem.HOSP_PHONE_NO}`)
+                    }} />
+                  <FontAwesome5 name='map-marked-alt' size={30} color={'#4174D0'}
+                    onPress={() => {
+                      Linking.openURL(`http://maps.google.com/maps?saddr=&daddr=${modalItem.ADDR}`)
+                    }} />
+                </View>
+
+              </View>
+
             </View>
-          )}
-        />
-      </View>
+          </Modal>
+
+
+          <View style={{ width: '90%',alignItems:'flex-end', alignSelf: 'center' }}>
+            <Ionicons
+
+              name="ios-filter"
+              size={35}
+              color={'#4174D0'}
+              onPress={() => myNavigation.navigate("HosLocation")}
+            />
+          </View>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Image source={require('../../assets/Images/dataNotFound.png')}
+                    style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                </View>
+              )
+            }}
+            data={hospitalList}
+            keyExtractor={({ item, index }) => index}
+            renderItem={({ item, index }) => (
+              <View style={styles.box}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalItem(item)
+                    setModalVisible(true);
+                  }}
+                  style={{ width: '90%' }}>
+
+
+                  <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#000' }}>
+                    {item.HOSP_NAME}
+                  </Text>
+                  <Text style={{ color: '#000' }}>{item.ADDR}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: '10%' }}
+                  onPress={() => {
+                    Linking.openURL(`tel:${item.HOSP_PHONE_NO}`)
+                  }}>
+                  <Feather name="phone-call" size={20} color={'#4174D0'} />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+
+
+        </View>
       )}
+
     </SafeAreaView>
 
   );
@@ -236,6 +213,40 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  modalBox: {
+    width: '90%',
+    padding: 10,
+    // justifyContent: "center",
+    textAlign: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    alignSelf: 'center',
+    borderRadius: 8
+  },
+  modalText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign: 'center'
+  },
+  modalImage: {
+    width: 100, height: 100,
+    marginVertical: 10
+  },
+  modalIcon: {
+    width: 150,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10
+  }
 });
 //make this component available to the app
 export default Hospital;
