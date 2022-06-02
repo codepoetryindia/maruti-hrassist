@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,14 +11,18 @@ import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+
 
 const SalarySlip = ({ navigation }) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [month, setMonth] = useState();
-    const [selectedMonth,setSelectedMonth] = useState('');
+    const [month, setMonth] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState('');
+    const [defaultDate, setDefaultDate] = useState('');
     const [loader, setLoader] = useState(false)
-    const[date,setDate] = useState(new Date())
+    // const [date, setDate] = useState(new Date())
+    const [salaryType, setSalaryType = useState] = useState()
     const { authContext, AppUserData } = useContext(AuthContext);
 
     const GetMonth = () => {
@@ -30,11 +34,14 @@ const SalarySlip = ({ navigation }) => {
         setLoader(true);
         ApiService.PostMethode('/GetSalaryMonth', apiData, token)
             .then(result => {
+                console.log('defaultDate', result);
                 setLoader(false);
-                // console.log('ApiResult', result);
                 let responseData = result.Value
-                setMonth(responseData)
-                console.log('responseData', responseData)
+                let defaultDate = result.Value[0].SHIS_YYMM_CODE
+                console.log('defaultDate', defaultDate);
+                setDefaultDate(defaultDate);
+                setMonth(responseData);
+                GetSalaryTypeApi()
             })
             .catch(error => {
                 setLoader(false);
@@ -52,25 +59,24 @@ const SalarySlip = ({ navigation }) => {
             });
     };
 
+
     const GetSalaryTypeApi = () => {
         let token = AppUserData.token
         let EmplID = AppUserData.data.userId
-        let formatedNewDate =  moment(date).format('YYYYMM')
-        let formatedSelectedDate = moment(selectedMonth).format('YYYYMM')
         let apiData = {
-            "SalaryMonth":  formatedNewDate,
-            // "SalaryMonth": formatedSelectedDate=='' ? formatedNewDate :formatedSelectedDate,
-            "EmplID" : EmplID,
+            "EmplID": EmplID,
+            "SalaryMonth": defaultDate,
         }
-        
         setLoader(true);
         ApiService.PostMethode('/GetSalaryType', apiData, token)
-        .then(result => {
-            setLoader(false);
-            console.log("formatedNewDate",formatedNewDate , formatedSelectedDate);
-                console.log('ApiResult', result);
+            .then(result => {
+                setLoader(false);
+                console.log('GetSalaryType', result);
                 let responseData = result.Value
-                console.log('GetSalaryTypeApi', responseData)
+                setSalaryType(responseData)
+                // responseData.map((item)=> {
+                //     return (  setSalaryType(item));
+                // })
             })
             .catch(error => {
                 setLoader(false);
@@ -90,144 +96,145 @@ const SalarySlip = ({ navigation }) => {
 
     useEffect(() => {
         GetMonth()
-        GetSalaryTypeApi()
     }, [])
-    console.log("month data",month);
+    console.log("month data", month);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
     return (
-     
-            <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-                {loader == true ? (
+
+        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+            {loader == true ? (
                 <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
-              ):null }
-                <LinearGradient
-                 colors={['#4174D0','#6ef7ff']}
-                    style={styles.gradient}>
-                    <View style={styles.container}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                width: 40,
-                                alignItems: 'center',
-
-                            }}>
-                            <Ionicons
-                                name="chevron-back-outline"
-                                size={25}
-                                color={'white'}
-                                onPress={() => navigation.goBack()}
-                            />
-                            <Ionicons
-                                name="menu-outline"
-                                size={25}
-                                color={'white'}
-                                onPress={() => navigation.openDrawer()}
-                            />
-                        </View>
-
-                        <Text
-                            style={{
-                                color: '#fff',
-                                fontSize: 16,
-                                letterSpacing: 1,
-                                marginLeft: 30,
-                            }}>
-                            Salary Slip
-                        </Text>
-                    </View>
-                </LinearGradient>
-
-                <TouchableOpacity
-                    style={styles.Salary}
-                    onPress={() => {
-                        toggleModal()
-                    }}>
+                    visible={loader}
+                    textContent={'Loading...'}
+                    textStyle={styles.spinnerTextStyle}
+                />
+            ) : null}
+            <LinearGradient
+                colors={['#4174D0', '#6ef7ff']}
+                style={styles.gradient}>
+                <View style={styles.container}>
                     <View
                         style={{
-                            width: '100%',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            paddingHorizontal: 10,
+                            width: 40,
+                            alignItems: 'center',
+
                         }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                          {selectedMonth=='' ?  moment(date).format('YYYYMM'):selectedMonth}
-    
-                        </Text>
-                        <Feather name="corner-up-right" size={20} />
-                    </View>
-                </TouchableOpacity>
-
-                {/* salary month modal */}
-
-                <Modal
-                    backdropOpacity={0.1}
-                    animationInTiming={300}
-                    animationIn="fadeIn"
-                    animationOut="fadeOut"
-                    animationOutTiming={500}
-                    coverScreen={true}
-                    isVisible={isModalVisible}>
-                    <View style={styles.modal}>
-                        <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                            <Feather
-                                name="x-circle"
-                                color={'#000'}
-                                size={20}
-                                onPress={toggleModal}
-                                style={{ margin: 10 }}
-                            />
-                        </TouchableOpacity>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            data={month}
-                            ListEmptyComponent={() => {
-                                return (
-                                  <View style={{ width:'100%', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image source={require('../../assets/Images/dataNotFound.png')}
-                                      style={{ width: 300, height: 300, resizeMode: 'contain',}} />
-                                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                                  </View>
-                                )
-                              }}
-                            keyExtractor={({ item, index }) => index}
-                            renderItem={({ item, index }) => (
-                                <TouchableOpacity
-                                onPress={() => {
-                                    console.log(item.SHIS_YYMM_CODE)
-                                    setSelectedMonth(item.SHIS_YYMM_CODE)
-                                    toggleModal()
-                                    GetSalaryTypeApi()
-                                }}
-                                 style={styles.textContainer}>
-                                    <Text>{item.SHIS_YYMM_CODE}</Text>
-                                </TouchableOpacity>
-                            )}
+                        <Ionicons
+                            name="chevron-back-outline"
+                            size={25}
+                            color={'white'}
+                            onPress={() => navigation.goBack()}
+                        />
+                        <Ionicons
+                            name="menu-outline"
+                            size={25}
+                            color={'white'}
+                            onPress={() => navigation.openDrawer()}
                         />
                     </View>
-                </Modal>
-                <TouchableOpacity
-                    style={styles.Salary}>
-                    <View
+
+                    <Text
                         style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingHorizontal: 10,
+                            color: '#fff',
+                            fontSize: 16,
+                            letterSpacing: 1,
+                            marginLeft: 30,
                         }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Main Salary For 2022</Text>
-                        <Feather name="corner-up-right" size={20} />
-                    </View>
-                </TouchableOpacity>
-            </SafeAreaView>
-        
+                        Salary Slip
+                    </Text>
+                </View>
+            </LinearGradient>
+
+            <TouchableOpacity
+                style={styles.Salary}
+                onPress={() => {
+                    // GetSalaryTypeApi()
+                    toggleModal()
+                    console.log(month)
+                }}>
+                <View
+                    style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 10,
+                    }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                        {defaultDate}
+                    </Text>
+                    <Feather name="corner-up-right" size={20} />
+                </View>
+            </TouchableOpacity>
+
+            {/* salary month modal */}
+
+            <Modal
+                backdropOpacity={0.1}
+                coverScreen={true}
+                isVisible={isModalVisible}>
+                <View style={styles.modal}>
+                    <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                        <Feather
+                            name="x-circle"
+                            color={'#000'}
+                            size={20}
+                            onPress={toggleModal}
+                            style={{ margin: 10 }}
+                        />
+                    </TouchableOpacity>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        data={month}
+                        ListEmptyComponent={() => {
+                            return (
+                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image source={require('../../assets/Images/dataNotFound.png')}
+                                        style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                                </View>
+                            )
+                        }}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    console.log(item.SHIS_YYMM_CODE)
+                                    setDefaultDate(item.SHIS_YYMM_CODE)
+                                    GetSalaryTypeApi()
+                                    toggleModal()
+                                }}
+                                style={styles.textContainer}>
+                                <Text>{item.SHIS_YYMM_CODE}</Text>
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+            </Modal>
+            <TouchableOpacity
+                style={styles.Salary}>
+                <View
+                    style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 10,
+                    }}>
+                    {salaryType&&salaryType.map((item) => {
+                        return(
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                            {item.PYDT_DESCRIPTION}
+                        </Text>
+                        )
+                    })}
+                    <Feather name="corner-up-right" size={20}/>
+                </View>
+            </TouchableOpacity>
+        </SafeAreaView>
     );
 };
 
@@ -240,10 +247,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     modal: {
-        flex: 0.9,
+        paddingVertical: 15,
+        height: '100%',
         width: '100%',
         alignSelf: 'center',
-        backgroundColor: '#f8edec',
+        backgroundColor: '#fff',
         borderRadius: 5,
         shadowColor: '#000',
         shadowOffset: {
@@ -281,8 +289,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'space-between',
         marginVertical: 8.5,
-        borderBottomWidth:1,
-        borderBottomColor:'#4174D0'
+        borderBottomWidth: 1,
+        borderBottomColor: '#4174D0'
     },
 });
 

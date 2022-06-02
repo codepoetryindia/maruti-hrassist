@@ -89,7 +89,7 @@ const CompensationBenifits = ({navigation}) => {
                   name="chevron-back-outline"
                   size={25}
                   color={'white'}
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.goBack()}
                 />
                 <Ionicons
                   name="menu-outline"

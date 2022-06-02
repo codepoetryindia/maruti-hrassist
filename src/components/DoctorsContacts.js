@@ -205,7 +205,7 @@ const DoctorsContacts = ({ navigation, route }) => {
         <ScrollView
           style={{
             width: '90%',
-            maxHeight:'60%',
+            maxHeight:PageName === 'POSH Cell' ? '90%':'70%',
             marginTop:30,
             paddingVertical:10,
             marginVertical: 10,

@@ -27,13 +27,13 @@ const Payroll = () => {
   // tax Saving Api
   const GetTaxAppApi = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data
+    let EmplID = AppUserData.data.userId
     let apiData = {
-      EmplID: EmplID
+      "UserName": EmplID
     }
-    if (EmplID == null) {
-      return alert("employee id not found")
-    }
+    // if (EmplID == null) {
+    //   return alert("employee id not found")
+    // }
     setLoader(true);
     ApiService.PostMethode('/GetTaxApp', apiData, token)
       .then(result => {
@@ -63,15 +63,15 @@ const Payroll = () => {
   //   // financial year Api
   const GetMonth = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data
+    let EmplID = AppUserData.data.userId
     let apiData = {
-      EmplID: EmplID
+     "EmplID": EmplID
     }
     setLoader(true);
     ApiService.PostMethode('/GetSalaryMonth', apiData, token)
       .then(result => {
         setLoader(false);
-        // console.log('ApiResult', result);
+        console.log('GetSalaryMonth', result);
         let responseData = result.Value[0].SHIS_YYMM_CODE
         console.log('GetMonth', responseData)
         setMonth(responseData)
@@ -96,10 +96,10 @@ const Payroll = () => {
   // // Pf Balance Api 
   const PfBalance = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data
+    let EmplID = AppUserData.data.userId
     let apiData = {
-      EmplID: EmplID,
-      FNYR: month
+      "EmplID": EmplID,
+      "FNYR": month
     }
     setLoader(true);
     ApiService.PostMethode('/GetPFStatement', apiData, token)
@@ -133,17 +133,17 @@ const Payroll = () => {
   };
   const GetTaxSavings = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data
+    let EmplID = AppUserData.data.userId
     let apiData = {
-      EmplID: EmplID,
-      FNYR: month,
+      "EmplID": EmplID,
+      "FNYR": month,
       // SAVG_DESC
     }
     setLoader(true);
     ApiService.PostMethode('/GetTaxSavings', apiData, token)
       .then(result => {
+        console.log('setTaxSaving', result);
         setLoader(false);
-        // console.log('ApiResult', result);
         let responseData = result.Value.Table2
         console.log('responseData', responseData)
         setTaxSaving(responseData)
@@ -165,10 +165,10 @@ const Payroll = () => {
   };
 
   useEffect(() => {
-    GetTaxAppApi()
+    // GetTaxAppApi()
     GetMonth()
-    PfBalance()
-    GetTaxSavings()
+    // PfBalance()
+    // GetSalaryType()
   }, [])
 
 
@@ -222,7 +222,15 @@ const Payroll = () => {
 
         <TouchableOpacity onPress={() => {
           setTaxModalVisible(true)
+          GetTaxAppApi();
         }}>
+           {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
           <View style={styles.box}>
             <View style={styles.iconBox}>
               <View
@@ -243,6 +251,7 @@ const Payroll = () => {
               <Feather name="corner-up-right" size={20} />
             </View>
           </View>
+
 
           <Modal
             backdropOpacity={0.1}
@@ -302,7 +311,15 @@ const Payroll = () => {
         <TouchableOpacity
           onPress={() => {
             setPfModalVisible(true)
+            PfBalance();
           }}>
+            {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
           <View style={styles.box}>
             <View style={styles.iconBox}>
               <View
@@ -378,8 +395,16 @@ const Payroll = () => {
         <TouchableOpacity
           onPress={() => {
             setSevingModalVisible(true)
+            GetTaxSavings();
           }
           } style={styles.box}>
+            {loader == true ? (
+                <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+              ):null }
           <View style={styles.iconBox}>
             <View
               style={{
@@ -401,10 +426,6 @@ const Payroll = () => {
         </TouchableOpacity>
         <Modal
           backdropOpacity={0.1}
-          animationInTiming={300}
-          animationIn="fadeIn"
-          animationOut="fadeOut"
-          animationOutTiming={500}
           coverScreen={true}
           isVisible={savingModalVisible}>
           <View style={styles.modal}>

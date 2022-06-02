@@ -268,7 +268,10 @@ const Book = () => {
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => navigation.navigate("SeatBook")}
+                          onPress={() => {
+                            setModalVisible(false)
+                            navigation.navigate("SeatBook")
+                        }}
                           style={{ padding: 10, backgroundColor: '#2757C3', marginLeft: 30, borderRadius: 8 }}>
                           <Text style={{ color: '#fff' }}>BOOK NOW</Text>
                         </TouchableOpacity>

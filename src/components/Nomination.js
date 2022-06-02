@@ -19,28 +19,31 @@ const Nomination = ({ navigation, route }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [isOpen, setIsOpen] = useState('');
 
-    let NominationData = route.params.data
+    let NominationData =  route.params.data
     // setIsOpen(NominationData)
     console.log("NominationData", NominationData);
+    // NominationData.map((item) => {
+    //     return (console.log(item))
+    // })
 
-    
-// const head = (item) =>{
-//     return(
-//         <Separator bordered style={{alignItems:'center'}}>
-//           <Text>{item.title}</Text>
-//         </Separator>
-//     );
-// }
-// const body = (item) =>{
-//     return (
-//         <View style={{padding:10}}>
-//           <Text style={{textAlign:'center'}}>{item.body}</Text>
-//         </View>
-//     );
-// }
-const handleDropDown =() => {
-    setIsOpen(!isOpen)
-}
+
+    // const head = (item) =>{
+    //     return(
+    //         <Separator bordered style={{alignItems:'center'}}>
+    //           <Text>{item.title}</Text>
+    //         </Separator>
+    //     );
+    // }
+    // const body = (item) =>{
+    //     return (
+    //         <View style={{padding:10}}>
+    //           <Text style={{textAlign:'center'}}>{item.body}</Text>
+    //         </View>
+    //     );
+    // }
+    const handleDropDown = () => {
+        setIsOpen(!isOpen)
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
@@ -118,29 +121,42 @@ const handleDropDown =() => {
                     )
                 }} /> */}
 
-                {NominationData.map((item)=> {
-                    return (
-                        <View>
-                        <TouchableOpacity
-                            onPress={(index) => {
-                                handleDropDown()
-                                console.log(index)
-                            }}
-                            style={styles.tabStyle}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                            {isOpen==true ? (<Text>{item.ENOM_PERCENT}</Text>):null}
 
-                            {/* {isOpen == true ? (
-                                <Ionicons name={'ios-chevron-up'} size={20} />
-                            ) : (
-                                <Ionicons name={'ios-chevron-down'} size={20} />
-                            )} */}
-                        </TouchableOpacity>
-                    </View>
-                    )
-                })}
-            <View>
-            </View>
+
+            {/* <View>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                </TouchableOpacity>
+            </View> */}
         </SafeAreaView>
     )
 }

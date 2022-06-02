@@ -87,6 +87,10 @@ const EmployProfile = ({ navigation, route }) => {
             </Text>
           </View>
         </LinearGradient>
+        {
+        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Please wait we are fetching your data</Text></View>) :
+          (
         <View
           style={{
             backgroundColor: '#fff',
@@ -149,9 +153,20 @@ const EmployProfile = ({ navigation, route }) => {
 
           </View>
           <View style={{ height: '90%', }}>
+          
+
             <FlatList
               data={employeeData}
               showsVerticalScrollIndicator={false}
+              ListEmptyComponent={() => {
+                return (
+                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('../../assets/Images/dataNotFound.png')}
+                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                  </View>
+                )
+              }}
               keyExtractor={({ item, index }) => item}
               renderItem={({ item, index }) => (
                 <View>
@@ -191,8 +206,9 @@ const EmployProfile = ({ navigation, route }) => {
                   </View>
                 </View>
               )} />
+  
           </View>
-        </View>
+        </View>)}
       </SafeAreaView>
     
 

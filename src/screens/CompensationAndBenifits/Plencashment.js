@@ -107,8 +107,8 @@ const Plencashment = ({ navigation, route }) => {
     ApiService.PostMethode('/InitMEDEncashment', apidata, token)
       .then(result => {
         setLoader(false);
-        let ApiValue = result.Value
         console.log("InitMEDEncashment", ApiValue);
+        let ApiValue = result.Value
         setLta(ApiValue)
       })
       .catch(error => {
@@ -134,15 +134,48 @@ const Plencashment = ({ navigation, route }) => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
     let apidata = {
-      "UserName": userId
+      "StaffNo": userId
     }
     setLoader(true);
     ApiService.PostMethode('/ReportLTC', apidata, token)
       .then(result => {
+        console.log("ReportLTC", result);
         setLoader(false);
         let ApiValue = result.Value
-        console.log("ReportLTC", ApiValue);
         setLtaReport(ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const SubmitMEDEncashmentApi = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
+    let apidata = {
+      "UserName": userId
+    }
+    setLoader(true);
+    ApiService.PostMethode('/SubmitMEDEncashment', apidata, token)
+      .then(result => {
+        console.log("SubmitMEDEncashment", result);
+        setLoader(false);
+        let ApiValue = result.Result
+       alert(ApiValue)
       })
       .catch(error => {
         setLoader(false);
@@ -342,7 +375,9 @@ const Plencashment = ({ navigation, route }) => {
             )}
           </View>
           <View style={{ height: 100, marginTop: 10 }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              SubmitMEDEncashmentApi()
+            }}>
               <LinearGradient
                 style={{
                   padding: 20,
