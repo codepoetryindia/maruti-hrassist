@@ -1,6 +1,6 @@
 //import liraries
 import React, {useEffect, useState,useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Platform} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -26,6 +26,8 @@ const Attendance = ({navigation}) => {
   const [openSecond, setOpenSecond] = useState(false);
   const [MarkAttandance, setMarkAttandance] = useState(0);
   const [loader, setLoader] = useState(false)
+  const [MapLisenceKey, setMapLisenceKey] = useState("");
+
   const { authContext, AppUserData } = useContext(AuthContext);
 
   // To Hide or show based on getGpsAvailable
@@ -52,6 +54,7 @@ const Attendance = ({navigation}) => {
             setShowAttandanceTabs(true);
             setMarkAttandance(0);
             getUserCurrentLocation();
+            getLocationLisenceKey();
           }else{
             setShowAttandanceTabs(false);
             setMarkAttandance(1);
@@ -87,15 +90,27 @@ const Attendance = ({navigation}) => {
           latitude,
           longitude,
         });
-      });
+      },
+      error => Alert.alert('Error', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      );
     }
+
+
+
 
     const GetRawPunch = () =>{
       let apiData = { 
-        "FromDate" : "24-MAR-2017",
-        "ToDate" : "24-MAY-2021",
-          "StaffNo" : 548596
+        "FromDate" : moment(fromDate).format('DD-MMM-YYYY'),
+        "ToDate" :  moment(toDate).format('DD-MMM-YYYY'),
+          "StaffNo" : AppUserData.data.userId 
       };
+
+      
+
+      // AppUserData.data.userId 
+
+
       console.log(apiData);
       // AppUserData.data.userId
       let token = AppUserData.token;
@@ -104,18 +119,9 @@ const Attendance = ({navigation}) => {
         .then(result => {
           console.log("APiresult GetRawPunch", result);
           setLoader(false);
-
-          // Dummy Data to continue work
-          let datadummy = {
-            "d": [
-                {
-                    "__type": "ADauthentication+RawpunchDetails",
-                    "Date": "09-MAY-2022 12:52",
-                    "source": "Mobile"
-                }
-            ]
-        };
-          setRawPunches(datadummy.d);
+          if(result.Value){
+            setRawPunches(result.Value);
+          }
         })
         .catch(error => {
           setLoader(false);
@@ -141,9 +147,9 @@ const Attendance = ({navigation}) => {
     const renderItem =({item})=>{
       return(
         <View style={styles.renderitem}>
+            <Text>{item['Staff No']}</Text>
             <Text>{item.Date}</Text>
-            <Text>{item.Date}</Text>
-            <Text>{item.source}</Text>
+            <Text>{item['Moble/Machine']}</Text>
         </View>
       )
     }
@@ -164,7 +170,90 @@ const Attendance = ({navigation}) => {
    }
   }
 
-  const SubmitPunchRO = () => {
+
+
+  const FinancialYear = ['2021', '2022', '1999'];
+  const [location, setLocation] = useState('');
+
+  const getMobDevice = () => {
+    let apiData = { "UserName":AppUserData.data.userId };
+        setLoader(true);
+
+      if(Platform.OS == 'android'){
+          // AppUserData.data.userId 222852
+        let token = AppUserData.token;
+        ApiService.PostMethode('/GetMobDevice', apiData, token)
+          .then(result => {
+            console.log("APiresult GetMobDevice", result);
+            setLoader(false);
+            if(result.Value.length > 0){
+              // DEVC_ID: "1"
+              // DEVC_NAME: "ONEPLUS A3003, Redmi Note 4"
+              let model = result.Value[0].DEVC_NAME;
+              let modelfrmplug = Platform.Model;
+
+              if (model.includes(modelfrmplug)) {
+                console.log("inside");
+                let notSupported = true;
+                Toast.show('Something Went Wrong');
+              }else{
+                Toast.show('Worked');
+              }
+            }
+          })
+          .catch(error => {
+            setLoader(false);
+            console.log('Error occurred==>', error);
+            if (error.response) {
+              if (error.response.status == 401) {
+                console.log('error from api', error.response);
+              }
+              // client received an error response (5xx, 4xx)
+              Toast.show(error.response.data.title);
+            } else if (error.request) {
+              // client never received a response, or request never left
+              Toast.show('Network Error');
+              // console.log("error.request", error.request._response);
+            } else {
+              // anything else
+              Toast.show('Something Went Wrong');
+            }
+          });
+        }
+
+        let url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(location.latitude) + ',' + parseFloat(location.longitude) + '&key=' + MapLisenceKey
+
+        ApiService.getRawurl(url)
+          .then(result => {
+            console.log("APiresult getRawurl", result);
+            setLoader(false);
+            let location = result.results[0].formatted_address;
+            let date = "13-11-1993";
+            CallAPIToStoreAddress(location, date, location.latitude, location.longitude);
+
+          })
+          .catch(error => {
+            setLoader(false);
+            console.log('Error occurred==>', error);
+            if (error.response) {
+              if (error.response.status == 401) {
+                console.log('error from api', error.response);
+              }
+              // client received an error response (5xx, 4xx)
+              Toast.show(error.response.data.title);
+            } else if (error.request) {
+              // client never received a response, or request never left
+              Toast.show('Network Error');
+              // console.log("error.request", error.request._response);
+            } else {
+              // anything else
+              Toast.show('Something Went Wrong');
+            }
+          });
+  };
+
+
+  const CallAPIToStoreAddress= (location, dati, lat, lon)=> {
     let token = AppUserData.token
     let EmplID = AppUserData.data
     let apiData = {
@@ -174,11 +263,42 @@ const Attendance = ({navigation}) => {
     ApiService.PostMethode('/SubmitPunchRO', apiData, token)
         .then(result => {
             setLoader(false);
-            // console.log('ApiResult', result);
-            let responseData = result.Value[0].SHIS_YYMM_CODE
-            console.log('GetMonth', responseData)
-            setMonth(responseData)
+            console.log('ApiResult SubmitPunchRO', result);
+            // let responseData = result.Value[0].SHIS_YYMM_CODE
+            // console.log('GetMonth', responseData)
+            // setMonth(responseData)
            
+        })
+        .catch(error => {
+            setLoader(false);
+            // console.log('Error occurred==>', error);
+            if (error.response) {
+                if (error.response.status == 401) {
+                    console.log('error from api', error.response);
+                }
+                Toast.show(error.response.data.title);
+            } else if (error) {
+                Toast.show('Network Error');
+            } else {
+                Toast.show('Something Went Wrong');
+            }
+        });
+  }
+
+  const getLocationLisenceKey = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data
+    let apiData = {
+        EmplID: EmplID
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetMapsLicenseKey', {}, token)
+        .then(result => {
+            setLoader(false);
+            console.log('ApiResult GetMapsLicenseKey', result);
+            if(result.Result){
+              setMapLisenceKey(result.Result);
+            }           
         })
         .catch(error => {
             setLoader(false);
@@ -197,12 +317,7 @@ const Attendance = ({navigation}) => {
 };
 
 
-  const FinancialYear = ['2021', '2022', '1999'];
-  const [location, setLocation] = useState('');
 
-  const punch = () => {
-    setLocation([]);
-  };
 
 
 
@@ -258,14 +373,18 @@ const Attendance = ({navigation}) => {
               <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                  punch();
+                  getMobDevice();
                 }}>
                 <Text>Punch</Text>
               </TouchableOpacity>
               <Text>{location.latitude}</Text>
-              <Text>{location.longitude}</Text>
-              <Ionicons name='ios-locate-outline'size={25} color={'green'}/>
+              <Text>{location.longitude}</Text>              
             </TouchableOpacity>
+            <TouchableOpacity onPress={()=>getUserCurrentLocation()} style={styles.resetLocation}>
+              <Text style={styles.resetLocationTxt}>Reset Location</Text>
+              <Ionicons name='ios-locate-outline'size={30} color={'green'}/>
+            </TouchableOpacity>
+
           </View>
         ) : (
           <View>
@@ -481,6 +600,18 @@ const styles = StyleSheet.create({
     justifyContent:'space-between',
     backgroundColor:'#fff',
     marginTop:10
+  },
+  resetLocation:{
+    marginTop:20,
+    flexDirection:'row', 
+    alignSelf:'center',
+    backgroundColor:'gray',
+    alignItems:'center',
+    padding:10
+  },
+  resetLocationTxt:{
+    color:"#fff",
+    marginRight:5
   }
 });
 

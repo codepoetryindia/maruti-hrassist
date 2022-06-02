@@ -18,6 +18,24 @@ export const PostMethode =  async(url , data , token) => {
         throw handleError(error)
     }
 }
+
+export const getRawurl =  async(url , data , token) => {
+
+    try {
+        let response = await axios.get (url,{
+            headers : {
+                'Content-Type ':"application/json",
+                // Accept :"application/json",
+                authToken : token,
+            }
+        })
+        // console.log("Api resp",response)
+        return response.data;
+    } catch (error) {
+        throw handleError(error)
+    }
+}
+
 // const handleError = (error) => {
 //     return error
 // }

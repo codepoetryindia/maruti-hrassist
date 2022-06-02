@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -30,6 +31,8 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 
 
@@ -57,6 +60,7 @@ const Leave = () => {
   const [LeaveTypes, setLeaveTypes] = useState([]);
   const [Leavereason, setLeavereason] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [LeaveDetailModal, setLeaveDetailModal] = useState(false);
   const [FinancialYear, setFinancialYear] = useState([]);
   const [EmpLeaveDetail, setEmpLeaveDetail] = useState([]);
 
@@ -92,11 +96,26 @@ const Leave = () => {
 
   const PostSubmitLeave = data => {
     console.log('post data' , data);
+    // let dummydata = 
+    //   {
+    //     "UserName" : "222852",
+    //     "StaffNo" :  "222852",
+    //     "PlannedUnplanned" : "Planned",
+    //     "LeaveType" :"69#N#N",
+    //     "Period" : "3",
+    //     "FromDate" : "20-JUL-2022",
+    //     "ToDate" : "21-JUL-2022",
+    //     "Reason" : "skgn sk",
+    //     "Comments" : ""
+    // }
+  
+    let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/SubmitLeave', data, token)
       .then(result => {
         setLoader(false);
         console.log('ApiResult', result);
+        Toast.show(result.Result);
       })
       .catch(error => {
         setLoader(false);
@@ -314,7 +333,7 @@ const Leave = () => {
           onPress={() => {
             // console.log('selected reason', item);
             setValidReason(item.REASON);
-            fromRef.current.setFieldValue('reason', item.reason);
+            fromRef.current.setFieldValue('reason', item.LOOKUP_CODE);
             setModalVisible(false);
           }}>
           <Text style={{color: '#fff', fontSize: 15}}>{item.REASON}</Text>
@@ -324,7 +343,11 @@ const Leave = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
       <View showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={{width: '90%', alignSelf: 'center'}}>
           <SegmentedControlTab
@@ -347,7 +370,7 @@ const Leave = () => {
           {applyLeave == 0 ? (
             <Formik
               innerRef={fromRef}
-              validationSchema={leaveTypeScheema}
+              // validationSchema={leaveTypeScheema}
               initialValues={{
                 leave: '',
                 planned: '',
@@ -359,8 +382,8 @@ const Leave = () => {
               }}
               onSubmit={values => {
                 let data = {
-                  UserName: '222852',
-                  StaffNo: '222852',
+                  UserName: AppUserData.data.userId,
+                  StaffNo: AppUserData.data.userId,
                   PlannedUnplanned: values.planned,
                   LeaveType: values.leave,
                   Period: values.period,
@@ -369,7 +392,20 @@ const Leave = () => {
                   Reason: values.reason,
                   Comments: '',
                 };
-                PostSubmitLeave(data);
+
+                let submitData = 
+                  {
+                    "UserName": AppUserData.data.userId,
+                    "StaffNo": AppUserData.data.userId,
+                    "PlannedUnplanned": values.planned,
+                    "LeaveType": values.leave,
+                    "Period": values.period.toString(),
+                    "FromDate": values.selectDate,
+                    "ToDate": values.selectDateSecond,
+                    "Reason" : values.reason,
+                    "Comments": values.comment
+                }
+                PostSubmitLeave(submitData);
               }}>
               {({
                 handleChange,
@@ -381,7 +417,7 @@ const Leave = () => {
                 touched,
                 isValid,
               }) => (
-                <ScrollView
+                <View
                   showsVerticalScrollIndicator={false}
                   style={{height: '80%', paddingVertical: 1}}>
                   <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
@@ -404,7 +440,7 @@ const Leave = () => {
                             styles.circle,
                             {
                               backgroundColor:
-                                checked == item.id ? '#6ef7ff' : null,
+                                checked == item.id ? '#00B4DB' : null,
                             },
                           ]}>
                           <Text
@@ -443,11 +479,8 @@ const Leave = () => {
                         initial={isSelected}
                         onPress={value => {
                           setSelection(isSelected);
-                          fromRef.current.setFieldValue(
-                            'planned',
-                            isSelected == 0 ? 'planned' : 'unPlanned',
-                          );
-                          console.log('value', value);
+                          fromRef.current.setFieldValue('planned',value);
+                          // console.log('value', value);
                         }}
                         borderWidth={0.5}
                         buttonInnerColor={'#e74c3c'}
@@ -483,11 +516,7 @@ const Leave = () => {
                           setPeriod(period);
                           fromRef.current.setFieldValue(
                             'period',
-                            period == 0
-                              ? 'Full Day'
-                              : period == 0
-                              ? '1st Half'
-                              : '2nd Half',
+                            value
                           );
 
                           console.log('second', value);
@@ -512,7 +541,7 @@ const Leave = () => {
                       </Text>
                     </View>
                   )}
-                  <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
+                  <Text style={{paddingVertical: 10, width:"90%", alignSelf:'center'}}>
                     Select Date
                   </Text>
                   <View
@@ -535,9 +564,6 @@ const Leave = () => {
                       shadowOpacity: 0.25,
                       shadowRadius: 3.84,
                       elevation: 5,
-                      borderTopLeftRadius: 15,
-                      borderBottomLeftRadius: 15,
-                      borderTopRightRadius: 15,
                     }}>
                     <DatePicker
                       modal
@@ -547,7 +573,7 @@ const Leave = () => {
                       onConfirm={fromDate => {
                         setOpen(false);
                         setFromDate(fromDate);
-                        let format = moment(fromDate).format('MMM Do YYYY');
+                        let format = moment(fromDate).format('DD-MMM-YYYY');
                         // setTextinputDate(format);
                         // console.log(setTextinputDate);
                         fromRef.current.setFieldValue('selectDate', format);
@@ -577,7 +603,7 @@ const Leave = () => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#6ef7ff'}
+                          color={'#0083B0'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -589,7 +615,7 @@ const Leave = () => {
                       onConfirm={toDate => {
                         setSecond(false);
                         setToDate(toDate);
-                        let formatSecond = moment(toDate).format('MMM Do YYYY');
+                        let formatSecond = moment(toDate).format('DD-MMM-YYYY');
                         setTextinputSecondDate(formatSecond);
                         console.log(setTextinputSecondDate);
                         fromRef.current.setFieldValue(
@@ -619,7 +645,7 @@ const Leave = () => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#6ef7ff'}
+                          color={'#0083B0'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -646,10 +672,10 @@ const Leave = () => {
                       style={{
                         flexDirection: 'row',
                         alignItems: 'baseline',
-                        paddingHorizontal: 10,
+                        padding: 10,
                         justifyContent: 'space-between',
                       }}>
-                      <Text>{validReason}</Text>
+                      <Text style={{fontWeight:'700'}}>{validReason}</Text>
                       <Ionicons
                         name="arrow-forward-outline"
                         color={'#23d'}
@@ -747,19 +773,19 @@ const Leave = () => {
                           alignSelf: 'center',
                           marginVertical: 10,
                         }}
-                     colors={['#4174D0','#6ef7ff']}>
+                        colors={['#4174D0','#6ef7ff']}>
                         <Text style={{fontSize: 16, color: '#fff'}}>
                           SUBMIT
                         </Text>
                       </LinearGradient>
                     </TouchableOpacity>
                   </View>
-                </ScrollView>
+                </View>
               )}
             </Formik>
           ) : (
 
-            <ScrollView style={{paddingVertical: 10, height: '82%'}}>
+            <View style={{paddingVertical: 10, height: '82%'}}>
               <Text style={{paddingHorizontal: 20}}>Select Financial Year</Text>
               <View
                 style={{
@@ -846,48 +872,7 @@ const Leave = () => {
                     keyExtractor={item => item.id}
                     renderItem={({item}) => (
                       <View>
-                        <TouchableOpacity onPress={toggleModal}>
-                          {/* <Modal isVisible={isModalVisible}>
-                            <View>
-                              <LinearGradient
-                             colors={['#4174D0','#6ef7ff']}
-                                style={{
-                                  height: '100%',
-                                  backgroundColor: 'red',
-                                  borderRadius: 10,
-                                }}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    paddingHorizontal: 30,
-                                    paddingVertical: 5,
-                                  }}>
-                                  <Text
-                                    style={{
-                                      color: '#fff',
-                                      fontSize: 18,
-                                      letterSpacing: 1,
-                                    }}>
-                                    Select Reason
-                                  </Text>
-                                  <TouchableOpacity onPress={toggleModal}>
-                                    <Ionicons
-                                      name="close-circle-outline"
-                                      size={30}
-                                      color={'#fff'}
-                                    />
-                                  </TouchableOpacity>
-                                </View>
-                                <FlatList
-                                  data={reason}
-                                  keyExtractor={item => item.id}
-                                  renderItem={rederReason}
-                                />
-                              </LinearGradient>
-                            </View>
-                          </Modal> */}
+                        <TouchableOpacity onPress={()=>setLeaveDetailModal(!LeaveDetailModal)}>
                           <DataTable.Row
                             style={{borderBottomWidth: 1, paddingVertical: 5}}>
                             <View
@@ -896,21 +881,19 @@ const Leave = () => {
                                 marginTop: '2%',
                               }}>
                               <DataTable.Cell numeric>
-                                {item.FromDate}
-                              </DataTable.Cell>
-                              <DataTable.Cell numeric>
-                                {item.toDate}
+                                {item['From Date']}
                               </DataTable.Cell>
                             </View>
-                            <DataTable.Cell numeric>{item.type}</DataTable.Cell>
+
+                            <DataTable.Cell numeric>{item['Leave Type']}</DataTable.Cell>
                             <DataTable.Cell numeric>
-                              {item.period}
+                              {item.Period}
                             </DataTable.Cell>
                             <DataTable.Cell numeric>
                               {item.Status === 'Success' ? (
-                                <Text style={{color: 'green'}}>Success</Text>
+                                <Text style={{color: 'green'}}>{item.Status}</Text>
                               ) : (
-                                <Text style={{color: 'red'}}>pending</Text>
+                                <Text style={{color: 'red'}}>{item.Status}</Text>
                               )}
                             </DataTable.Cell>
                           </DataTable.Row>
@@ -919,12 +902,112 @@ const Leave = () => {
                     )}
                   />
                 </DataTable>
+                          <Modal 
+                            isVisible={LeaveDetailModal} 
+                            animationType="slide"
+                            transparent={true}
+                          >
+                            <View style={{backgroundColor:'#fff', flex:0.5, padding:10}}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    paddingBottom: 15,
+                                    paddingVertical: 5,
+                                  }}>
+                                  <Text
+                                    style={{
+                                      color: '#444',
+                                      fontSize: 18,
+                                      letterSpacing: 1,
+                                      fontWeight:'700'
+                                    }}>
+                                    Select Reason
+                                  </Text>
+                                  <TouchableOpacity onPress={()=>setLeaveDetailModal(!LeaveDetailModal)}>
+                                    <Ionicons
+                                      name="close-circle-outline"
+                                      size={30}
+                                      color={'#444'}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{minWidth:150}}>
+                                      <Text style={{fontWeight: "700"}}>
+                                        Leave Type : 
+                                      </Text>                                      
+                                    </View>
+                                    <View>
+                                      <Text>
+                                        Leave Type
+                                      </Text>   
+                                    </View>
+                                </View>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{minWidth:150}}>
+                                      <Text style={{fontWeight: "700"}}>
+                                        Leave Type : 
+                                      </Text>                                      
+                                    </View>
+                                    <View>
+                                      <Text>
+                                        Leave Type
+                                      </Text>   
+                                    </View>
+                                </View>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{minWidth:150}}>
+                                      <Text style={{fontWeight: "700"}}>
+                                        Leave Type : 
+                                      </Text>                                      
+                                    </View>
+                                    <View>
+                                      <Text>
+                                        Leave Type
+                                      </Text>   
+                                    </View>
+                                </View>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{minWidth:150}}>
+                                      <Text style={{fontWeight: "700"}}>
+                                        Leave Type : 
+                                      </Text>                                      
+                                    </View>
+                                    <View>
+                                      <Text>
+                                        Leave Type
+                                      </Text>   
+                                    </View>
+                                </View>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{minWidth:150}}>
+                                      <Text style={{fontWeight: "700"}}>
+                                        Leave Type : 
+                                      </Text>                                      
+                                    </View>
+                                    <View>
+                                      <Text>
+                                        Leave Type
+                                      </Text>   
+                                    </View>
+                                </View>
+
+
+
+
+                            </View>
+                          </Modal>
+
               </View>
-            </ScrollView>
+            </View>
           )}
         </View>
       </View>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -961,7 +1044,8 @@ const styles = StyleSheet.create({
     color: '#2757C3',
   },
   circle: {
-    borderWidth: 0.5,
+    borderWidth: 1,
+    borderColor:'#00B4DB',
     // width: 30,
     // height: 30,
     borderRadius: 50,
@@ -985,26 +1069,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
     elevation: 5,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-    borderTopRightRadius: 15,
   },
   comment: {
     marginTop: 20,
     alignSelf: 'center',
     width: '90%',
     maxHeight: 100,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 2.0,
-    elevation: 2,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-    borderTopRightRadius: 15,
+    backgroundColor:'#fff',
+    borderWidth:1,
+    borderColor:'#ddd',
+    padding:10
   },
 });
 
