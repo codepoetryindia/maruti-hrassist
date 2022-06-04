@@ -20,25 +20,56 @@ const EmployProfile = ({ navigation, route }) => {
 
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [employeeData, setEmployeeData] = useState();
-  const [empphoto, setPhoto] = useState();
+  const [employeeData, setEmployeeData] = useState([]);
+  const [empphoto, setPhoto] = useState('');
 
 
+  // const employeProfile = () => {
+  //   let apiData = {
+  //     UserName: userId
+  //   }
+  //   let token = AppUserData.token
+  //   setLoader(true);
+  //   ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
+  //     .then(result => {
+  //       console.log("GetEmployeeProfile",result);
+  //       setLoader(false);
+  //       let responseData = result.Value.Table
+  //       let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
+  //       setEmployeeData(responseData);
+  //       console.log("image",responseData)
+  //       // setPhoto(profileImage);
+  //     })
+  //     .catch(error => {
+  //       setLoader(false);
+  //       // console.log('Error occurred==>', error);
+  //       if (error.response) {
+  //         if (error.response.status == 401) {
+  //           console.log('error from api', error.response);
+  //         }
+  //         Toast.show(error.response.data.title);
+  //       } else if (error) {
+  //         Toast.show('Network Error');
+  //       } else {
+  //         Toast.show('Something Went Wrong');
+  //       }
+  //     });
+  // };
   const employeProfile = () => {
+    let token = AppUserData.token
     let apiData = {
       UserName: userId
     }
-    let token = AppUserData.token
+    console.log(apiData);
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        console.log(result);
         setLoader(false);
-        let responseData = result.Value.Table
-        let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
-        setEmployeeData(responseData);
-        setPhoto(profileImage);
-        // console.log("image", responseData.profile_photo)
+        let responseData = result.Value.Table;
+        let Profile = responseData[0].profile_photo
+        setEmployeeData(responseData)
+        setPhoto(Profile);
+        console.log("GetEmployeeProfile", responseData,Profile);
       })
       .catch(error => {
         setLoader(false);
@@ -83,7 +114,7 @@ const EmployProfile = ({ navigation, route }) => {
                 letterSpacing: 1,
                 marginLeft: 25,
               }}>
-              Profile
+              Employee Profile
             </Text>
           </View>
         </LinearGradient>

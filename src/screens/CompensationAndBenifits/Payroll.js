@@ -254,7 +254,7 @@ const Payroll = () => {
 
 
           <Modal
-            backdropOpacity={0.1}
+            backdropOpacity={0.5}
             animationInTiming={300}
             animationIn="fadeIn"
             animationOut="fadeOut"
@@ -344,14 +344,14 @@ const Payroll = () => {
           {/* Pf saving modal */}
 
           <Modal
-            backdropOpacity={0.1}
+            backdropOpacity={0.5}
             animationInTiming={300}
             animationIn="fadeIn"
             animationOut="fadeOut"
             animationOutTiming={500}
             coverScreen={true}
             isVisible={pfModalVisible}>
-            <View style={styles.modal}>
+            <View style={[styles.modal,{flex:0.3}]}>
               <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
                 <Feather
                   name="x-circle"
@@ -425,10 +425,10 @@ const Payroll = () => {
           </View>
         </TouchableOpacity>
         <Modal
-          backdropOpacity={0.1}
+          backdropOpacity={0.5}
           coverScreen={true}
           isVisible={savingModalVisible}>
-          <View style={styles.modal}>
+          <View style={[styles.modal,{flex:0.5}]}>
             <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
               <Feather
                 name="x-circle"

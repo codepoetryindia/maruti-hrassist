@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,7 +21,7 @@ const SalarySlip = ({ navigation }) => {
     const [selectedMonth, setSelectedMonth] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
     const [loader, setLoader] = useState(false)
-    // const [date, setDate] = useState(new Date())
+    const [salaryData, setSalaryData] = useState('')
     const [salaryType, setSalaryType = useState] = useState()
     const { authContext, AppUserData } = useContext(AuthContext);
 
@@ -34,14 +34,15 @@ const SalarySlip = ({ navigation }) => {
         setLoader(true);
         ApiService.PostMethode('/GetSalaryMonth', apiData, token)
             .then(result => {
-                console.log('defaultDate', result);
+                console.log('GetSalaryMonth', result);
                 setLoader(false);
                 let responseData = result.Value
                 let defaultDate = result.Value[0].SHIS_YYMM_CODE
                 console.log('defaultDate', defaultDate);
                 setDefaultDate(defaultDate);
                 setMonth(responseData);
-                GetSalaryTypeApi()
+                GetSalaryTypeApi(defaultDate)
+                GetSalaryData(defaultDate)
             })
             .catch(error => {
                 setLoader(false);
@@ -60,13 +61,14 @@ const SalarySlip = ({ navigation }) => {
     };
 
 
-    const GetSalaryTypeApi = () => {
+    const GetSalaryTypeApi = (data) => {
         let token = AppUserData.token
         let EmplID = AppUserData.data.userId
         let apiData = {
+            "SalaryMonth":  data,
             "EmplID": EmplID,
-            "SalaryMonth": defaultDate,
         }
+        console.log("SalaryMonth", apiData)
         setLoader(true);
         ApiService.PostMethode('/GetSalaryType', apiData, token)
             .then(result => {
@@ -74,9 +76,37 @@ const SalarySlip = ({ navigation }) => {
                 console.log('GetSalaryType', result);
                 let responseData = result.Value
                 setSalaryType(responseData)
-                // responseData.map((item)=> {
-                //     return (  setSalaryType(item));
-                // })
+            })
+            .catch(error => {
+                setLoader(false);
+                // console.log('Error occurred==>', error);
+                if (error.response) {
+                    if (error.response.status == 401) {
+                        console.log('error from api', error.response);
+                    }
+                    Toast.show(error.response.data.title);
+                } else if (error) {
+                    Toast.show('Network Error');
+                } else {
+                    Toast.show('Something Went Wrong');
+                }
+            });
+    };
+    const GetSalaryData = (data) => {
+        let token = AppUserData.token
+        let EmplID = AppUserData.data.userId
+        let apiData = {
+            "EmplID": EmplID,
+            "SalaryMonth":  data,
+        }
+        console.log("GetSalaryData", apiData)
+        setLoader(true);
+        ApiService.PostMethode('/GetSalaryData', apiData, token)
+            .then(result => {
+                setLoader(false);
+                let responseData = result.Value
+                setSalaryData(responseData)
+                console.log('GetSalaryData', responseData);
             })
             .catch(error => {
                 setLoader(false);
@@ -96,6 +126,8 @@ const SalarySlip = ({ navigation }) => {
 
     useEffect(() => {
         GetMonth()
+        GetSalaryData()
+        GetSalaryTypeApi()
     }, [])
     console.log("month data", month);
 
@@ -112,6 +144,7 @@ const SalarySlip = ({ navigation }) => {
                     textStyle={styles.spinnerTextStyle}
                 />
             ) : null}
+
             <LinearGradient
                 colors={['#4174D0', '#6ef7ff']}
                 style={styles.gradient}>
@@ -205,7 +238,8 @@ const SalarySlip = ({ navigation }) => {
                                 onPress={() => {
                                     console.log(item.SHIS_YYMM_CODE)
                                     setDefaultDate(item.SHIS_YYMM_CODE)
-                                    GetSalaryTypeApi()
+                                    GetSalaryTypeApi(item.SHIS_YYMM_CODE)
+                                    GetSalaryData(item.SHIS_YYMM_CODE)
                                     toggleModal()
                                 }}
                                 style={styles.textContainer}>
@@ -224,16 +258,98 @@ const SalarySlip = ({ navigation }) => {
                         justifyContent: 'space-between',
                         paddingHorizontal: 10,
                     }}>
-                    {salaryType&&salaryType.map((item) => {
-                        return(
+                    {salaryType && salaryType.map((item) => {
+                        return (
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                            {item.PYDT_DESCRIPTION}
-                        </Text>
+                                {item.PYDT_DESCRIPTION}
+                            </Text>
                         )
                     })}
-                    <Feather name="corner-up-right" size={20}/>
+                    <Feather name="corner-up-right" size={20} />
                 </View>
             </TouchableOpacity>
+
+            <ScrollView>
+                {/* Table */}
+                <View style={styles.Table}>
+                    <Text>Pay Element</Text>
+                    <Text>Earnings</Text>
+                    <Text>Deduction</Text>
+                    <Text>Remarks</Text>
+                </View>
+                {salaryData.length > 0 ? (
+                    <FlatList
+                        data={salaryData}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <View style={styles.Table}>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                </View>
+                            )
+                        }} />
+                ) : null}
+
+                <View style={styles.Table}>
+                    <Text>Earnings</Text>
+                    <Text>Deduction</Text>
+                    <Text>Total</Text>
+                </View>
+                {salaryData.length > 0 ? (
+                    <FlatList
+                        data={salaryData}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <View style={styles.Table}>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+
+                                </View>
+                            )
+                        }} />
+                ) : null}
+                <View style={styles.Table}>
+                    <Text>General Message</Text>
+                </View>
+                {salaryData.length > 0 ? (
+                    <FlatList
+                        data={salaryData}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                </View>
+                            )
+                        }} />
+                ) : null}
+                <View style={styles.Table}>
+                    <Text>Employee Message</Text>
+                </View>
+                {salaryData.length > 0 ? (
+                    <FlatList
+                        data={salaryData}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                    <Text>item.</Text>
+                                </View>
+                            )
+                        }} />
+                ) : null}
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -292,6 +408,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#4174D0'
     },
+    Table: {
+        width: '90%',
+        flexDirection: 'row',
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+        padding: 5,
+        borderBottomWidth: 1,
+        marginTop: 30
+    }
 });
 
 // //make this component available to the app

@@ -37,7 +37,7 @@ const  PastBook = () => {
     const [loader, setLoader] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [bookingDetails, setBookingDetails] = useState([])
-
+    const [bktId,setBktId] = useState('');
     const GetShutlPastFutrReportApi = (data) => {
         let token = AppUserData.token
         setLoader(true);
@@ -46,6 +46,9 @@ const  PastBook = () => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
+                {ApiValue.map((item) => {
+                    return(setBktId(item.BKDT_ID))
+                })}
                 setPastFuData(ApiValue)
             })
 
@@ -71,7 +74,7 @@ const  PastBook = () => {
     const BookingDetailApi = (data) => {
         let token = AppUserData.token
         let apiData = {
-            BKDTID: 'BKNG185',
+            BKDTID: bktId,
         }
         console.log("apiPayload", apiData)
         setLoader(true);
@@ -169,7 +172,7 @@ const  PastBook = () => {
         }
     }
     return (
-        <View
+        <SafeAreaView
             style={{ flex: 1, width: '90%', alignSelf: 'center', paddingVertical: 5 }}>
             <Text style={{ paddingVertical: 5, fontSize: 16, fontWeight: 'bold' }}>
                 Select Date
@@ -435,7 +438,7 @@ const  PastBook = () => {
                 </View>
             )}
 
-        </View>
+        </SafeAreaView>
     );
 };
 

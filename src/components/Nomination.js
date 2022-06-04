@@ -1,52 +1,46 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../context/AuthContext';
 import * as ApiService from '../Utils/Utils';
-import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 const Nomination = ({ navigation, route }) => {
-
-
-
     const [loader, setLoader] = useState(false)
     const { authContext, AppUserData } = useContext(AuthContext);
-    const [employeeData, setEmployeeData] = useState([]);
-    const [empphoto, setPhoto] = useState();
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [isOpen, setIsOpen] = useState('');
+    const [nominidata, setNominiData] = useState([]);
 
-    let NominationData =  route.params.data
-    // setIsOpen(NominationData)
-    console.log("NominationData", NominationData);
-    // NominationData.map((item) => {
-    //     return (console.log(item))
-    // })
-
-
-    // const head = (item) =>{
-    //     return(
-    //         <Separator bordered style={{alignItems:'center'}}>
-    //           <Text>{item.title}</Text>
-    //         </Separator>
-    //     );
-    // }
-    // const body = (item) =>{
-    //     return (
-    //         <View style={{padding:10}}>
-    //           <Text style={{textAlign:'center'}}>{item.body}</Text>
-    //         </View>
-    //     );
-    // }
-    const handleDropDown = () => {
-        setIsOpen(!isOpen)
+    useEffect(() => {
+        const NominationData = route.params.data
+        console.log("route.params.data", NominationData)
+        let responseArr = []
+        NominationData.map((item) => {
+            return (
+                responseArr.push({
+                    ...item,
+                    isClicked: false,
+                })
+            )
+        })
+        console.log("responseArr", responseArr)
+        setNominiData(NominationData)
+    }, [])
+    const handleDropDown = (ind) => {
+        let dummyData = [...nominidata]
+        let arr = dummyData.map((item, index) => {
+            if (ind == index) {
+                item.isClicked = !item.isClicked
+            }
+            return {
+                ...item
+            }
+        })
+        console.log("selectedData", arr)
+        setNominiData(arr)
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
-
             <LinearGradient
                 colors={['#4174D0', '#6ef7ff']}
                 style={styles.gradient}>
@@ -92,77 +86,34 @@ const Nomination = ({ navigation, route }) => {
                     textStyle={styles.spinnerTextStyle}
                 />
             ) : null}
-
-            {/* <Collapse>
-                <CollapseHeader>
-                    <View>
-                        <Text>Click here</Text>
-                    </View>
-                </CollapseHeader>
-                <CollapseBody>
-                    <Text>Ta daa!</Text>
-                </CollapseBody>
-            </Collapse>
-
-//Accordion List
-            <AccordionList
-                list={NominationData}
-                header={head}
-                body={body}
-                keyExtractor={({ item, index }) => index}
-            /> */}
-            {/* <FlatList
-                data={NominationData}
+            <FlatList
+                data={nominidata}
                 keyExtractor={({ item, index }) => index}
                 renderItem={({ item, index }) => {
                     return (
-                        
-                       
+                        <>
+                            <TouchableOpacity onPress={() => {
+                                handleDropDown(index)
+                            }} style={[styles.tabStyle, { borderBottomLeftRadius: item.isClicked ? 0 : 8, borderBottomRightRadius: item.isClicked ? 0 : 8 }]}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                                {item.isClicked == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                            </TouchableOpacity>
+                            {item.isClicked == true ? (
+                                <View>
+                                    <View style={[styles.tabStyle, { marginTop: 0, elevation: 0, borderTopEndRadius: 0, borderTopStartRadius: 0 }]}>
+                                        <Text>{item.ENOM_PERCENT}</Text>
+                                        <Text>{item.ENOM_NAME}</Text>
+                                    </View>
+                                </View>
+                            ) : null}
+                        </>
                     )
-                }} /> */}
-
-
-
-            {/* <View>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {handleDropDown()}} style={styles.tabStyle}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                    {isOpen == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                </TouchableOpacity>
-            </View> */}
+                }} />
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-
     gradient: {
         padding: 20,
     },
@@ -182,7 +133,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        borderRadius: 5,
+        borderRadius: 8,
         padding: 10,
         alignItems: 'center',
         alignSelf: 'center',

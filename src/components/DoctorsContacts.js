@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking,SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking, SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -155,59 +155,59 @@ const DoctorsContacts = ({ navigation, route }) => {
   }, [])
 
   return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient
-          colors={['#4174D0', '#6ef7ff']}
-          style={{ padding: 15 }}>
-          <View style={{ flexDirection: 'row' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: 40,
-                alignItems: 'center',
-              }}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.goBack()}
-              />
-              <Ionicons
-                name="menu-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                letterSpacing: 1,
-                marginLeft: 30,
-              }}>
-              {PageName}
-            </Text>
+    <SafeAreaView style={styles.container}>
+      <LinearGradient
+        colors={['#4174D0', '#6ef7ff']}
+        style={{ padding: 15 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 40,
+              alignItems: 'center',
+            }}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.goBack()}
+            />
+            <Ionicons
+              name="menu-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.openDrawer()}
+            />
           </View>
-        </LinearGradient>
 
-       { loader == true ? (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-    </View>):(
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 16,
+              letterSpacing: 1,
+              marginLeft: 30,
+            }}>
+            {PageName}
+          </Text>
+        </View>
+      </LinearGradient>
+
+      {loader == true ? (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        </View>) : (
 
         <ScrollView
           style={{
             width: '90%',
-            maxHeight:PageName === 'POSH Cell' ? '90%':'70%',
-            marginTop:30,
-            paddingVertical:10,
+            maxHeight: PageName === 'POSH Cell' ? '90%' : '70%',
+            marginTop: 30,
+            paddingVertical: 10,
             marginVertical: 10,
             alignSelf: 'center',
             backgroundColor: '#fff',
@@ -243,15 +243,15 @@ const DoctorsContacts = ({ navigation, route }) => {
                 <View style={styles.responseBox}>
                   <Text>{chairperson && chairperson.EMAIL_ID}</Text>
                   <TouchableOpacity onPress={() => {
-                    Linking.openURL(`tel:${chairperson && chairperson.CONTACT_NUMBER}`)
+                    Linking.openURL(`mailto:${chairperson && chairperson.EMAIL_ID}`)
                   }}>
-                    <Feather name="phone-call" size={20} color={'#4174D0'} />
+                    <Feather name="mail" size={20} color={'#4174D0'} />
                   </TouchableOpacity>
                 </View>
               </View>
 
               <Text
-                 style={styles.headerText}>
+                style={styles.headerText}>
                 CO-CHAIRPERSON
               </Text>
               <View>
@@ -268,10 +268,10 @@ const DoctorsContacts = ({ navigation, route }) => {
                 <View style={styles.responseBox}>
                   <Text>{CoChairperson && CoChairperson.EMAIL_ID}</Text>
                   <TouchableOpacity onPress={() => {
-                    Linking.openURL(`tel:${CoChairperson && CoChairperson.CONTACT_NUMBER}`)
+                    Linking.openURL(`mailto:${CoChairperson && CoChairperson.EMAIL_ID}`)
                   }}
                   >
-                    <Feather name="phone-call" size={20} color={'#4174D0'} />
+                    <Feather name="mail" size={20} color={'#4174D0'} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -540,7 +540,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                           )
                         }} />}
                     <Text
-                     style={styles.headerText}>
+                      style={styles.headerText}>
                       MANESAR
                     </Text>
                     {manesar.length == 0 ? <Text>Not Found</Text> :
@@ -563,7 +563,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                           )
                         }} />}
                     <Text
-                    style={styles.headerText}>
+                      style={styles.headerText}>
                       MPT CASTING PLANT
                     </Text>
                     {casting.length == 0 ? <Text>Not Found</Text> :
@@ -587,7 +587,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         }} />}
 
                     <Text
-                     style={styles.headerText}>
+                      style={styles.headerText}>
                       ROHTAK
                     </Text>
                     {rothak.length == 0 ? <Text>Not Found</Text> :
@@ -843,8 +843,8 @@ const DoctorsContacts = ({ navigation, route }) => {
           }
 
         </ScrollView>
-    )}
-      </SafeAreaView>
+      )}
+    </SafeAreaView>
   );
 };
 

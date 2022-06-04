@@ -1,11 +1,56 @@
-import React, {Component} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView} from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
+import Modal from 'react-native-modal';
+import { ActivityIndicator } from 'react-native-paper';
+import AuthContext from '../../context/AuthContext';
+import * as ApiService from '../../Utils/Utils';
+import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 // create a component
 const Benifits = () => {
+  const [loader, setLoader] = useState(false)
+  const { authContext, AppUserData } = useContext(AuthContext);
+
+  const GetConvElig = () => {
+    let token = AppUserData.token
+    let EmplID = AppUserData.data.EMPL_NAME
+    console.log(EmplID)
+    let apiData = {
+      "UserName":EmplID
+    }
+    setLoader(true);
+    ApiService.PostMethode('/GetConvElig', apiData, token)
+      .then(result => {
+        console.log('setTaxSaving', result);
+        setLoader(false);
+        let responseData = result.Result
+        if(responseData==0){
+         alert("You are not Authorized");
+        }
+        else{
+          alert(responseData)
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
   const myNavigation = useNavigation();
   const data = [
     {id: '1', text: 'PL Encashment'},
@@ -23,8 +68,7 @@ const Benifits = () => {
           <TouchableOpacity style={styles.box} 
           onPress={()=> {
             if(item.text==='Conveyance Bills (SMGR & Above)'){
-              alert(`Payroll \nYou are not Authorized`)
-              return
+              GetConvElig()
             }
             else{
               myNavigation.navigate("Plencashment" , {
