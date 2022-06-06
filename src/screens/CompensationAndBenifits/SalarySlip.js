@@ -21,7 +21,10 @@ const SalarySlip = ({ navigation }) => {
     const [selectedMonth, setSelectedMonth] = useState('');
     const [defaultDate, setDefaultDate] = useState('');
     const [loader, setLoader] = useState(false)
-    const [salaryData, setSalaryData] = useState('')
+    const [table1Data, setTable1Data] = useState('')
+    const [table2Data, setTable2Data] = useState('')
+    const [table3Data, setTable3Data] = useState('')
+    const [table4Data, setTable4Data] = useState('')
     const [salaryType, setSalaryType = useState] = useState()
     const { authContext, AppUserData } = useContext(AuthContext);
 
@@ -65,7 +68,7 @@ const SalarySlip = ({ navigation }) => {
         let token = AppUserData.token
         let EmplID = AppUserData.data.userId
         let apiData = {
-            "SalaryMonth":  data,
+            "SalaryMonth": data,
             "EmplID": EmplID,
         }
         console.log("SalaryMonth", apiData)
@@ -97,16 +100,26 @@ const SalarySlip = ({ navigation }) => {
         let EmplID = AppUserData.data.userId
         let apiData = {
             "EmplID": EmplID,
-            "SalaryMonth":  data,
+            "SalaryMonth": data,
+            "SalType": "0"
+
         }
         console.log("GetSalaryData", apiData)
         setLoader(true);
         ApiService.PostMethode('/GetSalaryData', apiData, token)
             .then(result => {
                 setLoader(false);
-                let responseData = result.Value
-                setSalaryData(responseData)
-                console.log('GetSalaryData', responseData);
+                let responseData = result.Value.Table1
+                let responseData2 = result.Value.Table2
+                let responseData3 = result.Value.Table3
+                let responseData4 = result.Value.Table4
+                setTable1Data(responseData)
+                setTable2Data(responseData2)
+                setTable3Data(responseData3)
+                setTable4Data(responseData4)
+                console.log('GetSalaryData', responseData2);
+                console.log('GetSalaryData3', responseData3,);
+                console.log('GetSalaryData4', responseData4,);
             })
             .catch(error => {
                 setLoader(false);
@@ -271,62 +284,89 @@ const SalarySlip = ({ navigation }) => {
 
             <ScrollView>
                 {/* Table */}
-                <View style={styles.Table}>
-                    <Text>Pay Element</Text>
-                    <Text>Earnings</Text>
-                    <Text>Deduction</Text>
-                    <Text>Remarks</Text>
+                <View style={[styles.Table,{alignSelf:'center'}]}>
+                    <View style={styles.tableRow}>
+                        <Text>Pay Element</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text>Earnings</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text>Deduction</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text>Remarks</Text>
+                    </View>
+
+
                 </View>
-                {salaryData.length > 0 ? (
+                {table1Data.length > 0 ? (
                     <FlatList
-                        data={salaryData}
+                        data={table1Data}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
                             return (
                                 <View style={styles.Table}>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.MDESC}</Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.EARNING}</Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.DED}</Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.SHIS_REMARKS}</Text>
+                                    </View>
                                 </View>
                             )
                         }} />
                 ) : null}
 
-                <View style={styles.Table}>
-                    <Text>Earnings</Text>
-                    <Text>Deduction</Text>
-                    <Text>Total</Text>
+                <View style={[styles.Table,{}]}>
+                    <View style={styles.tableRow}>
+                        <Text>Earnings</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text>Deduction</Text>
+                    </View>
+                    <View style={styles.tableRow}>
+                        <Text>Total</Text>
+                    </View>
                 </View>
-                {salaryData.length > 0 ? (
+                {table4Data.length > 0 ? (
                     <FlatList
-                        data={salaryData}
+                        data={table4Data}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={styles.Table}>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-
+                                <View style={[styles.Table,{alignSelf:'center',}]}>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.EARNING}</Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.DED}</Text>
+                                    </View>
+                                    <View style={styles.tableRow}>
+                                        <Text>{item.NET}</Text>
+                                    </View>
                                 </View>
                             )
                         }} />
                 ) : null}
-                <View style={styles.Table}>
+                <View style={{alignItems:'flex-start',margin:15,}}>
                     <Text>General Message</Text>
                 </View>
-                {salaryData.length > 0 ? (
+                {table2Data.length > 0 ? (
                     <FlatList
-                        data={salaryData}
+                        data={table2Data}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
                             return (
                                 <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
+                                    <Text>{item.GLMS_MESSAGES}</Text>
+                                   
                                 </View>
                             )
                         }} />
@@ -334,17 +374,16 @@ const SalarySlip = ({ navigation }) => {
                 <View style={styles.Table}>
                     <Text>Employee Message</Text>
                 </View>
-                {salaryData.length > 0 ? (
+                {table3Data.length > 0 ? (
                     <FlatList
-                        data={salaryData}
+                        data={table3Data}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
+                           
                             return (
                                 <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
-                                    <Text>item.</Text>
+                                    <Text style = {{color:'#000'}}>{item.EXMS_MESSAGES}</Text>
+                                   
                                 </View>
                             )
                         }} />
@@ -412,10 +451,17 @@ const styles = StyleSheet.create({
         width: '90%',
         flexDirection: 'row',
         alignSelf: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         padding: 5,
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         marginTop: 30
+    },
+    tableRow: {
+        width: '25%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 5,
+        alignSelf:'center'
     }
 });
 

@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,32 +14,18 @@ import Hospital from './Hospital';
 import NearByHospital from './NearByHospital';
 import EmergencyContacts from './EmergencyContact';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useIsFocused } from '@react-navigation/native'
+
 const Tab = createMaterialTopTabNavigator();
 
-
-
-
 const EmergencyHospital = ({ navigation, route }) => {
-  let hosFilterData = route.params
- 
-
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener('tabPress', (e) => {
-  //     // Prevent default behavior
-  //     e.preventDefault();
-
-  //     alert('Default behavior prevented');
-  //     // Do something manually
-  //     // ...
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
+  // let data = route.params
+  // console.log(data)
+  // const [locationName,setLocationName] = useState('')
 
   // useEffect(() => {
-  //   console.log("hosFilterData",hosFilterData);
-  // }, [])
+  //   setLocationName(route.params.selectedLoc)
+  //   console.log(route.params.selectedLoc)
+  // }, [route.params])
 
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
@@ -101,7 +87,7 @@ const EmergencyHospital = ({ navigation, route }) => {
         }}
       >
         <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
-        <Tab.Screen name="Hospital" component={Hospital} locationName='hosFilterData' onPress={() => console.log("pressed")} />
+        <Tab.Screen name="Hospital" component={Hospital } locationName={locationName} onPress={() => console.log("pressed")} />
         <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
       </Tab.Navigator>
 

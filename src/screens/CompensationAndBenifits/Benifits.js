@@ -56,8 +56,6 @@ const Benifits = () => {
     {id: '1', text: 'PL Encashment'},
     {id: '2', text: 'LTA Encashment'},
     {id: '3', text: 'Conveyance Bills (SMGR & Above)'},
-    
-    
   ];
   return (
     <ScrollView style={styles.container}>

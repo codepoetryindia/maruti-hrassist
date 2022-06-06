@@ -8,19 +8,23 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Spinner from 'react-native-loading-spinner-overlay';
-import LinearGradient from 'react-native-linear-gradient';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 // create a component
-const Hospital = ({ locationName = '' }) => {
-  console.log('locationName', locationName);
+const Hospital = ({ locationName }) => {
   const myNavigation = useNavigation();
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
   const [hospitalList, setHospitallList] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItem, setModalItem] = useState('')
+
+  // useEffect(() => {
+  //   if (locationName) {
+  //     console.log('call api');
+  //   }
+  // }, [locationName])
 
   // Hospital list 
   const GetHospListApi = (apidata = {}) => {
@@ -120,7 +124,7 @@ const Hospital = ({ locationName = '' }) => {
           </Modal>
 
 
-          <View style={{ width: '90%',alignItems:'flex-end', alignSelf: 'center' }}>
+          <View style={{ width: '90%', alignItems: 'flex-end', alignSelf: 'center' }}>
             <Ionicons
 
               name="ios-filter"

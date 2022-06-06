@@ -753,12 +753,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                           )
                         }} />}
                     <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        borderBottomWidth: 1,
-                        padding: 5,
-                      }}>
+                      style={styles.headerText}>
                       GURGAON FACTORY
                     </Text>
                     {gurgaon.length == 0 ? <Text>Not Found</Text> :
@@ -781,12 +776,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         }} />
                     }
                     <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        borderBottomWidth: 1,
-                        padding: 5,
-                      }}>
+                       style={styles.headerText}>
                       MANESAR
                     </Text>
                     {manesar.length == 0 ? <Text>Not Found</Text> :
@@ -799,12 +789,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         </TouchableOpacity>
                       </View>}
                     <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        borderBottomWidth: 1,
-                        padding: 5,
-                      }}>
+                      style={styles.headerText}>
                       MPT CASTING PLANT
                     </Text>
                     {casting.length == 0 ? <Text>Not Found</Text> :
@@ -818,12 +803,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       </View>}
 
                     <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        borderBottomWidth: 1,
-                        padding: 5,
-                      }}>
+                       style={styles.headerText}>
                       ROHTAK
                     </Text>
                     {rothak.length == 0 ? <Text>Not Found</Text> :
@@ -863,7 +843,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   headerText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     borderBottomWidth: 1,
     padding: 5,
