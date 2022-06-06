@@ -32,12 +32,12 @@ const  PastBook = () => {
     const [second, setSecond] = useState(false);
     const [textinputDate, setTextinputDate] = useState('');
     const [textinputSecondDate, setTextinputSecondDate] = useState('');
-    const [data, setData] = useState([])
+    const [pastFudata, setPastFuData] = useState([])
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [bookingDetails, setBookingDetails] = useState([])
-
+    const [bktId,setBktId] = useState('');
     const GetShutlPastFutrReportApi = (data) => {
         let token = AppUserData.token
         setLoader(true);
@@ -46,7 +46,10 @@ const  PastBook = () => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
-                setData(ApiValue)
+                {ApiValue.map((item) => {
+                    return(setBktId(item.BKDT_ID))
+                })}
+                setPastFuData(ApiValue)
             })
 
             .catch(error => {
@@ -71,7 +74,7 @@ const  PastBook = () => {
     const BookingDetailApi = (data) => {
         let token = AppUserData.token
         let apiData = {
-            BKDTID: data,
+            BKDTID: bktId,
         }
         console.log("apiPayload", apiData)
         setLoader(true);
@@ -169,7 +172,7 @@ const  PastBook = () => {
         }
     }
     return (
-        <View
+        <SafeAreaView
             style={{ flex: 1, width: '90%', alignSelf: 'center', paddingVertical: 5 }}>
             <Text style={{ paddingVertical: 5, fontSize: 16, fontWeight: 'bold' }}>
                 Select Date
@@ -285,7 +288,7 @@ const  PastBook = () => {
                 </LinearGradient>
             </TouchableOpacity>
 
-            {data.length > 0 ? (
+            {pastFudata.length > 0 ? (
                 <View
                     style={{
                         width: '110%',
@@ -321,7 +324,7 @@ const  PastBook = () => {
                     </View>
                     <View>
                         {
-                            data.map((item) => {
+                            pastFudata.map((item) => {
                                 return (
                                     <TouchableOpacity
                                         onPress={() => {
@@ -435,7 +438,7 @@ const  PastBook = () => {
                 </View>
             )}
 
-        </View>
+        </SafeAreaView>
     );
 };
 

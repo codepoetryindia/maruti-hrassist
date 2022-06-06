@@ -141,7 +141,7 @@ function CustomDrawer(props) {
             />
             <DrawerItem
               label="Compensatino and Benifits"
-              onPress={() => navigation.navigate('CompensationBenifits')}
+              onPress={() => navigation.navigate('CompensationBenifitsNav')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image

@@ -85,7 +85,7 @@ const Birthdays = () => {
   // emp Profile Data  
   const GetUserDetails = (item) => {
     console.log(item);
-    let apiData = { "UserName": item['Staff No']};
+    let apiData = { "UserName": item['Staff No'] };
     let token = AppUserData.token
     // console.log("apiData", apiData)
     setLoader(true);
@@ -95,12 +95,12 @@ const Birthdays = () => {
         if (response.Table) {
           // console.log("employeeresult", response.Table[0].profile_photo,);
           let profile = response.Table[0].profile_photo;
-          
+
           setModalItem(item);
           setEmpPhoto(profile);
           setLoader(false);
           setModalVisible(true);
-        }else{
+        } else {
           setLoader(false);
           setModalVisible(false);
           Toast.show("User not found");
@@ -148,277 +148,278 @@ const Birthdays = () => {
   const handleCurrentPage = index => {
     setCurrentPage(index);
   };
-  return ( 
-      <SafeAreaView style={styles.container}>
+  return (
+    <SafeAreaView style={styles.container}>
 
-        {
-          loader ? (
-            <Spinner
+      {
+        loader ? (
+          <Spinner
             visible={loader}
             textContent={'Loading...'}
-            textStyle={{color:'#fff'}}
+            textStyle={{ color: '#fff' }}
             overlayColor={'rgba(0, 0, 0, 0.50)'}
 
           />
-          ): null
-        }{
-          loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Please wait we are fetching your data</Text></View>) :(
-<View>
-  
-<View style={{ width: '100%' }}>
-          <SegmentedControlTab
-            borderRadius={8}
-            values={['Today', 'Tomorrow']}
-            selectedIndex={CurrentPage}
-            onTabPress={index => {
-              handleCurrentPage(index);
-            }}
-            tabsContainerStyle={styles.tabsContainerStyle}
-            tabStyle={styles.tabStyle}
-            tabTextStyle={styles.tabTextStyle}
-            activeTabStyle={styles.activeTabStyle}
-            activeTabTextStyle={styles.activeTabTextStyle}
-          />
-          {/* modal for showing user data */}
-          <Modal
-            backdropOpacity={0.7}
-            // animationInTiming={300}
-            // animationIn="zoomInUp"
-            // animationOut="fadeOut"
-            // animationOutTiming={500}
-            coverScreen={true}
-            isVisible={isModalVisible}>
-            <LinearGradient
-              colors={['#4174D0', '#6ef7ff']}
-              style={{ minHeight:400, borderRadius: 15 }}>
-              <View style={styles.modal}>
-                <TouchableOpacity style={styles.ModalCloseIcon}>
-                  <Feather
-                    name="x-circle"
-                    color={'#000'}
-                    size={30}
-                    onPress={toggleModal}
-                  />
-                </TouchableOpacity>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    alignSelf: 'center',
-                    width: 150,
-                    height: 150,
-                    borderWidth: 20,
-                    borderColor: '#6ef7ff',
-                    borderRadius: 60,
-                    marginTop: 80,
-                  }}>
-                  {empPhoto ? (
-                    <Image
-                      source={{ uri: 'data:image/png;base64, ' + empPhoto }}
-                      style={[styles.profileImg, { marginRight: 5 }]}
-                    />
-                  ) : (
-                    <Image
-                      source={require('../../../assets/Images/Avtar.png')}
-                      style={[styles.profileImg, { marginRight: 5 }]}
-                    />
-                  )}
-                </View>
-                <View
-                  style={{
-                    paddingVertical: 15,
-                    alignSelf: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={{ color: '#fff', lineHeight: 20 }}>
-                    {modalItem && modalItem.Name && modalItem.Name}
-                  </Text>
-                  <Text style={{ color: '#fff', lineHeight: 20 }}>
-                    {modalItem && modalItem.Email && modalItem.Email}
-                  </Text>
-                  <Text style={{ color: '#fff', lineHeight: 20 }}>
-                    {modalItem && modalItem.Dept && modalItem.Dept}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    // height: '23%',
-                    marginTop: 5,
-                    // backgroundColor:'yellow',
-                    flexDirection: 'row',
-                    alignSelf: 'center',
-                    justifyContent: 'space-around',
-                    width: '50%',
-                    alignItems: 'flex-end',
-                  }}>
-
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      Linking.openURL(`mailto:${modalItem.Email}`)
-                    }}
-                    style={{
-                      borderWidth: 1,
-                      width: 40,
-                      height: 40,
-                      borderColor: '#fff',
-                      borderRadius: 100,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Feather name="mail" size={20} color={'#fff'} />
-                  </TouchableOpacity>
-
-
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: 1,
-                      width: 40,
-                      height: 40,
-                      borderColor: '#fff',
-                      borderRadius: 100,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    onPress={()=>{
-                      Linking.openURL(`tel:${modalItem.MOB_NO}`)
-                    }}
-                    >
-                    <Feather name="phone-call" size={20} color={'#fff'} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </LinearGradient>
-          </Modal>
-        </View>
-
-        <View>
-          {CurrentPage == 0 ? (
+        ) : null
+      }{
+        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',marginTop:40}}>
+          <Text>Please wait we are fetching your data</Text></View>) :
+          (
             <View>
-              <Image
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Birthday_candles.jpg/1200px-Birthday_candles.jpg',
-                }}
-                style={styles.img}
-              />
-              <View style={{ height: '67%', marginTop: 10, marginBottom: '30%' }}>
-                <FlatList
-                  ListEmptyComponent={() => {
-                    return (
-                      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={require('../../../assets/Images/dataNotFound.png')}
-                          style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                      </View>
-                    )
+
+              <View style={{ width: '100%' }}>
+                <SegmentedControlTab
+                  borderRadius={8}
+                  values={['Today', 'Tomorrow']}
+                  selectedIndex={CurrentPage}
+                  onTabPress={index => {
+                    handleCurrentPage(index);
                   }}
-                  showsVerticalScrollIndicator={false}
-                  data={todayBirthday}
-                  keyExtractor={({ item, index }) => index}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <View style={{ flex: 1 }}>
+                  tabsContainerStyle={styles.tabsContainerStyle}
+                  tabStyle={styles.tabStyle}
+                  tabTextStyle={styles.tabTextStyle}
+                  activeTabStyle={styles.activeTabStyle}
+                  activeTabTextStyle={styles.activeTabTextStyle}
+                />
+                {/* modal for showing user data */}
+                <Modal
+                  backdropOpacity={0.7}
+                  // animationInTiming={300}
+                  // animationIn="zoomInUp"
+                  // animationOut="fadeOut"
+                  // animationOutTiming={500}
+                  coverScreen={true}
+                  isVisible={isModalVisible}>
+                  <LinearGradient
+                    colors={['#4174D0', '#6ef7ff']}
+                    style={{ minHeight: 400, borderRadius: 15 }}>
+                    <View style={styles.modal}>
+                      <TouchableOpacity style={styles.ModalCloseIcon}>
+                        <Feather
+                          name="x-circle"
+                          color={'#000'}
+                          size={30}
+                          onPress={toggleModal}
+                        />
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          width: 150,
+                          height: 150,
+                          borderWidth: 20,
+                          borderColor: '#6ef7ff',
+                          borderRadius: 60,
+                          marginTop: 80,
+                        }}>
+                        {empPhoto ? (
+                          <Image
+                            source={{ uri: 'data:image/png;base64, ' + empPhoto }}
+                            style={[styles.profileImg, { marginRight: 5 }]}
+                          />
+                        ) : (
+                          <Image
+                            source={require('../../../assets/Images/Avtar.png')}
+                            style={[styles.profileImg, { marginRight: 5 }]}
+                          />
+                        )}
+                      </View>
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          alignSelf: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text style={{ color: '#fff', lineHeight: 20 }}>
+                          {modalItem && modalItem.Name && modalItem.Name}
+                        </Text>
+                        <Text style={{ color: '#fff', lineHeight: 20 }}>
+                          {modalItem && modalItem.Email && modalItem.Email}
+                        </Text>
+                        <Text style={{ color: '#fff', lineHeight: 20 }}>
+                          {modalItem && modalItem.Dept && modalItem.Dept}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          // height: '23%',
+                          marginTop: 5,
+                          // backgroundColor:'yellow',
+                          flexDirection: 'row',
+                          alignSelf: 'center',
+                          justifyContent: 'space-around',
+                          width: '50%',
+                          alignItems: 'flex-end',
+                        }}>
+
+
                         <TouchableOpacity
                           onPress={() => {
+                            Linking.openURL(`mailto:${modalItem.Email}`)
+                          }}
+                          style={{
+                            borderWidth: 1,
+                            width: 40,
+                            height: 40,
+                            borderColor: '#fff',
+                            borderRadius: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Feather name="mail" size={20} color={'#fff'} />
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity
+                          style={{
+                            borderWidth: 1,
+                            width: 40,
+                            height: 40,
+                            borderColor: '#fff',
+                            borderRadius: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}
+                          onPress={() => {
+                            Linking.openURL(`tel:${modalItem.MOB_NO}`)
+                          }}
+                        >
+                          <Feather name="phone-call" size={20} color={'#fff'} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </Modal>
+              </View>
+
+              <View>
+                {CurrentPage == 0 ? (
+                  <View>
+                    <Image
+                      source={{
+                        uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Birthday_candles.jpg/1200px-Birthday_candles.jpg',
+                      }}
+                      style={styles.img}
+                    />
+                    <View style={{ height: '67%', marginTop: 10, marginBottom: '30%' }}>
+                      <FlatList
+                        ListEmptyComponent={() => {
+                          return (
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                              <Image source={require('../../../assets/Images/dataNotFound.png')}
+                                style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                            </View>
+                          )
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        data={todayBirthday}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => {
+                          return (
+                            <View style={{ flex: 1 }}>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  GetUserDetails(item);
+                                }}>
+                                <View
+                                  style={[
+                                    styles.itemView,
+                                    // {transform: [{scale}], opacity},
+                                  ]}>
+                                  <View
+                                    style={{
+                                      borderRightWidth: 2,
+                                      paddingVertical: 8,
+                                      width: '20%',
+                                    }}>
+                                    <Text style={{ textAlign: 'center' }}>
+                                      {item.BIRTHDATE.includes("TODAY") ? item.DIRC_CODE : null}
+                                    </Text>
+                                  </View>
+                                  <View
+                                    style={{
+                                      width: '80%',
+                                      paddingVertical: 5,
+                                      paddingLeft: 15,
+                                    }}>
+                                    <Text>
+                                      {item.BIRTHDATE.includes("TODAY") ? item.Name : null}</Text>
+                                    <Text>
+                                      {item.BIRTHDATE.includes("TODAY") ? item.Email : null}</Text>
+                                    <Text>
+                                      {item.BIRTHDATE.includes("TODAY") ? item.Dept : null}</Text>
+                                  </View>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          );
+                        }}
+                      />
+                    </View>
+                  </View>
+                ) : (
+
+                  // tommorow birthday
+
+                  <View style={{ height: '97%', paddingVertical: 10 }}>
+                    <FlatList
+                      showsVerticalScrollIndicator={false}
+                      data={tomorrowBirthday}
+                      ListEmptyComponent={() => {
+                        return (
+                          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Image source={require('../../../assets/Images/dataNotFound.png')}
+                              style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                            <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                          </View>
+                        )
+                      }}
+
+                      keyExtractor={({ item, index }) => index}
+                      renderItem={({ item, index }) => (
+                        <View style={{ flex: 1 }}>
+                          <TouchableOpacity onPress={() => {
                             GetUserDetails(item);
                           }}>
-                          <View
-                            style={[
-                              styles.itemView,
-                              // {transform: [{scale}], opacity},
-                            ]}>
-                            <View
-                              style={{
-                                borderRightWidth: 2,
-                                paddingVertical: 8,
-                                width: '20%',
-                              }}>
-                              <Text style={{ textAlign: 'center' }}>
-                                {item.BIRTHDATE.includes("TODAY") ? item.DIRC_CODE : null}
-                              </Text>
+                            <View style={styles.itemView}>
+                              <View
+                                style={{
+                                  borderRightWidth: 2,
+                                  paddingVertical: 8,
+                                  width: '20%',
+                                }}>
+                                <Text style={{ textAlign: 'center' }}>
+                                  {item.DIRC_CODE}
+
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  width: '80%',
+                                  paddingVertical: 5,
+                                  paddingLeft: 15,
+                                }}>
+                                <Text style>{item.Name}</Text>
+                                <Text>{item.Email}</Text>
+                                <Text>{item.Dept}</Text>
+                              </View>
                             </View>
-                            <View
-                              style={{
-                                width: '80%',
-                                paddingVertical: 5,
-                                paddingLeft: 15,
-                              }}>
-                              <Text>
-                                {item.BIRTHDATE.includes("TODAY") ? item.Name : null}</Text>
-                              <Text>
-                                {item.BIRTHDATE.includes("TODAY") ? item.Email : null}</Text>
-                              <Text>
-                                {item.BIRTHDATE.includes("TODAY") ? item.Dept : null}</Text>
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    );
-                  }}
-                />
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    />
+                  </View>
+                )}
               </View>
             </View>
-          ) : (
-
-            // tommorow birthday
-          
-                <View style={{ height: '97%', paddingVertical: 10 }}>
-                  <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={tomorrowBirthday}
-                    ListEmptyComponent={() => {
-                      return (
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                          <Image source={require('../../../assets/Images/dataNotFound.png')}
-                            style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                          <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                        </View>
-                      )
-                    }}
-
-                    keyExtractor={({ item, index }) => index}
-                    renderItem={({ item, index }) => (
-                      <View style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={() => {
-                          GetUserDetails(item);
-                        }}>
-                          <View style={styles.itemView}>
-                            <View
-                              style={{
-                                borderRightWidth: 2,
-                                paddingVertical: 8,
-                                width: '20%',
-                              }}>
-                              <Text style={{ textAlign: 'center' }}>
-                                {item.DIRC_CODE}
-
-                              </Text>
-                            </View>
-                            <View
-                              style={{
-                                width: '80%',
-                                paddingVertical: 5,
-                                paddingLeft: 15,
-                              }}>
-                              <Text style>{item.Name}</Text>
-                              <Text>{item.Email}</Text>
-                              <Text>{item.Dept}</Text>
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  />
-                </View>
           )}
-        </View>
-</View>
-            )}
 
-        
-      </SafeAreaView>
-    
+
+    </SafeAreaView>
+
   );
 };
 
@@ -467,7 +468,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   itemView: {
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
     width: '100%',
     borderLeftWidth: 5,
     borderLeftColor: 'gray',
@@ -499,7 +500,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
-    position:'relative'
+    position: 'relative'
   },
   profileImg: {
     height: 100,
@@ -507,11 +508,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginLeft: 5,
   },
-  ModalCloseIcon:{
-    position:'absolute',
-    top:10,
-    right:10,
-    zIndex:55
+  ModalCloseIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 55
   }
 });
 

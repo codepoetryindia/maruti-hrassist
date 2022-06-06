@@ -58,6 +58,10 @@ const Notification = ({ navigation }) => {
            textStyle={styles.spinnerTextStyle}
          />
         ):null}
+        {
+        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Please wait we are fetching your data</Text></View>) :
+          (
         <LinearGradient
           style={{ flex: 1 }}
           colors={['#4174D0', '#6ef7ff']}>
@@ -90,15 +94,9 @@ const Notification = ({ navigation }) => {
           {/* BODY */}
           <View
             style={{
-              // backgroundColor: '#fff',
-              // width: '97%',
-              // height: '90%',
-              // alignSelf: 'flex-end',
               marginHorizontal:10,
+              marginBottom:50,
               padding: 10,
-              // borderTopLeftRadius: 10,
-              // borderBottomLeftRadius: 10,
-
             }}>
             <FlatList
               data={notifi}
@@ -165,7 +163,7 @@ const Notification = ({ navigation }) => {
               )}
             />
           </View>
-        </LinearGradient>
+        </LinearGradient>)}
       </SafeAreaView>)
 };
 

@@ -15,10 +15,9 @@ const EditProfile = ({ navigation, route }) => {
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
   const [employeeData, setEmployeeData] = useState([]);
-  const [empphoto, setPhoto] = useState();
+  const [empPhone, setEmpPhone] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
-  const [nominiData,setNominiData]= useState('')
-
+  const [nominiData, setNominiData] = useState('')
 
 
   const employeProfile = () => {
@@ -31,16 +30,48 @@ const EditProfile = ({ navigation, route }) => {
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        console.log("tdhdd",result);
+        console.log("GetEmployeeProfile", result);
         setLoader(false);
         let responseData = result.Value.Table;
         let NominationData = result.Value.Table1
-        
+        let Phone =result.Value.Table[0].EXTN
+        setEmpPhone(Phone)
         setNominiData(NominationData)
-        // let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
         setEmployeeData(responseData);
-        // setPhoto(profileImage);
-        console.log("profileImage", responseData)
+        console.log("Phone",Phone)
+        // console.log("setEmployeeData", setEmployeeData, "setNominiData", setNominiData,"Phone",Phone)
+      })
+      .catch(error => {
+        setLoader(false);
+        // console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          Toast.show(error.response.data.title);
+        } else if (error) {
+          Toast.show('Network Error');
+        } else {
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+  const UpdateEmpProf = () => {
+    let token = AppUserData.token
+    let userId = AppUserData.data.userId
+    let apiData = {
+        "StaffNo" : userId,
+        "PresonalNo" : "",
+        "ExtensionNo" : empPhone,
+        "EmergencyNo" : ""
+    }
+    console.log(apiData);
+    setLoader(true);
+    ApiService.PostMethode('/UpdateEmpProf', apiData, token)
+      .then(result => {
+        console.log("UpdateEmpProf", result);
+        setLoader(false);
+       alert(result.Result)
       })
       .catch(error => {
         setLoader(false);
@@ -95,6 +126,13 @@ const EditProfile = ({ navigation, route }) => {
           </Text>
         </View>
       </LinearGradient>
+
+      {loader == true ? (
+         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+          <Text>We are Loading your data</Text>
+     </View>
+      ) : (
+
       <View
         style={{
           backgroundColor: '#fff',
@@ -131,20 +169,9 @@ const EditProfile = ({ navigation, route }) => {
             marginTop: '-12%',
           }}>
 
-          {
-            empphoto ? (
-              <Image
-                source={{ uri: `data:image/png;base64, ${empphoto}` }}
-                style={{
-                  width: 100,
-                  height: 100,
-                  overflow: 'hidden',
-                  borderRadius: 100,
-                  alignSelf: 'center',
-                }}
-              />
-            ) : (<Image
-              source={require('../assets/Images/Avtar.png')}
+          {AppUserData.data && AppUserData.data.profile_photo ? (
+            <Image
+              source={{ uri: 'data:image/png;base64, ' + AppUserData.data.profile_photo }}
               style={{
                 width: 100,
                 height: 100,
@@ -153,16 +180,25 @@ const EditProfile = ({ navigation, route }) => {
                 alignSelf: 'center',
               }}
             />
-            )}
-
+          ) : (<Image
+            source={require('../assets/Images/Avtar.png')}
+            style={{
+              width: 100,
+              height: 100,
+              overflow: 'hidden',
+              borderRadius: 100,
+              alignSelf: 'center',
+            }}
+          />
+          )}
         </View>
         <View style={{ height: '90%', }}>
           <FlatList
             data={employeeData}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => {
-              return(
-                <Text  style={{textAlign:'center'}}>No Data Found</Text>
+              return (
+                <Text style={{ textAlign: 'center' }}>No Data Found</Text>
               )
             }}
             keyExtractor={({ item, index }) => item}
@@ -175,7 +211,7 @@ const EditProfile = ({ navigation, route }) => {
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.header}>Personal phone Number</Text>
-                  <View style={{ width: '100%', flexDirection: 'row',justifyContent:'space-between' }}>
+                  <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text>{item.PRESENT_PHONE}</Text>
                     <Switch
                       trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -183,11 +219,11 @@ const EditProfile = ({ navigation, route }) => {
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={() => {
                         toggleSwitch()
-                        if (isEnabled) {
-                          alert("sure")
+                        if (!isEnabled) {
+                          alert("Your number is Public. Please press update to save")
                         }
                         else {
-                          return
+                          alert("Your number is Private. Please press update to save")
                         }
                       }}
                       value={isEnabled}
@@ -238,15 +274,17 @@ const EditProfile = ({ navigation, route }) => {
                       name="arrow-forward-outline"
                       size={30}
                       color={'red'}
-                      onPress={()=> {
+                      onPress={() => {
                         navigation.navigate('Nomination', {
-                          data:nominiData
+                          data: nominiData
                         })
                       }}
                     />
                   </View>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  UpdateEmpProf()
+                }}>
                   <LinearGradient
                     style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                     colors={['#4174D0', '#6ef7ff']}>
@@ -258,6 +296,7 @@ const EditProfile = ({ navigation, route }) => {
             )} />
         </View>
       </View>
+      )}
     </SafeAreaView>
 
 

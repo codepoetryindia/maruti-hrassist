@@ -7,6 +7,7 @@ import Gatepass from '../screens/Gatspass/Gatepass';
 import OtherApps from '../screens/OtherApps';
 import LinearGradient from 'react-native-linear-gradient';
 import AttendanceAdminNav from './AttendanceAdminNav';
+import AttendanceAdmin from '../screens/Attendance/Attendance&Admin'
 
 const Tab = createBottomTabNavigator();
 function Tabs() {
@@ -29,7 +30,7 @@ function Tabs() {
           <Icon name="home" color={'#2D79AD'} size={size} />
         ),
       }}/>
-      <Tab.Screen name="AttendanceAdmin" component={AttendanceAdminNav}
+      <Tab.Screen name="AttendanceAdmin" component={AttendanceAdmin}
        options={{
         tabBarLabel: 'AttendanceAdmin',
         tabBarIcon: ({ color, size }) => (
@@ -47,7 +48,6 @@ function Tabs() {
       <Tab.Screen name="OtherApps" component={OtherApps} 
       options={{
         tabBarLabel: 'OtherApps',
-       
         tabBarIcon: ({ color, size }) => (
           <Material name="sort" color={'#2D79AD'} size={size} />
         ),

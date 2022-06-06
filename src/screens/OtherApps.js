@@ -26,7 +26,7 @@ const OtherApps = ({ navigation }) => {
 
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [appLink, setAppLink] = useState();
+  const [appLink, setAppLink] = useState('');
 
   const GetAPPLinkApi = () => {
     let userId = AppUserData.data.userId
@@ -85,98 +85,108 @@ const OtherApps = ({ navigation }) => {
 
 
   return (
-  
-      <SafeAreaView style={styles.container}>
-        {loader== true ? (
-           <Spinner
-           visible={loader}
-           textContent={'Loading...'}
-           textStyle={styles.spinnerTextStyle}
-         />
-        ):null}
-        <LinearGradient
-          style={{ padding: 20 }}
-          colors={['#4174D0', '#6ef7ff']}>
-          <View style={{ flexDirection: 'row' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: 40,
-                alignItems: 'center',
-              }}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.navigate('Home')}
-              />
-              <Ionicons
-                name="menu-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
 
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                letterSpacing: 1,
-                marginLeft: 30,
-              }}>
-              Other Mobile Apps
-            </Text>
+    <SafeAreaView style={styles.container}>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      ) : null}
+
+      <LinearGradient
+        style={{ padding: 20 }}
+        colors={['#4174D0', '#6ef7ff']}>
+        <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: 40,
+              alignItems: 'center',
+            }}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.navigate('Home')}
+            />
+            <Ionicons
+              name="menu-outline"
+              size={25}
+              color={'white'}
+              onPress={() => navigation.openDrawer()}
+            />
           </View>
-        </LinearGradient>
 
-        {/* body */}
-        <ScrollView style={{ flex: 1 }}>
-          <FlatList
-            data={appLink}
-            numColumns={2}
-           
-            showsVerticalScrollIndicator={false}
-            keyExtractor={({ item, index }) => index}
-            renderItem={({ item, index }) => (
-              
-              <TouchableOpacity
-                onPress={() => {
-                  linkOpen(item.LINK_LINK1);
-                }}
-                style={{
-                  width: '48%',
-                  alignSelf: 'center',
-                  justifyContent: 'center',
-                  marginTop:10,
-                  margin: 5,
-                  paddingHorizontal: 15,
-                  paddingVertical: 25,
-                  backgroundColor: '#fff',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 1.29,
-                  shadowRadius: 10.65,
-                  elevation: 5,
-                  alignItems: 'center',
-                  borderRadius: 18,
-                }}>
-                <Image
-                  source={{ uri: item.LINK_LINK3 }}
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ fontSize: 20, paddingVertical: 5, color: 'grey' }}>
-                  {item.LINK_DESC}
-                </Text>
-              </TouchableOpacity>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 16,
+              letterSpacing: 1,
+              marginLeft: 30,
+            }}>
+            Other Mobile Apps
+          </Text>
+        </View>
+      </LinearGradient>
 
-            )} />
-        </ScrollView>
-      </SafeAreaView>)
+      {/* body */}
+
+      {
+        appLink !== '' ? (
+
+          <ScrollView style={{ flex: 1 }}>
+            <FlatList
+              data={appLink}
+              numColumns={2}
+
+              showsVerticalScrollIndicator={false}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => (
+
+                <TouchableOpacity
+                  onPress={() => {
+                    linkOpen(item.LINK_LINK1);
+                  }}
+                  style={{
+                    width: '48%',
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                    margin: 5,
+                    paddingHorizontal: 15,
+                    paddingVertical: 25,
+                    backgroundColor: '#fff',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 1.29,
+                    shadowRadius: 10.65,
+                    elevation: 5,
+                    alignItems: 'center',
+                    borderRadius: 18,
+                  }}>
+                  <Image
+                    source={{ uri: item.LINK_LINK3 }}
+                    style={{ width: 50, height: 50 }}
+                  />
+                  <Text style={{ fontSize: 20, paddingVertical: 5, color: 'grey' }}>
+                    {item.LINK_DESC}
+                  </Text>
+                </TouchableOpacity>
+
+              )} />
+          </ScrollView>
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+            {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
+          </View>
+        )}
+    </SafeAreaView>)
 };
 
 // define your styles

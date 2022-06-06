@@ -136,7 +136,7 @@ const SeatBook = ({ navigation }) => {
                             name="chevron-back-outline"
                             size={25}
                             color={'white'}
-                            onPress={() => navigation.goBack()}
+                            onPress={() => navigation.navigate('ShuttleBooking')}
                         />
                         <Ionicons
                             name="menu-outline"

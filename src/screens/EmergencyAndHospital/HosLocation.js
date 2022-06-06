@@ -116,11 +116,9 @@ const HosLocation = ({ navigation }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.goBack();
-                    // navigation.navigate("EmergencyHospital", {
-                    //   selectedLoc: item.LOCN_DESC,
-                    //   index: 1,
-                    // })
+                    navigation.navigate("EmergencyHospital", {
+                      selectedLoc: item.LOCN_DESC,
+                    })
                   }}
                   style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
                   <Text style={{ fontSize: 16, paddingHorizontal: 10 }}>{item.LOCN_DESC}</Text>

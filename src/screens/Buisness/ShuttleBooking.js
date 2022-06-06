@@ -84,29 +84,6 @@ const ShuttleBooking = ({ navigation }) => {
           ) : null}
         </View>
       </LinearGradient>
-      {/* <TabView
-        style={{ fontSize: 10 }}
-        renderTabBar={props => {
-          return (
-            <View 
-              style={{ marginTop: -1, zIndex: -1 ,backgroundColor:'#0083B0'}}>
-              <TabBar
-                renderLabel={({ route, focused, color }) => (
-                  <Text style={{ fontSize: 13, color: '#fff' }}>
-                    {route.title}
-                  </Text>
-                )}
-                {...props}
-                style={{ backgroundColor: 'transparent', elevation: 0 }}
-              />
-            </View>
-          );
-        }}
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={initialLayout}
-      /> */}
       <Tab.Navigator 
        screenOptions={{
         tabBarLabelStyle: { fontSize: 14 },

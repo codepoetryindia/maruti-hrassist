@@ -1,6 +1,6 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View ,SafeAreaView} from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import moment from 'moment';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
@@ -9,31 +9,66 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 export default function FutureBook() {
 
-    const [data,setData] = useState('')
+    const [futureData, setFutureData] = useState([])
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false)
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
-    const GetShutlPastFutrReportApi = (data) => {
+
+    // const GetShutlPastFutrReportApi = () => {
+    //     let token = AppUserData.token
+    //     let userId = AppUserData.data.userId
+    //      let apiData = {
+    //       BKDTEmplID: userId,
+    //       BKDTFlag: "F",
+    //       FromDate: '',
+    //       ToDate: '',
+    //     }
+    //     console.log("payload", apiData);
+    //     setLoader(true);
+    //     ApiService.PostMethode('/GetShuttlePastFutureReport', data, token)
+    //         .then(result => {
+    //             console.log("GetShutlPastFutrReportApi", result);
+    //             setLoader(false);
+    //             // let ApiValue = result.Value
+    //             // setData(ApiValue)
+    //         })
+
+    //         .catch(error => {
+    //             setLoader(false);
+    //             console.log('Error occurred==>', error);
+    //             if (error.response) {
+    //                 if (error.response.status == 401) {
+    //                     console.log('error from api', error.response);
+    //                 }
+    //                 // client received an error response (5xx, 4xx)
+    //                 Toast.show(error.response.data.title);
+    //             } else if (error.request) {
+    //                 // client never received a response, or request never left
+    //                 Toast.show('Network Error');
+    //                 // console.log("error.request", error.request._response);
+    //             } else {
+    //                 // anything else
+    //                 Toast.show('Something Went Wrong');
+    //             }
+    //         });
+    // };
+    const GetShutlPastFutrReportApi = () => {
         let token = AppUserData.token
         let userId = AppUserData.data.userId
-        // let payloadDate = moment(firstDate).format("DD-MMMM-YYYY").toUpperCase()
-        // let payloadDateSecond = moment(secondDate).format("DD-MMMM-YYYY").toUpperCase()
-         let apiData = {
-          BKDTEmplID: userId,
-          BKDTFlag: "F",
-          FromDate: '',
-          ToDate:  '',
+        let apiData = {
+            BKDTEmplID: userId,
+            BKDTFlag: "F",
+            FromDate: '',
+            ToDate: '',
         }
-        console.log("payload", apiData);
-
         setLoader(true);
-        ApiService.PostMethode('/GetShuttlePastFutureReport', data, token)
+        ApiService.PostMethode('/GetShuttlePastFutureReport', apiData, token)
             .then(result => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
-                setData(ApiValue)
+                setFutureData(ApiValue)
             })
 
             .catch(error => {
@@ -55,26 +90,23 @@ export default function FutureBook() {
                 }
             });
     };
-    
     useFocusEffect(
         React.useCallback(() => {
-          const unsubscribe = GetShutlPastFutrReportApi();
-          return () => unsubscribe;
+            const unsubscribe = GetShutlPastFutrReportApi();
+            return () => unsubscribe;
         }, [])
-      )
-  return (
-
-    
- 
-          <SafeAreaView>
-               {loader == true ? (
-                    <Spinner
-                        visible={loader}
-                        textContent={'Loading...'}
-                        textStyle={{ color: '#fff' }}
-                    />
-                ) : null}
-            {data && data.length > 0 ? (
+    )
+    return (
+        <SafeAreaView 
+        style={{ flex: 1, width: '90%', alignSelf: 'center', paddingVertical: 5 }}>
+            {loader == true ? (
+                <Spinner
+                    visible={loader}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#fff' }}
+                />
+            ) : null}
+            {futureData.length > 0 ? (
                 <View
                     style={{
                         width: '110%',
@@ -110,12 +142,10 @@ export default function FutureBook() {
                     </View>
                     <View>
                         {
-                            data && data.map((item) => {
+                            futureData.map((item) => {
                                 return (
                                     <TouchableOpacity
-                                        onPress={() => {
-                                            BookingDetailApi(item.BKDT_ID)
-                                        }} style={{
+                                         style={{
                                             width: '100%',
                                             flexDirection: 'row',
                                             justifyContent: 'space-between',
@@ -138,11 +168,11 @@ export default function FutureBook() {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    <Text>not found</Text>
+                    {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
                 </View>
             )}
-          </SafeAreaView>
-        );
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({})
