@@ -87,7 +87,7 @@ const EmergencyHospital = ({ navigation, route }) => {
         }}
       >
         <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
-        <Tab.Screen name="Hospital" component={Hospital } locationName={locationName} onPress={() => console.log("pressed")} />
+        <Tab.Screen name="Hospital" component={Hospital } onPress={() => console.log("pressed")} />
         <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
       </Tab.Navigator>
 

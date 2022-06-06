@@ -62,14 +62,15 @@ const Home = ({navigation}) => {
                 onPress={() => {
                   navigation.navigate("Notification");
                 }}>
-                <IconBadge
+                  <Feather name="bell" color={'#fff'} size={30} />
+                {/* <IconBadge
                   MainElement={<Feather name="bell" color={'#fff'} size={30} />}
-                  BadgeElement={<Text style={{color: '#fff', fontWeight:'700'}}>5</Text>}
+                  // BadgeElement={<Text style={{color: '#fff', fontWeight:'700'}}>5</Text>}
                   IconBadgeStyle={{
                     paddingVerticle: 5,
-                    backgroundColor: "#2D5C54",
+                    backgroundColor: "#4174D0",
                   }}
-                />
+                /> */}
               </TouchableOpacity>
             </View>
           </View>
