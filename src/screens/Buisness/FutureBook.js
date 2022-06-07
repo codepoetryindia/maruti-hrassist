@@ -168,7 +168,7 @@ export default function FutureBook() {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <Text>Not found</Text>}
                 </View>
             )}
         </SafeAreaView>

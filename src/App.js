@@ -75,12 +75,12 @@ export default function App() {
             .catch((error) => console.warn(error));
     }
 
-    useEffect(() => {
-      const permission = askAndroidPermissions();
-      return () => {
-      permission
-      };
-    }, []);
+    // useEffect(() => {
+    //   const permission = askAndroidPermissions();
+    //   return () => {
+    //   permission
+    //   };
+    // }, []);
 
 
   

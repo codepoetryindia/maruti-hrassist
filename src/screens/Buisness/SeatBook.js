@@ -222,7 +222,7 @@ const SeatBook = ({ navigation }) => {
                             <LinearGradient
                                 style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                                 colors={['#4174D0', '#6ef7ff']}>
-                                <Text style={{ color: '#fff', fontSize: 16 }}>CANCLE</Text>
+                                <Text style={{ color: '#fff', fontSize: 16 }}>CANCEL</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>
@@ -318,7 +318,7 @@ const SeatBook = ({ navigation }) => {
                                 <LinearGradient
                                     style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                                     colors={['#4174D0', '#6ef7ff']}>
-                                    <Text style={{ color: '#fff', fontSize: 16 }}>CANCLE</Text>
+                                    <Text style={{ color: '#fff', fontSize: 16 }}>CANCEL</Text>
                                 </LinearGradient>
                             </TouchableOpacity>
                         </View>

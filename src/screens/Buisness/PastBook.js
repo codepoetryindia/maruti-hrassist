@@ -173,7 +173,7 @@ const  PastBook = () => {
     }
     return (
         <SafeAreaView
-            style={{ flex: 1, width: '90%', alignSelf: 'center', paddingVertical: 5 }}>
+            style={{ flex: 1, paddingHorizontal:10, width:"100%", alignSelf: 'center', paddingVertical: 5 }}>
             <Text style={{ paddingVertical: 5, fontSize: 16, fontWeight: 'bold' }}>
                 Select Date
             </Text>
@@ -200,6 +200,8 @@ const  PastBook = () => {
                     elevation: 5,
                     borderRadius: 8
                 }}>
+
+
                 <DatePicker
                     modal
                     open={open}
@@ -225,15 +227,18 @@ const  PastBook = () => {
                     }}>
                     <TextInput
                         placeholder="From"
-                        style={{ color: '#000', letterSpacing: 1 }}
+                        style={{ color: '#000', flex:1 }}
                         editable={false}
                         paddingHorizontal={14}
                         value={textinputDate}
                     />
                     <TouchableOpacity onPress={() => setOpen(true)}>
-                        <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
+                        <Ionicons name="calendar-outline" size={30} color={'#0083B0'} />
                     </TouchableOpacity>
                 </View>
+
+
+
                 <DatePicker
                     modal
                     open={second}
@@ -258,14 +263,14 @@ const  PastBook = () => {
                         justifyContent: 'space-between',
                     }}>
                     <TextInput
-                        style={{ color: '#000', letterSpacing: 1 }}
+                        style={{ color: '#000'}}
                         placeholder="To"
                         editable={false}
                         paddingHorizontal={14}
                         value={textinputSecondDate}
                     />
                     <TouchableOpacity onPress={() => setSecond(true)}>
-                        <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
+                        <Ionicons name="calendar-outline" size={30} color={'#0083B0'} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -282,7 +287,7 @@ const  PastBook = () => {
                 ) : null}
                 <LinearGradient
                     style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                    colors={['#4174D0', '#6ef7ff']}>
+                    colors={['#4174D0', '#0083B0']}>
 
                     <Text style={{ color: '#fff', fontSize: 16 }}>UPDATE</Text>
                 </LinearGradient>
@@ -291,9 +296,10 @@ const  PastBook = () => {
             {pastFudata.length > 0 ? (
                 <View
                     style={{
-                        width: '110%',
+                        width: '100%',
                         alignSelf: 'center',
                         paddingVertical: 10,
+                        paddingHorizontal:10,
                         backgroundColor: '#fff',
                         shadowColor: '#000',
                         shadowOffset: {
@@ -403,7 +409,7 @@ const  PastBook = () => {
                                         ) : null}
                                         <LinearGradient
                                             style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                                            colors={['#4174D0', '#6ef7ff']}>
+                                            colors={['#4174D0', '#0083B0']}>
 
                                             <Text style={{ color: '#fff', fontSize: 16 }}>OK</Text>
                                         </LinearGradient>
@@ -434,7 +440,7 @@ const  PastBook = () => {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <Text>Not found</Text>}
                 </View>
             )}
 

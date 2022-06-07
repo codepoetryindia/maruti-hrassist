@@ -355,6 +355,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     // backgroundColor:'red'
   },
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
 });
 
 // //make this component available to the app

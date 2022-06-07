@@ -110,6 +110,7 @@ const Home = ({navigation}) => {
           autoplay={true}
           circleLoop={true}
           style={styles.carouselimg}
+          sliderBoxHeight={250}
         />
       </View>
 
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
   carouselimg: {
     minHeight: '100%',
     width: '100%',
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 });
 
