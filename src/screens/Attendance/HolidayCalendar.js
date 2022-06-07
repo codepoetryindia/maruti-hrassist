@@ -3,6 +3,7 @@ import React, {useState,useEffect,useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import CalendarPicker from 'react-native-calendar-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
@@ -34,284 +35,150 @@ const HolidayCalendar = () => {
           activeTabTextStyle={styles.activeTabTextStyle}
         />
       </View>
-      <View>
+      <View style={{paddingHorizontal:10,marginTop:10}}>
         {HolidayCalendar == 0 ? (
-          <View>
-            <LinearGradient
-              colors={['#4174D0','#6ef7ff']}
-              style={{borderRadius: 10, marginVertical: 15}}>
-              <Calendar
-                // Specify style for calendar container element. Default = {}
-                style={{
-                  backgroundColor: 'transparent',
-                  borderWidth: 0.5,
-                  borderColor: 'gray',
-                  paddingVertical: 10,
-                  // marginVertical: 10,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  borderRadius: 10,
-                  elevation: 5,
-                }}
-                markingType={'period'}
-                markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
-                  '2022-03-18': {
-                    selected: true,
-                    color: '#00adf5',
-                  },
-                  '2022-03-19': {
-                    color: 'green',
-                    endingDay: true,
-                  },
-                }}
-                // Specify theme properties to override specific styles for calendar parts. Default = {}
-                theme={{
-                  backgroundColor: '#fff',
-                  calendarBackground: '#fff',
-                  textSectionTitleColor: '#b6c1cd',
-                  textSectionTitleDisabledColor: '#d9e1e8',
-                  selectedDayBackgroundColor: '#fff',
-                  selectedDayTextColor: '#ffffff',
-                  todayTextColor: '#00adf5',
-                  dayTextColor: '#2d4150',
-                  textDisabledColor: '#d9e1e8',
-                  dotColor: '#00adf5',
-                  selectedDotColor: '#ffffff',
-                  arrowColor: 'orange',
-                  disabledArrowColor: '#d9e1e8',
-                  monthTextColor: '#fff',
-                  indicatorColor: 'blue',
-                  textDayFontFamily: 'monospace',
-                  textMonthFontFamily: 'monospace',
-                  textDayHeaderFontFamily: 'monospace',
-                  textDayFontWeight: '300',
-                  textMonthFontWeight: 'bold',
-                  textDayHeaderFontWeight: '300',
-                  textDayFontSize: 16,
-                  textMonthFontSize: 16,
-                  textDayHeaderFontSize: 16,
-                }}
-              />
-            </LinearGradient>
-            <View
+          <View style={{flex:1}}>
+              <View style={styles.calenderContainer}>
+                <CalendarPicker
+                    onDateChange={(date)=> change249(date)}
+                    onMonthChange={(month)=> change249(new Date(month))}
+                    disabledDates={[
+                      ...holidaycalendar249
+                    ]}
+                    disabledDatesTextStyle={{fontWeight:"700"}}
+                    previousTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    nextTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    selectedDayColor={'#f00'}
+                    selectedDayStyle={{backgroundColor:'#4174D0'}}
+                    selectedDayTextColor="red"
+                    selectedDayTextStyle={{color:"#fff", fontWeight:'700'}}
+                  />
+              </View>
+                  
+              <View
               style={{
                 width: '100%',
                 padding: 10,
                 backgroundColor:'#fff',
                 marginVertical: 5,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-               borderRadius:10,
-                elevation: 5,
               }}>
-                <Text>Holi</Text>
+                <Text style={{fontSize:18, fontWeight:'700'}}>{MnthTitle} Holidays</Text>
+              </View>
+              <View style={{flex:1}}>  
+                <FlatList
+                  data={MonthlyHolidays}
+                  renderItem={renderItemHolidaysingle}
+                  // keyExtractor={item => item.date}
+                />
               </View>
           </View>
         ) : HolidayCalendar == 1 ? (
-          <View>
-            <LinearGradient
-              colors={['#4174D0','#6ef7ff']}
-              style={{borderRadius: 10, marginVertical: 15}}>
-              <Calendar
-                // Specify style for calendar container element. Default = {}
-                style={{
-                  backgroundColor: 'transparent',
-                  borderWidth: 0.5,
-                  borderColor: 'gray',
-                  paddingVertical: 10,
-                  // marginVertical: 10,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  borderRadius: 10,
-                  elevation: 5,
-                }}
-                markingType={'period'}
-                markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
-                  '2022-03-18': {
-                    selected: true,
-                    color: '#00adf5',
-                  },
-                  '2022-03-19': {
-                    color: 'green',
-                    endingDay: true,
-                  },
-                }}
-                // Specify theme properties to override specific styles for calendar parts. Default = {}
-                theme={{
-                  backgroundColor: '#fff',
-                  calendarBackground: '#fff',
-                  textSectionTitleColor: '#b6c1cd',
-                  textSectionTitleDisabledColor: '#d9e1e8',
-                  selectedDayBackgroundColor: '#fff',
-                  selectedDayTextColor: '#ffffff',
-                  todayTextColor: '#00adf5',
-                  dayTextColor: '#2d4150',
-                  textDisabledColor: '#d9e1e8',
-                  dotColor: '#00adf5',
-                  selectedDotColor: '#ffffff',
-                  arrowColor: 'orange',
-                  disabledArrowColor: '#d9e1e8',
-                  monthTextColor: '#fff',
-                  indicatorColor: 'blue',
-                  textDayFontFamily: 'monospace',
-                  textMonthFontFamily: 'monospace',
-                  textDayHeaderFontFamily: 'monospace',
-                  textDayFontWeight: '300',
-                  textMonthFontWeight: 'bold',
-                  textDayHeaderFontWeight: '300',
-                  textDayFontSize: 16,
-                  textMonthFontSize: 16,
-                  textDayHeaderFontSize: 16,
-                }}
-              />
-            </LinearGradient>
+          <View style={{flex:1}}>
+              <View style={styles.calenderContainer}>
+                <CalendarPicker
+                    onDateChange={(date)=> change249(date)}
+                    onMonthChange={(month)=> change249(new Date(month))}
+                    disabledDates={[
+                      ...holidaycalendar280
+                    ]}
+                    disabledDatesTextStyle={{fontWeight:"700"}}
+                    previousTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    nextTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    selectedDayColor={'#f00'}
+                    selectedDayStyle={{backgroundColor:'#4174D0'}}
+                    selectedDayTextColor="red"
+                    selectedDayTextStyle={{color:"#fff", fontWeight:'700'}}
+                  />
+              </View>
+                  
+              <View
+              style={{
+                width: '100%',
+                padding: 10,
+                backgroundColor:'#fff',
+                marginVertical: 5,
+              }}>
+                <Text style={{fontSize:18, fontWeight:'700'}}>{MnthTitle} Holidays</Text>
+              </View>
+              <View style={{flex:1}}>  
+                <FlatList
+                  data={MonthlyHolidays}
+                  renderItem={renderItemHolidaysingle}
+                  // keyExtractor={item => item.date}
+                />
+              </View>
           </View>
         ) : HolidayCalendar == 2 ? (
-          <View>
-            <LinearGradient
-               colors={['#4174D0','#6ef7ff']}
-              style={{borderRadius: 10, marginVertical: 15}}>
-              <Calendar
-                // Specify style for calendar container element. Default = {}
-                style={{
-                  backgroundColor: 'transparent',
-                  borderWidth: 0.5,
-                  borderColor: 'gray',
-                  paddingVertical: 10,
-                  // marginVertical: 10,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  borderRadius: 10,
-                  elevation: 5,
-                }}
-                markingType={'period'}
-                markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
-                  '2022-03-18': {
-                    selected: true,
-                    color: '#00adf5',
-                  },
-                  '2022-03-19': {
-                    color: 'green',
-                    endingDay: true,
-                  },
-                }}
-                // Specify theme properties to override specific styles for calendar parts. Default = {}
-                theme={{
-                  backgroundColor: '#fff',
-                  calendarBackground: '#fff',
-                  textSectionTitleColor: '#b6c1cd',
-                  textSectionTitleDisabledColor: '#d9e1e8',
-                  selectedDayBackgroundColor: '#fff',
-                  selectedDayTextColor: '#ffffff',
-                  todayTextColor: '#00adf5',
-                  dayTextColor: '#2d4150',
-                  textDisabledColor: '#d9e1e8',
-                  dotColor: '#00adf5',
-                  selectedDotColor: '#ffffff',
-                  arrowColor: 'orange',
-                  disabledArrowColor: '#d9e1e8',
-                  monthTextColor: '#fff',
-                  indicatorColor: 'blue',
-                  textDayFontFamily: 'monospace',
-                  textMonthFontFamily: 'monospace',
-                  textDayHeaderFontFamily: 'monospace',
-                  textDayFontWeight: '300',
-                  textMonthFontWeight: 'bold',
-                  textDayHeaderFontWeight: '300',
-                  textDayFontSize: 16,
-                  textMonthFontSize: 16,
-                  textDayHeaderFontSize: 16,
-                }}
-              />
-            </LinearGradient>
+          <View style={{flex:1}}>
+              <View style={styles.calenderContainer}>
+                <CalendarPicker
+                    onDateChange={(date)=> change249(date)}
+                    onMonthChange={(month)=> change249(new Date(month))}
+                    disabledDates={[
+                      ...holidaycalendarSMG
+                    ]}
+                    disabledDatesTextStyle={{fontWeight:"700"}}
+                    previousTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    nextTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    selectedDayColor={'#f00'}
+                    selectedDayStyle={{backgroundColor:'#4174D0'}}
+                    selectedDayTextColor="red"
+                    selectedDayTextStyle={{color:"#fff", fontWeight:'700'}}
+                  />
+              </View>
+                  
+              <View
+              style={{
+                width: '100%',
+                padding: 10,
+                backgroundColor:'#fff',
+                marginVertical: 5,
+              }}>
+                <Text style={{fontSize:18, fontWeight:'700'}}>{MnthTitle} Holidays</Text>
+              </View>
+              <View style={{flex:1}}>  
+                <FlatList
+                  data={MonthlyHolidays}
+                  renderItem={renderItemHolidaysingle}
+                  // keyExtractor={item => item.date}
+                />
+              </View>
           </View>
         ) : (
-          <View>
-            {/* <LinearGradient
-              colors={['#fff', '#fff']}
-              style={{borderRadius: 10, marginVertical: 15}}> */}
-              <Calendar
-                // Specify style for calendar container element. Default = {}
-                style={{
-                  backgroundColor: '#fff',
-                  borderWidth: 0.5,
-                  borderColor: 'gray',
-                  paddingVertical: 10,
-                  marginVertical: 10,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  borderRadius: 10,
-                  elevation: 5,
-                }}
-                markingType={'period'}
-                markedDates={{
-                  '2022-03-17': {startingDay: true, color: '#6ef7ff'},
-                  '2022-03-18': {
-                    selected: true,
-                    color: '#00adf5',
-                  },
-                  '2022-03-19': {
-                    color: 'green',
-                    endingDay: true,
-                  },
-                }}
-                // Specify theme properties to override specific styles for calendar parts. Default = {}
-                theme={{
-                  backgroundColor: '#fff',
-                  calendarBackground: '#fff',
-                  textSectionTitleColor: '#b6c1cd',
-                  textSectionTitleDisabledColor: '#d9e1e8',
-                  selectedDayBackgroundColor: '#fff',
-                  selectedDayTextColor: '#ffffff',
-                  todayTextColor: '#00adf5',
-                  dayTextColor: '#2d4150',
-                  textDisabledColor: '#d9e1e8',
-                  dotColor: '#00adf5',
-                  selectedDotColor: '#ffffff',
-                  arrowColor: 'orange',
-                  disabledArrowColor: '#d9e1e8',
-                  monthTextColor: 'gray',
-                  indicatorColor: 'blue',
-                  textDayFontFamily: 'monospace',
-                  textMonthFontFamily: 'monospace',
-                  textDayHeaderFontFamily: 'monospace',
-                  textDayFontWeight: '300',
-                  textMonthFontWeight: 'bold',
-                  textDayHeaderFontWeight: '300',
-                  textDayFontSize: 16,
-                  textMonthFontSize: 16,
-                  textDayHeaderFontSize: 16,
-                }}
-              />
-            {/* </LinearGradient> */}
+          <View style={{flex:1}}>
+              <View style={styles.calenderContainer}>
+                <CalendarPicker
+                    onDateChange={(date)=> change249(date)}
+                    onMonthChange={(month)=> change249(new Date(month))}
+                    disabledDates={[
+                      ...holidaycalendarMNS
+                    ]}
+                    disabledDatesTextStyle={{fontWeight:"700"}}
+                    previousTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    nextTitleStyle={{color:'#4174D0', fontWeight:'700'}}
+                    selectedDayColor={'#f00'}
+                    selectedDayStyle={{backgroundColor:'#4174D0'}}
+                    selectedDayTextColor="red"
+                    selectedDayTextStyle={{color:"#fff", fontWeight:'700'}}
+                  />
+              </View>
+                  
+              <View
+              style={{
+                width: '100%',
+                padding: 10,
+                backgroundColor:'#fff',
+                marginVertical: 5,
+              }}>
+                <Text style={{fontSize:18, fontWeight:'700'}}>{MnthTitle} Holidays</Text>
+              </View>
+              <View style={{flex:1}}>  
+                <FlatList
+                  data={MonthlyHolidays}
+                  renderItem={renderItemHolidaysingle}
+                  // keyExtractor={item => item.date}
+                />
+              </View>
           </View>
         )}
       </View>
@@ -323,7 +190,7 @@ const HolidayCalendar = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     marginTop: 10,
   },
@@ -363,6 +230,23 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
+  calenderContainer:{
+    borderWidth:1,
+    borderColor:"#efefef",
+    backgroundColor:'#fff',
+    padding:5,
+    borderRadius:5
+  },
+  itemcontainer:{
+    width:"100%",
+    backgroundColor:'#fff',
+    flexDirection:'row',
+    borderWidth:1,
+    borderColor:"#eee",
+    marginBottom:2,
+    padding:10,
+    justifyContent:'space-between',
+  }
 });
 
 //make this component available to the app
