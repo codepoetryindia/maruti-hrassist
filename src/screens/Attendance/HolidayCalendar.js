@@ -1,18 +1,24 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import LinearGradient from 'react-native-linear-gradient';
+import * as ApiService from '../../Utils/Utils';
+import Toast from 'react-native-simple-toast'
+import { useFocusEffect } from '@react-navigation/native';
+import AuthContext from '../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // create a component
 const HolidayCalendar = () => {
-  const [HolidayCalendar, setHolidayCalendar] = useState([0]);
+
   const handleHolidayCalendar = index => {
     setHolidayCalendar(index);
   };
-  return (
-    <View style={styles.container}>
+  return ( 
+    <SafeAreaView style={styles.container}>
       <View style={{width: '100%'}}>
         <SegmentedControlTab
           borderRadius={8}
@@ -309,7 +315,7 @@ const HolidayCalendar = () => {
           </View>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
