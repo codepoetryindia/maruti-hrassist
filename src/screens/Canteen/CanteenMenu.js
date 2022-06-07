@@ -21,7 +21,10 @@ import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Accordion from './CanteenComponent/Accordion';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useFocusEffect } from '@react-navigation/native';
 
+const Tab = createMaterialTopTabNavigator();
 const CanteenMenu = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
   const { authContext, AppUserData } = useContext(AuthContext);
@@ -34,7 +37,7 @@ const CanteenMenu = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState();
 
 
-  const GetMenuCanttApi = () => { 
+  const GetMenuCanttApi = () => {
     let token = AppUserData.token
     let formatedDate = moment(date).format("DD-MMMM-YYYY").toUpperCase();
     console.log("currentdate", formatedDate);
@@ -137,19 +140,19 @@ const CanteenMenu = ({ navigation }) => {
   const Gurgaon = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      <SafeAreaView style={{ marginTop:70,}}>
-      {loader == true ? (
-            <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-          ):null }
-      {/* <Calander /> */}
-      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-    </SafeAreaView>
+      <SafeAreaView style={{ marginTop: 70, }}>
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
+        {/* <Calander /> */}
+        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+      </SafeAreaView>
     );
   };
 
@@ -159,77 +162,64 @@ const CanteenMenu = ({ navigation }) => {
   const Manesar = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      <SafeAreaView style={{ marginTop:70,}}>
-      {loader == true ? (
-            <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-          ):null }
-      {/* <Calander /> */}
-      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-    </SafeAreaView>
+      <SafeAreaView style={{ marginTop: 70, }}>
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
+        {/* <Calander /> */}
+        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+      </SafeAreaView>
     );
   };
 
   const Mpt = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      <SafeAreaView style={{ marginTop:70,}}>
-      {loader == true ? (
-            <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-          ):null }
-      {/* <Calander /> */}
-      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-    </SafeAreaView>
+      <SafeAreaView style={{ marginTop: 70, }}>
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
+        {/* <Calander /> */}
+        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+      </SafeAreaView>
     );
   };
 
   const Rothak = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      <SafeAreaView style={{ marginTop:70,}}>
-      {loader == true ? (
-            <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-          ):null }
-      {/* <Calander /> */}
-      <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
-      <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
-      <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
-    </SafeAreaView>
+      <SafeAreaView style={{ marginTop: 70, }}>
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
+        {/* <Calander /> */}
+        <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
+        <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />
+        <Accordion data={dinner} name={'Dinner'} handleDropDown={() => setIsOpen(isOpen === 'dinner' ? '' : 'dinner')} isOpen={isOpen === 'dinner'} />
+      </SafeAreaView>
     );
   };
-  const renderScene = SceneMap({
-    first: Gurgaon,
-    second: Manesar,
-    third: Mpt,
-    fourth: Rothak,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'Gurgaon' },
-    { key: 'second', title: 'Manesar' },
-    { key: 'third', title: 'MPT' },
-    { key: 'fourth', title: 'Rothak' },
-  ]);
+  
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-        colors={['#437cd5', '#5dc0e9']}
+       colors={['#00B4DB', '#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -264,28 +254,22 @@ const CanteenMenu = ({ navigation }) => {
           </Text>
         </View>
       </LinearGradient>
-      <TabView
-        renderTabBar={props => {
-          return (
-            <LinearGradient
-              colors={['#5dc0e9', '#5dc0e9']}
-              style={{ marginTop: -1, zIndex: -1 }}>
-              <TabBar
-                {...props}
-                style={{ backgroundColor: 'transparent', elevation: 0 }}
-              />
-            </LinearGradient>
-          );
+
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 14 },
+          tabBarActiveTintColor: '#fff',
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
+          tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+
         }}
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={(screen) => {
-          console.log("screen", screen);
-          setCurrentInd(screen)
-        }}
-        initialLayout={{ width: layout.width }}
-      />
-      <View style={{position:'absolute',top:'15%'}}>
+      >
+        <Tab.Screen name="Gurgaon" component={Gurgaon} />
+        <Tab.Screen name="Manesar" component={Manesar} />
+        <Tab.Screen name="MPT" component={Mpt} />
+        <Tab.Screen name="Rothak" component={Rothak} />
+      </Tab.Navigator>
+      <View style={{ position: 'absolute', top: '15%' }}>
         <DatePicker
           modal
           open={open}
@@ -300,19 +284,8 @@ const CanteenMenu = ({ navigation }) => {
           }}
         />
         <View
-          style={{
-            width: '95%',
-            backgroundColor: '#9f9f9f',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            flexDirection: 'row',
-            paddingHorizontal: 20,
-            alignSelf:'center',
-            paddingVertical:8,
-            marginVertical: 10,
-            borderRadius:8,
-          }}>
-          <Text style={{ color: '#fff' }}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
+          style={styles.calander}>
+          <Text style={{ color: '#000' }}>(Todays Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
           <TouchableOpacity onPress={() => setOpen(true)}>
             <Ionicons name="calendar-outline" size={30} color={'#5dc0e9'} />
           </TouchableOpacity>
@@ -347,6 +320,9 @@ const styles = StyleSheet.create({
 
     elevation: 8,
   },
+  spinnerTextStyle: {
+    color: '#FFF'
+  },
   lunchBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -358,6 +334,27 @@ const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: '#FFF'
   },
+  calander:{
+    width: '93%',
+    backgroundColor: '#fff',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    alignSelf:'center',
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    marginVertical: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 2,
+  }
 });
 
 // //make this component available to the app

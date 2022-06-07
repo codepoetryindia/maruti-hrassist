@@ -19,16 +19,19 @@ const Hospital = ({ locationName }) => {
   const [hospitalList, setHospitallList] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItem, setModalItem] = useState('')
+  const [hospitalLoc, setHospitalLoc] = useState([]);
+  const [selectLoc,setSelectLoc] = useState('')
 
-  // useEffect(() => {
-  //   if (locationName) {
-  //     console.log('call api');
-  //   }
-  // }, [locationName])
-
-  // Hospital list 
-  const GetHospListApi = (apidata = {}) => {
+  const GetHospListApi = (data) => {
     let token = AppUserData.token
+    let apidata ;
+    if(data==undefined){
+      apidata = {};
+    }
+    else {
+      apidata= {
+        "HospLoc":data}
+    }
     setLoader(true);
     ApiService.PostMethode('/GetHospList', apidata, token)
       .then(result => {
@@ -36,6 +39,39 @@ const Hospital = ({ locationName }) => {
         setLoader(false);
         let ApiValue = result.Value
         setHospitallList(ApiValue)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  };
+
+  const GetHospLocnApi = () => {
+    let token = AppUserData.token
+    let apidata = {}
+    setLoader(true);
+    ApiService.PostMethode('/GetHospLocn', apidata, token)
+      .then(result => {
+        setLoader(false);
+        // console.log("Apiresult",result);
+        let ApiValue = result.Value
+        console.log("setHospitalLoc", ApiValue);
+        setHospitalLoc(ApiValue)
+        setModalVisible(true)
       })
       .catch(error => {
         setLoader(false);
@@ -114,6 +150,7 @@ const Hospital = ({ locationName }) => {
                     }} />
                   <FontAwesome5 name='map-marked-alt' size={30} color={'#4174D0'}
                     onPress={() => {
+
                       Linking.openURL(`http://maps.google.com/maps?saddr=&daddr=${modalItem.ADDR}`)
                     }} />
                 </View>
@@ -123,6 +160,58 @@ const Hospital = ({ locationName }) => {
             </View>
           </Modal>
 
+          {/* Filter Modal */}
+
+          <Modal
+            backdropOpacity={0.5}
+            animationIn="fadeIn"
+            animationOut="fadeOut"
+            coverScreen={true}
+            isVisible={modalVisible}>
+            <View style={[styles.modalBox,{maxHeight:'90%'}]}>
+              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <Feather
+                  name="x-circle"
+                  color={'#000'}
+                  size={20}
+                  onPress={() =>
+                    setModalVisible(false)}
+                  style={{ margin: 10 }}
+                />
+              </TouchableOpacity>
+
+              <View style={{ alignItems: 'center' }}>
+                <FlatList
+                  data={hospitalLoc}
+                  showsVerticalScrollIndicator={false}
+                  ListEmptyComponent={() => {
+                    return (
+                      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require('../../assets/Images/dataNotFound.png')}
+                          style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                      </View>
+                    )
+                  }}
+                  keyExtractor={({ item, index }) => index}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                        
+                          setModalVisible(false)
+                          GetHospListApi(item.LOCN_DESC)
+                        }}
+                        style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
+                        <Text style={{ fontSize: 16, paddingHorizontal: 10 }}>{item.LOCN_DESC}</Text>
+                      </TouchableOpacity>
+                    )
+                  }} />
+
+              </View>
+
+            </View>
+          </Modal>
 
           <View style={{ width: '90%', alignItems: 'flex-end', alignSelf: 'center' }}>
             <Ionicons
@@ -130,7 +219,7 @@ const Hospital = ({ locationName }) => {
               name="ios-filter"
               size={35}
               color={'#4174D0'}
-              onPress={() => myNavigation.navigate("HosLocation")}
+              onPress={() => GetHospLocnApi()}
             />
           </View>
           <FlatList
