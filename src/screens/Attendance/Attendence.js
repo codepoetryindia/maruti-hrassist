@@ -27,6 +27,7 @@ const Attendance = ({navigation}) => {
   const [MarkAttandance, setMarkAttandance] = useState(0);
   const [loader, setLoader] = useState(false)
   const [MapLisenceKey, setMapLisenceKey] = useState("");
+  const [horizental, setHorizental] = useState(false);
 
   const { authContext, AppUserData } = useContext(AuthContext);
 
@@ -339,8 +340,39 @@ const Attendance = ({navigation}) => {
             textStyle={{color:'#fff'}}
             overlayColor={'rgba(0, 0, 0, 0.50)'}
           />
-        
+        <TouchableOpacity
+            style={{alignSelf:'flex-end'}}
+            onPress={() => {
+             
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }}>
+            <Ionicons
+              name="ellipsis-vertical-circle"
+              size={25}
+              color={'#6ef7ff'}
+            />
+          </TouchableOpacity>
       <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+      
+      {horizental == true ? (
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: '#6ef7ff',
+                position: 'absolute',
+               bottom:30,
+                right: 50,
+                zIndex:1000,
+                borderRadius:8
+              }}>
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('AttendancePer')
+                }}>
+                  
+              <Text>Attendance Percentage</Text>
+                </TouchableOpacity>
+            </View>
+          ) : null}
 
           {
             ShowAttandanceTabs ? (

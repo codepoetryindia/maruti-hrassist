@@ -40,7 +40,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 
 // create a component
-const Leave = () => {
+const Leave = ({navigation}) => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [loader, setLoader] = useState(false);
@@ -64,8 +64,7 @@ const Leave = () => {
   const [FinancialYear, setFinancialYear] = useState([]);
   const [EmpLeaveDetail, setEmpLeaveDetail] = useState([]);
   const [modalData, setModalData] = useState([]);
-
-
+  const [horizental, setHorizental] = useState(false);
 
 
   useFocusEffect(
@@ -306,6 +305,9 @@ const Leave = () => {
   }
 
 
+  
+
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -350,6 +352,17 @@ const Leave = () => {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <View showsVerticalScrollIndicator={false} style={styles.container}>
+        <TouchableOpacity
+            style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
+            onPress={() => {
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }}>
+            <Ionicons
+              name="ellipsis-vertical-circle"
+              size={25}
+              color={'#00B4DB'}
+            />
+          </TouchableOpacity>
           <View style={{ width: '90%', alignSelf: 'center' }}>
             <SegmentedControlTab
               borderRadius={8}
@@ -365,7 +378,35 @@ const Leave = () => {
               activeTabTextStyle={styles.activeTabTextStyle}
             />
           </View>
-
+          
+          {horizental == true ? (
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: '#00B4DB',
+                position: 'absolute',
+                top: 0,
+                right: 50,
+                zIndex:1000,
+                borderRadius:8,
+                
+              }}>
+                <TouchableOpacity
+                style={{borderBottomWidth:1,paddingVertical:10}} onPress={() => {
+                  navigation.navigate('LeaveBalance')
+                }}>
+                  
+              <Text style={{color:'#fff',}}>Leave Balance</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{paddingVertical:10}} onPress={() => {
+                  navigation.navigate('SalaryDeduct')
+                }}>
+                  
+              <Text style={{color:'#fff'}}>Salary Deduction</Text>
+                </TouchableOpacity>
+            </View>
+          ) : null}
 
           <View>
             {applyLeave == 0 ? (

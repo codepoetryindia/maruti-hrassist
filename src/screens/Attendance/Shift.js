@@ -25,7 +25,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 
 // create a component
-const Shift = () => {
+const Shift = ({navigation}) => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [selectDate, setSelectDate] = useState(new Date());
@@ -45,6 +45,7 @@ const Shift = () => {
   const [choseDate, setChoseDate] = useState('');
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader,setLoader] = useState(false)
+  const [horizental, setHorizental] = useState(false);
   const handleShift = index => {
     setShift(index);
   };
@@ -286,6 +287,42 @@ const handleSubmit = () => {
       />
     ) : null}
       <View style={{width: '90%', alignSelf: 'center'}}>
+      <TouchableOpacity
+            style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
+            onPress={() => {
+              horizental == true ? setHorizental(false) : setHorizental(true);
+            }}>
+            <Ionicons
+              name="ellipsis-vertical-circle"
+              size={25}
+              color={'#00B4DB'}
+            />
+          </TouchableOpacity>
+
+          {horizental == true ? (
+            <View
+              style={{
+                padding: 5,
+                backgroundColor: '#00B4DB',
+                position: 'absolute',
+                top: 0,
+                right: 50,
+                zIndex:1000,
+                borderRadius:8,
+                
+              }}>
+                <TouchableOpacity
+                style={{borderBottomWidth:1,paddingVertical:10}} onPress={() => {
+                  navigation.navigate("CompayShiftDe")
+                }}>
+                  
+              <Text style={{color:'#fff',}}>Company Shift Details</Text>
+                </TouchableOpacity>
+               
+            </View>
+          ) : null}
+
+
         <SegmentedControlTab
           borderRadius={8}
           values={['Shift Details', 'Flexi Shift']}

@@ -21,6 +21,11 @@ import AttendanceAdminNav from './AttendanceAdminNav';
 import Nomination from '../components/Nomination';
 import SeatBook from '../screens/Buisness/SeatBook';
 import Guidelines from '../screens/Buisness/Guidelines';
+import AttendancePer from '../screens/Attendance/AttendancePer';
+import LeaveBalance from'../screens/Attendance/LeaveBalance';
+import CompayShiftDe from '../screens/Attendance/CompayShiftDe';
+import SalaryDeduct from '../screens/Attendance/SalaryDeduct';
+import ManagerMode from '../screens/Attendance/ManagerMode';
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
   return (
@@ -48,7 +53,11 @@ const MyDrawer = () => {
       <Drawer.Screen name='EmergencyContacts' component={EmergencyContacts}/>
       <Drawer.Screen name='Notification' component={Notification}/>
       <Drawer.Screen name='AttendanceAdminNav' component={AttendanceAdminNav}/>
-
+      <Drawer.Screen name='ManagerMode' component={ManagerMode}/>
+      <Drawer.Screen name='AttendancePer' component={AttendancePer}/>
+      <Drawer.Screen name='LeaveBalance' component={LeaveBalance}/>
+      <Drawer.Screen name='CompayShiftDe' component={CompayShiftDe}/>
+      <Drawer.Screen name='SalaryDeduct' component={SalaryDeduct}/>
       
     </Drawer.Navigator>
   );

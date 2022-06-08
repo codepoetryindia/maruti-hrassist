@@ -1,219 +1,36 @@
 //import liraries
-import React, {Component, useState} from 'react';
+import React, { Component, useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
-  TextInput
+  TextInput,
+  Image,
+  FlatList,
+  SafeAreaView,
+  Modal
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import * as ApiService from '../../Utils/Utils';
+import Toast from 'react-native-simple-toast'
+import { useFocusEffect } from '@react-navigation/native';
+import AuthContext from '../../context/AuthContext';
+import moment from 'moment';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-// create a component
-export const Leave = () => {
-  const [approve, setApprove] = useState(0);
-  const handleApprove = index => {
-    setApprove(index);
-  };
+const Tab = createMaterialTopTabNavigator();
+
+const ManagerMode = ({ navigation }) => {
   return (
-    <View style={{flex: 1}}>
-      <View style={{width: '90%', alignSelf: 'center', marginVertical: 15}}>
-        <SegmentedControlTab
-          borderRadius={0}
-          values={['Approve Leave', 'View Report']}
-          selectedIndex={approve}
-          onTabPress={index => {
-            handleApprove(index);
-          }}
-          tabsContainerStyle={styles.tabsContainerStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-      </View>
-
-      <View>
-        {approve == 0 ? (
-          <View style={{padding: 10, backgroundColor: '#a9bce7'}}>
-            <Text style={{color: '#000', fontWeight: '600'}}>
-              Tap On Leave To View Details
-            </Text>
-          </View>
-        ) : (
-          <View>
-            <Text style={{color: '#000', fontWeight: '600',paddingHorizontal:'5%'}}>Select Employee</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-};
-
-
-export const FlexiShift = () => {
-  return (
-    <View>
-      <Text>FlexiShift</Text>
-    </View>
-  );
-};
-
-
-
-export const Taxi = () => {
-  const [approve, setApprove] = useState(0);
-  const handleApprove = index => {
-    setApprove(index);
-  };
-  return (
-    <View style={{flex: 1}}>
-      <View style={{width: '90%', alignSelf: 'center', marginVertical: 15}}>
-        <SegmentedControlTab
-          borderRadius={0}
-          values={['Approve Taxi', 'View Report']}
-          selectedIndex={approve}
-          onTabPress={index => {
-            handleApprove(index);
-          }}
-          tabsContainerStyle={styles.tabsContainerStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-      </View>
-      <View>
-        {approve == 0 ? (
-            <View style={{width: '100%'}}>
-            <View
-              style={{
-                width: '90%',
-                flexDirection: 'row',
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#6ef7ff',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#6ef7ff',
-                borderRadius: 5,
-                alignSelf: 'center',
-              }}>
-              <View
-                style={{
-                  width: '15%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Feather name="search" size={20} color={'#6ef7ff'} />
-              </View>
-              <TextInput
-                placeholder="Search By Slip No/Staff ID"
-                style={{
-                  width: '70%',
-                  paddingVertical: 5,
-                }}
-              />
-              <TouchableOpacity
-                style={{
-                  width: '15%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Ionicons name="send" size={20} color={'#6ef7ff'} />
-              </TouchableOpacity>
-            </View>
-            <View style={{margin: '5%',}}>
-              <Text>No Data Found</Text>
-              </View>
-          </View>
-        ) : (
-          <View style={{margin: '5%',}}>
-          <Text>No Data Found</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-};
-
-
-export const Attendance = () => {
-  return (
-    <View>
-       <View style={{width: '100%'}}>
-           
-            <View
-              style={{
-                width: '90%',
-                flexDirection: 'row',
-                marginTop:'5%',
-                borderWidth: 1,
-                borderTopColor: '#80406A',
-                borderStartColor: '#6ef7ff',
-                borderBottomColor: '#2757C3',
-                borderEndColor: '#6ef7ff',
-                borderRadius: 5,
-                alignSelf: 'center',
-              }}>
-              <View
-                style={{
-                  width: '15%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Feather name="search" size={20} color={'#6ef7ff'} />
-              </View>
-              <TextInput
-                placeholder="Search By Name/Dept/Staff/ID"
-                style={{
-                  width: '70%',
-                  paddingVertical: 5,
-                }}
-              />
-              <TouchableOpacity
-                style={{
-                  width: '15%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Ionicons name="send" size={20} color={'#6ef7ff'} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={{margin: '5%',}}>
-          <Text>No Contacts Exist</Text>
-          </View>
-    </View>
-  );
-};
-
-const ManagerMode = ({navigation}) => {
-  const [manager, setManager] = useState();
-
-  const renderScene = SceneMap({
-    first: Leave,
-    second: FlexiShift,
-    third: Taxi,
-    fourth: Attendance,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'Leave'},
-    {key: 'second', title: 'FlexiShift'},
-    {key: 'third', title: 'Taxi'},
-    {key: 'fourth', title: 'Attendance'},
-  ]);
-  return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-     colors={['#4174D0','#6ef7ff']}
+        colors={['#00B4DB', '#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -245,72 +62,690 @@ const ManagerMode = ({navigation}) => {
             }}>
             ManagerMode
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: manager == true ? '50%' : '8%',
-              position: 'absolute',
-              bottom: -5,
-
-              right: -20,
-              alignItems: 'center',
-              backgroundColor: '#23f',
-              borderTopLeftRadius: 20,
-              borderBottomLeftRadius: 20,
-              paddingVertical: 5,
+          <TouchableOpacity
+            style={{ marginLeft: 100 }}
+            onPress={() => {
+              navigation.goBack();
             }}>
-            <TouchableOpacity>
-              <Ionicons
-                style={{marginLeft: '5%'}}
-                name="ios-person-circle-outline"
-                size={25}
-                color={'white'}
-                onPress={() => {
-                  manager == true ? setManager(false) : setManager(true);
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{alignSelf: 'center'}}
-              onPress={() => {
-                // navigation.navigate('ManagerMode');
-                navigation.goBack();
-              }}>
-              {manager == true ? (
-                <Text style={{color: '#fff', marginLeft: 0}}>
-                  Back To Employ-Mode
-                </Text>
-              ) : null}
-            </TouchableOpacity>
-          </View>
+            <Image source={require("../../assets/Images/Avtar.png")} style={{ width: 30, height: 30, }} />
+          </TouchableOpacity>
         </View>
       </LinearGradient>
-      <TabView
-        renderTabBar={props => {
-          return (
-            <LinearGradient
-             colors={['#4174D0','#6ef7ff']}
-              style={{marginTop: -1, zIndex: -1}}>
-              <TabBar
-                renderLabel={({route, focused, color}) => (
-                  <Text style={{fontSize: 13, color: '#fff'}}>
-                    {route.title}
-                  </Text>
-                )}
-                {...props}
-                style={{backgroundColor: 'transparent', elevation: 0}}
+
+
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: 14 },
+          tabBarActiveTintColor: '#fff',
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
+          tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+        }}>
+        <Tab.Screen name="Leave" component={Leave} />
+        <Tab.Screen name="FlexiShift" component={FlexiShift} />
+        <Tab.Screen name="Taxi" component={Taxi} />
+        <Tab.Screen name="Attendance" component={Attendance} />
+      </Tab.Navigator>
+
+    </SafeAreaView>
+  );
+};
+
+
+// create a component
+export const Leave = () => {
+  const [approve, setApprove] = useState(0);
+  const [getEmplLevDetail, setGetEmplLevDetail] = useState([]);
+  const [getPendingLeaveReq, setGetPendingLeaveReq] = useState([]);
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false)
+
+
+
+  let userId = AppUserData.data.userId;
+  let UserName = AppUserData.data.EMPL_NAME
+  let date = moment(new Date()).format("DD-MMMM-YYYY");
+
+
+
+  const GetEmplLevDetail = () => {
+    let userId = AppUserData.data.userId
+    let token = AppUserData.token;
+    let apiData = {
+      "StaffNo": userId,
+      "FromDate": "01-Feb-2020",
+      "ToDate": date
+    };
+    setLoader(true);
+    ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
+      .then(result => {
+        console.log("APiresult GetEmplLevDetail", result);
+        setLoader(false);
+        ApiResult = result.Value
+        setGetEmplLevDetail(ApiResult)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+
+  const GetPendingLeaveReq = () => {
+    let userId = AppUserData.data.EMPL_NAME
+    let token = AppUserData.token;
+    let apiData = {
+      // "UserName": "spnayak",
+      "UserName": userId,
+    };
+    setLoader(true);
+    ApiService.PostMethode('/GetPendingLeaveReq  ', apiData, token)
+      .then(result => {
+        console.log("APiresult GetPendingLeaveReq", result);
+        setLoader(false);
+        ApiResult = result.Value
+        setGetPendingLeaveReq(ApiResult)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+  useEffect(() => {
+    GetPendingLeaveReq();
+    GetEmplLevDetail();
+  }, [])
+  const handleApprove = index => {
+    setApprove(index);
+  };
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ width: '90%', alignSelf: 'center', marginVertical: 15 }}>
+        <SegmentedControlTab
+          borderRadius={0}
+          values={['Approve Leave', 'View Report']}
+          selectedIndex={approve}
+          onTabPress={index => {
+            handleApprove(index);
+          }}
+          tabsContainerStyle={styles.tabsContainerStyle}
+          tabStyle={styles.tabStyle}
+          tabTextStyle={styles.tabTextStyle}
+          activeTabStyle={styles.activeTabStyle}
+          activeTabTextStyle={styles.activeTabTextStyle}
+        />
+      </View>
+
+      <View>
+        {approve == 0 ? (
+          <View style={{ padding: 10, backgroundColor: '#a9bce7' }}>
+            <Text style={{ color: '#000', fontWeight: '600' }}>
+              Tap On Leave To View Details
+            </Text>
+          </View>
+        ) : (
+          <View>
+
+            <Text style={{ color: '#000', fontWeight: '600', marginVertical: '5%', marginLeft: 15 }}>Employee</Text>
+
+            <TouchableOpacity style={styles.reportHeader}>
+              <Text style={{ color: '#000', fontWeight: '600', paddingHorizontal: '5%' }}>{userId}  {UserName}</Text>
+              <Ionicons name="send" size={20} color={'#6ef7ff'} />
+            </TouchableOpacity>
+
+
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginVertical: 10, padding: 10 }}>
+              <Text>Date</Text>
+              <Text>type</Text>
+              <Text>Period</Text>
+              <Text>Status</Text>
+            </View>
+            {loader == true ? (
+              <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
               />
-            </LinearGradient>
-          );
-        }}
-        navigationState={{index, routes}}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
-      />
+            ) : null}
+            <FlatList
+              data={getEmplLevDetail}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={styles.reportStyle}>
+                    <View style={{ flexDirection: 'column' }}>
+                      <Text>{item["From Date"]}</Text>
+                      <Text>{item["To Date"]}</Text></View>
+                    <Text>{item["Leave Type"]}</Text>
+                    <Text>{item.Period}</Text>
+                    <Text>{item.Status}</Text>
+                  </View>
+                )
+              }}
+            />
+          </View>
+
+        )}
+      </View>
     </View>
   );
 };
+
+
+export const FlexiShift = () => {
+  const [flexiShift, setFlexiShift] = useState('')
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false);
+  const FlexiShiftPendAppLOV = () => {
+    let userId = AppUserData.data.userId
+    let token = AppUserData.token;
+    let apiData = {
+      // "UserName": "spnayak",
+      "StaffNo": userId,
+    };
+    setLoader(true);
+    ApiService.PostMethode('/FlexiShiftPendAppLOV  ', apiData, token)
+      .then(result => {
+        console.log("APiresult FlexiShiftPendAppLOV", result);
+        setLoader(false);
+        ApiResult = result.Value
+        setFlexiShift(ApiResult)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+  useEffect(() => {
+    FlexiShiftPendAppLOV()
+  }, [])
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text>FlexiShift</Text>
+    </SafeAreaView>
+  );
+};
+
+
+
+export const Taxi = () => {
+  const [approve, setApprove] = useState(0);
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false)
+  const [taxiPending, setTaxiPending] = useState([])
+  const [approvedTaxiReport, setApprovedTaxiReport] = useState([])
+  const [search, setSearch] = useState('')
+  const [employ, setEmploy] = useState([])
+
+  const GetTaxiPendingList = () => {
+    let userId = AppUserData.data.userId
+    let token = AppUserData.token;
+    let apiData = {
+      // "UserName": "spnayak",
+      "StaffNo": "516260",
+
+    };
+    setLoader(true);
+    ApiService.PostMethode('/GetTaxiPendingList  ', apiData, token)
+      .then(result => {
+        console.log("APiresult GetTaxiPendingList", result);
+        setLoader(false);
+        ApiResult = result.Value
+        setTaxiPending(ApiResult)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+  const ApprovedTaxiReport = () => {
+    let userId = AppUserData.data.userId
+    let token = AppUserData.token;
+    let apiData = {
+      "UserName": "NSTHAKUR"
+    };
+    setLoader(true);
+    ApiService.PostMethode('/ApprovedTaxiReport  ', apiData, token)
+      .then(result => {
+        console.log("APiresult ApprovedTaxiReport", result);
+        setLoader(false);
+        ApiResult = result.Value
+        setApprovedTaxiReport(ApiResult)
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+
+  const SearchEmployee = () => {
+    console.log('post data', search);
+    if (search === '') {
+      alert("please enter a valid keyWord ")
+      return
+    } else {
+      let apiData = {
+        Search: search
+      }
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/GetEmplLookup', apiData, token)
+        .then(result => {
+          setLoader(false);
+
+          console.log('ApiResult', result);
+
+          let responseData = result.Value;
+          console.log('ApiResult', responseData);
+          setEmploy(responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+  };
+
+  useEffect(() => {
+    GetTaxiPendingList()
+    ApprovedTaxiReport()
+
+  }, [])
+  const handleApprove = index => {
+    setApprove(index);
+  };
+  const emptyList = () => {
+    setSearch('')
+  }
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ width: '90%', alignSelf: 'center', marginVertical: 15 }}>
+        <SegmentedControlTab
+          borderRadius={0}
+          values={['Approve Taxi', 'View Report']}
+          selectedIndex={approve}
+          onTabPress={index => {
+            handleApprove(index);
+          }}
+          tabsContainerStyle={styles.tabsContainerStyle}
+          tabStyle={styles.tabStyle}
+          tabTextStyle={styles.tabTextStyle}
+          activeTabStyle={styles.activeTabStyle}
+          activeTabTextStyle={styles.activeTabTextStyle}
+        />
+      </View>
+      <View>
+        {approve == 0 ? (
+          <View style={{ width: '100%', marginVertical: 10 }}>
+            <View
+              style={{
+                width: '95%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                borderWidth: 1,
+                borderRadius: 5,
+                alignSelf: 'center',
+                backgroundColor: '#fff'
+              }}>
+              <View
+                style={{
+                  width: '15%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Feather name="search" size={20} color={'#4174D0'} />
+              </View>
+              <TextInput
+                placeholder="Search By Name/Dept/Staff/ID"
+                value={search}
+                onChangeText={(data) => {
+                  setSearch(data)
+                }}
+                style={{
+                  width: '65%',
+                  paddingVertical: 5,
+                  fontSize: 16
+                }}
+              />
+              {search !== '' ? (
+                <TouchableOpacity
+                  style={{ borderRadius: 8, marginLeft: -20, alignSelf: 'center' }} onPress={() => { emptyList() }}>
+                  <Ionicons
+                    style={styles.searchIcon}
+                    name="close-circle-outline"
+                    size={25}
+                    color="#b2bec3"
+                  />
+                </TouchableOpacity>
+              ) : null}
+              <TouchableOpacity
+                onPress={() => {
+                  SearchEmployee()
+                }}
+                style={{
+                  width: '15%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Ionicons name="send" size={20} color={'#4174D0'} />
+              </TouchableOpacity>
+            </View>
+            {loader == true ? (
+              <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+            ) : null}
+            <FlatList
+              data={employ}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => {
+                return (
+                  <TouchableOpacity style={styles.FlatListData}>
+                    <Ionicons
+                      style={styles.searchIcon}
+                      name="person-circle-outline"
+                      size={25}
+                      color="#2757C3"
+                    />
+                    <View style={{ flexDirection: 'column', width: '70%' }}>
+                      <Text style={{ fontSize: 16 }}>
+                        {item.Name}
+                      </Text>
+                      <Text>
+                        {item.Desg} , {item.Dept} ({item['Staff No']})
+                      </Text>
+                    </View>
+                    <TouchableOpacity>
+                      <Ionicons
+                        style={styles.searchIcon}
+                        name="chevron-forward-circle-outline"
+                        size={25}
+                        color="#2757C3"
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                )
+              }} />
+          </View>
+        ) : (
+          <SafeAreaView style={{ margin: '5%', }}>
+            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginVertical: 10, padding: 10 }}>
+              <Text>Dept-Code</Text>
+              <Text>Name</Text>
+              <Text>TCar Approval</Text>
+              <Text>KM</Text>
+            </View>
+            {loader == true ? (
+              <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+            ) : null}
+            <FlatList
+              data={approvedTaxiReport}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => {
+                return (
+                  <View
+                    style={styles.reportStyle}>
+
+                    <Text>{item.EMPL_DEPT_CODE}</Text>
+                    <Text>{item.EMPL_NAME}</Text>
+                    <Text>{item.TCAR_ADM_APPROVAL}</Text>
+                    <Text>{item.TCAR_APPOX_KMS_USAGE}</Text>
+
+                  </View>
+                )
+              }} />
+          </SafeAreaView>
+        )}
+      </View>
+    </View>
+  );
+};
+
+
+export const Attendance = () => {
+  const [search, setSearch] = useState('')
+  const [employ, setEmploy] = useState([])
+  const { authContext, AppUserData } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false)
+
+  const SearchEmployee = () => {
+    console.log('post data', search);
+    if (search === '') {
+      alert("please enter a valid keyWord ")
+      return
+    } else {
+      let apiData = {
+        Search: search
+      }
+      let token = AppUserData.token
+      setLoader(true);
+      ApiService.PostMethode('/GetEmplLookup', apiData, token)
+        .then(result => {
+          setLoader(false);
+
+          console.log('ApiResult', result);
+
+          let responseData = result.Value;
+          console.log('ApiResult', responseData);
+          setEmploy(responseData)
+        })
+        .catch(error => {
+          setLoader(false);
+          // console.log('Error occurred==>', error);
+          if (error.response) {
+            if (error.response.status == 401) {
+              console.log('error from api', error.response);
+            }
+            Toast.show(error.response.data.title);
+          } else if (error) {
+            Toast.show('Network Error');
+          } else {
+            Toast.show('Something Went Wrong');
+          }
+        });
+    }
+  };
+
+  const emptyList = () => {
+    setSearch('')
+  }
+  return (
+    <View>
+      <View style={{ width: '100%', marginVertical: 10 }}>
+        <View
+          style={{
+            width: '95%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            borderWidth: 1,
+            borderRadius: 5,
+            alignSelf: 'center',
+            backgroundColor: '#fff'
+          }}>
+          <View
+            style={{
+              width: '15%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Feather name="search" size={20} color={'#4174D0'} />
+          </View>
+          <TextInput
+            placeholder="Search By Name/Dept/Staff/ID"
+            value={search}
+            onChangeText={(data) => {
+              setSearch(data)
+            }}
+            style={{
+              width: '65%',
+              paddingVertical: 5,
+              fontSize: 16
+            }}
+          />
+          {search !== '' ? (
+            <TouchableOpacity
+              style={{ borderRadius: 8, marginLeft: -20, alignSelf: 'center' }} onPress={() => { emptyList() }}>
+              <Ionicons
+                style={styles.searchIcon}
+                name="close-circle-outline"
+                size={25}
+                color="#b2bec3"
+              />
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity
+            onPress={() => {
+              SearchEmployee()
+            }}
+            style={{
+              width: '15%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Ionicons name="send" size={20} color={'#4174D0'} />
+          </TouchableOpacity>
+        </View>
+        {loader == true ? (
+      <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+    ) : null}
+        {employ.length > 0 ? (
+          
+          <FlatList
+            data={employ}
+            keyExtractor={({ item, index }) => index}
+            renderItem={({ item, index }) => {
+              return (
+                <TouchableOpacity style={styles.FlatListData}>
+                  <Ionicons
+                    style={styles.searchIcon}
+                    name="person-circle-outline"
+                    size={25}
+                    color="#2757C3"
+                  />
+                  <View style={{ flexDirection: 'column', width: '70%' }}>
+                    <Text style={{ fontSize: 16 }}>
+                      {item.Name}
+                    </Text>
+                    <Text>
+                      {item.Desg} , {item.Dept} ({item['Staff No']})
+                    </Text>
+                  </View>
+                  <TouchableOpacity>
+                    <Ionicons
+                      style={styles.searchIcon}
+                      name="chevron-forward-circle-outline"
+                      size={25}
+                      color="#2757C3"
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              )
+            }} />
+        ) : (
+
+          <View style={{ margin: '5%', }}>
+            <Text>Search Contacts</Text>
+          </View>
+        )}
+      </View>
+
+    </View>
+  );
+};
+
+
 
 // define your styles
 const styles = StyleSheet.create({
@@ -334,11 +769,38 @@ const styles = StyleSheet.create({
     borderBottomColor: '#2757C3',
     // borderColor:Colors.primaryColor
   },
+  reportHeader: {
+    width: '100%',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 2.0,
+    elevation: 5,
+    borderRadius: 8,
+  },
+  reportStyle: {
+    width: '100%',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    padding: 10,
+    borderBottomWidth: 1
+  },
   activeTabTextStyle: {
     color: '#2757C3',
   },
   container: {
     flexDirection: 'row',
+    alignItems: 'center'
   },
   searchSection: {
     top: 10,
@@ -362,6 +824,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     color: '#424242',
   },
+  FlatListData: {
+    width: "95%",
+    borderWidth: 1,
+    borderColor: '#2757C3',
+    borderRadius: 7,
+    flexDirection: 'row',
+    marginVertical: 10,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 5,
+    marginBottom: 10,
+    backgroundColor: '#fff'
+  }
 });
 
 export default ManagerMode;

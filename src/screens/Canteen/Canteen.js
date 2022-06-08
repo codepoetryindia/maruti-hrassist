@@ -51,15 +51,15 @@ const Canteen = ({navigation}) => {
         style={styles.canteen}
         onPress={() => navigation.navigate("CanteenMenu")}>
         <View style={{width: '20%'}}>
-          <Image
+          {/* <Image
             style={{width: 50, height: 50}}
             source={require('../../assets/Images/cutlery.gif')}
-          />
-          {/* <GifImage
+          /> */}
+          <GifImage
             source={require('../../assets/Images/cutlery.gif')}
             style={{width: 50, height: 50}}
             resizeMode={'cover'}
-          /> */}
+          />
         </View>
         <View
           style={{
