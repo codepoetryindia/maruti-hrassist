@@ -8,7 +8,8 @@ import {
   FlatList,
   ScrollView,
   TextInput,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import DatePicker from 'react-native-date-picker';
@@ -19,9 +20,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {DataTable} from 'react-native-paper';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
-import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 // create a component
@@ -37,10 +38,11 @@ const Shift = ({navigation}) => {
   const [Shift, setShift] = useState([]);
   const [shiftData, setShiftData] = useState([]);
   const [shiftType, setShiftType] = useState([]);
-  const [shiftName, setShiftName] = useState('Select Shift');
+  const [shiftName, setShiftName] = useState('');
   const [currentShift, setCurrentShift] = useState('');
   const [shiftStatus, setShiftStatus] = useState([]);
-  const [submitShift, setSubmitShift] = useState('');
+  const [flexiShiftElig, setFlexiShiftElig] = useState('');
+  const [flexidate, setFlexiDate] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const [choseDate, setChoseDate] = useState('');
   const { authContext, AppUserData } = useContext(AuthContext);
@@ -162,7 +164,7 @@ const SubmitFlexiShiftPlan = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
   let apiData = {
-    "StaffNo": userId,
+    "Staffid": userId,
     };
   setLoader(true);
   ApiService.PostMethode('/SubmitFlexiShiftPlan  ', apiData, token)
@@ -196,7 +198,7 @@ const RptShiftStatus = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
   let apiData = {
-    "StaffNo": userId,
+    "StaffNo": "222852",
     };
   setLoader(true);
   ApiService.PostMethode('/RptShiftStatus  ', apiData, token)
@@ -225,32 +227,124 @@ const RptShiftStatus = () => {
       }
     });
 }
+const FlexiShiftElig = () => {
+  let userId = AppUserData.data.userId;
+  let token = AppUserData.token;
+  let apiData = {
+    "UserName": userId,
+    };
+  setLoader(true);
+  ApiService.PostMethode('/FlexiShiftElig  ', apiData, token)
+    .then(result => {
+      console.log("FlexiShiftElig", result.Result);
+      setLoader(false);
+      let ApiResult = result.Result
+      setFlexiShiftElig(ApiResult)
+    })
+    .catch(error => {
+      setLoader(false);
+      console.log('Error occurred==>', error);
+      if (error.response) {
+        if (error.response.status == 401) {
+          console.log('error from api', error.response);
+        }
+        // client received an error response (5xx, 4xx)
+        Toast.show(error.response.data.title);
+      } else if (error.request) {
+        // client never received a response, or request never left
+        Toast.show('Network Error');
+        // console.log("error.request", error.request._response);
+      } else {
+        // anything else
+        Toast.show('Something Went Wrong');
+      }
+    });
+}
+const FlexiShiftStartDateLOV = () => {
+  let userId = AppUserData.data.userId;
+  let token = AppUserData.token;
+  let apiData = {
+    "StaffNo": userId,
+    };
+  setLoader(true);
+  ApiService.PostMethode('/FlexiShiftStartDateLOV  ', apiData, token)
+    .then(result => {
+      console.log("FlexiShiftStartDateLOV", result.Result);
+      setLoader(false);
+      let ApiResult = result.Result
+      setFlexiDate(ApiResult)
+    })
+    .catch(error => {
+      setLoader(false);
+      console.log('Error occurred==>', error);
+      if (error.response) {
+        if (error.response.status == 401) {
+          console.log('error from api', error.response);
+        }
+        // client received an error response (5xx, 4xx)
+        Toast.show(error.response.data.title);
+      } else if (error.request) {
+        // client never received a response, or request never left
+        Toast.show('Network Error');
+        // console.log("error.request", error.request._response);
+      } else {
+        // anything else
+        Toast.show('Something Went Wrong');
+      }
+    });
+}
 
 const handleSubmit = () => {
-  if(shiftName.length < 0){
+  if(shiftName==''){
     alert("Please select shift name")
   }
-  else if(selectDate==''){
+  else if(choseDate==''){
     alert("Please select Date")
   }
   else{
-    SubmitFlexiShiftPlan()
+    
+    submitAlert('Warning', 'Are You Sure?', 'yes', 'No');
   }
 }
 // ENd
   useEffect(() => {
+    FlexiShiftElig()
     GetEmplShift()
     flexiShiftPlanLov()
     CurrentShift()
+    FlexiShiftStartDateLOV()
     RptShiftStatus()
   }, [])
+
+  //   useFocusEffect(
+  //   React.useCallback(() => {
+  //     const unsubscribe = PostBirthdayData();
+  //     return () => unsubscribe;
+  //   }, [])
+  // )
   
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-
+  const submitAlert = (title, body, btnTxt, btnTxt2) => {
+    Alert.alert(title, body, [
+      {
+        text: btnTxt,
+        onPress: () => {
+          SubmitFlexiShiftPlan();
+          RptShiftStatus();
+        },
+      },
+      {
+        text: btnTxt2,
+        onPress: () => {
+          console.log('No Pressed');
+        },
+      },
+    ]);
+  };
   const rederReason = ({item}) => {
     return (
       <View
@@ -442,6 +536,7 @@ const handleSubmit = () => {
           <TouchableOpacity
             onPress={() => {
               GetEmplShift()
+             
             } }>
             <LinearGradient
               style={{
@@ -521,7 +616,7 @@ const handleSubmit = () => {
                 justifyContent: 'space-between',
               }}>
              {/* {shiftName==''} */}
-             <Text>{shiftName}</Text>
+             <Text>{shiftName !==''? shiftName :(<Text> Select Shift</Text>)}</Text>
               <Ionicons name="arrow-forward-outline" color={'#23d'} size={20} />
               <Modal isVisible={isModalVisible}>
                 <View>
@@ -611,8 +706,12 @@ const handleSubmit = () => {
             />
           </View>
           {/* Button */}
+          
+          {
+            flexiShiftElig==='N' ? (
           <TouchableOpacity onPress={() => {
             handleSubmit()
+
           }}>
             <LinearGradient
               style={{
@@ -627,9 +726,11 @@ const handleSubmit = () => {
               <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
             </LinearGradient>
           </TouchableOpacity>
+            ):null
+          }
 
           {/* Report */}
-          <Text style={{textAlign: 'center'}}>Report</Text>
+          <Text style={{textAlign: 'center',marginTop:10}}>Report</Text>
           {shiftStatus.length>0?(
           <DataTable
             style={{
@@ -644,7 +745,7 @@ const handleSubmit = () => {
               </DataTable.Title>
               <DataTable.Title numeric>
                 <Text style={{color: 'gray', fontSize: 16}}>
-                  Applicable Data
+                  Applicable Date
                 </Text>
               </DataTable.Title>
               <DataTable.Title numeric>
@@ -655,18 +756,21 @@ const handleSubmit = () => {
               data={shiftStatus}
               keyExtractor={item => item.id}
               renderItem={({item}) => (
-                <View>
-                  <DataTable.Row>
-                    <DataTable.Cell numeric>{item.SHFT_START_SHIFT}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.SHFT_START_DATE}</DataTable.Cell>
-                    <DataTable.Cell numeric>
-                      {item.STATUS === 'Approved' ? (
+                <View  style={{
+                  width: '100%',
+                  backgroundColor: '#fff',
+                  marginVertical: 10,
+                  flexDirection:'row',
+                 justifyContent:'space-between',
+                 padding:10
+                }}>
+                  <Text>{item.SHFT_START_SHIFT}</Text>
+                  <Text>{moment(item.SHFT_START_DATE).format('DD-MMM-YYYY')}</Text>
+                  <Text>{item.STATUS === 'Approved' ? (
                         <Text style={{color: 'green'}}>Approved</Text>
                       ) : (
                         <Text style={{color: 'red'}}>Pending</Text>
-                      )}
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                      )}</Text>
                 </View>
               )}
             />

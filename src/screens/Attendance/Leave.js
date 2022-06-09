@@ -8,7 +8,8 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,7 +32,8 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 
 

@@ -97,9 +97,9 @@ const Home = ({navigation}) => {
                 }}>
                 {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
-              <Text style={{fontSize: 15, color: '#fff', letterSpacing: 1}}>
+              {/* <Text style={{fontSize: 15, color: '#fff', letterSpacing: 1}}>
                 Monday, 24 jan 2022
-              </Text>
+              </Text> */}
             </View>
           </View>
 

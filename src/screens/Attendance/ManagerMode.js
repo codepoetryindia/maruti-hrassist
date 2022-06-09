@@ -145,11 +145,11 @@ export const Leave = () => {
 
 
   const GetPendingLeaveReq = () => {
-    let userId = AppUserData.data.EMPL_NAME
+    let UserName = AppUserData.data.EMPL_NAME
     let token = AppUserData.token;
     let apiData = {
       // "UserName": "spnayak",
-      "UserName": userId,
+      "UserName": UserName,
     };
     setLoader(true);
     ApiService.PostMethode('/GetPendingLeaveReq  ', apiData, token)
@@ -205,11 +205,47 @@ export const Leave = () => {
 
       <View>
         {approve == 0 ? (
-          <View style={{ padding: 10, backgroundColor: '#a9bce7' }}>
+          <View>
+          <TouchableOpacity style={{ padding: 10, backgroundColor: '#a9bce7' }}>
             <Text style={{ color: '#000', fontWeight: '600' }}>
               Tap On Leave To View Details
             </Text>
-          </View>
+          </TouchableOpacity>
+          {getPendingLeaveReq.length>0 ? (
+
+           <View style={styles.header}>
+           <Text>NAME</Text>
+           <Text>FROM_DATE</Text>
+           <Text>PERIOD</Text>
+           <Text>DAYS</Text>
+         </View>
+          ):null}
+         {loader == true ? (
+           <Spinner
+             visible={loader}
+             textContent={'Loading...'}
+             textStyle={styles.spinnerTextStyle}
+           />
+         ) : null}
+         <FlatList
+           data={getPendingLeaveReq}
+           keyExtractor={({ item, index }) => index}
+           renderItem={({ item, index }) => {
+             let Name = item.EMPL_NAME
+             let slice= Name.slice(0,10)
+             return (
+               <View
+                 style={styles.reportStyle}>
+                   <Text>{slice}</Text>
+                   <Text>{item.FROM_DATE}</Text>
+                 <Text>{item.PERIOD}</Text>
+                 <Text>{item.DAYS}</Text>
+                
+               </View>
+             )
+           }}
+         />
+         </View>
         ) : (
           <View>
 
@@ -221,7 +257,7 @@ export const Leave = () => {
             </TouchableOpacity>
 
 
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginVertical: 10, padding: 10 }}>
+            <View style={styles.header}>
               <Text>Date</Text>
               <Text>type</Text>
               <Text>Period</Text>
@@ -694,14 +730,14 @@ export const Attendance = () => {
           </TouchableOpacity>
         </View>
         {loader == true ? (
-      <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-    ) : null}
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
         {employ.length > 0 ? (
-          
+
           <FlatList
             data={employ}
             keyExtractor={({ item, index }) => index}
@@ -792,7 +828,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-between',
     marginVertical: 10,
-    padding: 10,
+    padding: 12,
     borderBottomWidth: 1
   },
   activeTabTextStyle: {
@@ -837,6 +873,14 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginBottom: 10,
     backgroundColor: '#fff'
+  },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1
+    , marginVertical: 10,
+    padding: 10
   }
 });
 

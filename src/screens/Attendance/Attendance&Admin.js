@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
+  Alert
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';

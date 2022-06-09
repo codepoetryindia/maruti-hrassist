@@ -20,7 +20,7 @@ const Hospital = ({ locationName }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItem, setModalItem] = useState('')
   const [hospitalLoc, setHospitalLoc] = useState([]);
-  const [selectLoc,setSelectLoc] = useState('')
+  const [filterModal,setFilterModal] = useState(false)
 
   const GetHospListApi = (data) => {
     let token = AppUserData.token
@@ -71,7 +71,7 @@ const Hospital = ({ locationName }) => {
         let ApiValue = result.Value
         console.log("setHospitalLoc", ApiValue);
         setHospitalLoc(ApiValue)
-        setModalVisible(true)
+        setFilterModal(true)
       })
       .catch(error => {
         setLoader(false);
@@ -167,7 +167,7 @@ const Hospital = ({ locationName }) => {
             animationIn="fadeIn"
             animationOut="fadeOut"
             coverScreen={true}
-            isVisible={modalVisible}>
+            isVisible={filterModal}>
             <View style={[styles.modalBox,{maxHeight:'90%'}]}>
               <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
                 <Feather
@@ -175,7 +175,7 @@ const Hospital = ({ locationName }) => {
                   color={'#000'}
                   size={20}
                   onPress={() =>
-                    setModalVisible(false)}
+                    setFilterModal(false)}
                   style={{ margin: 10 }}
                 />
               </TouchableOpacity>
@@ -199,7 +199,7 @@ const Hospital = ({ locationName }) => {
                       <TouchableOpacity
                         onPress={() => {
                         
-                          setModalVisible(false)
+                          setFilterModal(false)
                           GetHospListApi(item.LOCN_DESC)
                         }}
                         style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
