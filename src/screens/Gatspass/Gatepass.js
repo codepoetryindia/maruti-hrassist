@@ -38,11 +38,11 @@ const Gatepass = ({ navigation }) => {
   const [searchLevelData, setSearchLevelData] = useState([])
   const [loader, setLoader] = useState(false)
   const options = [{
-    label:"Yes",
-    value:"Y"
+    label: "Yes",
+    value: "Y"
   }, {
-    label:"No",
-    value:"N"
+    label: "No",
+    value: "N"
   }];
   const [selectBuilding, setSelectBuilding] = useState([]);
   const [BuildingData, setBuildingData] = useState([]);
@@ -72,7 +72,7 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         console.log("APiresult GetLocationListVGPS", result);
         setLoader(false);
-     
+
         setLocations(result.Value);
         let Location = result.Value[0].LOCN
         let LocationCode = result.Value[0].CODE
@@ -175,7 +175,7 @@ const Gatepass = ({ navigation }) => {
         });
     }
   };
-  const GetAccessListVGPSApi = (locationcode ='001') => {
+  const GetAccessListVGPSApi = (locationcode = '001') => {
     let userId = AppUserData.data.userId
     // let newLoc = empLocCode.split(",")[0]
     let apiData = {
@@ -192,10 +192,10 @@ const Gatepass = ({ navigation }) => {
         setLoader(false);
         let responseData = result.Value
         // console.log('building data', responseData)
-        let responseDataNew = responseData.map(element=>{
-          return{
+        let responseDataNew = responseData.map(element => {
+          return {
             ...element,
-            isSelected:false
+            isSelected: false
           }
         })
         // console.log("response data new", responseDataNew);
@@ -223,9 +223,9 @@ const Gatepass = ({ navigation }) => {
     GetSearchLevelsListVGPSApi()
     GetAccessListVGPSApi()
   }, [])
-  useEffect(() => {
-    console.log(selectBuilding);
-  }, [selectBuilding])
+  // useEffect(() => {
+  //   console.log(selectBuilding);
+  // }, [selectBuilding])
 
   const emptyList = () => {
     setSearch('')
@@ -234,8 +234,7 @@ const Gatepass = ({ navigation }) => {
 
   const gatePassScheema = yup.object().shape({
     office: yup.string().required('Location is required'),
-    date: yup.string().required('select one is required'),
-    time: yup.string().required('select one period'),
+    // date: yup.string().required('select one is required'),
     duration: yup
       .string()
       .required('Duration  is required')
@@ -245,7 +244,7 @@ const Gatepass = ({ navigation }) => {
     persionalVehical: yup.string().required('Select an option'),
     internalVehical: yup.string().required('Select an option'),
     vehicleNumber: yup.string().required('Vehicle Number is required'),
-    selectBuilding: yup.string().required('you must select any building it is required'),
+    building: yup.string().required('you must select any building it is required'),
     searchEmp: yup.string().required('please enter a valid keyWord'),
   });
   const fromRef = useRef(null);
@@ -273,13 +272,13 @@ const Gatepass = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, }}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
+      <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <LinearGradient
-        colors={['#00B4DB','#0083B0']}  
+        colors={['#00B4DB', '#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -309,7 +308,7 @@ const Gatepass = ({ navigation }) => {
               fontSize: 18,
               letterSpacing: 1,
               marginLeft: 30,
-              fontWeight:"700"
+              fontWeight: "700"
             }}>
             Visitor Gatepass
           </Text>
@@ -318,32 +317,32 @@ const Gatepass = ({ navigation }) => {
       {/* BODY */}
       <Formik
         innerRef={fromRef}
-        // validationSchema={gatePassScheema}
+        validationSchema={gatePassScheema}
         initialValues={{
           office: '',
           date: new Date(),
-          time: '',
           duration: '',
           searchLevel: '',
           reason: '',
           persionalVehical: '',
           internalVehical: '',
-          vehicleNumber:'',
+          vehicleNumber: '',
           building: [],
           searchEmp: '',
-          "perName":"",
-          "Desig":"",
-          "noOfPerson":"",
-          "empId":"",
+          "perName": "",
+          "Desig": "",
+          "noOfPerson": "",
+          "empId": "",
         }}
         onSubmit={values => {
-          console.log(values, BuildingData);
+          console.log("values", values, BuildingData);
 
-          let buldings = BuildingData.filter(element=> {
-            if(element.isSelected){
+
+          let buldings = BuildingData.filter(element => {
+            if (element.isSelected) {
               return element.BID;
             }
-          }).map(obj=> obj.BID)
+          }).map(obj => obj.BID)
 
           // let payload = {
           //   office: values.office,
@@ -356,25 +355,25 @@ const Gatepass = ({ navigation }) => {
           //   internalVehical: values.internalVehical,
           // };
           let newdata = {
-            "id":"1",
-            "location":values.office.split(",")[0],
+            "id": "1",
+            "location": values.office.split(",")[0],
             "visitDate": moment(values.date).format('YY/MM/DD'),
-            "authorizedPerson":AppUserData.data.userId,
-            "Pvehicle":values.persionalVehical,
-            "VisType":"O",
-            "visLevel":"1",
-            "buildings":buldings,
-            "duration":values.duration,
-            "exArrTime":moment(values.date).format('MM-DD-YY hh:mm'),
-            "SearchLevel":values.searchLevel,
-            "interVehicle":values.internalVehical,
-            "ReasonToCome":values.reason,
-            "perName":values.perName,
-            "Desig":values.Desig,
-            "noOfPerson":"5",
-            "empId":values.empId,
-            "vehicleNumber":values.vehicleNumber,
-            "dateDummy":values.date
+            "authorizedPerson": AppUserData.data.userId,
+            "Pvehicle": values.persionalVehical,
+            "VisType": "O",
+            "visLevel": "1",
+            "buildings": buldings,
+            "duration": values.duration,
+            "exArrTime": moment(values.date).format('MM-DD-YY hh:mm'),
+            "SearchLevel": values.searchLevel,
+            "interVehicle": values.internalVehical,
+            "ReasonToCome": values.reason,
+            "perName": values.perName,
+            "Desig": values.Desig,
+            "noOfPerson": "5",
+            "empId": values.empId,
+            "vehicleNumber": values.vehicleNumber,
+            "dateDummy": values.date
           }
           console.log("payload", newdata);
           navigation.navigate("VisitorDetails", {
@@ -384,63 +383,66 @@ const Gatepass = ({ navigation }) => {
 
 
         {
-        
-        ({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-          errors,
-          touched,
-          isValid,
-        }) => (
-          <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5, paddingHorizontal:15 }}>
-            <View style={{ paddingBottom: 5 }}>
-              <Text
-                style={{
-                  paddingHorizontal: 0,
-                  paddingVertical: 5,
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                Your Location
-              </Text>
-            </View>
 
-            <SelectDropdown
-              data={Locations}
-              onSelect={(selectedItem, index) => {
-                // console.log(selectedItem, index);
-                console.log(selectedItem);
-                setBuildingData([]);
-                setFieldValue('office',selectedItem.CODE);
-                GetAccessListVGPSApi(selectedItem.CODE.split(',')[0]);
+          ({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            values,
+            errors,
+            touched,
+            isValid,
+          }) => (
+            <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5, paddingHorizontal: 15 }}>
+              <View style={{ paddingBottom: 5 }}>
+                <Text
+                  style={{
+                    paddingHorizontal: 0,
+                    paddingVertical: 5,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                  }}>
+                  Your Location
+                </Text>
+                {/* <Text>
+                  {JSON.stringify(errors)}
+                </Text> */}
+              </View>
+
+              <SelectDropdown
+                data={Locations}
+                onSelect={(selectedItem, index) => {
+                  // console.log(selectedItem, index);
+                  console.log(selectedItem);
+                  setBuildingData([]);
+                  setFieldValue('office', selectedItem.CODE);
+                  GetAccessListVGPSApi(selectedItem.CODE.split(',')[0]);
 
 
-              }}
-              defaultButtonText={'Select Location'}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem.LOCN
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item.LOCN
-              }}
-              buttonStyle={styles.dropdown2BtnStyle}
-              buttonTextStyle={styles.dropdown2BtnTxtStyle}
-              renderDropdownIcon={isOpened => {
-                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-              }}
-              dropdownIconPosition={'right'}
-              dropdownStyle={styles.dropdown2DropdownStyle}
-              rowStyle={styles.dropdown2RowStyle}
-              rowTextStyle={styles.dropdown2RowTxtStyle}
-            />
-            {errors.office && touched.office && (
+                }}
+                defaultButtonText={'Select Location'}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.LOCN
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.LOCN
+                }}
+                buttonStyle={styles.dropdown2BtnStyle}
+                buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                renderDropdownIcon={isOpened => {
+                  return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                }}
+                dropdownIconPosition={'right'}
+                dropdownStyle={styles.dropdown2DropdownStyle}
+                rowStyle={styles.dropdown2RowStyle}
+                rowTextStyle={styles.dropdown2RowTxtStyle}
+              />
+              {errors.office && touched.office && (
                 <View
                   style={{
                     width: '100%',
@@ -457,275 +459,275 @@ const Gatepass = ({ navigation }) => {
 
 
 
-            {/* Selct Date And Time */}
+              {/* Selct Date And Time */}
 
-            <DatePicker
-              modal
-              mode="datetime"
-              open={OpenDateTimePicker}
-              date={values.date}
-              onConfirm={date => {
-                console.log(date);
-                setFieldValue('date', date);
-                setOpenDateTimePicker(false);
-                // setDate(date);
-                // console.log(date);
-              }}
-              onCancel={() => {
-                setOpenDateTimePicker(false);
-              }}
-            />
-
-            <View style={{ width: '100%' }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}>
-
-                <View style={{width:"70%", paddingRight:10}}>
-                  <Text
-                    style={{
-                      paddingHorizontal: 0,
-                      paddingTop: 10,
-                      paddingVertical: 5,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                    }}>
-                    Select Date and Time
-                  </Text>
-                  <TouchableOpacity
-                  style={{
-                    width: '100%',
-                    backgroundColor: '#fff',
-                    borderWidth: 1,
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    padding: 6,
-                    alignSelf: 'center',
-                    borderColor:'#444'
-                  }}
-                  onPress={() => setOpenDateTimePicker(true)}
-                  >
-                  <Text style={{ color: 'gray' }}>
-                    {moment(values.date).format('YY/MM/DD hh:mm')}
-                  </Text>
-                  {/* <Text style={{ color: 'gray' }}>
-                    {moment(selectTime).format('LT')}
-                  </Text> */}
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        // width: 65,
-                        justifyContent: 'space-around',
-                      }}>
-                        <Ionicons
-                          name="calendar-outline"
-                          size={25}
-                          color={'#0083B0'}
-                        />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-                </View>
-
-
-                <View style={{width:"30%"}}>
-                  <Text
-                    style={{
-                      paddingHorizontal: 0,
-                      paddingTop: 10,
-                      paddingVertical: 5,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                    }}>
-                    Duration
-                  </Text>
-                  <TextInput
-                    style={{
-                      width: '100%', 
-                      borderWidth: 1,
-                      padding: 6,
-                      backgroundColor: '#fff',
-                      borderColor:'#444'
-                    }}
-                    onChangeText={handleChange('duration')}
-                    onBlur={handleBlur('duration')}
-                    value={values.duration}
-                    keyboardType={'number-pad'} 
-                  />
-                </View>
-              </View>
-              {errors.duration && touched.duration && (
-                <View
-                  style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                    paddingVertical: 2,
-                  }}>
-                  <Text style={{ fontSize: 14, color: 'red', textAlign: 'right' }}>
-                    {errors.duration}
-                  </Text>
-                </View>
-              )}
-            </View>
-
-            {/* Search Level */}
-            <View style={{marginVertical:5, }}>
-
-            <View style={{ marginBottom: 5 }}>
-              <Text
-                style={{
-                  paddingHorizontal: 0,
-                  // paddingVertical: 5,
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                Search Level*
-              </Text>
-            </View>
-
-            <SelectDropdown
-              data={searchLevelData}
-              onSelect={(selectedItem, index) => {
-                // console.log(selectedItem, index);
-                console.log(selectedItem);
-                setFieldValue('searchLevel',selectedItem.value);
-
-              }}
-              defaultButtonText={'Select Search Level'}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem.label
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item.label
-              }}
-              buttonStyle={styles.dropdown2BtnStyle}
-              buttonTextStyle={styles.dropdown2BtnTxtStyle}
-              renderDropdownIcon={isOpened => {
-                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-              }}
-              dropdownIconPosition={'right'}
-              dropdownStyle={styles.dropdown2DropdownStyle}
-              rowStyle={styles.dropdown2RowStyle}
-              rowTextStyle={styles.dropdown2RowTxtStyle}
-            />
-            {errors.searchLevel && touched.searchLevel && (
-                <View
-                  style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                    paddingVertical: 2,
-                  }}>
-                  <Text style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
-                    {errors.searchLevel}
-                  </Text>
-                </View>
-              )}
-          </View>
-
-
-
-
-            {/* Reason To come number */}
-            <View style={{marginVertical:5}}>
-            <View style={{ width: '100%' }}>
-              <Text
-                style={{
-                  paddingHorizontal: 0,
-                marginVertical: 5,
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                Reason To Come *
-              </Text>
-              <TextInput
-                placeholder="Reason"
-                onChangeText={handleChange('reason')}
-                onBlur={handleBlur('reason')}
-                value={values.reason}
-                style={{
-                  width: '100%',
-                  backgroundColor: '#fff',
-                  borderWidth: 1,
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  padding: 6,
-                  alignSelf: 'center',
-                  borderColor:'#444',
-                  fontSize:16,
+              <DatePicker
+                modal
+                mode="datetime"
+                open={OpenDateTimePicker}
+                date={values.date}
+                onConfirm={date => {
+                  console.log(date);
+                  setFieldValue('date', date);
+                  setOpenDateTimePicker(false);
+                  // setDate(date);
+                  // console.log(date);
+                }}
+                onCancel={() => {
+                  setOpenDateTimePicker(false);
                 }}
               />
-              {errors.reason && touched.reason && (
+
+              <View style={{ width: '100%' }}>
                 <View
                   style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                     width: '100%',
-                    alignSelf: 'center',
-                    paddingVertical: 2,
                   }}>
-                  <Text
-                    style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
-                    {errors.reason}
-                  </Text>
-                </View>
-              )}
-            </View>
-            </View>
 
-            {/* Personal Vehicle */}
-            <View style={{ width: '100%'}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}>
-                <View style={{width:"48%"}}>
+                  <View style={{ width: "70%", paddingRight: 10 }}>
+                    <Text
+                      style={{
+                        paddingHorizontal: 0,
+                        paddingTop: 10,
+                        paddingVertical: 5,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>
+                      Select Date and Time
+                    </Text>
+                    <TouchableOpacity
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#fff',
+                        borderWidth: 1,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        padding: 6,
+                        alignSelf: 'center',
+                        borderColor: '#444'
+                      }}
+                      onPress={() => setOpenDateTimePicker(true)}
+                    >
+                      <Text style={{ color: 'gray' }}>
+                        {moment(values.date).format('YY/MM/DD hh:mm')}
+                      </Text>
+                      {/* <Text style={{ color: 'gray' }}>
+                    {moment(selectTime).format('LT')}
+                  </Text> */}
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            // width: 65,
+                            justifyContent: 'space-around',
+                          }}>
+                          <Ionicons
+                            name="calendar-outline"
+                            size={25}
+                            color={'#0083B0'}
+                          />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+
+
+                  <View style={{ width: "30%" }}>
+                    <Text
+                      style={{
+                        paddingHorizontal: 0,
+                        paddingTop: 10,
+                        paddingVertical: 5,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>
+                      Duration
+                    </Text>
+                    <TextInput
+                      style={{
+                        width: '100%',
+                        borderWidth: 1,
+                        padding: 6,
+                        backgroundColor: '#fff',
+                        borderColor: '#444'
+                      }}
+                      onChangeText={handleChange('duration')}
+                      onBlur={handleBlur('duration')}
+                      value={values.duration}
+                      keyboardType={'number-pad'}
+                    />
+                  </View>
+                </View>
+                {errors.duration && touched.duration && (
+                  <View
+                    style={{
+                      width: '100%',
+                      alignSelf: 'center',
+                      paddingVertical: 2,
+                    }}>
+                    <Text style={{ fontSize: 14, color: 'red', textAlign: 'right' }}>
+                      {errors.duration}
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              {/* Search Level */}
+              <View style={{ marginVertical: 5, }}>
+
+                <View style={{ marginBottom: 5 }}>
                   <Text
                     style={{
                       paddingHorizontal: 0,
-                      paddingVertical: 5,
+                      // paddingVertical: 5,
                       fontSize: 16,
                       fontWeight: 'bold',
                     }}>
-                    Personal Vehicle
+                    Search Level*
                   </Text>
-                  <SelectDropdown
-                    buttonTextAfterSelection={(selectedItem, index) => {
+                </View>
+
+                <SelectDropdown
+                  data={searchLevelData}
+                  onSelect={(selectedItem, index) => {
+                    // console.log(selectedItem, index);
+                    console.log(selectedItem);
+                    setFieldValue('searchLevel', selectedItem.value);
+
+                  }}
+                  defaultButtonText={'Select Search Level'}
+                  buttonTextAfterSelection={(selectedItem, index) => {
                     // text represented after item is selected
                     // if data array is an array of objects then return selectedItem.property to render after item is selected
                     return selectedItem.label
-                    }}
-                    rowTextForSelection={(item, index) => {
+                  }}
+                  rowTextForSelection={(item, index) => {
                     // text represented for each item in dropdown
                     // if data array is an array of objects then return item.property to represent item in dropdown
                     return item.label
-                    }}
-                    // defaultButtonText="Yes"
-                    dropdownBackgroundColor={'transparent'}
-                    data={options}
-                    onSelect={(selectedItem, index) => {
-                      // console.log(selectedItem, index);
-                      setFieldValue("persionalVehical",selectedItem.value);
+                  }}
+                  buttonStyle={styles.dropdown2BtnStyle}
+                  buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                  renderDropdownIcon={isOpened => {
+                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                  }}
+                  dropdownIconPosition={'right'}
+                  dropdownStyle={styles.dropdown2DropdownStyle}
+                  rowStyle={styles.dropdown2RowStyle}
+                  rowTextStyle={styles.dropdown2RowTxtStyle}
+                />
+                {errors.searchLevel && touched.searchLevel && (
+                  <View
+                    style={{
+                      width: '100%',
+                      alignSelf: 'center',
+                      paddingVertical: 2,
+                    }}>
+                    <Text style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                      {errors.searchLevel}
+                    </Text>
+                  </View>
+                )}
+              </View>
 
+
+
+
+              {/* Reason To come number */}
+              <View style={{ marginVertical: 5 }}>
+                <View style={{ width: '100%' }}>
+                  <Text
+                    style={{
+                      paddingHorizontal: 0,
+                      marginVertical: 5,
+                      fontSize: 16,
+                      fontWeight: 'bold',
+                    }}>
+                    Reason To Come *
+                  </Text>
+                  <TextInput
+                    placeholder="Reason"
+                    onChangeText={handleChange('reason')}
+                    onBlur={handleBlur('reason')}
+                    value={values.reason}
+                    style={{
+                      width: '100%',
+                      backgroundColor: '#fff',
+                      borderWidth: 1,
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      padding: 6,
+                      alignSelf: 'center',
+                      borderColor: '#444',
+                      fontSize: 16,
                     }}
-                    buttonStyle={styles.dropdown2BtnStyle}
-                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                      return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown2DropdownStyle}
-                    rowStyle={styles.dropdown2RowStyle}
-                    rowTextStyle={styles.dropdown2RowTxtStyle}
                   />
+                  {errors.reason && touched.reason && (
+                    <View
+                      style={{
+                        width: '100%',
+                        alignSelf: 'center',
+                        paddingVertical: 2,
+                      }}>
+                      <Text
+                        style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                        {errors.reason}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+
+              {/* Personal Vehicle */}
+              <View style={{ width: '100%' }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  <View style={{ width: "48%" }}>
+                    <Text
+                      style={{
+                        paddingHorizontal: 0,
+                        paddingVertical: 5,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>
+                      Personal Vehicle
+                    </Text>
+                    <SelectDropdown
+                      buttonTextAfterSelection={(selectedItem, index) => {
+                        // text represented after item is selected
+                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+                        return selectedItem.label
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        // text represented for each item in dropdown
+                        // if data array is an array of objects then return item.property to represent item in dropdown
+                        return item.label
+                      }}
+                      // defaultButtonText="Yes"
+                      dropdownBackgroundColor={'transparent'}
+                      data={options}
+                      onSelect={(selectedItem, index) => {
+                        // console.log(selectedItem, index);
+                        setFieldValue("persionalVehical", selectedItem.value);
+
+                      }}
+                      buttonStyle={styles.dropdown2BtnStyle}
+                      buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                      renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                      }}
+                      dropdownIconPosition={'right'}
+                      dropdownStyle={styles.dropdown2DropdownStyle}
+                      rowStyle={styles.dropdown2RowStyle}
+                      rowTextStyle={styles.dropdown2RowTxtStyle}
+                    />
                     {errors.persionalVehical && touched.persionalVehical && (
                       <View
                         style={{
@@ -740,45 +742,96 @@ const Gatepass = ({ navigation }) => {
                       </View>
                     )}
 
-                </View>
+                  </View>
 
-                <View style={{width:"48%"}}>
-                  <Text
-                    style={{
-                      paddingHorizontal: 0,
-                      paddingVertical: 5,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                    }}>
-                    Internal Vehicle
-                  </Text>
-                  <SelectDropdown
-                    buttonTextAfterSelection={(selectedItem, index) => {
-                    // text represented after item is selected
-                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                      return selectedItem.label
-                    }}
-                    rowTextForSelection={(item, index) => {
-                    // text represented for each item in dropdown
-                    // if data array is an array of objects then return item.property to represent item in dropdown
-                      return item.label
-                    }}
-                    data={options}
-                    onSelect={(selectedItem, index) => {
-                    // console.log(selectedItem, index);                    
-                    setFieldValue("internalVehical",selectedItem.value);
-                  }}
-                    buttonStyle={styles.dropdown2BtnStyle}
-                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
-                    renderDropdownIcon={isOpened => {
-                      return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                    }}
-                    dropdownIconPosition={'right'}
-                    dropdownStyle={styles.dropdown2DropdownStyle}
-                    rowStyle={styles.dropdown2RowStyle}
-                    rowTextStyle={styles.dropdown2RowTxtStyle}
-                  />
-                      {errors.internalVehical && touched.internalVehical && (
+                  <View style={{ width: "48%" }}>
+                    <Text
+                      style={{
+                        paddingHorizontal: 0,
+                        paddingVertical: 5,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                      }}>
+                      Internal Vehicle
+                    </Text>
+                    <SelectDropdown
+                      buttonTextAfterSelection={(selectedItem, index) => {
+                        // text represented after item is selected
+                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+                        return selectedItem.label
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        // text represented for each item in dropdown
+                        // if data array is an array of objects then return item.property to represent item in dropdown
+                        return item.label
+                      }}
+                      data={options}
+                      onSelect={(selectedItem, index) => {
+                        // console.log(selectedItem, index);                    
+                        setFieldValue("internalVehical", selectedItem.value);
+                      }}
+                      buttonStyle={styles.dropdown2BtnStyle}
+                      buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                      renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                      }}
+                      dropdownIconPosition={'right'}
+                      dropdownStyle={styles.dropdown2DropdownStyle}
+                      rowStyle={styles.dropdown2RowStyle}
+                      rowTextStyle={styles.dropdown2RowTxtStyle}
+                    />
+                    {errors.internalVehical && touched.internalVehical && (
+                      <View
+                        style={{
+                          width: '100%',
+                          alignSelf: 'center',
+                          paddingVertical: 2,
+                        }}>
+                        <Text
+                          style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                          {errors.internalVehical}
+                        </Text>
+                      </View>
+                    )}
+
+                  </View>
+                </View>
+              </View>
+
+
+              {/* Vehicle number */}
+
+              {
+                values.persionalVehical == 'Y' ? (
+                  <View style={{ marginVertical: 5 }}>
+                    <View style={{ width: '100%' }}>
+                      <Text
+                        style={{
+                          paddingHorizontal: 0,
+                          marginVertical: 5,
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                        }}>
+                        Vehicle Number *
+                      </Text>
+                      <TextInput
+                        placeholder="Vehicle Number"
+                        onChangeText={handleChange('vehicleNumber')}
+                        onBlur={handleBlur('vehicleNumber')}
+                        value={values.vehicleNumber}
+                        style={{
+                          width: '100%',
+                          backgroundColor: '#fff',
+                          borderWidth: 1,
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                          padding: 6,
+                          alignSelf: 'center',
+                          borderColor: '#444',
+                          fontSize: 16,
+                        }}
+                      />
+                      {errors.vehicleNumber && touched.vehicleNumber && (
                         <View
                           style={{
                             width: '100%',
@@ -787,279 +840,245 @@ const Gatepass = ({ navigation }) => {
                           }}>
                           <Text
                             style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
-                            {errors.internalVehical}
+                            {errors.vehicleNumber}
                           </Text>
                         </View>
                       )}
+                    </View>
+                  </View>
+                ) : null
+              }
 
-                </View>
-              </View>
-            </View>
-            
 
-            {/* Vehicle number */}
-
-            {
-              values.persionalVehical == 'Y' ? (
-                <View style={{marginVertical:5}}>
-                <View style={{ width: '100%' }}>
+              {/* Select Building / multiple selection*/}
+              <View>
+                <View
+                  style={{ width: '100%', alignSelf: 'center', marginTop: 10 }}>
                   <Text
                     style={{
-                      paddingHorizontal: 0,
-                    marginVertical: 5,
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                    }}>
-                    Vehicle Number *
-                  </Text>
-                  <TextInput
-                    placeholder="Vehicle Number"
-                    onChangeText={handleChange('vehicleNumber')}
-                    onBlur={handleBlur('vehicleNumber')}
-                    value={values.vehicleNumber}
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#fff',
-                      borderWidth: 1,
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      padding: 6,
-                      alignSelf: 'center',
-                      borderColor:'#444',
-                      fontSize:16,
-                    }}
-                  />
-                  {errors.vehicleNumber && touched.vehicleNumber && (
-                    <View
-                      style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        paddingVertical: 2,
-                      }}>
-                      <Text
-                        style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
-                        {errors.vehicleNumber}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                </View>    
-              ): null
-            }                          
-
-
-            {/* Select Building / multiple selection*/}
-            <View>
-              <View
-                style={{ width: '100%', alignSelf: 'center', marginTop: 10 }}>
-                <Text 
-                    style={{                       
                       paddingHorizontal: 0,
                       marginVertical: 5,
                       fontSize: 16,
                       fontWeight: 'bold'
                     }}
                   >Select Building *</Text>
-                <View
-                  style={{
-                    width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    backgroundColor:'#fff'
-                  }}>
                   <View
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      minHeight:40,
+                      width: '100%',
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      backgroundColor: '#fff'
                     }}>
-                    <ScrollView
-                      horizontal
-                      showsHorizontalScrollIndicator={false}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        minHeight: 40,
+                      }}>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}>
                         {/* <Text>{JSON.stringify(BuildingData)}</Text> */}
-                      {
-                        BuildingData.length > 0 && BuildingData.map((element, index) => 
-                          element.isSelected ? (                          
-                            <View
+                        {
+                          BuildingData.length > 0 && BuildingData.map((element, index) =>
+                         
+                            element.isSelected ? (
+                              <View
+                                style={{
+                                  padding: 5,
+                                  backgroundColor: '#ad3213',
+                                  margin: 5,
+                                  borderRadius: 20,
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                }}>
+                                <Text style={{ color: '#fff', padding: 5 }}>
+                                  {element.BNAME}
+                                </Text>
+                                <TouchableOpacity
+                                  onPress={(item) => {
+                                    let newState = [...BuildingData];
+                                    newState[index].isSelected = false;
+                                    setBuildingData(newState);
+                                   
+                                  }}>
+                                  <Ionicons name="remove-circle" size={30} />
+                                </TouchableOpacity>
+                              </View>
+
+                            ) : null
+
+                          )}
+                        {/* {selectBuilding.length < 0 ? 'hi':null } */}
+                        
+                      </ScrollView>
+                      <TouchableOpacity onPress={toggleBuilding}>
+                        {show == true ? (
+                          <Ionicons name="caret-up" size={30} />
+                        ) : (
+                          <Ionicons name="caret-down" size={30} />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+
+                    <Modal
+                      animationType="slide"
+                      transparent={false}
+                      visible={show}
+                      onRequestClose={() => {
+                        // Alert.alert("Modal has been closed.");
+                        // setModalVisible(!modalVisible);
+                        onPress = { toggleBuilding }
+                      }}
+                    >
+                      <View style={styles.centeredView}>
+                        <TouchableOpacity style={styles.Modalclose}
+                          onPress={toggleBuilding}
+                        >
+                          <Text style={styles.Modalclosetxt}>Done</Text>
+                          {/* <Ionicons name="close" size={25} /> */}
+                        </TouchableOpacity>
+                        <Text style={styles.ModalHeading}>
+                          Select Buildings
+                        </Text>
+
+
+                        <FlatList
+                          data={BuildingData}
+                          numColumns={2}
+                          keyExtractor={item => item.BID.toString()}
+                          renderItem={({ item, index }) => (
+                            <TouchableOpacity
                               style={{
-                                padding: 5,
-                                backgroundColor: '#ad3213',
-                                margin: 5,
-                                borderRadius: 20,
+                                width: '48%',
+                                padding: 10,
+                                // borderWidth: 1,
+                                borderColor: '#6e6e6e',
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
-                                alignItems: 'center',
-                              }}>
-                              <Text style={{ color: '#fff', padding: 5 }}>
-                                {element.BNAME}
-                              </Text>
-                              <TouchableOpacity 
-                              onPress={(item) => {
+                                margin: 2,
+                                backgroundColor: item.isSelected ? '#C9EFD9' : "#eee",
+                              }}
+                              onPress={() => {
                                 let newState = [...BuildingData];
-                                newState[index].isSelected = false;
-                                setBuildingData(newState);
+
+                                if (item.isSelected) {
+                                  newState[index].isSelected = false;
+                                  setBuildingData(newState);
+
+
+                                } else {
+                                  newState[index].isSelected = true;
+                                  setBuildingData(newState);
+                                }
                               }}>
-                                <Ionicons name="remove-circle" size={30} />
-                              </TouchableOpacity>
-                            </View>
-                          ): null
-                        )}
-                    </ScrollView>
-                    <TouchableOpacity onPress={toggleBuilding}>
-                      {show == true ? (
-                        <Ionicons name="caret-up" size={30} />
-                      ) : (
-                        <Ionicons name="caret-down" size={30} />
-                      )}
-                    </TouchableOpacity>
+                              <Text style={styles.checkboxLabel}>{item.BNAME}</Text>
+                              <View>
+                                {item.isSelected ? (
+                                  <Ionicons
+                                    name="remove-circle"
+                                    size={25}
+                                    color={'#27ae60'}
+                                  />
+                                ) : (
+                                  <Ionicons
+                                    name="add-circle"
+                                    size={25}
+                                    color={'#4e4e4e'}
+                                  />
+                                )}
+                              </View>
+                            </TouchableOpacity>
+                          )}
+                        />
+                      </View>
+                    </Modal>
+
                   </View>
-
-                  <Modal
-                    animationType="slide"
-                    transparent={false}
-                    visible={show}
-                    onRequestClose={() => {
-                      // Alert.alert("Modal has been closed.");
-                      // setModalVisible(!modalVisible);
-                      onPress={toggleBuilding}
-                    }}
-                  >
-                    <View style={styles.centeredView}>
-                    <TouchableOpacity style={styles.Modalclose} 
-                      onPress={toggleBuilding}
-                    > 
-                      <Text style={styles.Modalclosetxt}>Done</Text>
-                      {/* <Ionicons name="close" size={25} /> */}
-                    </TouchableOpacity>
-                      <Text style={styles.ModalHeading}>
-                        Select Buildings
-                      </Text>
-
-
-                      <FlatList
-                        data={BuildingData}
-                        numColumns={2}
-                        keyExtractor={item => item.BID.toString()}
-                        renderItem={({ item, index }) => (
-                          <TouchableOpacity
-                            style={{
-                              width: '48%',
-                              padding: 10,
-                              // borderWidth: 1,
-                              borderColor:'#6e6e6e',
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              margin: 2,
-                              backgroundColor: item.isSelected ? '#C9EFD9' : "#eee",
-                            }}
-                            onPress={() => {
-                              let newState = [...BuildingData];
-
-                              if(item.isSelected){
-                                newState[index].isSelected = false;
-                                setBuildingData(newState);
-                              }else{
-                                newState[index].isSelected = true;
-                                setBuildingData(newState);
-                              }
-                            }}>
-                            <Text style={styles.checkboxLabel}>{item.BNAME}</Text>
-                            <View>
-                              {item.isSelected ? (
-                                <Ionicons
-                                  name="remove-circle"
-                                  size={25}
-                                  color={'#27ae60'}
-                                />
-                              ) : (
-                                <Ionicons
-                                  name="add-circle"
-                                  size={25}
-                                  color={'#4e4e4e'}
-                                />
-                              )}
-                            </View>
-                          </TouchableOpacity>
-                        )}
-                      />
-                    </View>
-                  </Modal>   
-
-                    {/* {selectBuilding.length < 0 ? 'hi':null } */}
-                      {errors.selectBuilding && touched.selectBuilding && (
-                        <View
-                          style={{
-                            width: '90%',
-                            alignSelf: 'center',
-                            paddingVertical: 2,
-                          }}>
-                          <Text style={{ fontSize: 12, color: 'red' }}>
-                            {errors.selectBuilding}
-                          </Text>
-                        </View>
-                      )}
                 </View>
+                    {selectBuilding.length < 0 ? (
+                          <View
+                            style={{
+                              width: '90%',
+                              alignSelf: 'center',
+                              paddingVertical: 2,
+                            }}>
+                            <Text style={{ fontSize: 12, color: 'red' }}>
+                             {errors.building}
+                            </Text>
+                          </View>
+                        ):null}
               </View>
-            </View>
 
-            {/* SEARCH BOX */}
+              {/* SEARCH BOX */}
 
-            <View>
-              <View style={{ width: '100%', marginVertical: 10 }}>
-                <View
-                  style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    alignSelf: 'center',
-                    backgroundColor:'#fff'
-                  }}>
+              <View>
+                <View style={{ width: '100%', marginVertical: 10 }}>
                   <View
                     style={{
-                      width: '15%',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      width: '100%',
+                      flexDirection: 'row',
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      alignSelf: 'center',
+                      backgroundColor: '#fff'
                     }}>
-                    <Feather name="search" size={20} color={'#4174D0'} />
-                  </View>
-                  <TextInput
-                    placeholder="Search By Name/Dept/Staff/ID"
-                    value={search}
-                    onChangeText={(data) => {
-                      setSearch(data)
-                    }}
-                    style={{
-                      width: '70%',
-                      paddingVertical: 5,
-                      fontSize:16
-                    }}
-                  />
-                  {search !== '' ? (
+                    <View
+                      style={{
+                        width: '15%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Feather name="search" size={20} color={'#4174D0'} />
+                    </View>
+                    <TextInput
+                      placeholder="Search By Name/Dept/Staff/ID"
+                      value={search}
+                      onBlur={handleBlur('searchEmp')}
+                      onChangeText={(data) => {
+                        setSearch(data)
+                      }}
+                      style={{
+                        width: '70%',
+                        paddingVertical: 5,
+                        fontSize: 16
+                      }}
+                    />
+                    
+                    {search !== '' ? (
+                      <TouchableOpacity
+                        style={{ borderRadius: 8, marginLeft: -10, alignSelf: 'center' }} onPress={() => { emptyList() }}>
+                        <Ionicons
+                          style={styles.searchIcon}
+                          name="close-circle-outline"
+                          size={25}
+                          color="#b2bec3"
+                        />
+                      </TouchableOpacity>
+                    ) : null}
                     <TouchableOpacity
-                      style={{ borderRadius: 8, marginLeft: -10, alignSelf: 'center' }} onPress={() => { emptyList() }}>
-                      <Ionicons
-                        style={styles.searchIcon}
-                        name="close-circle-outline"
-                        size={25}
-                        color="#b2bec3"
-                      />
+                      onPress={() => {
+                        SearchEmployee()
+                      }}
+                      style={{
+                        width: '15%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <Ionicons name="send" size={20} color={'#4174D0'} />
                     </TouchableOpacity>
-                  ) : null}
-                  <TouchableOpacity
-                    onPress={() => {
-                      SearchEmployee()
-                    }}
-                    style={{
-                      width: '15%',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Ionicons name="send" size={20} color={'#4174D0'} />
-                  </TouchableOpacity>
-                </View>
-                {/* {searchAlert !== '' ? (<View
+                  </View>
+                  {search==''? (
+                          <View>
+                            <Text style={{ fontSize: 12, color: 'red',marginTop:10 }}>
+                              {errors.searchEmp}
+                            </Text>
+                          </View>
+                        ):null}
+                  
+                  {/* {searchAlert !== '' ? (<View
                   style={{
                     width: '90%',
                     alignSelf: 'center',
@@ -1070,157 +1089,157 @@ const Gatepass = ({ navigation }) => {
                     {searchAlert}
                   </Text>
                 </View>) : null} */}
-              </View>
+                </View>
 
-              {/* TExtInput */}
+                {/* TExtInput */}
 
-              {loader == true ? (
-                <Spinner
-                  visible={loader}
-                  textContent={'Loading...'}
-                  textStyle={{ color: '#fff' }}
-                />
-              ) : null}
-              <View style={{ width: '100%', alignSelf: 'center', marginVertical: 10 }}>
-                <Text style={{
-                      paddingHorizontal: 0,
-                      fontSize: 16,
-                      fontWeight: 'bold'
-                }}>Name</Text>
-                <TextInput
-                  value={values.perName}
-                  editable={false}
-                  style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
-
-                <Text
-                  style={{
+                {loader == true ? (
+                  <Spinner
+                    visible={loader}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#fff' }}
+                  />
+                ) : null}
+                <View style={{ width: '100%', alignSelf: 'center', marginVertical: 10 }}>
+                  <Text style={{
                     paddingHorizontal: 0,
                     fontSize: 16,
                     fontWeight: 'bold'
-                  }}
-                >Designation</Text>
-                <TextInput
-                  value={values.Desig}
-                  editable={false}
-                  style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
-              </View>
+                  }}>Name</Text>
+                  <TextInput
+                    value={values.perName}
+                    editable={false}
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
 
-              {/* Next Button */}
-
-              <View style={{ paddingVertical: 10 }}>
-                <LinearGradient
-                  colors={['#00B4DB','#0083B0']}
-                  style={{
-                    margin: 5,
-                    borderRadius: 8,
-                    width: '90%',
-                    alignSelf: 'center',
-                  }}>
-                  <TouchableOpacity
+                  <Text
                     style={{
-                      width: '100%',
-                      paddingVertical: 10,
-                      alignItems: 'center',
-                      marginTop: 5,
+                      paddingHorizontal: 0,
+                      fontSize: 16,
+                      fontWeight: 'bold'
                     }}
-                    onPress={() => {
-                      handleSubmit();
+                  >Designation</Text>
+                  <TextInput
+                    value={values.Desig}
+                    editable={false}
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
+                </View>
+
+                {/* Next Button */}
+
+                <View style={{ paddingVertical: 10 }}>
+                  <LinearGradient
+                    colors={['#00B4DB', '#0083B0']}
+                    style={{
+                      margin: 5,
+                      borderRadius: 8,
+                      width: '90%',
+                      alignSelf: 'center',
                     }}>
-                    <Text
+                    <TouchableOpacity
                       style={{
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                        color: '#fff',
-                        letterSpacing: 2,
+                        width: '100%',
+                        paddingVertical: 10,
+                        alignItems: 'center',
+                        marginTop: 5,
+                      }}
+                      onPress={() => {
+                        handleSubmit();
                       }}>
-                      Next
-                    </Text>
-                  </TouchableOpacity>
-                </LinearGradient>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          color: '#fff',
+                          letterSpacing: 2,
+                        }}>
+                        Next
+                      </Text>
+                    </TouchableOpacity>
+                  </LinearGradient>
+                </View>
               </View>
-            </View>
 
-            {/* MOdal for searchEMP List */}
-            <Modal transparent={false} visible={empmodalVisible}>
-              <Pressable
-                style={{
-                  backgroundColor: '#000000aa',
-                  minHeight: "60%",
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <View
+              {/* MOdal for searchEMP List */}
+              <Modal transparent={false} visible={empmodalVisible}>
+                <Pressable
                   style={{
-                    backgroundColor: '#fff',
-                    padding: 20,
-                    borderRadius: 15,
-                    width: '100%',
-                    justifyContent: 'center',
+                    backgroundColor: '#000000aa',
+                    minHeight: "60%",
                     alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
-
-                  <TouchableOpacity style={{ marginLeft: '90%', marginBottom: 10 }}
-                    onPress={() => {
-                      setEmpModalVisible(false)
+                  <View
+                    style={{
+                      backgroundColor: '#fff',
+                      padding: 20,
+                      borderRadius: 15,
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <Ionicons
-                      style={styles.searchIcon}
-                      name="close-circle-outline"
-                      size={25}
-                      color="#2757C3" />
-                  </TouchableOpacity>
 
-                  {employ.length > 0 ? (
+                    <TouchableOpacity style={{ marginLeft: '90%', marginBottom: 10 }}
+                      onPress={() => {
+                        setEmpModalVisible(false)
+                      }}>
+                      <Ionicons
+                        style={styles.searchIcon}
+                        name="close-circle-outline"
+                        size={25}
+                        color="#2757C3" />
+                    </TouchableOpacity>
 
-                    <FlatList
-                      style={{ width: "100%", marginHorizontal: 10 }}
-                      data={employ}
-                      keyExtractor={({ item, index }) => index}
-                      renderItem={({ item, index }) => (
-                        <TouchableOpacity style={styles.FlatListData}
-                          onPress={() => {
+                    {employ.length > 0 ? (
 
-                            setFieldValue("perName", item.Name);
-                            setFieldValue("empId", item['Staff No']);
-                            setFieldValue("Desig", item['Desg']);
-                            // console.log(item);
-                            // setSearchedNameData(item)
-                            setEmpModalVisible(false)
-                          }}>
-                          <Ionicons
-                            style={styles.searchIcon}
-                            name="person-circle-outline"
-                            size={25}
-                            color="#2757C3"
-                          />
-                          <View style={{ flexDirection: 'column', flex:1, marginLeft:10 }}>
-                            <Text style={{ fontSize: 16 }}>
-                              {item.Name}
-                            </Text>
-                            <Text>
-                              {item.Desg} , {item.Dept} ({item['Staff No']})
-                            </Text>
-                          </View>
-                          <TouchableOpacity>
+                      <FlatList
+                        style={{ width: "100%", marginHorizontal: 10 }}
+                        data={employ}
+                        keyExtractor={({ item, index }) => index}
+                        renderItem={({ item, index }) => (
+                          <TouchableOpacity style={styles.FlatListData}
+                            onPress={() => {
+
+                              setFieldValue("perName", item.Name);
+                              setFieldValue("empId", item['Staff No']);
+                              setFieldValue("Desig", item['Desg']);
+                              // console.log(item);
+                              // setSearchedNameData(item)
+                              setEmpModalVisible(false)
+                            }}>
                             <Ionicons
                               style={styles.searchIcon}
-                              name="chevron-forward-circle-outline"
+                              name="person-circle-outline"
                               size={25}
-                              color="#2757C3" />
+                              color="#2757C3"
+                            />
+                            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10 }}>
+                              <Text style={{ fontSize: 16 }}>
+                                {item.Name}
+                              </Text>
+                              <Text>
+                                {item.Desg} , {item.Dept} ({item['Staff No']})
+                              </Text>
+                            </View>
+                            <TouchableOpacity>
+                              <Ionicons
+                                style={styles.searchIcon}
+                                name="chevron-forward-circle-outline"
+                                size={25}
+                                color="#2757C3" />
+                            </TouchableOpacity>
                           </TouchableOpacity>
-                        </TouchableOpacity>
-                      )}
-                    />
-                  ) : (
-                    <Text>Searched Data not found</Text>
-                  )}
-                </View>
-              </Pressable>
-            </Modal>
+                        )}
+                      />
+                    ) : (
+                      <Text>Searched Data not found</Text>
+                    )}
+                  </View>
+                </Pressable>
+              </Modal>
 
-            {/* end modal */}
-          </ScrollView>
-        )}
+              {/* end modal */}
+            </ScrollView>
+          )}
       </Formik>
     </SafeAreaView>
 
@@ -1244,7 +1263,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 5,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#fff'
   },
@@ -1253,44 +1272,44 @@ const styles = StyleSheet.create({
   dropdown2BtnStyle: {
     width: '100%',
     height: 40,
-    borderWidth:1,
+    borderWidth: 1,
     borderRadius: 3,
     backgroundColor: '#FFF',
-    borderColor:'#444',
+    borderColor: '#444',
   },
-  dropdown2BtnTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
-  dropdown2DropdownStyle: {backgroundColor: '#EFEFEF'},
-  dropdown2RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
-  dropdown2RowTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
-  centeredView:{
-    flex:1,
-    position:'relative',
-    backgroundColor:'#fff'
+  dropdown2BtnTxtStyle: { color: '#444', textAlign: 'left', fontSize: 16 },
+  dropdown2DropdownStyle: { backgroundColor: '#EFEFEF' },
+  dropdown2RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
+  dropdown2RowTxtStyle: { color: '#444', textAlign: 'left', fontSize: 16 },
+  centeredView: {
+    flex: 1,
+    position: 'relative',
+    backgroundColor: '#fff'
 
   },
-  Modalclose:{
-    position:'absolute',
-    right:0,
-    backgroundColor:'#f00',
-    justifyContent:'center',
-    alignItems:'center',
-    zIndex:55,
-    paddingHorizontal:5,
-    paddingVertical:2
+  Modalclose: {
+    position: 'absolute',
+    right: 0,
+    backgroundColor: '#f00',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 55,
+    paddingHorizontal: 5,
+    paddingVertical: 2
   },
-  Modalclosetxt:{
-    fontWeight:'700',
-    color:"#fff"
+  Modalclosetxt: {
+    fontWeight: '700',
+    color: "#fff"
   },
-  checkboxLabel:{
-    fontWeight:"700",
-    fontSize:16
+  checkboxLabel: {
+    fontWeight: "700",
+    fontSize: 16
   },
-  ModalHeading:{
-    fontSize:20,
-    fontWeight:'700',
-    textAlign:'center',
-    marginBottom:15
+  ModalHeading: {
+    fontSize: 20,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 15
   }
 });
 

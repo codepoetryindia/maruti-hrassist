@@ -28,6 +28,7 @@ const Attendance = ({navigation}) => {
   const [loader, setLoader] = useState(false)
   const [MapLisenceKey, setMapLisenceKey] = useState("");
   const [horizental, setHorizental] = useState(false);
+  const [userLocation, setUserLocation] = useState('');
 
   const { authContext, AppUserData } = useContext(AuthContext);
 
@@ -229,6 +230,7 @@ const Attendance = ({navigation}) => {
             console.log("APiresult getRawurl", result);
             setLoader(false);
             let location = result.results[0].formatted_address;
+            setUserLocation(location)
             let date = "13-11-1993";
             CallAPIToStoreAddress(location, date, location.latitude, location.longitude);
 
@@ -265,6 +267,7 @@ const Attendance = ({navigation}) => {
         .then(result => {
             setLoader(false);
             console.log('ApiResult SubmitPunchRO', result);
+            alert(result.Result)
             // let responseData = result.Value[0].SHIS_YYMM_CODE
             // console.log('GetMonth', responseData)
             // setMonth(responseData)
@@ -331,15 +334,19 @@ const Attendance = ({navigation}) => {
     <View style={styles.container}>
           {
             loader ? (
-              <Text>Loading</Text>
+              <Spinner
+              visible={loader}
+              textContent={'Loading...'}
+              textStyle={styles.spinnerTextStyle}
+            />
             ): null
           }
-          <Spinner
+          {/* <Spinner
             visible={loader}
             textContent={'Loading...'}
             textStyle={{color:'#fff'}}
             overlayColor={'rgba(0, 0, 0, 0.50)'}
-          />
+          /> */}
         <TouchableOpacity
             style={{alignSelf:'flex-end'}}
             onPress={() => {
@@ -409,8 +416,8 @@ const Attendance = ({navigation}) => {
                 }}>
                 <Text>Punch</Text>
               </TouchableOpacity>
-              <Text>{location.latitude}</Text>
-              <Text>{location.longitude}</Text>              
+              <Text>{userLocation}</Text>
+                          
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>getUserCurrentLocation()} style={styles.resetLocation}>
               <Text style={styles.resetLocationTxt}>Reset Location</Text>

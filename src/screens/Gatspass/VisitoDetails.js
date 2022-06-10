@@ -35,55 +35,32 @@ const VisitorDetails = ({navigation,route}) => {
 
   const fromRef = useRef(null);
 
-  const insertVGPE = () => {
+  const SubmitVGPE = (userdata) => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
-    // let apiData = {
-    //   'ntLogin':route.params.visitorpayload.authorizedPerson,
-    //   'type':route.params.visitorpayload.VisType,
-    //   'visitDateTo':moment(new Date(route.params.visitorpayload.dateDummy)).format('MM/DD/YY'),
-    //   'visitDateFrom':moment(new Date(route.params.visitorpayload.dateDummy)).format('MM/DD/YY'),
-    //   'noOfPerson':'1',
-    //   'vehicleIndicator':route.params.visitorpayload.Pvehicle,
-    //   'vehicleNumber':route.params.visitorpayload.vehicleNumber,
-    //   'duration':route.params.visitorpayload.duration,
-    //   'reason':route.params.visitorpayload.ReasonToCome,
-    //   'internalVehicleIndicator':route.params.visitorpayload.interVehicle,
-    //   'expectedArrivalTime':route.params.visitorpayload.exArrTime,
-    //   'searchLevel':route.params.visitorpayload.SearchLevel,
-    //   'locationCode':route.params.visitorpayload.location,
-    //   'vglmId':route.params.visitorpayload.buildings,
-    //   'multipleEmployeeIndicator':route.params.visitorpayload.empId,
-    // };
-
-
     let apiData = {
-        "UserName" : userId,
-        "Type" : route.params.visitorpayload.VisType,
-        "VisitDateFrom" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
-        "NoOfPerson" : "1",
-        "VehicleIndicator" : route.params.visitorpayload.Pvehicle,
-        "VehicleNumber" : route.params.visitorpayload.vehicleNumber,
-        "Duration" : route.params.visitorpayload.duration,
-        "Reason" : route.params.visitorpayload.ReasonToCome,
-        "InternalVehicleIndicator" : route.params.visitorpayload.interVehicle,
-        "ExpectedArrivalTime" : route.params.visitorpayload.exArrTime,
-        "SearchLevel" : route.params.visitorpayload.SearchLevel,
-        "LocationCode" : route.params.visitorpayload.location,
-        "VisitDateTo" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
-        "VglmID" : "",
-        "MultipleEmployeeIndicator" : route.params.visitorpayload.empId,     
-        }
-
-        // route.params.visitorpayload.buildings,
-    
-
+         "UserName" : userId,
+         "Type" : route.params.visitorpayload.VisType,
+         "VisitDateFrom" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
+         "NoOfPerson" : "1",
+         "VehicleIndicator" : route.params.visitorpayload.Pvehicle,
+         "VehicleNumber" : route.params.visitorpayload.vehicleNumber,
+         "Duration" : route.params.visitorpayload.duration,
+         "Reason" : route.params.visitorpayload.ReasonToCome,
+         "InternalVehicleIndicator" : route.params.visitorpayload.interVehicle,
+         "ExpectedArrivalTime" : route.params.visitorpayload.exArrTime,
+         "SearchLevel" : route.params.visitorpayload.SearchLevel,
+         "LocationCode" : route.params.visitorpayload.location,
+         "VisitDateTo" : moment(new Date(route.params.visitorpayload.dateDummy)).format('MM-DD-YY'),
+         "VglmID" : "",
+         "MultipleEmployeeIndicator" : route.params.visitorpayload.empId, 
+            }
     setLoader(true);
     ApiService.PostMethode('/SubmitVGPE', apiData, token)
       .then(result => {
         console.log("APiresult SubmitVGPE", result);
         if(result.Result){
-          SubmitVSDT(result.Result);
+          SubmitVSDT(result.Result, userdata);
         }
         setLoader(false);
       })
@@ -147,40 +124,37 @@ const VisitorDetails = ({navigation,route}) => {
   };
 
 
-  const SubmitVSDT = (controlno) => {
+  const SubmitVSDT = (controlno, userdata) => {
+    let dataarr = [...userdata]
+    console.log("dataarr",dataarr);
     let token = AppUserData.token
     let userId = AppUserData.data.userId
-    let apiData = [{
+    let apidata = 
+      dataarr.map((item)=>{
+     let obj= {
       "ControlNo" : controlno,
-      "EmplID" : "270679",
-      "VisitorName" : "DEMO",
-      "AddressLine1" : "hsdbnok",
-      "AddressLine2" : "dfss",
-      "VisitorDesg" : "AM",
-      "VisitorPhone" : "52635263",
-      "VisitorLaptopID" : "",
-      "VisitorTitle" : "ewf",
-      "VisitorUserID" : "222852",
-      "VisitorVendor" : "asdf"
-      },
-      {
-        "ControlNo" : controlno,
-        "EmplID" : "270679",
-        "VisitorName" : "DEMO",
-        "AddressLine1" : "hsdbnok",
-        "AddressLine2" : "dfss",
-        "VisitorDesg" : "AM",
-        "VisitorPhone" : "52635263",
-        "VisitorLaptopID" : "",
-        "VisitorTitle" : "ewf",
-        "VisitorUserID" : "222852",
-        "VisitorVendor" : "asdf"
-        }, ]
+      "EmplID" : userId,
+      "VisitorName" : item.name,
+      "AddressLine1" : item.adddress,
+      "AddressLine2" : "",
+      "VisitorDesg" : item.designation,
+      "VisitorPhone" : item.phone,
+      "VisitorLaptopID" : item.laptop,
+      "VisitorTitle" : item.title,
+      "VisitorUserID" : userId,
+      "VisitorVendor" : item.vendor,
+      }
+      return obj
+    })
+    console.log("apidata",apidata)
         // route.params.visitorpayload.buildings
     setLoader(true);
-    ApiService.PostMethode('/SubmitVSDT', apiData, token)
+    ApiService.PostMethode('/SubmitVSDT', apidata, token)
       .then(result => {
-        console.log("APiresult SubmitVSDT", result);
+        // console.log("APiresult SubmitVSDT", result.Result);
+        let Apidata= result.Result
+        console.log("APiresult SubmitVSDT",Apidata);
+        alert( Apidata)
         setLoader(false);
       })
       .catch(error => {
@@ -324,16 +298,16 @@ const VisitorDetails = ({navigation,route}) => {
               validationSchema={schema}
               onSubmit={(values) => {
 
-                insertVGPE();
+                // console.log(values.actionPlans);
+                SubmitVGPE(values.actionPlans);
 
-                console.log(values);
-                return;
-                if (!values.actionPlans.length) {
-                  Alert.alert('Error', 'Minimum one product required');
-                  return;
-                }
+                // return;
+                // if (!values.actionPlans.length) {
+                //   Alert.alert('Error', 'Minimum one product required');
+                //   return;
+                // }
 
-                this.submitProducts(values);
+                // this.submitProducts(values);
 
                 // console.log(values.actionPlans.length);
                 // if (values.actionPlans.length > 0) {
