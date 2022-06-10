@@ -280,8 +280,11 @@ const Leave = ({navigation}) => {
       .then(result => {
         console.log("APiresult GetEmplLevDetail", result);
         setLoader(false);
+        let arr =[]
         if (result.Value) {
-          setEmpLeaveDetail(result.Value);
+          arr.push(result.Value)
+          console.log("arr",arr);
+          setEmpLeaveDetail(...arr);
         } else {
           Toast.show('No Leave type found');
         }
@@ -348,7 +351,7 @@ const Leave = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 ,marginBottom:50}}>
       <KeyboardAwareScrollView
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -915,14 +918,17 @@ const Leave = ({navigation}) => {
                       data={EmpLeaveDetail}
                       keyExtractor={item => item.id}
                       renderItem={({ item }) => (
-                        <View>
-                          <TouchableOpacity onPress={() => {
+                        
+                        <View style={{flex:1}}>
+                          <TouchableOpacity 
+                           style={{height:90}} onPress={() => {
                             console.log(item)
                             setModalData(item)
                             setLeaveDetailModal(!LeaveDetailModal)
+                            
                           }}>
                             <DataTable.Row
-                              style={{ borderBottomWidth: 1, paddingVertical: 5 }}>
+                              style={{borderBottomWidth: 1, paddingVertical: 5, }}>
                               <View
                                 style={{
                                   flexDirection: 'column',
@@ -955,7 +961,7 @@ const Leave = ({navigation}) => {
                     animationType="slide"
                     transparent={true}
                   >
-                    <View style={{ backgroundColor: '#fff', flex: 0.5, padding: 10 }}>
+                    <View style={{ backgroundColor: '#fff', flex: 0.5, padding: 10 ,borderRadius:8}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1014,7 +1020,7 @@ const Leave = ({navigation}) => {
                         style={{ padding: 12, borderRadius: 8,backgroundColor: "#4174D0" }} onPress={() => {
                           setLeaveDetailModal(!LeaveDetailModal)
                         }}>
-                        <Text>Ok</Text>
+                        <Text style={{color:'#fff'}}>Ok</Text>
                       </TouchableOpacity>
                           </View>
                         </View>

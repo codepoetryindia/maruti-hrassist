@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
+  Alert
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -105,6 +106,15 @@ const AttendancePer = ({ navigation }) => {
 
       <FlatList
         data={Attendance}
+        ListEmptyComponent={() => {
+          return (
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image source={require('../../assets/Images/dataNotFound.png')}
+                style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
+              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+            </View>
+          )
+        }}
         keyExtractor={({ item, index }) => index}
         renderItem={({ item, index }) => {
           return (
