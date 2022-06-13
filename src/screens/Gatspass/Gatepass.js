@@ -894,14 +894,16 @@ const Gatepass = ({ navigation }) => {
                                   justifyContent: 'space-between',
                                   alignItems: 'center',
                                 }}>
-                                <Text style={{ color: '#fff', padding: 5 }}>
+                                <TextInput 
+                                editable={false} style={{ color: '#fff', padding: 5 }}>
                                   {element.BNAME}
-                                </Text>
+                                </TextInput>
                                 <TouchableOpacity
                                   onPress={(item) => {
                                     let newState = [...BuildingData];
                                     newState[index].isSelected = false;
                                     setBuildingData(newState);
+                                    setSelectBuilding(newState)
                                    
                                   }}>
                                   <Ionicons name="remove-circle" size={30} />
@@ -911,7 +913,7 @@ const Gatepass = ({ navigation }) => {
                             ) : null
 
                           )}
-                        {/* {selectBuilding.length < 0 ? 'hi':null } */}
+                        {selectBuilding.length < 0 ? 'hi':null }
                         
                       </ScrollView>
                       <TouchableOpacity onPress={toggleBuilding}>
@@ -967,6 +969,7 @@ const Gatepass = ({ navigation }) => {
                                 if (item.isSelected) {
                                   newState[index].isSelected = false;
                                   setBuildingData(newState);
+                                  setSelectBuilding(newState)
 
 
                                 } else {
@@ -998,7 +1001,7 @@ const Gatepass = ({ navigation }) => {
 
                   </View>
                 </View>
-                    {selectBuilding.length < 0 ? (
+                    {BuildingData.length == 0 ? (
                           <View
                             style={{
                               width: '90%',

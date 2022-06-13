@@ -47,16 +47,18 @@ const SignIn = ({ navigation }) => {
         setLoader(false);
         // return;
         console.log('response data', JSON.stringify(error));
+        Toast.show(JSON.stringify(error))
         if (error.response) {
           // client received an error response (5xx, 4xx)
           console.log(error.response.data.error.message);
+          Toast.show(error.response.data.error.message)
         } else if (error.request) {
           // client never received a response, or request never left
-          console.log('Network Error');
+          Toast.show('Network Error')
           // console.log("error.request", error.request._response);
         } else {
           // anything else
-          console.log('Something Went Wrong');
+         Toast.show('Something Went Wrong');
         }
       });
   };
@@ -93,20 +95,22 @@ const SignIn = ({ navigation }) => {
         setLoader(false);
       })
       .catch(error => {
-        console.log(error);
+        console.log("ufyguyg",error);
         setLoader(false);
         // return;
         console.log('response data', JSON.stringify(error));
+
         if (error.response) {
           // client received an error response (5xx, 4xx)
           console.log(error.response.data.error.message);
+          Toast.show(error.response.data.error.message);
         } else if (error.request) {
           // client never received a response, or request never left
-          console.log('Network Error');
+          Toast.show('Network Error');
           // console.log("error.request", error.request._response);
         } else {
           // anything else
-          console.log('Something Went Wrong');
+          Toast.show('Something Went Wrong');
         }
       });
   }
