@@ -154,7 +154,11 @@ const VisitorDetails = ({navigation,route}) => {
         // console.log("APiresult SubmitVSDT", result.Result);
         let Apidata= result.Result
         console.log("APiresult SubmitVSDT",Apidata);
-        alert( Apidata)
+        // alert( Apidata)
+        Toast.show(Apidata);
+        if(Apidata.includes("SUCCESS")){
+          navigation.navigate("Home");
+        }
         setLoader(false);
       })
       .catch(error => {

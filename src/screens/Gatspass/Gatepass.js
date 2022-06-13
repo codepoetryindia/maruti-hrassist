@@ -9,7 +9,8 @@ import {
   FlatList,
   ScrollView,
   SafeAreaView,
-  Pressable
+  Pressable,
+  Alert
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -243,9 +244,20 @@ const Gatepass = ({ navigation }) => {
     reason: yup.string().required('Reason is required'),
     persionalVehical: yup.string().required('Select an option'),
     internalVehical: yup.string().required('Select an option'),
-    vehicleNumber: yup.string().required('Vehicle Number is required'),
+    vehicleNumber: yup.string()
+    .test('Vehicle Number is required', function () {
+      if (this.parent.persionalVehical === 'N') {
+        return true;
+      } else {
+        if (this.parent.vehicleNumber) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }),
     building: yup.string().required('you must select any building it is required'),
-    searchEmp: yup.string().required('please enter a valid keyWord'),
+    searchEmp: yup.string().required('Please select an employee'),
   });
   const fromRef = useRef(null);
 
@@ -327,7 +339,7 @@ const Gatepass = ({ navigation }) => {
           persionalVehical: '',
           internalVehical: '',
           vehicleNumber: '',
-          building: [],
+          building: '',
           searchEmp: '',
           "perName": "",
           "Desig": "",
@@ -335,14 +347,28 @@ const Gatepass = ({ navigation }) => {
           "empId": "",
         }}
         onSubmit={values => {
-          console.log("values", values, BuildingData);
-
+          console.log("values", BuildingData);
 
           let buldings = BuildingData.filter(element => {
             if (element.isSelected) {
               return element.BID;
             }
           }).map(obj => obj.BID)
+
+          if(buldings.length == 0){
+            Alert.alert(
+              "Error",
+              "Building Not selected",
+              [
+                {
+                  text: "okay",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                },               
+              ]
+            );
+            return;
+          }
 
           // let payload = {
           //   office: values.office,
@@ -405,9 +431,9 @@ const Gatepass = ({ navigation }) => {
                   }}>
                   Your Location
                 </Text>
-                {/* <Text>
+                <Text>
                   {JSON.stringify(errors)}
-                </Text> */}
+                </Text>
               </View>
 
               <SelectDropdown
@@ -846,8 +872,8 @@ const Gatepass = ({ navigation }) => {
                       )}
                     </View>
                   </View>
-                ) : null
-              }
+                   ) : null
+                } 
 
 
               {/* Select Building / multiple selection*/}
@@ -903,7 +929,7 @@ const Gatepass = ({ navigation }) => {
                                     let newState = [...BuildingData];
                                     newState[index].isSelected = false;
                                     setBuildingData(newState);
-                                    setSelectBuilding(newState)
+                                    setSelectBuilding(newState);
                                    
                                   }}>
                                   <Ionicons name="remove-circle" size={30} />
@@ -976,6 +1002,13 @@ const Gatepass = ({ navigation }) => {
                                   newState[index].isSelected = true;
                                   setBuildingData(newState);
                                 }
+
+                              if(newState.length == 0){
+                                setFieldValue("building", "");
+                              }else{
+                                setFieldValue("building", "added");
+                              }
+
                               }}>
                               <Text style={styles.checkboxLabel}>{item.BNAME}</Text>
                               <View>
@@ -1000,8 +1033,23 @@ const Gatepass = ({ navigation }) => {
                     </Modal>
 
                   </View>
+
+                  {errors.building && touched.building && (
+                        <View
+                          style={{
+                            width: '100%',
+                            alignSelf: 'center',
+                            paddingVertical: 2,
+                          }}>
+                          <Text
+                            style={{ fontSize: 14, color: 'red', textAlign: 'left' }}>
+                            {errors.building}
+                          </Text>
+                        </View>
+                      )}
+
                 </View>
-                    {BuildingData.length == 0 ? (
+                    {/* {BuildingData.length == 0 ? (
                           <View
                             style={{
                               width: '90%',
@@ -1012,7 +1060,7 @@ const Gatepass = ({ navigation }) => {
                              {errors.building}
                             </Text>
                           </View>
-                        ):null}
+                        ):null} */}
               </View>
 
               {/* SEARCH BOX */}
@@ -1202,7 +1250,8 @@ const Gatepass = ({ navigation }) => {
                           <TouchableOpacity style={styles.FlatListData}
                             onPress={() => {
 
-                              setFieldValue("perName", item.Name);
+                              setFieldValue("searchEmp", item.Name);
+                              setFieldValue("perName", item.Name);                            
                               setFieldValue("empId", item['Staff No']);
                               setFieldValue("Desig", item['Desg']);
                               // console.log(item);
