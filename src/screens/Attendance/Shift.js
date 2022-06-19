@@ -575,7 +575,7 @@ const handleSubmit = () => {
             </DataTable.Header>
             <FlatList
               data={shiftData}
-              keyExtractor={item => item.id}
+              keyExtractor={item => Math.floor((Math.random() * 1000) + 1)}
               renderItem={({item}) => (
                 <View style={styles.dataRow}>
                 <View style={{flexDirection:'column'}}>

@@ -416,7 +416,7 @@ const Attendance = ({navigation}) => {
                 }}>
                 <Text>Punch</Text>
               </TouchableOpacity>
-              <Text>{userLocation}</Text>
+              <Text style={{textAlign:'center'}}>{userLocation}</Text>
                           
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>getUserCurrentLocation()} style={styles.resetLocation}>
@@ -644,13 +644,14 @@ const styles = StyleSheet.create({
     marginTop:20,
     flexDirection:'row', 
     alignSelf:'center',
-    backgroundColor:'gray',
+    backgroundColor:'#4a4a4a',
     alignItems:'center',
     padding:10
   },
   resetLocationTxt:{
     color:"#fff",
-    marginRight:5
+    marginRight:5,
+    fontWeight:"700"
   }
 });
 

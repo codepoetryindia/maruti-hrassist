@@ -105,6 +105,9 @@ const EditProfile = ({ navigation, route }) => {
           textStyle={styles.spinnerTextStyle}
         />
       ) : null}
+
+
+
       <LinearGradient
         style={{ flex: 0.25 }}
         colors={['#4174D0', '#6ef7ff']}>
@@ -126,13 +129,6 @@ const EditProfile = ({ navigation, route }) => {
           </Text>
         </View>
       </LinearGradient>
-
-      {loader == true ? (
-         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-          <Text>We are Loading your data</Text>
-     </View>
-      ) : (
-
       <View
         style={{
           backgroundColor: '#fff',
@@ -212,7 +208,9 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.box}>
                   <Text style={styles.header}>Personal phone Number</Text>
                   <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>{item.PRESENT_PHONE}</Text>
+                    <TouchableOpacity onPress={()=>Linking.openURL(`tel:${item.PRESENT_PHONE}`)}>
+                      <Text style={{color:'#4174D0', fontWeight:'700'}}>{item.PRESENT_PHONE}</Text>
+                    </TouchableOpacity>
                     <Switch
                       trackColor={{ false: "#767577", true: "#81b0ff" }}
                       thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -296,7 +294,6 @@ const EditProfile = ({ navigation, route }) => {
             )} />
         </View>
       </View>
-      )}
     </SafeAreaView>
 
 

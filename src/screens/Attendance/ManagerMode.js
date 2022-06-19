@@ -36,8 +36,8 @@ const ManagerMode = ({ navigation }) => {
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
+              // justifyContent: 'space-between',
+              flex:1,
               alignItems: 'center',
             }}>
             <Ionicons
@@ -52,16 +52,18 @@ const ManagerMode = ({ navigation }) => {
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                letterSpacing: 1,
+                marginLeft: 10,
+              }}>
+              ManagerMode
+            </Text>
           </View>
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            ManagerMode
-          </Text>
+
+
           <TouchableOpacity
             style={{ marginLeft: 100 }}
             onPress={() => {
@@ -75,10 +77,11 @@ const ManagerMode = ({ navigation }) => {
 
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 14 },
+          tabBarLabelStyle: { fontSize: 12, fontWeight:'700' },
           tabBarActiveTintColor: '#fff',
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
           tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+          tabBarItemStyle: { paddingHorizontal:0 },
         }}>
         <Tab.Screen name="Leave" component={Leave} />
         <Tab.Screen name="FlexiShift" component={FlexiShift} />

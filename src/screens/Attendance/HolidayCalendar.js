@@ -264,9 +264,9 @@ const renderItemHolidaysingle=({item})=>{
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView
+      <View
         style={styles.container}
-        contentContainerStyle={{ flexGrow: 1 }}
+        // contentContainerStyle={{ flexGrow: 1 }}
       >
 
       <Spinner
@@ -275,9 +275,9 @@ const renderItemHolidaysingle=({item})=>{
           textStyle={styles.spinnerTextStyle}
         />
 
-      <View style={{width: '100%', paddingHorizontal:10}}>
+      <View style={{width: '100%', paddingHorizontal:5, marginTop:10}}>
         <SegmentedControlTab
-          borderRadius={8}
+          borderRadius={5}
           values={['MSIL 249', 'MSIL 280', 'SMG', 'MNS/HQ']}
           selectedIndex={HolidayCalendar}
           onTabPress={index => {
@@ -290,9 +290,9 @@ const renderItemHolidaysingle=({item})=>{
           activeTabTextStyle={styles.activeTabTextStyle}
         />
       </View>
-      <View style={{paddingHorizontal:10,marginTop:10}}>
+      <View style={{paddingHorizontal:10,marginTop:10, flex:1}}>
         {HolidayCalendar == 0 ? (
-          <View style={{flex:1}}>
+          <View style={{flex:1, marginBottom:70}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -315,7 +315,7 @@ const renderItemHolidaysingle=({item})=>{
                 width: '100%',
                 padding: 10,
                 backgroundColor:'#fff',
-                marginVertical: 5,
+                marginVertical: 10,
               }}>
                 <Text style={{fontSize:18, fontWeight:'700'}}>{MnthTitle} Holidays</Text>
               </View>
@@ -328,7 +328,7 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         ) : HolidayCalendar == 1 ? (
-          <View style={{flex:1}}>
+          <View style={{flex:1, marginBottom:70}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -364,7 +364,7 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         ) : HolidayCalendar == 2 ? (
-          <View style={{flex:1}}>
+          <View style={{flex:1, marginBottom:70}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -400,7 +400,7 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         ) : (
-          <View style={{flex:1}}>
+          <View style={{flex:1, marginBottom:70}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -436,8 +436,8 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         )}
+        </View>
       </View>
-      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -447,8 +447,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    alignSelf: 'center',
-    marginTop: 10,
+    height:"100%"
+    // alignSelf: 'center',
   },
   tabStyle: {
     paddingVertical: 10,

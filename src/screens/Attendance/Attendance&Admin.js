@@ -49,16 +49,17 @@ const AttendanceAdmin = ({navigation}) => {
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <LinearGradient
-     colors={['#00B4DB', '#0083B0']}
+        colors={['#00B4DB', '#0083B0']}
         style={styles.gradient}>
         <View style={styles.container}>
        
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
+              // justifyContent: 'space-between',
+              // width: 40,
               alignItems: 'center',
+              flex:1
             }}>
             <Ionicons
               name="chevron-back-outline"
@@ -72,30 +73,33 @@ const AttendanceAdmin = ({navigation}) => {
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
+
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                letterSpacing: 1,
+                marginLeft: 10,
+              }}>
+              Attendance & Admin
+            </Text>
+
           </View>
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Attendance & Admin
-          </Text>
           <TouchableOpacity 
-          style={{marginLeft:65}}
+                style={{alignSelf:'flex-end'}}
                onPress={() => {
                 navigation.navigate('ManagerMode');
               }}>
               <Image  source={require("../../assets/Images/setting.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
             </TouchableOpacity>
-          </View>
+        </View>
          
       </LinearGradient>        
       <Tab.Navigator 
        screenOptions={{
-        tabBarLabelStyle: { fontSize: 14 },
+        tabBarLabelStyle: { fontSize: 12,fontWeight:'700'},
         tabBarActiveTintColor: '#fff',
+        tabBarItemStyle: { paddingHorizontal:0 },
         tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
         tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
       }}>
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems:'center',
   },
   searchSection: {
     top: 10,

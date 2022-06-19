@@ -48,6 +48,8 @@ const Notification = ({ navigation }) => {
   useEffect(() => {
     NotifiApi()
   }, [])
+
+
   // console.log("notifi", notifi);
   return (
       <SafeAreaView style={styles.container}>
@@ -58,10 +60,6 @@ const Notification = ({ navigation }) => {
            textStyle={styles.spinnerTextStyle}
          />
         ):null}
-        {
-        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Please wait we are fetching your data</Text></View>) :
-          (
         <LinearGradient
           style={{ flex: 1 }}
           colors={['#4174D0', '#6ef7ff']}>
@@ -102,7 +100,7 @@ const Notification = ({ navigation }) => {
               data={notifi}
               ListEmptyComponent={() => {
                 return (
-                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:'#fff' }}>
                     <Image source={require('../assets/Images/dataNotFound.png')}
                       style={{ width: 300, height: 300, resizeMode: 'contain', }} />
                     <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
@@ -110,7 +108,7 @@ const Notification = ({ navigation }) => {
                 )
               }}
               showsVerticalScrollIndicator={false}
-              keyExtractor={({ item, index }) => index}
+              keyExtractor={(item) => item.id}
               renderItem={({ item, index }) => (
                 <View
                   key={index}
@@ -163,7 +161,7 @@ const Notification = ({ navigation }) => {
               )}
             />
           </View>
-        </LinearGradient>)}
+        </LinearGradient>
       </SafeAreaView>)
 };
 
@@ -177,6 +175,9 @@ const styles = StyleSheet.create({
     color:'blue',
     fontWeight:'700',
     fontSize:16,
+  },
+  spinnerTextStyle:{
+    color:'#fff'
   }
 });
 

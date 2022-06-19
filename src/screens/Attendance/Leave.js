@@ -33,6 +33,7 @@ import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 
 
@@ -67,6 +68,8 @@ const Leave = ({navigation}) => {
   const [EmpLeaveDetail, setEmpLeaveDetail] = useState([]);
   const [modalData, setModalData] = useState([]);
   const [horizental, setHorizental] = useState(false);
+  const [SelectedYear, setSelectedYear] = useState("");
+
 
 
   useFocusEffect(
@@ -310,6 +313,47 @@ const Leave = ({navigation}) => {
   }
 
 
+  const DeleteLeavePending = (data) => {
+    
+    let apiData = {
+        "UserName" : AppUserData.data.userId,
+        "ApplicationID" : data['Application ID']
+    }
+    // AppUserData.data.userId 222852
+    let token = AppUserData.token;
+    setLoader(true);
+    ApiService.PostMethode('/DeleteLeave  ', apiData, token)
+      .then(result => {
+        console.log("APiresult DeleteLeave", result);
+        setLoader(false);
+        if (result.Result) {
+          getEmpLeaveDetail(SelectedYear);
+          Toast.show(result.Result);
+        } else {
+          Toast.show('Unable To delete');
+        }
+      })
+      .catch(error => {
+        setLoader(false);
+        console.log('Error occurred==>', error);
+        if (error.response) {
+          if (error.response.status == 401) {
+            console.log('error from api', error.response);
+          }
+          // client received an error response (5xx, 4xx)
+          Toast.show(error.response.data.title);
+        } else if (error.request) {
+          // client never received a response, or request never left
+          Toast.show('Network Error');
+          // console.log("error.request", error.request._response);
+        } else {
+          // anything else
+          Toast.show('Something Went Wrong');
+        }
+      });
+  }
+
+
   
 
 
@@ -356,6 +400,12 @@ const Leave = ({navigation}) => {
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}
       >
+
+            <Spinner
+                    visible={loader}
+                    textContent={'Loading...'}
+                    textStyle={styles.spinnerTextStyle}
+                  />
         <View showsVerticalScrollIndicator={false} style={styles.container}>
         <TouchableOpacity
             style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
@@ -831,8 +881,8 @@ const Leave = ({navigation}) => {
                 )}
               </Formik>
             ) : (
-
               <View style={{ paddingVertical: 10, height: '82%' }}>
+
                 <Text style={{ paddingHorizontal: 20 }}>Select Financial Year</Text>
                 <View
                   style={{
@@ -875,6 +925,7 @@ const Leave = ({navigation}) => {
                     }}
                     onSelect={(selectedItem, index) => {
                       getEmpLeaveDetail(selectedItem.FNYR_YEAR);
+                      setSelectedYear(selectedItem.FNYR_YEAR);
                       // console.log(selectedItem, index);
                     }}
                     buttonTextAfterSelection={(selectedItem, index) => {
@@ -893,7 +944,7 @@ const Leave = ({navigation}) => {
 
                 {/* Headings */}
 
-                <View>
+                <View style={{marginBottom:60}}>
                   <DataTable
                     style={{
                       width: '100%',
@@ -921,7 +972,7 @@ const Leave = ({navigation}) => {
                         
                         <View style={{flex:1}}>
                           <TouchableOpacity 
-                           style={{height:90}} onPress={() => {
+                           style={{}} onPress={() => {
                             console.log(item)
                             setModalData(item)
                             setLeaveDetailModal(!LeaveDetailModal)
@@ -932,7 +983,7 @@ const Leave = ({navigation}) => {
                               <View
                                 style={{
                                   flexDirection: 'column',
-                                  marginTop: '2%',
+                                  // marginTop: '2%',
                                 }}>
                                 <DataTable.Cell numeric>
                                   {item['From Date']}
@@ -958,10 +1009,10 @@ const Leave = ({navigation}) => {
                   </DataTable>
                   <Modal
                     isVisible={LeaveDetailModal}
-                    animationType="slide"
+                    // animationType="slide"
                     transparent={true}
                   >
-                    <View style={{ backgroundColor: '#fff', flex: 0.5, padding: 10 ,borderRadius:8}}>
+                    <View style={{ backgroundColor: '#fff', padding: 10 ,borderRadius:8}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -990,41 +1041,55 @@ const Leave = ({navigation}) => {
 
                       <View style={{ flexDirection: 'row', }}>
                         <View style={{ width: '90%', }}>
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Leave Type : {modalData["Leave Type"]}
                           </Text>
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Leave From : {modalData["From Date"]}
                           </Text>
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Leave To : {modalData["To Date"]}
                           </Text>
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
-                            NO. Of Days : {modalData.Days}
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
+                            No of Days : {modalData.Days}
                           </Text>
-                          {/* <Text style={{fontWeight: "700"}}>
-                                        Planned/Unplanned : {modalData.Planned/Unplanned}
-                                      </Text>                                       */}
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
+                          <Text style={{fontWeight: "700", marginVertical: 8}}>
+                              Planned/Unplanned : {modalData['Planned/Unplanned']}
+                          </Text>                                      
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Period : {modalData.Period}
                           </Text>
-                          <Text style={{ fontWeight: "700", marginVertical: 12 }}>
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Reason : {modalData.Reason}
                           </Text>
-                          <View style={{width:'90%',flexDirection:'row',justifyContent:'space-between'}}>
-
                           <Text style={{ fontWeight: "700", marginVertical: 12 }}>
                             Remark :
                           </Text>
-                      <TouchableOpacity
-                        style={{ padding: 12, borderRadius: 8,backgroundColor: "#4174D0" }} onPress={() => {
-                          setLeaveDetailModal(!LeaveDetailModal)
-                        }}>
-                        <Text style={{color:'#fff'}}>Ok</Text>
-                      </TouchableOpacity>
+                          <View style={{width:'100%',flexDirection:'row',justifyContent:'flex-end'}}>
+
+                            {
+                              modalData.Status && modalData.Status.toLowerCase() == 'pending' ? (
+                                <TouchableOpacity
+                                style={{ padding: 12, borderRadius: 5,backgroundColor: "#4174D0", minWidth:100, marginRight:25 }} 
+                                onPress={() => {
+                                  setLeaveDetailModal(!LeaveDetailModal);
+                                  DeleteLeavePending(modalData);
+                                }}>
+                                <Text style={{color:'#fff', alignSelf:'center'}}>Delete</Text>
+                              </TouchableOpacity>
+                              ) : null
+                            }
+                              <TouchableOpacity
+                                style={{ padding: 12, borderRadius: 5,backgroundColor: "#4174D0", minWidth:100 }} 
+                                onPress={() => {
+                                  setLeaveDetailModal(!LeaveDetailModal)
+                                }}>
+                                <Text style={{color:'#fff', alignSelf:'center'}}>Okay</Text>
+                            </TouchableOpacity>
                           </View>
                         </View>
                       </View>
+
                     </View>
                   </Modal>
 
@@ -1107,6 +1172,9 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     padding: 10
   },
+  spinnerTextStyle:{
+    color:'#fff'
+  }
 });
 
 //make this component available to the app

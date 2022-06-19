@@ -9,7 +9,8 @@ import {
   Linking,
   FlatList,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Platform
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -75,8 +76,16 @@ const OtherApps = ({ navigation }) => {
   // };
 
   const linkOpen = (link) => {
-    Linking.openURL(link)
-    console.log('linkOpen', link);
+
+    if(Platform.OS === 'ios'){
+      if(link.LINK_LINK3){
+        Linking.openURL(link.LINK_LINK3)
+      }else{
+        Linking.openURL(link.LINK_LINK2)
+      }
+    }else{
+      Linking.openURL(link.LINK_LINK1)
+    }    
   }
 
   useEffect(() => {
@@ -87,23 +96,23 @@ const OtherApps = ({ navigation }) => {
   return (
 
     <SafeAreaView style={styles.container}>
-      {loader == true ? (
+      <View style={styles.container}>
         <Spinner
           visible={loader}
           textContent={'Loading...'}
           textStyle={styles.spinnerTextStyle}
         />
-      ) : null}
 
       <LinearGradient
         style={{ padding: 20 }}
-        colors={['#4174D0', '#6ef7ff']}>
-        <View style={{ flexDirection: 'row' }}>
+        colors={['#00B4DB', '#0083B0']}
+        >
+        <View style={{ width:"100%"}}>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
+              // justifyContent: 'space-between',
+              // width: 40,
               alignItems: 'center',
             }}>
             <Ionicons
@@ -118,17 +127,17 @@ const OtherApps = ({ navigation }) => {
               color={'white'}
               onPress={() => navigation.openDrawer()}
             />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Other Mobile Apps
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                letterSpacing: 1,
+                marginLeft: 10,
+              }}>
+              Other Mobile Apps
           </Text>
+
+          </View>
         </View>
       </LinearGradient>
 
@@ -137,18 +146,17 @@ const OtherApps = ({ navigation }) => {
       {
         appLink !== '' ? (
 
-          <ScrollView style={{ flex: 1 }}>
+          <View style={{ flex: 1, paddingHorizontal:10 }}>
             <FlatList
               data={appLink}
               numColumns={2}
-
               showsVerticalScrollIndicator={false}
-              keyExtractor={({ item, index }) => index}
+              keyExtractor={( item ) => item.LINK_ID.toString()}
               renderItem={({ item, index }) => (
 
                 <TouchableOpacity
                   onPress={() => {
-                    linkOpen(item.LINK_LINK1);
+                    linkOpen(item);
                   }}
                   style={{
                     width: '48%',
@@ -168,24 +176,25 @@ const OtherApps = ({ navigation }) => {
                     shadowRadius: 10.65,
                     elevation: 5,
                     alignItems: 'center',
-                    borderRadius: 18,
+                    borderRadius: 10,
                   }}>
                   <Image
                     source={{ uri: item.LINK_LINK3 }}
                     style={{ width: 50, height: 50 }}
                   />
-                  <Text style={{ fontSize: 20, paddingVertical: 5, color: 'grey' }}>
+                  <Text style={{ fontSize: 18, paddingVertical: 5, color: '#4a4a4a' }}>
                     {item.LINK_DESC}
                   </Text>
                 </TouchableOpacity>
 
               )} />
-          </ScrollView>
+          </View>
         ) : (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
             {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
           </View>
         )}
+      </View>
     </SafeAreaView>)
 };
 
@@ -193,7 +202,8 @@ const OtherApps = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    width:"100%",
+    backgroundColor: '#fff',    
   },
 });
 
