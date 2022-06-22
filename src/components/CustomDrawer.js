@@ -106,7 +106,7 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/house.png')}
+                  source={require('../assets/Images/home.png')}
                   style={styles.icon}
                 />
               )}
@@ -119,7 +119,7 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/teamwork.png')}
+                  source={require('../assets/Images/groupp.png')}
                   style={styles.icon}
                 />
               )}
@@ -133,7 +133,7 @@ function CustomDrawer(props) {
                 //   <Foundation
                 //   name='torsos-all' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/calendar.png')}
+                  source={require('../assets/Images/calendarr.png')}
                   style={styles.icon}
                 />
               )}
@@ -183,7 +183,7 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/more.png')}
+                  source={require('../assets/Images/other.png')}
                   style={styles.icon}
                 />
               )}
@@ -195,7 +195,7 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/identity-card.png')}
+                  source={require('../assets/Images/id-card.png')}
                   style={styles.icon}
                 />
               )}
@@ -207,7 +207,7 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/passenger.png')}
+                  source={require('../assets/Images/man.png')}
                   style={styles.icon}
                 />
               )}
@@ -239,7 +239,7 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/video-player.png')}
+                  source={require('../assets/Images/video-camera.png')}
                   style={styles.icon}
                 />
               )}
