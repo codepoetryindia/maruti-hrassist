@@ -44,6 +44,7 @@
     "react-native-modal": "^13.0.0",
     "react-native-modal-datetime-picker": "^13.0.1",
     "react-native-multi-selectbox": "^1.5.0",
+    "react-native-onboarding-swiper": "^1.2.0",
     "react-native-pager-view": "^5.4.23",
     "react-native-paper": "^4.11.2",
     "react-native-permissions": "^3.3.1",

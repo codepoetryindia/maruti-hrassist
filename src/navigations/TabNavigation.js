@@ -18,7 +18,8 @@ function Tabs() {
     screenOptions={{
       headerShown: false,
       tabBarActiveTintColor: '#000',
-      tabBarStyle:{position:'absolute', height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
+      tabBarLabelStyle:{ fontSize:12},
+      tabBarStyle:{height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
       tabBarBackground:() =>(
         <LinearGradient    colors={['#fff', '#fff']} style={{height:80,borderTopLeftRadius:15,borderTopRightRadius:15}}/>
       )

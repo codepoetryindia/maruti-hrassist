@@ -55,7 +55,7 @@ const Canteen = ({navigation}) => {
             style={{width: 50, height: 50}}
             source={require('../../assets/Images/cutlery.gif')}
           /> */}
-          <GifImage
+          <Image
             source={require('../../assets/Images/cutlery.gif')}
             style={{width: 50, height: 50}}
             resizeMode={'cover'}

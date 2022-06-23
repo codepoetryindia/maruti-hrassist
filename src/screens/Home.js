@@ -48,7 +48,7 @@ const Home = ({navigation}) => {
                 color={'white'}
                 onPress={() => navigation.openDrawer()}
               />
-              <Text style={[styles.brand, {marginLeft: 15}]}>SUZUKI HR Assist</Text>
+              <Text style={[styles.brand, {marginLeft: 15}]}>HR Assist</Text>
             </View>
             {/* <Text style={styles.brand}>HR Assist</Text>
             <Text style={{color: 'white', margin: 10}}></Text> */}
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     // letterSpacing: 1,
   },
   carousel: {
-    marginTop: '-11%',
+    marginTop: -30,
     height: 180,
     width: '92%',
     justifyContent: 'center',

@@ -283,7 +283,7 @@ const Gatepass = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Spinner
         visible={loader}
         textContent={'Loading...'}
@@ -420,7 +420,7 @@ const Gatepass = ({ navigation }) => {
             touched,
             isValid,
           }) => (
-            <ScrollView nestedScrollEnabled={true} style={{ marginBottom: '18%', marginTop: 5, paddingHorizontal: 15 }}>
+            <ScrollView nestedScrollEnabled={true} style={{ marginTop: 5, paddingHorizontal: 15 }}>
               <View style={{ paddingBottom: 5 }}>
                 <Text
                   style={{
@@ -430,9 +430,6 @@ const Gatepass = ({ navigation }) => {
                     fontWeight: 'bold',
                   }}>
                   Your Location
-                </Text>
-                <Text>
-                  {JSON.stringify(errors)}
                 </Text>
               </View>
 

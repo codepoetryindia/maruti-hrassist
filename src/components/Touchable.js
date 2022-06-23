@@ -65,7 +65,7 @@ const TouchableCard = ({navigation}) => {
   ];
 
     return (
-      <SafeAreaView style={{flex:1, marginBottom:80}}>
+      <View style={{flex:1}}>
         <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -114,8 +114,7 @@ const TouchableCard = ({navigation}) => {
           </TouchableOpacity>
            
             )}/>
-            </SafeAreaView>
-            
+            </View>            
     )
           }
 // define your styles
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
     marginTop: 5,
-    margin:5,
+    marginLeft:10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: "#000",

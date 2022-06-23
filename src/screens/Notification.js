@@ -53,13 +53,12 @@ const Notification = ({ navigation }) => {
   // console.log("notifi", notifi);
   return (
       <SafeAreaView style={styles.container}>
-        {loader==true ? (
+        
            <Spinner
            visible={loader}
            textContent={'Loading...'}
            textStyle={styles.spinnerTextStyle}
          />
-        ):null}
         <LinearGradient
           style={{ flex: 1 }}
           colors={['#4174D0', '#6ef7ff']}>
@@ -96,13 +95,15 @@ const Notification = ({ navigation }) => {
               marginBottom:50,
               padding: 10,
             }}>
+
             <FlatList
+              // notifi
               data={notifi}
               ListEmptyComponent={() => {
                 return (
-                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor:'#fff' }}>
+                  <View style={{ flex:1,  justifyContent: 'center', alignItems: 'center', alignSelf:'center', marginTop:120, backgroundColor:'#fff' }}>
                     <Image source={require('../assets/Images/dataNotFound.png')}
-                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
+                      style={{ width: 180, height: 180, resizeMode: 'contain', }} />
                     <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
                   </View>
                 )
