@@ -19,17 +19,17 @@ const TouchableCard = ({navigation}) => {
     {
       id: '1',
       name: 'Employee Lookup',
-      images: require('../assets/Images/teamwork.png'),
+      images: require('../assets/Images/groupp.png'),
     },
     {
       id: '2',
       name: 'Attendance & Admin',
-      images: require('../assets/Images/calendar.png'),
+      images: require('../assets/Images/calendarr.png'),
     },
     {
       id: '3',
       name: 'Compliances & Benifis',
-      images: require('../assets/Images/statistics.png'),
+      images: require('../assets/Images/growth.png'),
     },
     {
       id: '4',
@@ -44,17 +44,17 @@ const TouchableCard = ({navigation}) => {
     {
       id: '6',
       name: 'Visitor Gatepass',
-      images: require('../assets/Images/identity-card.png'),
+      images: require('../assets/Images/id-card.png'),
     },
     {
       id: '7',
       name: 'Other Mobile Apps',
-      images: require('../assets/Images/more.png'),
+      images: require('../assets/Images/other.png'),
     },
     {
       id: '8',
       name: 'Buisness Travel',
-      images: require('../assets/Images/passenger.png'),
+      images: require('../assets/Images/man.png'),
     },
     {
       id: '9',
@@ -104,7 +104,7 @@ const TouchableCard = ({navigation}) => {
               }
             }}>
               <LinearGradient
-         colors={['#53AFE2','#6ef7ff']}
+         colors={['#4174D0','#53AFE2']}
         style={{padding:5,borderRadius:5}}>
 
             <Image source={item.images} style={styles.cardimg} />
@@ -144,12 +144,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     margin:5,
+    tintColor:'#d4fdff'
   },
   cardText:{
     textAlign:'center',
     marginTop:5, 
     fontSize:14,
-    color:'#444'
+    color:'#444',
   }
 });
 
