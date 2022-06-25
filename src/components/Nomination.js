@@ -9,12 +9,34 @@ import Spinner from 'react-native-loading-spinner-overlay';
 const Nomination = ({ navigation, route }) => {
     const [loader, setLoader] = useState(false)
     const { authContext, AppUserData } = useContext(AuthContext);
-    const [nominidata, setNominiData] = useState([]);
+    const [nominidata, setNominiData] = useState();
+    const [NominationArrya, setNominationArrya] = useState();
 
     useEffect(() => {
         const NominationData = route.params.data
-        console.log("route.params.data", NominationData)
-        let responseArr = []
+        const responseArr = [];
+        let ArrayKeys = [];
+        /*
+        NominationData.forEach(element => {
+            if(!ArrayKeys.includes(element.NOMM_DESC)){
+                ArrayKeys.push(element.NOMM_DESC);
+            }
+        });
+
+        NominationData.forEach(element => {
+            let index = ArrayKeys.find((elements )=>elements == element.NOMM_DESC)
+            // console.log(index);
+            if(responseArr[index]){
+                responseArr[index].push(element);
+            }else{
+                responseArr[index] = [element];
+            }
+        });
+        console.log(responseArr);
+        setNominiData(NominationData);
+        setNominationArrya(responseArr);
+        */
+
         NominationData.map((item) => {
             return (
                 responseArr.push({
@@ -23,9 +45,10 @@ const Nomination = ({ navigation, route }) => {
                 })
             )
         })
-        console.log("responseArr", responseArr)
         setNominiData(NominationData)
     }, [])
+
+
     const handleDropDown = (ind) => {
         let dummyData = [...nominidata]
         let arr = dummyData.map((item, index) => {
@@ -39,8 +62,14 @@ const Nomination = ({ navigation, route }) => {
         console.log("selectedData", arr)
         setNominiData(arr)
     }
+    
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+            />
             <LinearGradient
                 colors={['#4174D0', '#6ef7ff']}
                 style={styles.gradient}>
@@ -70,58 +99,60 @@ const Nomination = ({ navigation, route }) => {
                     <Text
                         style={{
                             color: '#fff',
-                            fontSize: 16,
+                            fontSize: 18,
                             letterSpacing: 1,
                             marginLeft: 30,
+                            fontWeight:"700"
                         }}>
                         Nomination
                     </Text>
                 </View>
             </LinearGradient>
 
-            {loader == true ? (
-                <Spinner
-                    visible={loader}
-                    textContent={'Loading...'}
-                    textStyle={styles.spinnerTextStyle}
-                />
-            ) : null}
-            <FlatList
-                data={nominidata}
-                keyExtractor={({ item, index }) => index}
-                renderItem={({ item, index }) => {
-                    return (
-                        <>
-                            <TouchableOpacity onPress={() => {
-                                handleDropDown(index)
-                            }} style={[styles.tabStyle, { borderBottomLeftRadius: item.isClicked ? 0 : 8, borderBottomRightRadius: item.isClicked ? 0 : 8 }]}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
-                                {item.isClicked == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
-                            </TouchableOpacity>
-                            {item.isClicked == true ? (
-                                <View>
-                                    <View style={[styles.tabStyle, { marginTop: 0, elevation: 0, borderTopEndRadius: 0, borderTopStartRadius: 0 }]}>
-                                        <Text>{item.ENOM_PERCENT}</Text>
-                                        <Text>{item.ENOM_NAME}</Text>
+            <View style={ styles.containerBody}>
+                <FlatList
+                    data={nominidata}
+                    keyExtractor={({ item, index }) => index}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <>
+                                <TouchableOpacity onPress={() => {
+                                    handleDropDown(index)
+                                }} style={[styles.tabStyle, { borderBottomLeftRadius: item.isClicked ? 0 : 3, borderBottomRightRadius: item.isClicked ? 0 : 3 }]}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                                    {item.isClicked == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
+                                </TouchableOpacity>
+                                {item.isClicked == true ? (
+                                    <View>
+                                        <View style={[styles.tabStyle, { marginTop: 0, elevation: 0, borderTopEndRadius: 0, borderTopStartRadius: 0 }]}>
+                                            <Text>{item.ENOM_PERCENT}</Text>
+                                            <Text>{item.ENOM_NAME}</Text>
+                                        </View>
                                     </View>
-                                </View>
-                            ) : null}
-                        </>
-                    )
-                }} />
+                                ) : null}
+                            </>
+                        )
+                    }} />
+            </View>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     gradient: {
-        padding: 20,
+        paddingVertical: 20,
+        paddingHorizontal:10
     },
     container: {
         flexDirection: 'row',
     },
+    containerBody:{
+        paddingHorizontal:10,
+        flex:1
+    },
     tabStyle: {
-        width: '90%',
+        paddingVertical:16,
+        width: '99%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: '#fff',
@@ -133,12 +164,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        borderRadius: 8,
+        borderRadius: 3,
         padding: 10,
         alignItems: 'center',
         alignSelf: 'center',
         marginTop: 15,
-        paddingVertical: 10
+        paddingVertical: 15,
     }
 })
 export default Nomination

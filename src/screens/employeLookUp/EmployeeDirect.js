@@ -102,6 +102,7 @@ const EmployeeDirect = () => {
             textStyle={{color:'#fff'}}
           />
         ) : null}
+
         {searchedData.length > 0 ? (
          
           <FlatList
@@ -118,7 +119,12 @@ const EmployeeDirect = () => {
             }}
             keyExtractor={({ item, index }) => index}
             renderItem={({ item, index }) => (
-              <TouchableOpacity style={styles.FlatListData}>
+              <TouchableOpacity style={styles.FlatListData} onPress={()=>{
+                  // console.log('staff No', item['Staff No']);
+                  myNavigation.navigate('EmployProfile',{
+                    data:item['Staff No']
+                  })                
+              }}>
                 <Ionicons
                   style={styles.searchIcon}
                   name="person-circle-outline"
@@ -202,11 +208,8 @@ const styles = StyleSheet.create({
   FlatListData: {
     width:"95%",
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
-    borderRadius: 7,
+    borderRadius: 3,
+    borderColor:'#ccc',
     flexDirection: 'row',
     // margin:10,
     // width: '100%',

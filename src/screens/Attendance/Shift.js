@@ -227,6 +227,7 @@ const RptShiftStatus = () => {
       }
     });
 }
+
 const FlexiShiftElig = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
@@ -374,14 +375,14 @@ const handleSubmit = () => {
    
     <SafeAreaView style={styles.container}>
        {loader == true ? (
-      <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-    ) : null}
-      <View style={{width: '90%', alignSelf: 'center'}}>
-      <TouchableOpacity
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
+      <View style={{width: '95%', alignSelf: 'center'}}>
+          <TouchableOpacity
             style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -393,6 +394,8 @@ const handleSubmit = () => {
             />
           </TouchableOpacity>
 
+          
+
           {horizental == true ? (
             <View
               style={{
@@ -402,15 +405,14 @@ const handleSubmit = () => {
                 top: 0,
                 right: 50,
                 zIndex:1000,
-                borderRadius:8,
+                borderRadius:0,
                 
               }}>
                 <TouchableOpacity
-                style={{borderBottomWidth:1,paddingVertical:10}} onPress={() => {
+                style={{paddingVertical:10}} onPress={() => {
                   navigation.navigate("CompayShiftDe")
-                }}>
-                  
-              <Text style={{color:'#fff',}}>Company Shift Details</Text>
+                }}>                      
+                  <Text style={{color:'#fff',}}>Company Shift Details</Text>
                 </TouchableOpacity>
                
             </View>
@@ -418,7 +420,7 @@ const handleSubmit = () => {
 
 
         <SegmentedControlTab
-          borderRadius={8}
+          borderRadius={0}
           values={['Shift Details', 'Flexi Shift']}
           selectedIndex={Shift}
           onTabPress={index => {
@@ -433,13 +435,13 @@ const handleSubmit = () => {
       </View>
 
       {Shift == 0 ? (
-        <ScrollView>
-          <Text style={{paddingTop: 10, paddingHorizontal: 20}}>
+        <ScrollView style={{ flex:1, paddingHorizontal:10 }}> 
+          <Text style={{paddingTop: 10, paddingHorizontal: 0, fontSize:16, fontWeight:'700'}}>
             Select Date
           </Text>
           <View
             style={{
-              width: '90%',
+              width: '100%',
               alignSelf: 'center',
               borderWidth: 1,
               borderColor: '#fff',
@@ -457,9 +459,6 @@ const handleSubmit = () => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              borderTopLeftRadius: 15,
-              borderBottomLeftRadius: 15,
-              borderTopRightRadius: 15,
             }}>
             <DatePicker
               modal
@@ -543,7 +542,7 @@ const handleSubmit = () => {
                 padding: 20,
                 borderRadius: 8,
                 alignItems: 'center',
-                width: '90%',
+                width: '100%',
                 alignSelf: 'center',
               }}
            colors={['#4174D0','#6ef7ff']}>
@@ -555,9 +554,9 @@ const handleSubmit = () => {
           <DataTable
             style={{
               width: '100%',
+              paddingHorizontal:10,
               backgroundColor: '#fff',
               marginVertical: 10,
-              marginBottom: '20%',
               
             }}>
             <DataTable.Header style={{backgroundColor: '#fff'}}>
@@ -602,11 +601,13 @@ const handleSubmit = () => {
           </DataTable>
         </ScrollView>
       ) : (
-        <ScrollView>
-          <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
+        <ScrollView style={{ flex:1, paddingHorizontal:10 }}>
+          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
             Shift Name
           </Text>
           <View style={styles.box}>
+
+
             <TouchableOpacity
               onPress={toggleModal}
               style={{
@@ -625,7 +626,7 @@ const handleSubmit = () => {
                     style={{
                       height: '100%',
                       backgroundColor: 'red',
-                      borderRadius: 10,
+                      borderRadius: 0,
                     }}>
                     <View
                       style={{
@@ -662,7 +663,7 @@ const handleSubmit = () => {
             </TouchableOpacity>
           </View>
 
-          <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
+          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
             Applicable Date
           </Text>
           <DatePicker
@@ -693,7 +694,7 @@ const handleSubmit = () => {
               <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
             </TouchableOpacity>
           </View>
-          <Text style={{paddingVertical: 15, paddingHorizontal: 20}}>
+          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
             Current Shift
           </Text>
 
@@ -715,7 +716,7 @@ const handleSubmit = () => {
           }}>
             <LinearGradient
               style={{
-                width: '90%',
+                width: '100%',
                 alignSelf: 'center',
                 padding: 15,
                 borderRadius: 8,
@@ -791,8 +792,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   box: {
-    width: '90%',
+    width: '100%',
     padding: 5,
+    paddingVertical:10,
     backgroundColor: '#FFF',
     alignSelf: 'center',
     shadowColor: '#000',
@@ -803,10 +805,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
     elevation: 5,
-    borderRadius: 8,
+    borderRadius: 0,
   },
   inputBox: {
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     backgroundColor: '#fff',
     flexDirection: 'row',
@@ -821,7 +823,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
     elevation: 5,
-    borderRadius: 8,
+    borderRadius: 0,
   },
   tabStyle: {
     //custom styles
@@ -864,7 +866,13 @@ const styles = StyleSheet.create({
   flexDirection:'row',
   marginVertical:5,
   borderBottomWidth:0.5,
-  padding:20}
+  padding:20},
+  addtnlBtn:{
+    position:'absolute',
+    right:10,
+    top:0,
+    zIndex:55555
+  }
 });
 
 //make this component available to the app

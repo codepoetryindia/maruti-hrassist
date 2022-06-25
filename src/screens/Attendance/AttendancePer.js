@@ -23,8 +23,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const AttendancePer = ({ navigation }) => {
-
-
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
   const [Attendance, setAttendance] = useState('')

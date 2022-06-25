@@ -17,11 +17,9 @@ import { date } from 'yup';
 import { useFocusEffect } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 
-// import * as Animatable from 'react-native-animatable';
-// create a component
 const Attendance = ({navigation}) => {
   const [fromDate, setFromDate] = useState(new Date());
-  const[toDate,setToDate] = useState (new Date());
+  const [toDate,setToDate] = useState (new Date());
   const [open, setOpen] = useState(false);
   const [openSecond, setOpenSecond] = useState(false);
   const [MarkAttandance, setMarkAttandance] = useState(0);
@@ -331,7 +329,7 @@ const Attendance = ({navigation}) => {
 
 
   return (
-    <View style={styles.container}>
+        <View style={styles.container}>
           {
             loader ? (
               <Spinner
@@ -341,42 +339,39 @@ const Attendance = ({navigation}) => {
             />
             ): null
           }
-          {/* <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={{color:'#fff'}}
-            overlayColor={'rgba(0, 0, 0, 0.50)'}
-          /> */}
-        <TouchableOpacity
-            style={{alignSelf:'flex-end'}}
+
+          <TouchableOpacity
+            style={styles.addtnlBtn}
             onPress={() => {
              
               horizental == true ? setHorizental(false) : setHorizental(true);
             }}>
             <Ionicons
               name="ellipsis-vertical-circle"
-              size={25}
-              color={'#6ef7ff'}
+              size={30}
+              color={'#0083B0'}
             />
           </TouchableOpacity>
-      <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-      
-      {horizental == true ? (
+
+
+        <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>      
+         {horizental == true ? (
             <View
               style={{
                 padding: 5,
-                backgroundColor: '#6ef7ff',
+                paddingVertical:8,
+                backgroundColor: '#0083B0',
                 position: 'absolute',
-               bottom:30,
-                right: 50,
+                // bottom:30,
+                right: 30,
+                top:5,
                 zIndex:1000,
-                borderRadius:8
+                borderRadius:2
               }}>
                 <TouchableOpacity onPress={() => {
                   navigation.navigate('AttendancePer')
-                }}>
-                  
-              <Text>Attendance Percentage</Text>
+                }}>                  
+                  <Text style={{ color:"#fff"}}>Attendance Percentage</Text>
                 </TouchableOpacity>
             </View>
           ) : null}
@@ -384,7 +379,7 @@ const Attendance = ({navigation}) => {
           {
             ShowAttandanceTabs ? (
               <SegmentedControlTab
-              borderRadius={8}
+              borderRadius={2}
              values={['Mark Attendance', 'View Report']}
              selectedIndex={MarkAttandance}
              onTabPress={index => {
@@ -397,12 +392,12 @@ const Attendance = ({navigation}) => {
              activeTabTextStyle={styles.activeTabTextStyle}
            />
             ):(
-              <Text>View Report</Text>
+              <Text style={[styles.titleLabel, {marginTop:10}]}>View Report</Text>
             )
           }
       </View>
 
-      <View>
+      <View style={{ flex:1 }}>
         {MarkAttandance == 0 ? (
           <View>
             <TouchableOpacity style={styles.content}>
@@ -426,7 +421,7 @@ const Attendance = ({navigation}) => {
 
           </View>
         ) : (
-          <View>
+          <View style={{ flex:1 }}>
             {/* Date Picker */}
             <View
               style={{
@@ -437,7 +432,7 @@ const Attendance = ({navigation}) => {
                 alignItems: 'center',
                 flexDirection: 'row',
                 padding: 10,
-                marginVertical: 20,
+                marginVertical: 10,
                 backgroundColor: '#fff',
                 shadowColor: '#000',
                 shadowOffset: {
@@ -447,13 +442,13 @@ const Attendance = ({navigation}) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 5,
-                borderRadius: 5,
+                borderRadius: 0,
               }}>
               <View
                 style={{
                   width: '48%',
                 }}>
-                <Text>From</Text>
+                <Text style={styles.titleLabel}>From</Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -464,7 +459,7 @@ const Attendance = ({navigation}) => {
                     padding: 3,
                   }}>
                   <Text style={{color: 'gray'}}>
-                    ...{moment(fromDate).format('MMM Do YYYY')}
+                    {moment(fromDate).format('MMM Do YYYY')}
                   </Text>
                   <View>
                     <View>
@@ -472,7 +467,7 @@ const Attendance = ({navigation}) => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#6ef7ff'}
+                          color={'#0083B0'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -483,7 +478,7 @@ const Attendance = ({navigation}) => {
                 style={{
                   width: '48%',
                 }}>
-                <Text>To</Text>
+                <Text style={styles.titleLabel}>To</Text>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -494,7 +489,7 @@ const Attendance = ({navigation}) => {
                     padding: 3,
                   }}>
                   <Text style={{color: 'gray'}}>
-                    ...{moment(toDate).format('MMM Do YYYY')}
+                    {moment(toDate).format('MMM Do YYYY')}
                   </Text>
                   <View>
                     <View>
@@ -503,7 +498,7 @@ const Attendance = ({navigation}) => {
                         <Ionicons
                           name="calendar-outline"
                           size={30}
-                          color={'#6ef7ff'}
+                          color={'#0083B0'}
                         />
                       </TouchableOpacity>
                     </View>
@@ -575,13 +570,11 @@ const Attendance = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: 10,
+    paddingHorizontal:10,
+    position:'relative'
   },
   tabStyle: {
-    //custom styles
-   
+    //custom styles   
     paddingVertical: 10,
     borderColor: '#6ef7ff',
   },
@@ -652,7 +645,22 @@ const styles = StyleSheet.create({
     color:"#fff",
     marginRight:5,
     fontWeight:"700"
+  },
+  spinnerTextStyle:{
+    color:'#fff'
+  },
+  titleLabel:{
+    color:'#444',
+    fontWeight:'700',
+    fontSize:16
+  },
+  addtnlBtn:{
+    position:'absolute',
+    right:10,
+    top:5,
+    zIndex:55555
   }
+
 });
 
 //make this component available to the app

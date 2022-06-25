@@ -160,13 +160,9 @@ const Birthdays = () => {
             overlayColor={'rgba(0, 0, 0, 0.50)'}
 
           />
-        ) : null
-      }{
-        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',marginTop:40}}>
-          <Text>Please wait we are fetching your data</Text></View>) :
-          (
-            <View>
+        ) : null}
 
+            <View style={{ flex:1 }}>
               <View style={{ width: '100%' }}>
                 <SegmentedControlTab
                   borderRadius={8}
@@ -294,16 +290,20 @@ const Birthdays = () => {
                 </Modal>
               </View>
 
-              <View>
+
+
+
+
+              <View style={{ flex:1 }}>
                 {CurrentPage == 0 ? (
-                  <View>
+                  <View style={{ flex:1 }}>
                     <Image
                       source={{
                         uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Birthday_candles.jpg/1200px-Birthday_candles.jpg',
                       }}
                       style={styles.img}
                     />
-                    <View style={{ height: '67%', marginTop: 10, marginBottom: '30%' }}>
+                    <View style={{ flex:1, marginTop: 10}}>
                       <FlatList
                         ListEmptyComponent={() => {
                           return (
@@ -361,10 +361,7 @@ const Birthdays = () => {
                     </View>
                   </View>
                 ) : (
-
-                  // tommorow birthday
-
-                  <View style={{ height: '97%', paddingVertical: 10 }}>
+                  <View style={{ flex:1, paddingVertical: 10 }}>
                     <FlatList
                       showsVerticalScrollIndicator={false}
                       data={tomorrowBirthday}
@@ -377,7 +374,6 @@ const Birthdays = () => {
                           </View>
                         )
                       }}
-
                       keyExtractor={({ item, index }) => index}
                       renderItem={({ item, index }) => (
                         <View style={{ flex: 1 }}>
@@ -415,9 +411,6 @@ const Birthdays = () => {
                 )}
               </View>
             </View>
-          )}
-
-
     </SafeAreaView>
 
   );
@@ -429,19 +422,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     backgroundColor: 'transparent',
-    width: '90%',
+    paddingHorizontal:10
   },
   tabsContainerStyle: {
     marginTop: 20,
   },
   tabStyle: {
-    //custom styles
     paddingVertical: 10,
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
+    borderRadius:2,
+    borderColor:"#4174D0"
   },
   tabTextStyle: {
     //custom styles
@@ -471,7 +461,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
     borderLeftWidth: 5,
-    borderLeftColor: 'gray',
+    borderLeftColor: '#4174D0',
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
@@ -487,9 +477,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
     elevation: 2,
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-    borderTopRightRadius: 15,
+    // borderTopLeftRadius: 15,
+    // borderBottomLeftRadius: 15,
+    // borderTopRightRadius: 15,
   },
   modal: {
     height: 150,
@@ -518,109 +508,3 @@ const styles = StyleSheet.create({
 
 //make this component available to the app
 export default Birthdays;
-
-
-{/* <Modal
-backdropOpacity={0.1}
-animationInTiming={300}
-animationIn="zoomInUp"
-animationOut="fadeOut"
-animationOutTiming={200}
-coverScreen={true}
-isVisible={tommorowModal}>
-<LinearGradient
-  colors={['#4174D0', '#6ef7ff']}
-  style={{ flex: 0.53, borderRadius: 15 }}>
-  <View style={styles.modal}>
-    {/* <Text>{JSON.stringify(modalItem)}</Text> */}
-//     <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-//       <Feather
-//         name="x-circle"
-//         color={'#000'}
-//         size={20}
-//         onPress={toggleModal}
-//         style={{ margin: 10 }}
-//       />
-//     </TouchableOpacity>
-//     <View
-//       style={{
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         alignSelf: 'center',
-//         width: 150,
-//         height: 150,
-//         borderWidth: 20,
-//         borderColor: '#6ef7ff',
-//         borderRadius: 60,
-//         marginTop: 30,
-//       }}>
-//       {empPhoto ? (
-//         <Image
-//           source={{ uri: 'data:image/png;base64, ' + empPhoto }}
-//           style={[styles.profileImg, { marginRight: 5 }]}
-//         />
-//       ) : (
-//         <Image
-//           source={require('../../../assets/Images/Avtar.png')}
-//           style={[styles.profileImg, { marginRight: 5 }]}
-//         />
-//       )}
-//     </View>
-//     <View
-//       style={{
-//         paddingVertical: 15,
-//         alignSelf: 'center',
-//         alignItems: 'center',
-//       }}>
-//       <Text style={{ color: '#fff', lineHeight: 20 }}>
-//         {secondModal && secondModal.Name && secondModal.Name}
-//       </Text>
-//       <Text style={{ color: '#fff', lineHeight: 20 }}>
-//         {secondModal && secondModal.Email && secondModal.Email}
-//       </Text>
-//       <Text style={{ color: '#fff', lineHeight: 20 }}>
-//         {secondModal && secondModal.Dept && secondModal.Dept}
-//       </Text>
-//     </View>
-//     <View
-//       style={{
-//         height: '23%',
-//         marginTop: 5,
-//         // backgroundColor:'yellow',
-//         flexDirection: 'row',
-//         alignSelf: 'center',
-//         justifyContent: 'space-around',
-//         width: '50%',
-//         alignItems: 'flex-end',
-//       }}>
-//       <TouchableOpacity
-//         onPress={() => {
-//           Linking.openURL(`mailto:${secondModal.Email}`)
-//         }}
-//         style={{
-//           borderWidth: 1,
-//           width: 40,
-//           height: 40,
-//           borderColor: '#fff',
-//           borderRadius: 100,
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <Feather name="mail" size={20} color={'#fff'} />
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={{
-//           borderWidth: 1,
-//           width: 40,
-//           height: 40,
-//           borderColor: '#fff',
-//           borderRadius: 100,
-//           justifyContent: 'center',
-//           alignItems: 'center',
-//         }}>
-//         <Feather name="phone-call" size={20} color={'#fff'} />
-//       </TouchableOpacity>
-//     </View>
-//   </View>
-// </LinearGradient>
-// </Modal> */}

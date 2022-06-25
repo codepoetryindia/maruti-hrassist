@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch,ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../context/AuthContext';
@@ -97,17 +97,7 @@ const EditProfile = ({ navigation, route }) => {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
 
-    <SafeAreaView style={styles.container}>
-      {loader == true ? (
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      ) : null}
-
-
-
+    <SafeAreaView style={styles.container}>      
       <LinearGradient
         style={{ flex: 0.25 }}
         colors={['#4174D0', '#6ef7ff']}>
@@ -123,12 +113,15 @@ const EditProfile = ({ navigation, route }) => {
               color: '#fff',
               fontSize: 18,
               letterSpacing: 1,
-              marginLeft: 25,
+              marginLeft: 15,
+              fontWeight:'700'
             }}>
             Profile
           </Text>
         </View>
       </LinearGradient>
+
+
       <View
         style={{
           backgroundColor: '#fff',
@@ -188,18 +181,31 @@ const EditProfile = ({ navigation, route }) => {
           />
           )}
         </View>
+
+
         <View style={{ height: '90%', }}>
+
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+
           <FlatList
             data={employeeData}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => {
               return (
-                <Text style={{ textAlign: 'center' }}>No Data Found</Text>
+                <View style={{ marginTop:20}}>
+                {
+                  !loader ? <Text style={{ textAlign: 'center' }}> No Data Found</Text> : <ActivityIndicator size="large" color="#4174D0" />  
+                }
+                </View>
               )
             }}
-            keyExtractor={({ item, index }) => item}
+            keyExtractor={( item) => item.EMPL_ID.toString()}
             renderItem={({ item, index }) => (
-              <View>
+              <View key={item.EMPL_ID}>
                 <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
                 <View style={styles.box}>
                   <Text style={styles.header}>Vertical / Div ./Department</Text>

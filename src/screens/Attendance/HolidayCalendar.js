@@ -264,17 +264,15 @@ const renderItemHolidaysingle=({item})=>{
 
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={styles.container}
-        // contentContainerStyle={{ flexGrow: 1 }}
-      >
-
       <Spinner
           visible={loader}
           textContent={'Loading...'}
           textStyle={styles.spinnerTextStyle}
         />
-
+      <View
+        style={styles.container}
+        // contentContainerStyle={{ flexGrow: 1 }}
+      >
       <View style={{width: '100%', paddingHorizontal:5, marginTop:10}}>
         <SegmentedControlTab
           borderRadius={5}
@@ -290,6 +288,7 @@ const renderItemHolidaysingle=({item})=>{
           activeTabTextStyle={styles.activeTabTextStyle}
         />
       </View>
+      
       <View style={{paddingHorizontal:10,marginTop:10, flex:1}}>
         {HolidayCalendar == 0 ? (
           <View style={{flex:1, marginBottom:70}}>
@@ -446,8 +445,8 @@ const renderItemHolidaysingle=({item})=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height:"100%"
+    // width: '100%',
+    // height:"100%"
     // alignSelf: 'center',
   },
   tabStyle: {

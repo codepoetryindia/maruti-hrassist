@@ -151,8 +151,8 @@ export const Leave = () => {
     let UserName = AppUserData.data.EMPL_NAME
     let token = AppUserData.token;
     let apiData = {
-      // "UserName": "spnayak",
-      "UserName": UserName,
+      "UserName": "spnayak",
+      // "UserName": UserName,
     };
     setLoader(true);
     ApiService.PostMethode('/GetPendingLeaveReq  ', apiData, token)
@@ -189,8 +189,8 @@ export const Leave = () => {
     setApprove(index);
   };
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ width: '90%', alignSelf: 'center', marginVertical: 15 }}>
+    <View style={{ flex: 1, paddingHorizontal:10 }}>
+      <View style={{ width: '100%', alignSelf: 'center',marginVertical:10, paddingHorizontal:10 }}>
         <SegmentedControlTab
           borderRadius={0}
           values={['Approve Leave', 'View Report']}
@@ -206,14 +206,15 @@ export const Leave = () => {
         />
       </View>
 
-      <View>
+      <View style={{ paddingHoriZontal:10 , flex:1}}>
         {approve == 0 ? (
-          <View>
+          <View style={{ flex: 1}}>
           <TouchableOpacity style={{ padding: 10, backgroundColor: '#a9bce7' }}>
             <Text style={{ color: '#000', fontWeight: '600' }}>
               Tap On Leave To View Details
             </Text>
           </TouchableOpacity>
+
           {getPendingLeaveReq.length>0 ? (
 
            <View style={styles.header}>
@@ -223,6 +224,8 @@ export const Leave = () => {
            <Text>DAYS</Text>
          </View>
           ):null}
+
+
          {loader == true ? (
            <Spinner
              visible={loader}
@@ -230,6 +233,8 @@ export const Leave = () => {
              textStyle={styles.spinnerTextStyle}
            />
          ) : null}
+
+
          <FlatList
            data={getPendingLeaveReq}
            keyExtractor={({ item, index }) => index}
@@ -250,7 +255,7 @@ export const Leave = () => {
          />
          </View>
         ) : (
-          <View>
+          <View style={{ flex: 1}}>
 
             <Text style={{ color: '#000', fontWeight: '600', marginVertical: '5%', marginLeft: 15 }}>Employee</Text>
 
@@ -479,8 +484,9 @@ export const Taxi = () => {
     setSearch('')
   }
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ width: '90%', alignSelf: 'center', marginVertical: 15 }}>
+    <View style={{ flex: 1, paddingHorizontal:10 }}>
+
+      <View style={{ width: '100%', marginVertical: 15 }}>
         <SegmentedControlTab
           borderRadius={0}
           values={['Approve Taxi', 'View Report']}
@@ -495,12 +501,14 @@ export const Taxi = () => {
           activeTabTextStyle={styles.activeTabTextStyle}
         />
       </View>
-      <View>
+
+
+      <View style={{ flex: 1}}>
         {approve == 0 ? (
-          <View style={{ width: '100%', marginVertical: 10 }}>
+          <View style={{ width: '100%', marginVertical: 10,flex: 1 }}>
             <View
               style={{
-                width: '95%',
+                width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 borderWidth: 1,
@@ -591,8 +599,15 @@ export const Taxi = () => {
               }} />
           </View>
         ) : (
-          <SafeAreaView style={{ margin: '5%', }}>
-            <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginVertical: 10, padding: 10 }}>
+          <SafeAreaView style={{ flex: 1}}>
+            <View style={{ 
+              width: '100%', flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderBottomWidth: 1,
+              marginVertical: 10, padding: 10,
+              backgroundColor:'#fff', 
+              borderColor:'#ccc'
+            }}>
               <Text>Dept-Code</Text>
               <Text>Name</Text>
               <Text>TCar Approval</Text>
@@ -677,7 +692,6 @@ export const Attendance = () => {
     setSearch('')
   }
   return (
-    <View>
       <View style={{ width: '100%', marginVertical: 10 }}>
         <View
           style={{
@@ -779,8 +793,6 @@ export const Attendance = () => {
           </View>
         )}
       </View>
-
-    </View>
   );
 };
 
@@ -832,8 +844,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 10,
     padding: 12,
-    borderBottomWidth: 1
+    // borderBottomWidth: 1,
+    backgroundColor:'#fff'
   },
+
   activeTabTextStyle: {
     color: '#2757C3',
   },
@@ -881,9 +895,14 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1
-    , marginVertical: 10,
-    padding: 10
+    borderBottomWidth: 1,
+    borderColor:'#ccc',
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor:'#fff'
+  },
+  spinnerTextStyle:{
+    color:'#fff'
   }
 });
 

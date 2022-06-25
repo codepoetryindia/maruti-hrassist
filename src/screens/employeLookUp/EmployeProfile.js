@@ -94,12 +94,13 @@ const EmployProfile = ({ navigation, route }) => {
            <Spinner
            visible={loader}
            textContent={'Loading...'}
-           textStyle={styles.spinnerTextStyle}
+           textStyle={{color:'#fff'}}
          />
         ):null}
+
+
         <LinearGradient
-          style={{ flex: 0.25 }}
-       colors={['#4174D0','#6ef7ff']}>
+          colors={['#4174D0','#6ef7ff']}>
           <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
             <Ionicons
               name="chevron-back-outline"
@@ -112,18 +113,20 @@ const EmployProfile = ({ navigation, route }) => {
                 color: '#fff',
                 fontSize: 18,
                 letterSpacing: 1,
-                marginLeft: 25,
+                marginLeft: 15,
+                fontWeight:'700'
               }}>
               Employee Profile
             </Text>
           </View>
         </LinearGradient>
-        {
-        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Please wait we are fetching your data</Text></View>) :
-          (
+
+
+
+          
         <View
           style={{
+            flex:1,
             backgroundColor: '#fff',
             width: '90%',
             alignSelf: 'center',
@@ -136,10 +139,9 @@ const EmployProfile = ({ navigation, route }) => {
             shadowRadius: 3.84,
             elevation: 5,
             borderRadius: 8,
-            position: 'absolute',
-            top: '10%',
-            bottom: 5
+            marginTop:60
           }}>
+
           <View
             style={{
               borderWidth: 5,
@@ -183,9 +185,9 @@ const EmployProfile = ({ navigation, route }) => {
               )}
 
           </View>
-          <View style={{ height: '90%', }}>
-          
 
+
+          <View style={{ flex:1 }}>
             <FlatList
               data={employeeData}
               showsVerticalScrollIndicator={false}
@@ -239,7 +241,7 @@ const EmployProfile = ({ navigation, route }) => {
               )} />
   
           </View>
-        </View>)}
+        </View>
       </SafeAreaView>
     
 

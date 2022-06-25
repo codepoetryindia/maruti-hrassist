@@ -395,32 +395,31 @@ const Leave = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 ,marginBottom:50}}>
-      <KeyboardAwareScrollView
-        style={styles.container}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-
-            <Spinner
+    <SafeAreaView style={{ flex: 1}}>
+                  <Spinner
                     visible={loader}
                     textContent={'Loading...'}
                     textStyle={styles.spinnerTextStyle}
                   />
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-        <TouchableOpacity
-            style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
+            <TouchableOpacity
+            style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
             }}>
             <Ionicons
               name="ellipsis-vertical-circle"
-              size={25}
+              size={30}
               color={'#00B4DB'}
             />
           </TouchableOpacity>
-          <View style={{ width: '90%', alignSelf: 'center' }}>
+          <View style={{ width: '90%', alignSelf: 'center', marginTop:30 }}>
             <SegmentedControlTab
-              borderRadius={8}
+              borderRadius={2}
               values={['Apply Leave', 'View Report']}
               selectedIndex={applyLeave}
               onTabPress={index => {
@@ -437,13 +436,13 @@ const Leave = ({navigation}) => {
           {horizental == true ? (
             <View
               style={{
-                padding: 5,
+                padding: 10,
                 backgroundColor: '#00B4DB',
                 position: 'absolute',
-                top: 0,
+                top: 10,
                 right: 50,
                 zIndex:1000,
-                borderRadius:8,
+                borderRadius:0,
                 
               }}>
                 <TouchableOpacity
@@ -463,11 +462,11 @@ const Leave = ({navigation}) => {
             </View>
           ) : null}
 
-          <View>
+          <View >
             {applyLeave == 0 ? (
               <Formik
                 innerRef={fromRef}
-                // validationSchema={leaveTypeScheema}
+                validationSchema={leaveTypeScheema}
                 initialValues={{
                   leave: '',
                   planned: '',
@@ -891,7 +890,7 @@ const Leave = ({navigation}) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     backgroundColor: '#fff',
-                    borderRadius: 10,
+                    borderRadius: 0,
                     shadowColor: '#000',
                     shadowOffset: {
                       width: 0,
@@ -909,9 +908,9 @@ const Leave = ({navigation}) => {
                       backgroundColor: 'transparent',
                       width: '100%',
                       height: 40,
-                      borderRadius: 5,
+                      borderRadius: 0,
                     }}
-                    dropdownStyle={{ borderRadius: 10 }}
+                    dropdownStyle={{ borderRadius: 0 }}
                     rowTextStyle={{ textAlign: 'left', marginLeft: 5 }}
                     buttonTextStyle={{ textAlign: 'left', marginLeft: 1 }}
                     renderDropdownIcon={isOpened => {
@@ -944,7 +943,7 @@ const Leave = ({navigation}) => {
 
                 {/* Headings */}
 
-                <View style={{marginBottom:60}}>
+                <View style={{marginBottom:60, flex:1,paddingHorizontal:10}}>
                   <DataTable
                     style={{
                       width: '100%',
@@ -970,7 +969,7 @@ const Leave = ({navigation}) => {
                       keyExtractor={item => item.id}
                       renderItem={({ item }) => (
                         
-                        <View style={{flex:1}}>
+                        <View style={{flex:1}} key={item.id}>
                           <TouchableOpacity 
                            style={{}} onPress={() => {
                             console.log(item)
@@ -1108,17 +1107,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    alignSelf: 'center',
-    paddingVertical: 15,
+    // alignSelf: 'center',
+    // paddingVertical: 15,
   },
   tabStyle: {
     //custom styles
     paddingVertical: 10,
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
+    borderColor:'#444'
   },
   tabTextStyle: {
     //custom styles
@@ -1130,7 +1126,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderBottomWidth: 4,
     borderBottomColor: '#2757C3',
-    borderRadius: 10,
+    // borderRadius: 10,
   },
   activeTabTextStyle: {
     color: '#2757C3',
@@ -1174,6 +1170,12 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle:{
     color:'#fff'
+  },
+  addtnlBtn:{
+    position:'absolute',
+    right:10,
+    top:0,
+    zIndex:55555
   }
 });
 
