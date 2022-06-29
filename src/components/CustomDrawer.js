@@ -6,7 +6,6 @@ import {
 } from '@react-navigation/drawer';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
@@ -18,6 +17,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import Share from 'react-native-share';
 import AuthContext from '../context/AuthContext';
+
+
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+import Text from './reusable/Text';
 
 // import SignIn from '../Auth/SignIn';
 
@@ -53,10 +57,9 @@ function CustomDrawer(props) {
   };
   const {navigation} = props;
   return (
-    <>
       <DrawerContentScrollView style={{backgroundColor: '#ffffff'}} {...props}>
         <LinearGradient
-          colors={['#4174D0','#4EC4D0']}
+          colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
           style={styles.gradient}>
           <View
             style={{
@@ -77,12 +80,12 @@ function CustomDrawer(props) {
               />
             )}
             <View style={{ flex:1}}>
-              <Text style={styles.textTitle} >{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
+              <Text style={styles.textTitle} Bold>{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('EditProfile');
                 }}>
-                <Text style={{color: '#fff', marginTop: 5, textDecorationLine: 'underline',}}>
+                <Text style={{color: '#fff', marginTop: 5, textDecorationLine: 'underline', fontSize:GlobalFontSize.Small}}>
                   Edit Profile
                 </Text>
               </TouchableOpacity>
@@ -97,8 +100,10 @@ function CustomDrawer(props) {
             </Text>
           </View>
         </LinearGradient>
+
+
         <View style={styles.container}>
-          <ScrollView style={{height: 730}}>
+          <View style={{ flex:1 }}>
             <DrawerItem
               label="Home"
               onPress={() => navigation.navigate('Home')}
@@ -110,8 +115,10 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
+
             <DrawerItem
               label="Employee Lookup"
               onPress={() => navigation.navigate('EmployeeNavs')}
@@ -123,7 +130,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
 
             <DrawerItem
@@ -137,7 +145,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="Compensatino and Benifits"
@@ -149,7 +158,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="Hospital & Emergency"
@@ -161,7 +171,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
 
             <DrawerItem
@@ -174,7 +185,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
 
             <DrawerItem
@@ -187,7 +199,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="Visitor Gatepass"
@@ -199,7 +212,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="Buisness Travel"
@@ -211,7 +225,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 1, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="Share App"
@@ -223,7 +238,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
 
             <DrawerItem
@@ -243,7 +259,8 @@ function CustomDrawer(props) {
                   style={styles.icon}
                 />
               )}
-              style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
             />
             <DrawerItem
               label="LogOut"
@@ -259,24 +276,26 @@ function CustomDrawer(props) {
               )}
               // style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
             />
-          </ScrollView>
+
+          </View>
         </View>
-      </DrawerContentScrollView>
       <View style={styles.footer}>
-        <Text style={{color: '#000'}}>V2.2.2</Text>
+        <Text style={{color: GlobalColor.Text}}>V2.2.2</Text>
         <View style={{flexDirection: 'row', padding: 5}}>
-          <Text style={{fontSize: 12, color: '#000', marginBottom: 15}}>
-            Copyright 2022 Maruti Suzuki india Limited{' '}
+          <Text style={{fontSize: 12, color: GlobalColor.Text, marginBottom: 15}}>
+            Copyright 2022 HR Assist
           </Text>
         </View>
       </View>
-    </>
+      </DrawerContentScrollView>
+
   );
 }
 const styles = StyleSheet.create({
   gradient: {
     width: '100%',
-    height: '21%',
+    height:150,
+    // height: '21%',
     marginTop: -18,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
@@ -289,15 +308,16 @@ const styles = StyleSheet.create({
     borderRadius: 60,
   },
   textTitle: {
-    fontSize: 16,
-    color: '#fff',
+    fontSize: GlobalFontSize.P,
+    color: GlobalColor.White,
     letterSpacing: 1,
     flexShrink: 1
   },
   container: {
+    flexGrow:1,
     backgroundColor: '#fff',
     maxWidth: '90%',
-    height: '85%',
+    // height: '85%',
     marginTop: -30,
     borderRadius: 10,
     marginHorizontal: 14,
@@ -308,13 +328,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+    marginBottom:10
   },
   footer: {justifyContent: 'center', alignItems: 'center'},
   icon: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
   },
 });
 export default CustomDrawer;

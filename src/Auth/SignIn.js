@@ -2,10 +2,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
-  TextInput,
+  // TextInput,
   TouchableOpacity,
   ActivityIndicator,
   SafeAreaView
@@ -20,10 +19,22 @@ import AuthContext from '../context/AuthContext';
 import Toast from 'react-native-simple-toast'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Spinner from 'react-native-loading-spinner-overlay';
+
+// Component Import
+import Text from '../components/reusable/Text';
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+import TextInput from '../components/reusable/TextInput';
+
+
+
+
 const SignIn = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [showPass, setShowPass] = useState(true);
   const [Loader, setLoader] = useState(false);
+
+
 
   const handleLogin = values => {
     setLoader(true);
@@ -63,6 +74,9 @@ const SignIn = ({ navigation }) => {
       });
   };
 
+
+
+
   const GetUserDetails = ({ token, user }) => {
     console.log(token, user);
     let data = { "UserName": user };
@@ -72,7 +86,7 @@ const SignIn = ({ navigation }) => {
         // console.log('user Response', res);
         let response = res.Value;
 
-      console.log("response",response);
+      // console.log("response",response);
 
         if(response.Table){
           let userData = {
@@ -121,7 +135,7 @@ const SignIn = ({ navigation }) => {
   const loginValidationSchema = yup.object().shape({
     UserName: yup
       .string()
-      .required('UserName is Required')
+      .required('Username is required')
       .min(6, 'min 6 digit is require ')
       .max(6, 'max 6 digit allowed'),
     Password: yup
@@ -130,25 +144,24 @@ const SignIn = ({ navigation }) => {
       .required('Password is required'),
   });
 
+
+
+
+
   return (
     <SafeAreaView style={{ flexGrow: 1 }}>
       <KeyboardAwareScrollView
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}>
-
-        <View style={styles.container}>
-          {Loader == true ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Spinner
                 visible={Loader}
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
               />
-            </View>
-          ) : (
+        <View style={styles.container}>
             <View style={styles.container}>
               <LinearGradient
-                colors={['#4174D0', '#6ef7ff']}
+                colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
                 style={styles.gradient}>
                 <View>
                   <View
@@ -156,6 +169,7 @@ const SignIn = ({ navigation }) => {
                       // flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginTop:15
                     }}>
                     <Image
                       source={require('../assets/Images/logoo.png')}
@@ -172,23 +186,22 @@ const SignIn = ({ navigation }) => {
                     }}>
                     <Text
                       style={{
-                        fontSize: 30,
+                        fontSize: GlobalFontSize.H1,
                         color: '#fff',
-                        fontWeight: 'bold',
-                      }}>
-                      Welcome!
+                      }}
+                      Bold
+                      >
+                      Welcome
                     </Text>
                   </View>
                   <Text
                     style={{
-                      fontSize: 28,
+                      fontSize: GlobalFontSize.H4,
                       color: '#fff',
                       alignSelf: 'center',
-                      fontFamily: 'Montserrat-Bold',
-                      marginBottom: 50
+                      marginBottom: 40
                     }}>
-                    In <Text style={{ fontSize: 40, color: '#f7ebea' }}>M</Text>aruti
-                    <Text style={{ fontSize: 40, color: '#f7ebea' }}> S</Text>uzuki
+                    to <Text style={{ fontSize: 35, color: '#f7ebea' }} Bold>HR Assist</Text>
                   </Text>
                 </View>
               </LinearGradient>
@@ -211,15 +224,15 @@ const SignIn = ({ navigation }) => {
                   isValid,
                 }) => (
                   <View style={styles.login}>
-                    <Image
-                      source={require('../assets/Images/login2.png')}
+                    {/* <Image
+                      source={require('../assets/Images/login-icon.png')}
                       style={{
-                        width: 200,
-                        height: 200,
+                        width: 120,
+                        height: 120,
                         alignSelf: 'center',
                         resizeMode: 'contain',
                       }}
-                    />
+                    /> */}
                     <View style={{ paddingTop: 0 }}>
                       <View style={{ paddingVertical: 10 }}>
                         <View
@@ -230,10 +243,7 @@ const SignIn = ({ navigation }) => {
                             paddingHorizontal: 10,
                             padding: 5,
                             borderWidth: 1,
-                            borderTopColor: '#80406A',
-                            borderStartColor: '#6ef7ff',
-                            borderBottomColor: '#2757C3',
-                            borderEndColor: '#6ef7ff',
+                            borderColor:GlobalColor.Primary,
                             alignItems: 'center',
                             alignSelf: 'center',
                             margin: 8,
@@ -242,7 +252,7 @@ const SignIn = ({ navigation }) => {
                           <Ionicons
                             name="person-circle"
                             size={25}
-                            color={'#4174D0'}
+                            color={GlobalColor.Primary}
                           />
                           <TextInput
                             placeholder="Login Id"
@@ -250,13 +260,6 @@ const SignIn = ({ navigation }) => {
                             onChangeText={handleChange('UserName')}
                             onBlur={handleBlur('UserName')}
                             value={values.UserName}
-                            style={{
-                              width: '90%',
-                              alignSelf: 'center',
-                              marginVertical: -2,
-                              paddingVertical: 10,
-                              color:'#000'
-                            }}
                           />
                         </View>
                         {errors.UserName && touched.UserName && (
@@ -266,7 +269,7 @@ const SignIn = ({ navigation }) => {
                               alignSelf: 'center',
                               paddingVertical: 2,
                             }}>
-                            <Text style={{ fontSize: 12, color: 'red' }}>
+                            <Text style={styles.error}>
                               {errors.UserName}
                             </Text>
                           </View>
@@ -278,10 +281,7 @@ const SignIn = ({ navigation }) => {
                             justifyContent: 'space-between',
                             padding: 5,
                             borderWidth: 1,
-                            borderTopColor: '#80406A',
-                            borderStartColor: '#6ef7ff',
-                            borderBottomColor: '#2757C3',
-                            borderEndColor: '#6ef7ff',
+                            borderColor:GlobalColor.Primary,
                             alignItems: 'center',
                             alignSelf: 'center',
                             borderRadius: 8,
@@ -290,9 +290,17 @@ const SignIn = ({ navigation }) => {
                           <Ionicons
                             name="lock-closed"
                             size={25}
-                            color={'#4174D0'}
+                            color={GlobalColor.Primary}
                           />
+
                           <TextInput
+                            placeholder="Password"
+                            secureTextEntry={showPass}
+                            onChangeText={handleChange('Password')}
+                            onBlur={handleBlur('Password')}
+                            value={values.Password}
+                          />
+                          {/* <TextInput
                             placeholder="Password"
                             secureTextEntry={showPass}
                             onChangeText={handleChange('Password')}
@@ -303,9 +311,10 @@ const SignIn = ({ navigation }) => {
                               alignSelf: 'center',
                               marginVertical: -2,
                               paddingVertical: 10,
-                              color:'#000'
+                              color:GlobalColor.Text,
+                              fontSize:GlobalFontSize.Small                           
                             }}
-                          />
+                          /> */}
                           <TouchableOpacity
                             onPress={() => {
                               if (showPass == false) {
@@ -315,9 +324,9 @@ const SignIn = ({ navigation }) => {
                               }
                             }}>
                             {showPass == true ? (
-                              <Ionicons name="eye-off" size={25} color={'#000'} />
+                              <Ionicons name="eye-off" size={25} color={GlobalColor.LightDark} />
                             ) : (
-                              <Ionicons name="eye" size={25} color={'#000'} />
+                              <Ionicons name="eye" size={25} color={GlobalColor.LightDark} />
                             )}
                           </TouchableOpacity>
                         </View>
@@ -328,7 +337,7 @@ const SignIn = ({ navigation }) => {
                               alignSelf: 'center',
                               paddingVertical: 2,
                             }}>
-                            <Text style={{ fontSize: 12, color: 'red' }}>
+                            <Text style={styles.error}>
                               {errors.Password}
                             </Text>
                           </View>
@@ -341,7 +350,8 @@ const SignIn = ({ navigation }) => {
                               width: '90%',
                               alignSelf: 'center',
                             }}
-                            colors={['#4174D0', '#6ef7ff']}>
+                            colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
+                            >
                             <TouchableOpacity
                               onPress={() => {
                                 handleSubmit();
@@ -350,16 +360,17 @@ const SignIn = ({ navigation }) => {
                                 width: '100%',
                                 paddingVertical: 10,
                                 alignItems: 'center',
-                                marginTop: 5,
+                                marginVertical: 5,
                               }}>
                               <Text
                                 style={{
-                                  fontSize: 16,
-                                  fontWeight: 'bold',
-                                  color: '#fff',
-                                  letterSpacing: 2,
-                                }}>
-                                  SignIn
+                                  fontSize: GlobalFontSize.P,
+                                  color: GlobalColor.White,
+                                  // letterSpacing: 2,
+                                }}
+                                Bold={true}
+                                >
+                                  Sign In
                               </Text>
                             </TouchableOpacity>
                           </LinearGradient>
@@ -370,7 +381,6 @@ const SignIn = ({ navigation }) => {
                 )}
               </Formik>
             </View>
-          )}
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -389,18 +399,23 @@ const styles = StyleSheet.create({
     marginBottom: -50
   },
   spinnerTextStyle: {
-    color: '#FFF'
+    color: GlobalColor.White
   },
   login: {
     flex: 1,
     width: '100%',
     backgroundColor: '#fff',
-    borderTopRightRadius: 50,
-    borderTopLeftRadius: 50,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: '#fff'
+    borderColor: GlobalColor.White,
+    justifyContent:'center'
   },
+  error:{
+    color:GlobalColor.Danger,
+    fontSize:GlobalFontSize.Error
+  }
 });
 
 //make this component available to the app

@@ -9,6 +9,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import AttendanceAdminNav from './AttendanceAdminNav';
 import AttendanceAdmin from '../screens/Attendance/Attendance&Admin'
 
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+import Text from '../components/reusable/Text';
+
 const Tab = createBottomTabNavigator();
 function Tabs() {
   return (
@@ -17,40 +21,45 @@ function Tabs() {
     initialRouteName="Home"
     screenOptions={{
       headerShown: false,
-      tabBarActiveTintColor: '#000',
-      tabBarLabelStyle:{ fontSize:12},
+      tabBarActiveTintColor: GlobalColor.Primary,
+      tabBarLabelStyle:{ fontSize:GlobalFontSize.Error, fontWeight:'700'},
       tabBarStyle:{height:70,backgroundColor:'transparent',borderTopLeftRadius:15,borderTopRightRadius:15,paddingBottom:10,} ,
       tabBarBackground:() =>(
-        <LinearGradient    colors={['#fff', '#fff']} style={{height:80,borderTopLeftRadius:15,borderTopRightRadius:15}}/>
+        <LinearGradient    
+        colors={['#fff', '#fff']} style={{
+          height:80,
+          // borderTopLeftRadius:15,
+          // borderTopRightRadius:15
+        }}/>
       )
     }}>
       <Tab.Screen name="Home" component={Home} 
-      options={{
+        options={{
         tabBarLabel: 'Home',
         tabBarIcon: ({ color, size }) => (
-          <Icon name="home" color={'#2D79AD'} size={size} />
+          <Icon name="home" color={GlobalColor.Primary} size={size} />
         ),
       }}/>
       <Tab.Screen name="AttendanceAdmin" component={AttendanceAdmin}
        options={{
-        tabBarLabel: 'AttendanceAdmin',
+        tabBarLabel: 'Attendance',
         tabBarIcon: ({ color, size }) => (
-          <Icon name="calendar" color={'#2D79AD'} size={size} />
+          <Icon name="calendar" color={GlobalColor.Primary} size={size} />
         ),
       }} />
       <Tab.Screen name="Gatepass" component={Gatepass}
-      options={{
+       options={{
         tabBarLabel: 'Gatepass',
         tabBarIcon: ({ color, size }) => (
-          <Material name="portrait" color={'#2D79AD'} size={size} />
+          <Material name="portrait" color={GlobalColor.Primary} size={size} />
         ),
       }}
        />
       <Tab.Screen name="OtherApps" component={OtherApps} 
-      options={{
+        options={{
         tabBarLabel: 'OtherApps',
         tabBarIcon: ({ color, size }) => (
-          <Material name="sort" color={'#2D79AD'} size={size} />
+          <Material name="sort" color={GlobalColor.Primary} size={size} />
         ),
       }}/>
     </Tab.Navigator>

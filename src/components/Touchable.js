@@ -1,16 +1,25 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image,FlatList,SafeAreaView } from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image,FlatList,SafeAreaView } from 'react-native';
 import Share from 'react-native-share';
 import LinearGradient from 'react-native-linear-gradient';
+
+
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+import Text from './reusable/Text';
+
+
+
+
 const myCustomeSharing =async () =>{
   const shareOption = {
     message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
   }
   try {const shareResponse = await Share.open(shareOption);}
-  catch(error){
-    console.log('error',error);
-}
+    catch(error){
+      console.log('error',error);
+  }
 }
 
 // create a component
@@ -19,32 +28,32 @@ const TouchableCard = ({navigation}) => {
     {
       id: '1',
       name: 'Employee Lookup',
-      images: require('../assets/Images/groupp.png'),
+      images: require('../assets/Images/user-groups.png'),
     },
     {
       id: '2',
       name: 'Attendance & Admin',
-      images: require('../assets/Images/calendarr.png'),
+      images: require('../assets/Images/calendar.png'),
     },
     {
       id: '3',
       name: 'Compliances & Benifis',
-      images: require('../assets/Images/growth.png'),
+      images: require('../assets/Images/compliant.png'),
     },
     {
       id: '4',
       name: 'Hospital & Emergency',
-      images: require('../assets/Images/first-aid-kit.png'),
+      images: require('../assets/Images/emergency-call.png'),
     },
     {
       id: '5',
       name: 'Canteen Menu',
-      images: require('../assets/Images/canteen.png'),
+      images: require('../assets/Images/food.png'),
     },
     {
       id: '6',
       name: 'Visitor Gatepass',
-      images: require('../assets/Images/id-card.png'),
+      images: require('../assets/Images/visitor-identification.png'),
     },
     {
       id: '7',
@@ -65,7 +74,7 @@ const TouchableCard = ({navigation}) => {
   ];
 
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, marginTop:10}}>
         <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -103,14 +112,13 @@ const TouchableCard = ({navigation}) => {
                myCustomeSharing()
               }
             }}>
-              <LinearGradient
-         colors={['#4174D0','#53AFE2']}
-        style={{padding:5,borderRadius:5}}>
-
-            <Image source={item.images} style={styles.cardimg} />
-        </LinearGradient>
-
-            <Text style={styles.cardText}>{item.name}</Text>
+            <LinearGradient
+              // colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
+              colors={[GlobalColor.White, GlobalColor.White]}
+              style={{padding:5,borderRadius:5}}>
+              <Image source={item.images} style={styles.cardimg} />
+            </LinearGradient>
+            <Text style={styles.cardText} Bold>{item.name}</Text>
           </TouchableOpacity>
            
             )}/>
@@ -122,10 +130,11 @@ const styles = StyleSheet.create({
   card: {
     width: "30%",
     padding:10,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
-    marginTop: 5,
+    // marginTop: 5,
+    marginBottom:10,
     marginLeft:10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -143,13 +152,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     margin:5,
-    tintColor:'#d4fdff'
+    // tintColor:'#d4fdff'
   },
   cardText:{
     textAlign:'center',
     marginTop:5, 
-    fontSize:14,
-    color:'#444',
+    fontSize:GlobalFontSize.Error,
+    color:GlobalColor.Text,
   }
 });
 

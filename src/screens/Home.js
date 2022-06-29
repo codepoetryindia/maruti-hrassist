@@ -1,6 +1,6 @@
 //import liraries
 import React, {Component, useContext} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView} from 'react-native';
+import {View, StyleSheet, Image, ScrollView, SafeAreaView} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TouchableCard from '../components/Touchable';
@@ -9,6 +9,9 @@ import {SliderBox} from 'react-native-image-slider-box';
 import IconBadge from 'react-native-icon-badge';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import AuthContext from './../context/AuthContext';
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+import Text from '../components/reusable/Text';
 
 
 
@@ -30,7 +33,7 @@ const Home = ({navigation}) => {
     <SafeAreaView style={{flexGrow: 1}}>
     <View style={styles.container}>
       <LinearGradient
-         colors={['#4174D0','#4EC4D0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View>
 
@@ -48,10 +51,8 @@ const Home = ({navigation}) => {
                 color={'white'}
                 onPress={() => navigation.openDrawer()}
               />
-              <Text style={[styles.brand, {marginLeft: 15}]}>HR Assist</Text>
+              <Text style={[styles.brand, {marginLeft: 15}]} Bold>HR Assist</Text>
             </View>
-            {/* <Text style={styles.brand}>HR Assist</Text>
-            <Text style={{color: 'white', margin: 10}}></Text> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -90,21 +91,18 @@ const Home = ({navigation}) => {
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
-                  fontSize: 16,
-                  color: '#fff',
-                  fontWeight: 'bold',
+                  fontSize: GlobalFontSize.P,
+                  color: GlobalColor.White,
                   letterSpacing: 1,
                 }}>
                 {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
-              {/* <Text style={{fontSize: 15, color: '#fff', letterSpacing: 1}}>
-                Monday, 24 jan 2022
-              </Text> */}
             </View>
           </View>
-
         </View>
       </LinearGradient>
+
+
       <View style={styles.carousel}>
         <SliderBox
           images={image}
@@ -114,8 +112,9 @@ const Home = ({navigation}) => {
           sliderBoxHeight={250}
         />
       </View>
-
       <TouchableCard navigation={navigation} />
+
+
     </View>
     </SafeAreaView>
   );
@@ -141,18 +140,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 10,
-    fontFamily: 'Montserrat-Regular',
-    top: '1%',
   },
   brand: {
-    color: 'white',
-    fontSize: 20,
+    color: GlobalColor.White,
+    fontSize: GlobalFontSize.H4,
     margin: 10,
-    fontWeight: 'bold',
     // letterSpacing: 1,
   },
   carousel: {
-    marginTop: -30,
+    marginTop: -20,
     height: 180,
     width: '92%',
     justifyContent: 'center',
