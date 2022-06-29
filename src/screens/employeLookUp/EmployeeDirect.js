@@ -1,12 +1,15 @@
 //import liraries
 import React, { useEffect, useState, useContext, } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image,SafeAreaView } from 'react-native';
+import { View, StyleSheet, TextInput, TouchableOpacity, FlatList, Image,SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import AuthContext from '../../context/AuthContext'
 import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
 // create a component
 const EmployeeDirect = () => {
   const myNavigation = useNavigation();
@@ -33,6 +36,7 @@ const EmployeeDirect = () => {
           // console.log('ApiResult', result);
           let responseData = result.Value
           setSearchedData(responseData)
+          
           // console.log('responseData', responseData)
         })
         .catch(error => {
@@ -113,7 +117,7 @@ const EmployeeDirect = () => {
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                   <Image source={require('../../assets/Images/dataNotFound.png')}
                     style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
+                  <Text style={{  textAlign: 'center', }}>No Data found</Text>
                 </View>
               )
             }}

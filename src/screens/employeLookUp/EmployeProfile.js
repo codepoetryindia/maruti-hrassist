@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList,SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, FlatList,SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,9 @@ import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text'
 // create a component
 const EmployProfile = ({ navigation, route }) => {
   let userId = route.params.data
@@ -100,7 +103,8 @@ const EmployProfile = ({ navigation, route }) => {
 
 
         <LinearGradient
-          colors={['#4174D0','#6ef7ff']}>
+      colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
+          >
           <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
             <Ionicons
               name="chevron-back-outline"
@@ -111,7 +115,7 @@ const EmployProfile = ({ navigation, route }) => {
             <Text
               style={{
                 color: '#fff',
-                fontSize: 18,
+                fontSize: GlobalFontSize.H4,
                 letterSpacing: 1,
                 marginLeft: 15,
                 fontWeight:'700'
@@ -272,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   header: {
-    fontSize: 12,
+    fontSize: GlobalFontSize.P,
     color: 'gray',
     paddingVertical: 5,
   }

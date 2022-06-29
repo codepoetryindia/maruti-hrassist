@@ -1,8 +1,8 @@
 //import liraries
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
-  Text,
+
   StyleSheet,
   Image,
   ScrollView,
@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import EmployeeDirect from './EmployeeDirect';
 import Birthdays from './Birthday/Birthdays';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
@@ -22,7 +25,7 @@ const Tab = createMaterialTopTabNavigator();
 
 
 
-const EmployeLookUp = ({navigation}) => {
+const EmployeLookUp = ({ navigation }) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', (e) => {
       // Prevent default behavior
@@ -36,9 +39,9 @@ const EmployeLookUp = ({navigation}) => {
     return unsubscribe;
   }, [navigation]);
   return (
-    <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-     colors={['#00B4DB','#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -65,22 +68,23 @@ const EmployeLookUp = ({navigation}) => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 18,
               letterSpacing: 1,
               marginLeft: 30,
-            }}>
+              fontSize: GlobalFontSize.H4
+            }}
+            Bold>
             Employee Lookup
           </Text>
         </View>
       </LinearGradient>
 
-      <Tab.Navigator 
-      screenOptions={{
-        tabBarLabelStyle: { fontSize: 16 },
-        tabBarActiveTintColor:'#fff',
-        tabBarIndicatorStyle:{borderBottomWidth:5,borderBottomColor:'#fff'},
-        tabBarStyle: { backgroundColor: '#0083B0',elevation:0 },
-      }}
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { fontSize: GlobalFontSize.P },
+          tabBarActiveTintColor: '#fff',
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
+          tabBarStyle: { backgroundColor: GlobalColor.SecondryGradient, elevation: 0 },
+        }}
       >
         <Tab.Screen name="EmployeeDirect" component={EmployeeDirect} />
         <Tab.Screen name="Birthdays" component={Birthdays} />
@@ -120,7 +124,7 @@ const EmployeLookUp = ({navigation}) => {
 const styles = StyleSheet.create({
   gradient: {
     padding: 20,
-    elevation:0
+    elevation: 0
   },
   container: {
     flexDirection: 'row',

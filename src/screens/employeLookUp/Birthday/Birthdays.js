@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   FlatList,
@@ -22,6 +21,9 @@ import * as ApiService from '../../../Utils/Utils';
 import AuthContext from '../../../context/AuthContext'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useFocusEffect } from '@react-navigation/native';
+import { GlobalColor } from '../../../constants/Colors';
+import { GlobalFontSize } from '../../../constants/FontSize';
+import Text from '../../../components/reusable/Text';
 // create a component
 const Birthdays = () => {
   const { authContext, AppUserData } = useContext(AuthContext);
@@ -167,6 +169,7 @@ const Birthdays = () => {
                 <SegmentedControlTab
                   borderRadius={8}
                   values={['Today', 'Tomorrow']}
+                  
                   selectedIndex={CurrentPage}
                   onTabPress={index => {
                     handleCurrentPage(index);
@@ -335,7 +338,7 @@ const Birthdays = () => {
                                       paddingVertical: 8,
                                       width: '20%',
                                     }}>
-                                    <Text style={{ textAlign: 'center' }}>
+                                    <Text style={{ textAlign: 'center' , }}>
                                       {item.BIRTHDATE.includes("TODAY") ? item.DIRC_CODE : null}
                                     </Text>
                                   </View>
@@ -434,8 +437,9 @@ const styles = StyleSheet.create({
     borderColor:"#4174D0"
   },
   tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
+    //custom
+    fontSize:GlobalFontSize.P,
+    fontWeight:'bold',
     color: 'grey',
   },
   activeTabStyle: {
