@@ -25,7 +25,7 @@ export default (props) =>{
         // value={values.UserName}
         style={[{
           flex:1,
-          color:GlobalColor.Text,
+          color:GlobalColor.Primary,
           fontSize:GlobalFontSize.Small,
           fontFamily:'Roboto-Regular',
           textAlign:'left',                           

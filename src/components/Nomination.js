@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, } from 'react-native';
+import { View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../context/AuthContext';
 import * as ApiService from '../Utils/Utils';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Header } from './reusable/Header';
+import Text from './reusable/Text';
+import { GlobalColor } from '../constants/Colors';
 
 const Nomination = ({ navigation, route }) => {
     const [loader, setLoader] = useState(false)
@@ -64,51 +67,8 @@ const Nomination = ({ navigation, route }) => {
     }
     
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Spinner
-                visible={loader}
-                textContent={'Loading...'}
-                textStyle={styles.spinnerTextStyle}
-            />
-            <LinearGradient
-                colors={['#4174D0', '#6ef7ff']}
-                style={styles.gradient}>
-                <View style={styles.container}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: 40,
-                            alignItems: 'center',
-
-                        }}>
-                        <Ionicons
-                            name="chevron-back-outline"
-                            size={25}
-                            color={'white'}
-                            onPress={() => navigation.navigate("EditProfile")}
-                        />
-                        <Ionicons
-                            name="menu-outline"
-                            size={25}
-                            color={'white'}
-                            onPress={() => navigation.openDrawer()}
-                        />
-                    </View>
-
-                    <Text
-                        style={{
-                            color: '#fff',
-                            fontSize: 18,
-                            letterSpacing: 1,
-                            marginLeft: 30,
-                            fontWeight:"700"
-                        }}>
-                        Nomination
-                    </Text>
-                </View>
-            </LinearGradient>
-
+        <SafeAreaView style={{ flex: 1, backgroundColor:GlobalColor.PrimaryLight }}>
+            <Header title="Nomination" back></Header>
             <View style={ styles.containerBody}>
                 <FlatList
                     data={nominidata}
@@ -119,7 +79,7 @@ const Nomination = ({ navigation, route }) => {
                                 <TouchableOpacity onPress={() => {
                                     handleDropDown(index)
                                 }} style={[styles.tabStyle, { borderBottomLeftRadius: item.isClicked ? 0 : 3, borderBottomRightRadius: item.isClicked ? 0 : 3 }]}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.NOMM_DESC}</Text>
+                                    <Text Bold style={{  }}>{item.NOMM_DESC}</Text>
                                     {item.isClicked == true ? (<Ionicons name={'ios-chevron-up'} size={20} />) : (<Ionicons name={'ios-chevron-down'} size={20} />)}
                                 </TouchableOpacity>
                                 {item.isClicked == true ? (

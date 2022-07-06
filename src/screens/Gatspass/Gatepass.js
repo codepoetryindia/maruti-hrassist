@@ -28,6 +28,7 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
 
 const Gatepass = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext)
@@ -290,7 +291,7 @@ const Gatepass = ({ navigation }) => {
         textStyle={styles.spinnerTextStyle}
       />
       <LinearGradient
-        colors={['#00B4DB', '#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View style={styles.container}>
           <View
@@ -1176,7 +1177,7 @@ const Gatepass = ({ navigation }) => {
 
                 <View style={{ paddingVertical: 10 }}>
                   <LinearGradient
-                    colors={['#00B4DB', '#0083B0']}
+                    colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
                     style={{
                       margin: 5,
                       borderRadius: 8,

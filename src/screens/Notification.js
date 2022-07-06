@@ -1,18 +1,40 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Linking ,SafeAreaView} from 'react-native';
+import { View, StyleSheet, Image, FlatList, TouchableOpacity, Linking ,SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import ListEmptyComponent from '../components/reusable/ListEmptyComponent';
+import Text from '../components/reusable/Text';
+import { LoadingScreen } from '../components/reusable/LoadingScreen';
+import { Header } from '../components/reusable/Header';
+import { GlobalColor } from '../constants/Colors';
 
 // create a component
 const Notification = ({ navigation }) => {
-  const [loader, setLoader] = useState(false)
-  const [notifi, setNotifi] = useState([])
-  const NotifiApi = () => {
-    setLoader(true);
+  const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
+  const [notifi, setNotifi] = useState([]);
+
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+}
+
+
+
+
+  const NotifiApi = (pulldown = false) => {
+    if(!pulldown){
+      setLoader(true);
+    }
     let token = 'Basic ZDU5NjEyY2ItYTI3NS00ZTYzLTkyMGItNGE4ODJmYjFiOTVm'
     axios.get('https://onesignal.com/api/v1/notifications?app_id=42fcb50a-922f-4b0e-9ba3-701d663beede',
       {
@@ -21,8 +43,7 @@ const Notification = ({ navigation }) => {
         }
       })
       .then(resp => {
-        console.log(resp);
-        setLoader(false);
+        stopLoader();
         let result = resp.data.notifications
         let mapData = []
         result.map((item) => {
@@ -31,7 +52,7 @@ const Notification = ({ navigation }) => {
         setNotifi(mapData)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         // console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -45,69 +66,39 @@ const Notification = ({ navigation }) => {
         }
       });
   }
+
+
   useEffect(() => {
     NotifiApi()
   }, [])
 
+  if(loader){
+    return(
+      <SafeAreaView style={styles.container}>
+      <Header title={"Notifications"} back/>
+        <LoadingScreen/>
+      </SafeAreaView>
+    )
+  }
 
-  // console.log("notifi", notifi);
+
+
   return (
       <SafeAreaView style={styles.container}>
-        
-           <Spinner
-           visible={loader}
-           textContent={'Loading...'}
-           textStyle={styles.spinnerTextStyle}
-         />
-        <LinearGradient
-          style={{ flex: 1 }}
-          colors={['#4174D0', '#6ef7ff']}>
-          <View style={{ flexDirection: 'row', paddingVertical: 15, padding: 10, backgroundColor:'#4174D0' }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: 40,
-                alignItems: 'center',
-              }}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={25}
-                color={'white'}
-                onPress={() => navigation.goBack()}
-              />
-            </View>
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                // letterSpacing: 1,
-                marginLeft: 25,
-              }}>
-              Notifications
-            </Text>
-          </View>
-
-          {/* BODY */}
+        <Header title={"Notifications"} back/>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               marginHorizontal:10,
-              marginBottom:50,
-              padding: 10,
+              marginBottom:0,
+              paddingHorizontal: 10,
+              flex:1, 
             }}>
 
             <FlatList
-              // notifi
+              contentContainerStyle={{ flexGrow: 1 }}
               data={notifi}
-              ListEmptyComponent={() => {
-                return (
-                  <View style={{ flex:1,  justifyContent: 'center', alignItems: 'center', alignSelf:'center', marginTop:120, backgroundColor:'#fff' }}>
-                    <Image source={require('../assets/Images/dataNotFound.png')}
-                      style={{ width: 180, height: 180, resizeMode: 'contain', }} />
-                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                  </View>
-                )
-              }}
+              ListEmptyComponent={() =><ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={()=>NotifiApi(true)} refreshing={refresh} ></ListEmptyComponent>}
               showsVerticalScrollIndicator={false}
               keyExtractor={(item) => item.id}
               renderItem={({ item, index }) => (
@@ -117,7 +108,7 @@ const Notification = ({ navigation }) => {
                     width: '100%',
                     backgroundColor: '#fff',
                     alignSelf: 'center',
-                    marginBottom: 14,
+                    marginTop: 14,
                     padding: 15,
                     paddingVertical: 10,
                     shadowColor: '#000',
@@ -162,7 +153,7 @@ const Notification = ({ navigation }) => {
               )}
             />
           </View>
-        </LinearGradient>
+        </View>
       </SafeAreaView>)
 };
 
@@ -170,7 +161,8 @@ const Notification = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor:GlobalColor.PrimaryLight
+    // backgroundColor: '#fff',
   },
   Link:{
     color:'blue',

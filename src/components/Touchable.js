@@ -28,47 +28,47 @@ const TouchableCard = ({navigation}) => {
     {
       id: '1',
       name: 'Employee Lookup',
-      images: require('../assets/Images/user-groups.png'),
+      images: require('../assets/Images/home/icons8.png'),
     },
     {
       id: '2',
       name: 'Attendance & Admin',
-      images: require('../assets/Images/calendar.png'),
+      images: require('../assets/Images/home/calendar.png'),
     },
     {
       id: '3',
       name: 'Compliances & Benifis',
-      images: require('../assets/Images/compliant.png'),
+      images: require('../assets/Images/home/chart.png'),
     },
     {
       id: '4',
       name: 'Hospital & Emergency',
-      images: require('../assets/Images/emergency-call.png'),
+      images: require('../assets/Images/home/transplantation.png'),
     },
     {
       id: '5',
       name: 'Canteen Menu',
-      images: require('../assets/Images/food.png'),
+      images: require('../assets/Images/home/canteen.png'),
     },
     {
       id: '6',
       name: 'Visitor Gatepass',
-      images: require('../assets/Images/visitor-identification.png'),
+      images: require('../assets/Images/home/visitor-gatepass.png'),
     },
     {
       id: '7',
       name: 'Other Mobile Apps',
-      images: require('../assets/Images/other.png'),
+      images: require('../assets/Images/home/otherapps.png'),
     },
     {
       id: '8',
       name: 'Buisness Travel',
-      images: require('../assets/Images/man.png'),
+      images: require('../assets/Images/home/btravel.png'),
     },
     {
       id: '9',
       name: 'Share App',
-      images: require('../assets/Images/share.png'),
+      images: require('../assets/Images/home/share.png'),
     },
 
   ];
@@ -76,8 +76,8 @@ const TouchableCard = ({navigation}) => {
     return (
       <View style={{flex:1, marginTop:10}}>
         <FlatList
-        scrollEnabled={true}
-        showsVerticalScrollIndicator={false}
+          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
           numColumns={3}
           data={Data}
           keyExtractor={item => item.id}
@@ -118,7 +118,7 @@ const TouchableCard = ({navigation}) => {
               style={{padding:5,borderRadius:5}}>
               <Image source={item.images} style={styles.cardimg} />
             </LinearGradient>
-            <Text style={styles.cardText} Bold>{item.name}</Text>
+            <Text style={styles.cardText}>{item.name}</Text>
           </TouchableOpacity>
            
             )}/>
@@ -128,14 +128,17 @@ const TouchableCard = ({navigation}) => {
 // define your styles
 const styles = StyleSheet.create({
   card: {
-    width: "30%",
-    padding:10,
+    width: "28%",
+    padding:5,
+    paddingVertical:10,
+    borderWidth:0.2,
+    borderColor:GlobalColor.Secondary,
     backgroundColor: GlobalColor.White,
-    borderBottomLeftRadius: 7,
-    borderBottomRightRadius: 7,
+    // borderBottomLeftRadius: 7,
+    // borderBottomRightRadius: 7,
     // marginTop: 5,
     marginBottom:10,
-    marginLeft:10,
+    marginLeft:"4%",
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: "#000",
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     marginTop:5, 
     fontSize:GlobalFontSize.Error,
-    color:GlobalColor.Text,
+    color:GlobalColor.Primary,
   }
 });
 

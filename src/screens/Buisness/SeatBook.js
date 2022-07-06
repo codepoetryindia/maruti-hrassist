@@ -123,7 +123,7 @@ const SeatBook = ({ navigation }) => {
         <View style={styles.container}>
             <LinearGradient
                 style={{ padding: 20 }}
-                colors={['#00B4DB', '#0083B0']}>
+                colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}>
                 <View style={{ flexDirection: 'row' }}>
                     <View
                         style={{

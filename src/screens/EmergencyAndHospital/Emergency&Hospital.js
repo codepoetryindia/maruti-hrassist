@@ -31,7 +31,7 @@ const EmergencyHospital = ({ navigation, route }) => {
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
         // colors={['#4174D0', '#74f5fa']}
-        colors={['#00B4DB', '#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View style={styles.container}>
           <View

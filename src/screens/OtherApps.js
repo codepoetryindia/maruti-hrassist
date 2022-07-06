@@ -22,6 +22,11 @@ import AuthContext from '../context/AuthContext';
 import * as ApiService from '../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../constants/Colors';
+import { GlobalFontSize } from '../constants/FontSize';
+
+
+
 // create a component
 const OtherApps = ({ navigation }) => {
 
@@ -105,7 +110,7 @@ const OtherApps = ({ navigation }) => {
 
       <LinearGradient
         style={{ padding: 20 }}
-        colors={['#00B4DB', '#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         >
         <View style={{ width:"100%"}}>
           <View

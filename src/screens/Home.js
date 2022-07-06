@@ -32,12 +32,10 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={{flexGrow: 1}}>
     <View style={styles.container}>
-      <LinearGradient
+      <View
         colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View>
-
-
           <View style={styles.headerText1}>
             <View
               style={{
@@ -48,7 +46,7 @@ const Home = ({navigation}) => {
               <Ionicons
                 name="menu-outline"
                 size={30}
-                color={'white'}
+                color={GlobalColor.Primary}
                 onPress={() => navigation.openDrawer()}
               />
               <Text style={[styles.brand, {marginLeft: 15}]} Bold>HR Assist</Text>
@@ -63,7 +61,7 @@ const Home = ({navigation}) => {
                 onPress={() => {
                   navigation.navigate("Notification");
                 }}>
-                  <Feather name="bell" color={'#fff'} size={30} />
+                  <Feather name="bell" color={GlobalColor.Primary} size={30} />
                 {/* <IconBadge
                   MainElement={<Feather name="bell" color={'#fff'} size={30} />}
                   // BadgeElement={<Text style={{color: '#fff', fontWeight:'700'}}>5</Text>}
@@ -80,27 +78,28 @@ const Home = ({navigation}) => {
             {AppUserData.data && AppUserData.data.profile_photo ? (
               <Image
                 source={{uri:'data:image/png;base64, '+AppUserData.data.profile_photo}}
-                style={{width: 60, height: 60, borderRadius: 50}}
+                style={{width: 40, height: 40, borderRadius: 50}}
               />
             ):(
               <Image
                 source={require('../assets/Images/smile.jpg')}
-                style={{width: 60, height: 60, borderRadius: 50}}
+                style={{width: 40, height: 40, borderRadius: 50}}
               />
             )}
             <View style={{marginHorizontal: 10}}>
               <Text
                 style={{
                   fontSize: GlobalFontSize.P,
-                  color: GlobalColor.White,
-                  letterSpacing: 1,
-                }}>
+                  color: GlobalColor.Primary,
+                  textTransform: 'capitalize'
+                }}
+                Bold>
                 {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
               </Text>
             </View>
           </View>
         </View>
-      </LinearGradient>
+      </View>
 
 
       <View style={styles.carousel}>
@@ -142,13 +141,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   brand: {
-    color: GlobalColor.White,
+    color: GlobalColor.Primary,
     fontSize: GlobalFontSize.H4,
     margin: 10,
     // letterSpacing: 1,
   },
   carousel: {
-    marginTop: -20,
+    marginTop: -40,
     height: 180,
     width: '92%',
     justifyContent: 'center',
@@ -163,7 +162,9 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 1,
     overflow: 'hidden',
-    marginBottom:5
+    marginBottom:5,
+    borderWidth:0.5,
+    borderColor:GlobalColor.Secondary
   },
   carouselimg: {
     minHeight: '100%',

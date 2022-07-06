@@ -25,6 +25,8 @@ import Text from '../components/reusable/Text';
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
 import TextInput from '../components/reusable/TextInput';
+import Button from '../components/reusable/Button';
+import { LoadingScreen } from '../components/reusable/LoadingScreen';
 
 
 
@@ -50,7 +52,6 @@ const SignIn = ({ navigation }) => {
           token: res.token,
           user: values.UserName,
         };
-
         GetUserDetails(contextData);
       })
       .catch(error => {
@@ -78,16 +79,11 @@ const SignIn = ({ navigation }) => {
 
 
   const GetUserDetails = ({ token, user }) => {
-    console.log(token, user);
     let data = { "UserName": user };
     // return;
     ApiService.PostMethode('/GetEmployeeProfile', data, token)
       .then(res => {
-        // console.log('user Response', res);
         let response = res.Value;
-
-      // console.log("response",response);
-
         if(response.Table){
           let userData = {
             EMPL_NAME: response.Table[0].EMPL_NAME,
@@ -109,11 +105,9 @@ const SignIn = ({ navigation }) => {
         setLoader(false);
       })
       .catch(error => {
-        console.log("ufyguyg",error);
         setLoader(false);
         // return;
         console.log('response data', JSON.stringify(error));
-
         if (error.response) {
           // client received an error response (5xx, 4xx)
           console.log(error.response.data.error.message);
@@ -145,7 +139,11 @@ const SignIn = ({ navigation }) => {
   });
 
 
-
+  if(Loader){
+    return(
+      <LoadingScreen/>
+    )
+  }
 
 
   return (
@@ -153,15 +151,9 @@ const SignIn = ({ navigation }) => {
       <KeyboardAwareScrollView
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}>
-              <Spinner
-                visible={Loader}
-                textContent={'Loading...'}
-                textStyle={styles.spinnerTextStyle}
-              />
         <View style={styles.container}>
             <View style={styles.container}>
-              <LinearGradient
-                colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
+              <View
                 style={styles.gradient}>
                 <View>
                   <View
@@ -187,7 +179,7 @@ const SignIn = ({ navigation }) => {
                     <Text
                       style={{
                         fontSize: GlobalFontSize.H1,
-                        color: '#fff',
+                        color: GlobalColor.Primary,
                       }}
                       Bold
                       >
@@ -197,21 +189,20 @@ const SignIn = ({ navigation }) => {
                   <Text
                     style={{
                       fontSize: GlobalFontSize.H4,
-                      color: '#fff',
+                      color: GlobalColor.Primary,
                       alignSelf: 'center',
                       marginBottom: 40
                     }}>
-                    to <Text style={{ fontSize: 35, color: '#f7ebea' }} Bold>HR Assist</Text>
+                    to <Text style={{ fontSize: 35, color: GlobalColor.Primary }} Bold>HR Assist</Text>
                   </Text>
                 </View>
-              </LinearGradient>
+              </View>
 
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{ UserName: '222852', Password: 'Maruti@131' }}
                 // initialValues={{ UserName: '548596', Password: 'Maruti@04@22' }}
                 onSubmit={values => {
-                  // console.log("values",values)
                   handleLogin(values);
                 }}>
                 {({
@@ -224,15 +215,6 @@ const SignIn = ({ navigation }) => {
                   isValid,
                 }) => (
                   <View style={styles.login}>
-                    {/* <Image
-                      source={require('../assets/Images/login-icon.png')}
-                      style={{
-                        width: 120,
-                        height: 120,
-                        alignSelf: 'center',
-                        resizeMode: 'contain',
-                      }}
-                    /> */}
                     <View style={{ paddingTop: 0 }}>
                       <View style={{ paddingVertical: 10 }}>
                         <View
@@ -300,21 +282,6 @@ const SignIn = ({ navigation }) => {
                             onBlur={handleBlur('Password')}
                             value={values.Password}
                           />
-                          {/* <TextInput
-                            placeholder="Password"
-                            secureTextEntry={showPass}
-                            onChangeText={handleChange('Password')}
-                            onBlur={handleBlur('Password')}
-                            value={values.Password}
-                            style={{
-                              width: '80%',
-                              alignSelf: 'center',
-                              marginVertical: -2,
-                              paddingVertical: 10,
-                              color:GlobalColor.Text,
-                              fontSize:GlobalFontSize.Small                           
-                            }}
-                          /> */}
                           <TouchableOpacity
                             onPress={() => {
                               if (showPass == false) {
@@ -342,38 +309,8 @@ const SignIn = ({ navigation }) => {
                             </Text>
                           </View>
                         )}
-                        <View style={{ paddingVertical: 10 }}>
-                          <LinearGradient
-                            style={{
-                              margin: 5,
-                              borderRadius: 8,
-                              width: '90%',
-                              alignSelf: 'center',
-                            }}
-                            colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-                            >
-                            <TouchableOpacity
-                              onPress={() => {
-                                handleSubmit();
-                              }}
-                              style={{
-                                width: '100%',
-                                paddingVertical: 10,
-                                alignItems: 'center',
-                                marginVertical: 5,
-                              }}>
-                              <Text
-                                style={{
-                                  fontSize: GlobalFontSize.P,
-                                  color: GlobalColor.White,
-                                  // letterSpacing: 2,
-                                }}
-                                Bold={true}
-                                >
-                                  Sign In
-                              </Text>
-                            </TouchableOpacity>
-                          </LinearGradient>
+                        <View style={{ paddingVertical: 10,width:"90%", alignSelf:'center'}}>
+                          <Button onPress={()=>handleSubmit()} title="Sign In"></Button>
                         </View>
                       </View>
                     </View>
@@ -396,7 +333,8 @@ const styles = StyleSheet.create({
     flex: 0.5,
     width: '100%',
     paddingVertical: 10,
-    marginBottom: -50
+    marginBottom: -50,
+    backgroundColor:GlobalColor.PrimaryLight
   },
   spinnerTextStyle: {
     color: GlobalColor.White

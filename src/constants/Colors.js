@@ -1,8 +1,9 @@
 export const GlobalColor = {
-    PrimaryGradient:'#4b6cb7',
-    SecondryGradient:'#182848',
-    Primary:'#182848',
-    Secondary:'##4b6cb7',
+    PrimaryGradient:'#499fd0',
+    SecondryGradient:'#0083B0',
+    Primary:'#192a56',
+    PrimaryLight:"#ebf4fa",
+    Secondary:'#499fd0',
     Text:"#444",
     Dark:"#000",
     Light:"#f8f9fa",

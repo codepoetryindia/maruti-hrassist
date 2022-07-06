@@ -11,72 +11,46 @@ import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
-import Text from '../../components/reusable/Text'
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+
+
+
+
 // create a component
 const EmployProfile = ({ navigation, route }) => {
   let userId = route.params.data
-
-  useEffect(() => {
-    employeProfile()
-  }, [])
-
 
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
   const [employeeData, setEmployeeData] = useState([]);
   const [empphoto, setPhoto] = useState('');
+  const [refresh, setrefresh] = useState(false);
 
 
-  // const employeProfile = () => {
-  //   let apiData = {
-  //     UserName: userId
-  //   }
-  //   let token = AppUserData.token
-  //   setLoader(true);
-  //   ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
-  //     .then(result => {
-  //       console.log("GetEmployeeProfile",result);
-  //       setLoader(false);
-  //       let responseData = result.Value.Table
-  //       let profileImage = result.Value.Table[0].profile_photo && Table[0].profile_photo;
-  //       setEmployeeData(responseData);
-  //       console.log("image",responseData)
-  //       // setPhoto(profileImage);
-  //     })
-  //     .catch(error => {
-  //       setLoader(false);
-  //       // console.log('Error occurred==>', error);
-  //       if (error.response) {
-  //         if (error.response.status == 401) {
-  //           console.log('error from api', error.response);
-  //         }
-  //         Toast.show(error.response.data.title);
-  //       } else if (error) {
-  //         Toast.show('Network Error');
-  //       } else {
-  //         Toast.show('Something Went Wrong');
-  //       }
-  //     });
-  // };
   const employeProfile = () => {
     let token = AppUserData.token
     let apiData = {
       UserName: userId
     }
-    console.log(apiData);
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        setLoader(false);
-        let responseData = result.Value.Table;
-        let Profile = responseData[0].profile_photo
-        setEmployeeData(responseData)
-        setPhoto(Profile);
-        console.log("GetEmployeeProfile", responseData,Profile);
+        stopLoader();
+        if(result.Value?.Table.length > 0){
+          let responseData = result.Value.Table;
+          let Profile = responseData?.[0].profile_photo
+          setEmployeeData(responseData)
+          setPhoto(Profile);
+        }else{
+          Toast.show('No Data Found');
+        }
       })
       .catch(error => {
-        setLoader(false);
-        // console.log('Error occurred==>', error);
+        stopLoader();
+        console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
             console.log('error from api', error.response);
@@ -90,9 +64,46 @@ const EmployProfile = ({ navigation, route }) => {
       });
   };
 
-  return (
-    
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+  }
+
+
+  useEffect(() => {
+    employeProfile()
+  }, [])
+
+
+  if(loader){
+    return(
       <SafeAreaView style={styles.container}>
+        <Header title={"Employee Profile"} back/>
+        <LoadingScreen/>
+      </SafeAreaView>
+    )
+  }
+
+
+  if(loader || employeeData.length == 0){
+    return(
+      <SafeAreaView style={styles.container}>
+        <Header title={"Employee Profile"} back/>
+        <ListEmptyComponent enableRefresh={true} onRefreshCallback={()=>employeProfile(true)} refreshing={refresh}/>
+      </SafeAreaView>
+    )
+  }
+
+  
+
+
+  return (    
+      <SafeAreaView style={styles.container}>
+        <Header title={"Employee Profile"} back/>
         {loader==true? (
            <Spinner
            visible={loader}
@@ -102,32 +113,8 @@ const EmployProfile = ({ navigation, route }) => {
         ):null}
 
 
-        <LinearGradient
-      colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-          >
-          <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={30}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: GlobalFontSize.H4,
-                letterSpacing: 1,
-                marginLeft: 15,
-                fontWeight:'700'
-              }}>
-              Employee Profile
-            </Text>
-          </View>
-        </LinearGradient>
 
 
-
-          
         <View
           style={{
             flex:1,

@@ -23,6 +23,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../constants/Colors';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -30,7 +31,7 @@ const ManagerMode = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <LinearGradient
-        colors={['#00B4DB', '#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={styles.gradient}>
         <View style={styles.container}>
           <View

@@ -27,7 +27,6 @@ const Routes = () => {
   const LoginReducer = (prevState, action) => {
     switch (action.type) {
       case 'RETRIEVE_TOKEN':
-        console.log('user Action', action);
         // return;
         return {
           ...prevState,
@@ -37,7 +36,6 @@ const Routes = () => {
           userData: action.payload.user,
         };
       case 'LOGIN':
-        console.log('user Action', action);
         return {
           ...prevState,
           isSignOut: false,
@@ -66,15 +64,13 @@ const Routes = () => {
         let userToken = data.payload.token;
         let contextData;
         let userData = data.payload.user;
-        console.log('User Token', userToken);
-        console.log('User Data', userData);
         // return;
         if (userToken && userData !== null) {
           try {
             await AsyncStorage.setItem('userToken', userToken);
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             contextData = {token: userToken, data: userData};
-            console.log('contextData', contextData);
+            // console.log('contextData', contextData);
             setAppUserData({
               token: userToken,
               data: userData,
@@ -101,7 +97,7 @@ const Routes = () => {
           await AsyncStorage.removeItem('userToken').then(
             setAppUserData({}),
             dispatch({type: 'LOGOUT'}),
-            console.log('Login state', loginState),
+            // console.log('Login state', loginState),
           );
         } catch (error) {
           console.log('Error Occurred while logout', error);
@@ -124,8 +120,8 @@ const Routes = () => {
       userToken = await AsyncStorage.getItem('userToken');
       userData = await AsyncStorage.getItem('userData');
       userData = JSON.parse(userData);
-      console.log('User Token found ==>', userToken);
-      console.log('User Data found ==>', userData);
+      // console.log('User Token found ==>', userToken);
+      // console.log('User Data found ==>', userData);
     } catch (error) {
       console.log('Error Occurred while fetching user Data', error);
     }
@@ -140,19 +136,19 @@ const Routes = () => {
         user: userData,
       };
       dispatch({type: 'RETRIEVE_TOKEN', payload: dataFound});
-      console.log('fetchUserData called');
+      // console.log('fetchUserData called');
     } else {
       dataFound = {
         token: userToken,
         user: userData,
       };
-      console.log('dataFound', dataFound);
+      // console.log('dataFound', dataFound);
       dispatch({type: 'RETRIEVE_TOKEN', payload: dataFound});
     }
   };
 
   if (loginState.isLoading == true) {
-    console.log('Login State loading', loginState.isLoading);
+    // console.log('Login State loading', loginState.isLoading);
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size={'large'} color={'#80406A'} />

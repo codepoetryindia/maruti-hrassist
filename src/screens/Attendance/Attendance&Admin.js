@@ -8,7 +8,8 @@ import {
   ScrollView,
   TextInput,
   useWindowDimensions,
-  Alert
+  Alert,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,131 +20,38 @@ import Shift from './Shift';
 import HolidayCalendar from './HolidayCalendar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { GlobalColor } from '../../constants/Colors';
+import {Header} from './../../components/reusable/Header';
+
+
+
 
 const Tab = createMaterialTopTabNavigator();
-
-// const AttendanceAdmin = ({}) =>{
-//   return(
-//     <Tab.Navigator>
-//       <Tab.Screen name="Home" component={Attendance} />
-//       <Tab.Screen name="Settings" component={Leave} />
-//     </Tab.Navigator>
-//   )
-// }
-
-
-
-
-
-// const FirstRoute = () => <Attendance />;
-// const SecondRoute = () => <Leave />;
-// const ThirdRoute = () => <Shift />;
-// const FourthdRoute = () => <HolidayCalendar />;
-
 const AttendanceAdmin = ({navigation}) => {
-  const [manager, setManager] = useState(false);
-  useEffect(() => {
-    setManager(false);
-  }, []);
 
   return (
-    <View style={{flex: 1, width: '100%', height: '100%'}}>
-      <LinearGradient
-        colors={['#00B4DB', '#0083B0']}
-        style={styles.gradient}>
-        <View style={styles.container}>
-       
-          <View
-            style={{
-              flexDirection: 'row',
-              // justifyContent: 'space-between',
-              // width: 40,
-              alignItems: 'center',
-              flex:1
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 10,
-              }}>
-              Attendance & Admin
-            </Text>
-
-          </View>
-          <TouchableOpacity 
-                style={{alignSelf:'flex-end'}}
-               onPress={() => {
-                navigation.navigate('ManagerMode');
-              }}>
-              <Image  source={require("../../assets/Images/setting.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
-            </TouchableOpacity>
-        </View>
-         
-      </LinearGradient>        
+    <SafeAreaView style={{flex: 1, width: '100%'}}>
+      <Header title={"Attendance & Admin"} onPress={() => {navigation.navigate('ManagerMode')}}/>
       <Tab.Navigator 
        screenOptions={{
         tabBarLabelStyle: { fontSize: 12,fontWeight:'700'},
         tabBarActiveTintColor: '#fff',
         tabBarItemStyle: { paddingHorizontal:0 },
-        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
-        tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff'},
+        tabBarStyle: { backgroundColor: GlobalColor.SecondryGradient, elevation: 0 },
       }}>
         <Tab.Screen name="Attendance" component={Attendance} />
         <Tab.Screen name="Leave" component={Leave} />
         <Tab.Screen name="Shift" component={Shift} />
         <Tab.Screen name="Holiday" component={HolidayCalendar} />
       </Tab.Navigator>
-    </View>
+    </SafeAreaView>
   );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-  gradient: {
-    padding: 20,
-  },
-  container: {
-    flexDirection: 'row',
-    alignItems:'center',
-  },
-  searchSection: {
-    top: 10,
-    width: '90%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#d9d9d9',
-    borderRadius: 7,
-  },
-  searchIcon: {
-    padding: 10,
-  },
-  input: {
-    width: '77%',
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    backgroundColor: '#fff',
-    color: '#424242',
-  },
+
 });
 
-// //make this component available to the app
 export default AttendanceAdmin;

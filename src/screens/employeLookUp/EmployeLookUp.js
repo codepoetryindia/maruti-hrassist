@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import {
   View,
-
   StyleSheet,
   Image,
   ScrollView,
@@ -19,6 +18,7 @@ import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
 import Text from '../../components/reusable/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Header } from '../../components/reusable/Header';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -40,52 +40,14 @@ const EmployeLookUp = ({ navigation }) => {
   }, [navigation]);
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-      <LinearGradient
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate("Home")}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={20}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              letterSpacing: 1,
-              marginLeft: 30,
-              fontSize: GlobalFontSize.H4
-            }}
-            Bold>
-            Employee Lookup
-          </Text>
-        </View>
-      </LinearGradient>
-
+      <Header title={"Employee Lookup"}/>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: GlobalFontSize.P },
+          tabBarLabelStyle: { fontSize: GlobalFontSize.P, textTransform:'uppercase' },
           tabBarActiveTintColor: '#fff',
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
-          tabBarStyle: { backgroundColor: GlobalColor.SecondryGradient, elevation: 0 },
-        }}
-      >
+          tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
+        }}>
         <Tab.Screen name="EmployeeDirect" component={EmployeeDirect} />
         <Tab.Screen name="Birthdays" component={Birthdays} />
       </Tab.Navigator>
@@ -124,7 +86,8 @@ const EmployeLookUp = ({ navigation }) => {
 const styles = StyleSheet.create({
   gradient: {
     padding: 20,
-    elevation: 0
+    elevation: 0,
+    backgroundColor:GlobalColor.Secondary
   },
   container: {
     flexDirection: 'row',

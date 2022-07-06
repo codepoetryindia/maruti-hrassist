@@ -111,12 +111,12 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/home.png')}
+                  source={require('../assets/Images/home-icon.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
             <DrawerItem
@@ -126,12 +126,12 @@ function CustomDrawer(props) {
                 // <Icon
                 // name='home' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/groupp.png')}
+                  source={require('../assets/Images/home/icons8.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
             <DrawerItem
@@ -141,12 +141,12 @@ function CustomDrawer(props) {
                 //   <Foundation
                 //   name='torsos-all' color={'black'} size={20}/>
                 <Image
-                  source={require('../assets/Images/calendarr.png')}
+                  source={require('../assets/Images/home/calendar.png')}
                   style={styles.icon}
                 />
               )}
-                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="Compensatino and Benifits"
@@ -154,12 +154,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/rupee.png')}
+                  source={require('../assets/Images/home/chart.png')}
                   style={styles.icon}
                 />
               )}
-                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="Hospital & Emergency"
@@ -167,12 +167,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/first-aid-kit.png')}
+                  source={require('../assets/Images/home/transplantation.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
             <DrawerItem
@@ -181,12 +181,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/canteen.png')}
+                  source={require('../assets/Images/home/canteen.png')}
                   style={styles.icon}
                 />
               )}
-                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
             <DrawerItem
@@ -195,12 +195,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/other.png')}
+                  source={require('../assets/Images/home/otherapps.png')}
                   style={styles.icon}
                 />
               )}
-                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="Visitor Gatepass"
@@ -208,12 +208,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/id-card.png')}
+                  source={require('../assets/Images/home/visitor-gatepass.png')}
                   style={styles.icon}
                 />
               )}
-                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+                            labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="Buisness Travel"
@@ -221,12 +221,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/man.png')}
+                  source={require('../assets/Images/home/btravel.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="Share App"
@@ -234,12 +234,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/share.png')}
+                  source={require('../assets/Images/home/share.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
             <DrawerItem
@@ -255,12 +255,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/video-camera.png')}
+                  source={require('../assets/Images/home/webinar.png')}
                   style={styles.icon}
                 />
               )}
-              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto-Bold'}}
-              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.LightDark}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
               label="LogOut"
@@ -270,11 +270,12 @@ function CustomDrawer(props) {
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
                 <Image
-                  source={require('../assets/Images/power.png')}
+                  source={require('../assets/Images/home/power-off.png')}
                   style={styles.icon}
                 />
               )}
-              // style={{borderBottomWidth: 2, borderBottomColor: '#cccccc'}}
+              labelStyle={{ fontSize:GlobalFontSize.Small, color:GlobalColor.Primary, fontFamily:'Roboto'}}
+              style={{borderBottomWidth: 1, borderBottomColor: GlobalColor.PrimaryLight}}
             />
 
           </View>

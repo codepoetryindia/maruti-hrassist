@@ -2,14 +2,14 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,6 +34,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Button from './../../components/reusable/Button';
+import Text from '../../components/reusable/Text';
+
 
 
 
@@ -90,12 +95,12 @@ const Leave = ({navigation}) => {
   ];
 
   const leaveTypeScheema = yup.object().shape({
-    leave: yup.string().required('leave type is required'),
-    planned: yup.string().required('select one is required'),
-    period: yup.string().required('select one period'),
-    selectDate: yup.string().required('selectDate  is required'),
-    reason: yup.string().required('select one reason please'),
-    comment: yup.string().required('post one comment'),
+    leave: yup.string().required('Leave type is required'),
+    planned: yup.string().required('Choose an option'),
+    period: yup.string().required('Please select period'),
+    selectDate: yup.string().required('Date  is required'),
+    reason: yup.string().required('Please select a reason'),
+    comment: yup.string().required('Comment is required'),
   });
   const fromRef = useRef(null);
 
@@ -516,7 +521,7 @@ const Leave = ({navigation}) => {
                   <View
                     showsVerticalScrollIndicator={false}
                     style={{ height: '80%', paddingVertical: 1 }}>
-                    <Text style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
                       Leave Type
                     </Text>
                     <View style={styles.box}>
@@ -558,13 +563,13 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.leave}
                         </Text>
                       </View>
                     )}
 
-                    <Text style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
                       Planned/Unplanned
                     </Text>
                     <View style={styles.box}>
@@ -593,13 +598,13 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.planned}
                         </Text>
                       </View>
                     )}
 
-                    <Text style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
                       Period
                     </Text>
                     <View style={styles.box}>
@@ -632,12 +637,12 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.period}
                         </Text>
                       </View>
                     )}
-                    <Text style={{ paddingVertical: 10, width: "90%", alignSelf: 'center' }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
                       Select Date
                     </Text>
                     <View
@@ -650,7 +655,7 @@ const Leave = ({navigation}) => {
                         alignItems: 'center',
                         flexDirection: 'row',
                         padding: 10,
-                        marginVertical: 8,
+                        marginVertical: 0,
                         backgroundColor: '#fff',
                         shadowColor: '#000',
                         shadowOffset: {
@@ -753,12 +758,12 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.selectDateSecond}
                         </Text>
                       </View>
                     )}
-                    <Text style={{ paddingVertical: 15, paddingHorizontal: 20 }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
                       Choose Your Reason
                     </Text>
 
@@ -827,7 +832,7 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.reason}
                         </Text>
                       </View>
@@ -850,31 +855,18 @@ const Leave = ({navigation}) => {
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: GlobalFontSize.error, color: 'red' }}>
                           {errors.comment}
                         </Text>
                       </View>
                     )}
-                    <View style={{ height: 100, marginTop: 10 }}>
-                      <TouchableOpacity
+                    <View style={{ height: 100, marginTop:20, width:"90%",alignSelf:'center' }}>
+                      <Button
                         onPress={() => {
                           handleSubmit();
-                        }}>
-                        <LinearGradient
-                          style={{
-                            padding: 20,
-                            borderRadius: 8,
-                            alignItems: 'center',
-                            width: '90%',
-                            alignSelf: 'center',
-                            marginVertical: 10,
-                          }}
-                          colors={['#4174D0', '#6ef7ff']}>
-                          <Text style={{ fontSize: 16, color: '#fff' }}>
-                            SUBMIT
-                          </Text>
-                        </LinearGradient>
-                      </TouchableOpacity>
+                        }}
+                        title={"Submit"}
+                      ></Button>
                     </View>
                   </View>
                 )}
@@ -1107,42 +1099,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    // alignSelf: 'center',
-    // paddingVertical: 15,
+    backgroundColor:GlobalColor.PrimaryLight
+  },
+  tabsContainerStyle: {
+    marginTop: 10,
+    borderRadius:0,
+    width:'100%'
   },
   tabStyle: {
-    //custom styles
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor:'#444'
+    borderRadius:0,
+    borderColor:GlobalColor.Secondary
   },
   tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
+    fontSize:GlobalFontSize.P,
     color: 'grey',
+    fontFamily:'Roboto-Bold',
   },
   activeTabStyle: {
-    //custom styles
-    backgroundColor: 'transparent',
+    backgroundColor: GlobalColor.PrimaryLight,
     borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
-    // borderRadius: 10,
+    borderBottomColor: GlobalColor.Secondary,
   },
   activeTabTextStyle: {
-    color: '#2757C3',
+    color: GlobalColor.Secondary,
   },
   circle: {
     borderWidth: 1,
     borderColor: '#00B4DB',
-    // width: 30,
+    width: 50,
     // height: 30,
-    borderRadius: 50,
+    // borderRadius: 50,
     padding: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    margin: '2%',
-    marginHorizontal: 28,
+    marginBottom: 10,
+    marginRight:15
+    // marginHorizontal: 28,
   },
   box: {
     width: '90%',

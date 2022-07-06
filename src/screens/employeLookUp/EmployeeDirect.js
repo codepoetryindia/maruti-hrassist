@@ -10,19 +10,35 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
 import Text from '../../components/reusable/Text';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+
+
 // create a component
 const EmployeeDirect = () => {
   const myNavigation = useNavigation();
-
   const [search, setSearch] = useState('')
   const [loader, setLoader] = useState(false)
   const [searchedData, setSearchedData] = useState([])
   const { authContext, AppUserData } = useContext(AuthContext);
+  const [refresh, setrefresh] = useState(false);
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+  }
+
+
+
+
 
   const SearchEmployee = () => {
-    console.log('post data', search);
     if (search === '') {
-      alert("please enter a valid keyWord ")
+      alert("Please enter a valid keyword ")
       return
     } else {
       let apiData = {
@@ -55,13 +71,18 @@ const EmployeeDirect = () => {
         });
     }
   };
+
   const emptyList = () => {
     setSearch('')
   }
 
-  // console.log('searchedData',searchedData)
+  if(loader){
+    return(
+        <LoadingScreen/>
+    )
+  }
+
   return (
- 
       <SafeAreaView style={styles.container}>
         <View style={styles.searchSection}>
           <Ionicons
@@ -99,28 +120,12 @@ const EmployeeDirect = () => {
           </TouchableOpacity>
         </View>
 
-        {loader == true ? (
-          <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={{color:'#fff'}}
-          />
-        ) : null}
 
-        {searchedData.length > 0 ? (
-         
           <FlatList
             style={{ width:"100%",marginHorizontal:0 }}
+            contentContainerStyle={{ flexGrow:1 }}
             data={searchedData}
-            ListEmptyComponent={() => {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../../assets/Images/dataNotFound.png')}
-                    style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-                  <Text style={{  textAlign: 'center', }}>No Data found</Text>
-                </View>
-              )
-            }}
+            ListEmptyComponent={() => <ListEmptyComponent title="No Data Found" subtitle={search ? "No results please retry with diffrent keyword": "Enter keyword and press search to continue"} enableRefresh={true} onRefreshCallback={()=>SearchEmployee()} refreshing={refresh}></ListEmptyComponent>}
             keyExtractor={({ item, index }) => index}
             renderItem={({ item, index }) => (
               <TouchableOpacity style={styles.FlatListData} onPress={()=>{
@@ -161,9 +166,6 @@ const EmployeeDirect = () => {
               </TouchableOpacity>
             )}
           />
-        ) : 
-       null
-        }
       </SafeAreaView>
     
   );
@@ -174,9 +176,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width:"100%",
-    // backgroundColor:'#fff',
-    marginTop:10,
-    // margin:5
+    backgroundColor:'#fff',
   },
   searchSection: {
     backgroundColor: '#fff',

@@ -1,23 +1,28 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch,ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, FlatList, SafeAreaView, TouchableOpacity, Linking, Switch,ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AuthContext from '../context/AuthContext';
 import * as ApiService from '../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Header } from './reusable/Header';
+import { LoadingScreen } from './reusable/LoadingScreen';
+import ListEmptyComponent from './reusable/ListEmptyComponent';
+import Button from './reusable/Button';
+import Text from './reusable/Text';
+import { GlobalColor } from '../constants/Colors';
 
 // create a component
 const EditProfile = ({ navigation, route }) => {
-
-
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const { authContext, AppUserData } = useContext(AuthContext);
   const [employeeData, setEmployeeData] = useState([]);
   const [empPhone, setEmpPhone] = useState('');
   const [isEnabled, setIsEnabled] = useState(false);
-  const [nominiData, setNominiData] = useState('')
+  const [nominiData, setNominiData] = useState('');
+  const [refresh, setrefresh] = useState(false);
 
 
   const employeProfile = () => {
@@ -26,23 +31,19 @@ const EditProfile = ({ navigation, route }) => {
     let apiData = {
       UserName: userId
     }
-    console.log(apiData);
     setLoader(true);
     ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
       .then(result => {
-        console.log("GetEmployeeProfile", result);
-        setLoader(false);
+        stopLoader(false);
         let responseData = result.Value.Table;
         let NominationData = result.Value.Table1
         let Phone =result.Value.Table[0].EXTN
         setEmpPhone(Phone)
         setNominiData(NominationData)
         setEmployeeData(responseData);
-        console.log("Phone",Phone)
-        // console.log("setEmployeeData", setEmployeeData, "setNominiData", setNominiData,"Phone",Phone)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         // console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -56,6 +57,8 @@ const EditProfile = ({ navigation, route }) => {
         }
       });
   };
+
+
   const UpdateEmpProf = () => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
@@ -65,16 +68,17 @@ const EditProfile = ({ navigation, route }) => {
         "ExtensionNo" : empPhone,
         "EmergencyNo" : ""
     }
-    console.log(apiData);
-    setLoader(true);
     ApiService.PostMethode('/UpdateEmpProf', apiData, token)
       .then(result => {
-        console.log("UpdateEmpProf", result);
-        setLoader(false);
-       alert(result.Result)
+        if(result.Result){
+          stopLoader(false);
+          Toast.show(result.Result);
+        }else{
+          Toast.show("Update Failed");
+        }
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         // console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -93,39 +97,27 @@ const EditProfile = ({ navigation, route }) => {
     employeProfile()
   }, [])
 
-  console.log("employeeData", employeeData);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+  }
+
+
   return (
-
     <SafeAreaView style={styles.container}>      
-      <LinearGradient
-        style={{ flex: 0.25 }}
-        colors={['#4174D0', '#6ef7ff']}>
-        <View style={{ flexDirection: 'row', padding: 15, alignItems: 'center' }}>
-          <Ionicons
-            name="chevron-back-outline"
-            size={30}
-            color={'white'}
-            onPress={() => navigation.goBack()}
-          />
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 15,
-              fontWeight:'700'
-            }}>
-            Profile
-          </Text>
-        </View>
-      </LinearGradient>
-
-
+      <Header back title='Profile'/>
       <View
         style={{
+          flex:1,
+          marginTop:40,
           backgroundColor: '#fff',
-          width: '90%',
+          width:"95%",
           alignSelf: 'center',
           shadowColor: '#000',
           shadowOffset: {
@@ -136,9 +128,6 @@ const EditProfile = ({ navigation, route }) => {
           shadowRadius: 3.84,
           elevation: 5,
           borderRadius: 8,
-          position: 'absolute',
-          top: '10%',
-          bottom: 5
         }}>
         <View
           style={{
@@ -155,7 +144,7 @@ const EditProfile = ({ navigation, route }) => {
             justifyContent: 'center',
             alignSelf: 'center',
             borderRadius: 100,
-            marginTop: '-12%',
+            marginTop: -20,
           }}>
 
           {AppUserData.data && AppUserData.data.profile_photo ? (
@@ -181,24 +170,21 @@ const EditProfile = ({ navigation, route }) => {
           />
           )}
         </View>
-
-
-        <View style={{ height: '90%', }}>
-
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-
+        <View style={{ flex:1, marginTop:10 }}>
           <FlatList
             data={employeeData}
+            contentContainerStyle={{ flexGrow:1 }}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => {
               return (
-                <View style={{ marginTop:20}}>
+                <View style={{ flex:1}}>
                 {
-                  !loader ? <Text style={{ textAlign: 'center' }}> No Data Found</Text> : <ActivityIndicator size="large" color="#4174D0" />  
+                  !loader ? 
+                  <ListEmptyComponent 
+                    enableRefresh={true}
+                    onRefreshCallback={()=>employeProfile(true)}
+                    refreshing={refresh}
+                  /> : <LoadingScreen></LoadingScreen>
                 }
                 </View>
               )
@@ -208,11 +194,11 @@ const EditProfile = ({ navigation, route }) => {
               <View key={item.EMPL_ID}>
                 <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
                 <View style={styles.box}>
-                  <Text style={styles.header}>Vertical / Div ./Department</Text>
+                  <Text style={styles.header} >Vertical / Div ./Department</Text>
                   <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
                 </View>
                 <View style={styles.box}>
-                  <Text style={styles.header}>Personal phone Number</Text>
+                  <Text style={styles.header}>Personal Phone Number</Text>
                   <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
                     <TouchableOpacity onPress={()=>Linking.openURL(`tel:${item.PRESENT_PHONE}`)}>
                       <Text style={{color:'#4174D0', fontWeight:'700'}}>{item.PRESENT_PHONE}</Text>
@@ -286,24 +272,20 @@ const EditProfile = ({ navigation, route }) => {
                     />
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => {
-                  UpdateEmpProf()
-                }}>
-                  <LinearGradient
-                    style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                    colors={['#4174D0', '#6ef7ff']}>
-
-                    <Text style={{ color: '#fff', fontSize: 16 }}>UPDATE</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
               </View>
             )} />
         </View>
       </View>
+      {employeeData.length > 0 ? (
+        <View style={{ backgroundColor:'#fff', paddingHorizontal:15,paddingVertical:10 }}>
+          <Button title="UPDATE"  
+                onPress={() => {
+                  UpdateEmpProf()
+                }}>
+            </Button>
+        </View>
+      ): null}
     </SafeAreaView>
-
-
-
   )
 };
 
@@ -311,6 +293,7 @@ const EditProfile = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:GlobalColor.PrimaryLight
   },
   box: {
     width: '100%',
@@ -330,8 +313,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   header: {
-    fontSize: 12,
-    color: 'gray',
+    fontSize: 14,
+    color: GlobalColor.LightDark,
     paddingVertical: 5,
   }
 });

@@ -1,6 +1,6 @@
 //import liraries
 import React, {useEffect, useState,useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Platform} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, FlatList, Platform} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -16,6 +16,14 @@ import * as ApiService from '../../Utils/Utils';
 import { date } from 'yup';
 import { useFocusEffect } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import Button from './../../components/reusable/Button'
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
+import {LoadingScreen} from './../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+
+
 
 const Attendance = ({navigation}) => {
   const [fromDate, setFromDate] = useState(new Date());
@@ -27,12 +35,12 @@ const Attendance = ({navigation}) => {
   const [MapLisenceKey, setMapLisenceKey] = useState("");
   const [horizental, setHorizental] = useState(false);
   const [userLocation, setUserLocation] = useState('');
-
   const { authContext, AppUserData } = useContext(AuthContext);
 
   // To Hide or show based on getGpsAvailable
   const [ShowAttandanceTabs, setShowAttandanceTabs] = useState(false);
   const [RawPunches, setRawPunches] = useState([]);
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -105,13 +113,7 @@ const Attendance = ({navigation}) => {
         "ToDate" :  moment(toDate).format('DD-MMM-YYYY'),
           "StaffNo" : AppUserData.data.userId 
       };
-
-      
-
-      // AppUserData.data.userId 
-
-
-      console.log(apiData);
+      // console.log(apiData);
       // AppUserData.data.userId
       let token = AppUserData.token;
       setLoader(true);
@@ -170,15 +172,11 @@ const Attendance = ({navigation}) => {
    }
   }
 
-
-
-  const FinancialYear = ['2021', '2022', '1999'];
   const [location, setLocation] = useState('');
 
   const getMobDevice = () => {
     let apiData = { "UserName":AppUserData.data.userId };
-        setLoader(true);
-
+      setLoader(true);
       if(Platform.OS == 'android'){
           // AppUserData.data.userId 222852
         let token = AppUserData.token;
@@ -222,7 +220,6 @@ const Attendance = ({navigation}) => {
         }
 
         let url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + parseFloat(location.latitude) + ',' + parseFloat(location.longitude) + '&key=' + MapLisenceKey
-
         ApiService.getRawurl(url)
           .then(result => {
             console.log("APiresult getRawurl", result);
@@ -304,7 +301,6 @@ const Attendance = ({navigation}) => {
         })
         .catch(error => {
             setLoader(false);
-            // console.log('Error occurred==>', error);
             if (error.response) {
                 if (error.response.status == 401) {
                     console.log('error from api', error.response);
@@ -318,29 +314,16 @@ const Attendance = ({navigation}) => {
         });
 };
 
-
-
-
-
-
-
-
-
+if(loader){
+  return(
+    <LoadingScreen/>
+  )
+}
 
 
   return (
         <View style={styles.container}>
-          {
-            loader ? (
-              <Spinner
-              visible={loader}
-              textContent={'Loading...'}
-              textStyle={styles.spinnerTextStyle}
-            />
-            ): null
-          }
-
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
              
@@ -352,10 +335,8 @@ const Attendance = ({navigation}) => {
               color={'#0083B0'}
             />
           </TouchableOpacity>
-
-
-        <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>      
-         {horizental == true ? (
+          
+                   {horizental == true ? (
             <View
               style={{
                 padding: 5,
@@ -374,28 +355,30 @@ const Attendance = ({navigation}) => {
                   <Text style={{ color:"#fff"}}>Attendance Percentage</Text>
                 </TouchableOpacity>
             </View>
-          ) : null}
+          ) : null}*/}
 
+
+        <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>      
           {
             ShowAttandanceTabs ? (
-              <SegmentedControlTab
+            <SegmentedControlTab
               borderRadius={2}
-             values={['Mark Attendance', 'View Report']}
-             selectedIndex={MarkAttandance}
-             onTabPress={index => {
-               handleMarkAttandance(index);
-             }}
-             tabsContainerStyle={{ width:'100%',alignSelf:'center'}}
-             tabStyle={styles.tabStyle}
-             tabTextStyle={styles.tabTextStyle}
-             activeTabStyle={styles.activeTabStyle}
-             activeTabTextStyle={styles.activeTabTextStyle}
-           />
-            ):(
-              <Text style={[styles.titleLabel, {marginTop:10}]}>View Report</Text>
-            )
-          }
-      </View>
+              values={['Mark Attendance', 'View Report']}
+              selectedIndex={MarkAttandance}
+              onTabPress={index => {
+                handleMarkAttandance(index);
+              }}
+              tabsContainerStyle={styles.tabsContainerStyle}
+              tabStyle={styles.tabStyle}
+              tabTextStyle={styles.tabTextStyle}
+              activeTabStyle={styles.activeTabStyle}
+              activeTabTextStyle={styles.activeTabTextStyle}
+            />
+              ):(
+                <Text style={[styles.titleLabel, {marginTop:10}]} bold>View Report</Text>
+              )
+            }
+        </View>
 
       <View style={{ flex:1 }}>
         {MarkAttandance == 0 ? (
@@ -422,28 +405,8 @@ const Attendance = ({navigation}) => {
           </View>
         ) : (
           <View style={{ flex:1 }}>
-            {/* Date Picker */}
             <View
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                borderColor: '#fff',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-                padding: 10,
-                marginVertical: 10,
-                backgroundColor: '#fff',
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
-                borderRadius: 0,
-              }}>
+              style={styles.reportView}>
               <View
                 style={{
                   width: '48%',
@@ -466,14 +429,15 @@ const Attendance = ({navigation}) => {
                       <TouchableOpacity onPress={() => setOpen(true)}>
                         <Ionicons
                           name="calendar-outline"
-                          size={30}
-                          color={'#0083B0'}
+                          size={25}
+                          color={GlobalColor.Secondary}
                         />
                       </TouchableOpacity>
                     </View>
                   </View>
                 </View>
               </View>
+
               <View
                 style={{
                   width: '48%',
@@ -497,8 +461,8 @@ const Attendance = ({navigation}) => {
                         onPress={() =>  (setOpenSecond(true))}>
                         <Ionicons
                           name="calendar-outline"
-                          size={30}
-                          color={'#0083B0'}
+                          size={25}
+                          color={GlobalColor.Secondary}
                         />
                       </TouchableOpacity>
                     </View>
@@ -537,26 +501,13 @@ const Attendance = ({navigation}) => {
                 }}
               />
             </View>
-
-            {/* Button */}
-
-            <TouchableOpacity onPress={() => {handelDate()}}>
-              <LinearGradient
-                style={{
-                  padding: 20,
-                  borderRadius: 8,
-                  alignItems: 'center',
-                }}
-             colors={['#4174D0','#6ef7ff']}>
-                <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-
-            {/* Manager Mode */}
+            <Button onPress={() => {handelDate()}} title={"Submit"}></Button>
 
             <FlatList
+              contentContainerStyle={{ flexGrow:1 }}
               data={RawPunches}
               renderItem={renderItem}
+              ListEmptyComponent={()=><ListEmptyComponent title="No Data Found" subtitle="Please select dates and submit to view data"></ListEmptyComponent>}
               keyExtractor={item => item.Date.toString()}
             />
           </View>
@@ -571,27 +522,52 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal:10,
-    position:'relative'
+    position:'relative',
+    backgroundColor:GlobalColor.PrimaryLight
+  },
+  tabsContainerStyle: {
+    marginTop: 10,
+    borderRadius:0,
+    width:'100%'
+  },
+  reportView:{
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#fff',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 0,
   },
   tabStyle: {
-    //custom styles   
     paddingVertical: 10,
-    borderColor: '#6ef7ff',
+    borderWidth: 1,
+    borderRadius:0,
+    borderColor:GlobalColor.Secondary
   },
   tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
+    fontSize:GlobalFontSize.P,
     color: 'grey',
+    fontFamily:'Roboto-Bold',
   },
   activeTabStyle: {
-    //custom styles
-    backgroundColor: 'transparent',
+    backgroundColor: GlobalColor.PrimaryLight,
     borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
-    // borderColor:Colors.primaryColor
+    borderBottomColor: GlobalColor.Secondary,
   },
   activeTabTextStyle: {
-    color: '#2757C3',
+    color: GlobalColor.Secondary,
   },
   content: {
     top: 10,
@@ -614,10 +590,6 @@ const styles = StyleSheet.create({
     width: 100,
     borderWidth: 3,
     borderColor:'green',
-    // borderTopColor: '#80406A',
-    // borderStartColor: '#6ef7ff',
-    // borderBottomColor: '#2757C3',
-    // borderEndColor: '#80406A',
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',
@@ -626,12 +598,14 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   renderitem:{
-    paddingVertical:10,
-    paddingHorizontal:5,
+    paddingVertical:15,
+    paddingHorizontal:10,
     flexDirection:'row',
     justifyContent:'space-between',
     backgroundColor:'#fff',
-    marginTop:10
+    marginTop:10,
+    borderWidth:0.5, 
+    borderColor:GlobalColor.LightDark
   },
   resetLocation:{
     marginTop:20,
@@ -650,7 +624,7 @@ const styles = StyleSheet.create({
     color:'#fff'
   },
   titleLabel:{
-    color:'#444',
+    color: GlobalColor.Primary,
     fontWeight:'700',
     fontSize:16
   },

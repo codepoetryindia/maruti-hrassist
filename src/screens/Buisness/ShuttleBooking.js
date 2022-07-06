@@ -22,7 +22,7 @@ const ShuttleBooking = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#00B4DB', '#0083B0']}
+        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={{ padding: 20 }}>
         <View style={{ flexDirection: 'row' }}>
           <View
