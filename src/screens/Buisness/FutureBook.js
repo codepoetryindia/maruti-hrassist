@@ -6,6 +6,8 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
+
 
 export default function FutureBook() {
 
@@ -131,7 +133,7 @@ export default function FutureBook() {
                             justifyContent: 'space-between',
                             paddingVertical: 10,
                             borderBottomWidth: 1,
-                            borderBottomColor: '#2757C3'
+                            borderBottomColor: GlobalColor.PrimaryGradient,
                         }}>
                         <Text>Date</Text>
                         <Text>Emp ID</Text>

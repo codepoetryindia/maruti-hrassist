@@ -9,6 +9,8 @@ export const GlobalColor = {
     Light:"#f8f9fa",
     LightDark:'#7f8c8d',
     White:"#fff",
+    Black:"#000",
+    ShadowColor:"#000",
 
 
     Danger:'#f00'

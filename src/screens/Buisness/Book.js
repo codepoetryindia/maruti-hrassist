@@ -22,6 +22,8 @@ import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
 
 const Book = () => {
     const navigation = useNavigation();
@@ -142,7 +144,7 @@ const Book = () => {
                 padding: 10,
                 alignItems: 'center',
                 borderWidth: 1,
-                borderColor: '#2757C3',
+                borderColor: GlobalColor.PrimaryGradient,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
@@ -158,9 +160,9 @@ const Book = () => {
                   setOpen(false);
                 }}
               />
-              <Text style={{ color: '#000' }}>{moment(date).format("DD-MMMM-YYYY").toUpperCase()}</Text>
+              <Text style={{ color: GlobalColor.Text }}>{moment(date).format("DD-MMMM-YYYY").toUpperCase()}</Text>
               <TouchableOpacity onPress={() => setOpen(true)}>
-                <Ionicons name="calendar-outline" size={30} color={'#5dc0e9'} />
+                <Ionicons name="calendar-outline" size={30} color={GlobalColor.PrimaryGradient} />
               </TouchableOpacity>
             </TouchableOpacity>
   
@@ -173,7 +175,7 @@ const Book = () => {
               <Spinner
                 visible={loader}
                 textContent={'Loading...'}
-                textStyle={{ color: '#fff' }}
+                textStyle={{ color: GlobalColor.Text }}
               />
             ) : null}
   
@@ -184,14 +186,14 @@ const Book = () => {
                   alignSelf: 'center',
                   paddingVertical: 10,
                   backgroundColor: '#fff',
-                  shadowColor: '#000',
+                  shadowColor: GlobalColor.ShadowColor,
                   shadowOffset: {
-                    width: 0,
-                    height: 2,
+                    width: -0,
+                    height: 1,
                   },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 1.84,
-                  elevation: 5,
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                  elevation: 5,              
                   borderRadius: 8,
                   paddingBottom: 25
                 }}>
@@ -222,7 +224,7 @@ const Book = () => {
                             justifyContent: 'space-between',
                             padding: 10,
                             borderBottomWidth: 1,
-                            borderBottomColor: '#2757C3'
+                            borderBottomColor: GlobalColor.PrimaryGradient
                           }}>
                           <Text>{item.SHTL_REGISTRATION_NO}</Text>
                           <Text>{item.ROUT_SOURCE}</Text>
@@ -260,7 +262,7 @@ const Book = () => {
                       <Text>Available Seats in Shuttle : {seatAvility}</Text>
                       <View style={{ flexDirection: 'row', marginVertical: 10 }}>
                         <TouchableOpacity
-                          style={{ padding: 10, backgroundColor: '#2757C3', marginHorizontal: 10, borderRadius: 8 }} onPress={() => {
+                          style={{ padding: 10, backgroundColor:GlobalColor.PrimaryGradient, marginHorizontal: 10, borderRadius: 8 }} onPress={() => {
                             setModalVisible(false)
                           }}>
                           <Text style={{ color: '#fff' }}>
@@ -272,7 +274,7 @@ const Book = () => {
                             setModalVisible(false)
                             navigation.navigate("SeatBook")
                         }}
-                          style={{ padding: 10, backgroundColor: '#2757C3', marginLeft: 30, borderRadius: 8 }}>
+                          style={{ padding: 10, backgroundColor:GlobalColor.PrimaryGradient, marginLeft: 30, borderRadius: 8 }}>
                           <Text style={{ color: '#fff' }}>BOOK NOW</Text>
                         </TouchableOpacity>
                       </View>

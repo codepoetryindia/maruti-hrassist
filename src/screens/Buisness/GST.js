@@ -7,6 +7,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import { Header } from '../../components/reusable/Header';
 // create a component
 const Gst = ({ navigation }) => {
   const [gst, setGst] = useState([])
@@ -71,6 +74,7 @@ const Gst = ({ navigation }) => {
   return (
 
     <SafeAreaView style={styles.container}>
+      <Header title={"GST Details"}  />
       {loader == true ? (
         <Spinner
           visible={loader}
@@ -78,7 +82,8 @@ const Gst = ({ navigation }) => {
           textStyle={styles.spinnerTextStyle}
         />
       ) : null}
-      <LinearGradient
+      
+      {/* <LinearGradient
         style={{ padding: 20 }}
         colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}>
         <View style={{ flexDirection: 'row' }}>
@@ -113,7 +118,7 @@ const Gst = ({ navigation }) => {
             GST Details
           </Text>
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
 
 
       {/* BODY */}
@@ -132,7 +137,7 @@ const Gst = ({ navigation }) => {
                 width: '90%',
                 flexDirection: 'row',
                 borderWidth: 1,
-                borderColor:'#4174D0',
+                borderColor:GlobalColor.PrimaryGradient,
                 borderRadius: 5,
                 alignSelf: 'center',
               }}>
@@ -172,25 +177,23 @@ const Gst = ({ navigation }) => {
                       <View
                         style={{
                           width: '100%',
-                          backgroundColor: '#6ef7ff',
+                          backgroundColor: GlobalColor.PrimaryGradient,
                           alignSelf: 'center',
-                          overflow: 'hidden',
-                          borderWidth: 0.5,
-                          borderColor: '#6ef7ff',
+                          overflow: 'hidden',                          
                           borderTopLeftRadius: 8,
                           borderTopRightRadius: 8
                         }}>
-                        <Text style={{ fontSize: 16, color: '#000', padding: 10, color: '#000' }}>
+                        <Text style={{ fontSize: 16, color:GlobalColor.White, padding: 10, }}>
                           {item.MAPP_GSTN_STATE_NAME}
                         </Text>
                       </View>
                       <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
                         <Text style={styles.GStBox}>GST Number</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_REG_NO}</Text>
+                        <Text style={{ color: GlobalColor.Black }}>{item.MAPP_GSTN_REG_NO}</Text>
                         <Text style={styles.GStBox}>Company Name</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
+                        <Text style={{ color:GlobalColor.Black }}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
                         <Text style={styles.GStBox}>Address</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_ADDRESS}</Text>
+                        <Text style={{ color:GlobalColor.Black }}>{item.MAPP_GSTN_ADDRESS}</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -209,24 +212,23 @@ const Gst = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor:GlobalColor.White,
   },
-
   TouchableOpacity: {
     width: '90%',
     paddingTop: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     alignSelf: 'center',
     margin: 10,
     paddingVertical: 10,
-    shadowColor: '#000',
+    shadowColor:GlobalColor.ShadowColor,
     shadowOffset: {
-      width: 0,
-      height: 3,
+      width: -0,
+      height: 1,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 5,
     // borderWidth: 1,
     // borderTopColor: '#80406A',
     // borderStartColor: '#6ef7ff',
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   spinnerTextStyle: {
-    color: '#FFF'
+    color:GlobalColor.White,
   },
 });
 

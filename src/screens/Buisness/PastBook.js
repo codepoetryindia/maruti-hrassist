@@ -22,6 +22,8 @@ import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useFocusEffect } from '@react-navigation/native';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
 
 const  PastBook = () => {
     const [fromDate] = useState(new Date());
@@ -190,14 +192,14 @@ const  PastBook = () => {
                     padding: 10,
                     marginVertical: 8,
                     backgroundColor: '#fff',
-                    shadowColor: '#000',
+                    shadowColor: GlobalColor.ShadowColor,
                     shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
+                        width: -0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.22,
+                      shadowRadius: 2.22,
+                      elevation: 5,                  
                     borderRadius: 8
                 }}>
 
@@ -233,7 +235,7 @@ const  PastBook = () => {
                         value={textinputDate}
                     />
                     <TouchableOpacity onPress={() => setOpen(true)}>
-                        <Ionicons name="calendar-outline" size={30} color={'#0083B0'} />
+                        <Ionicons name="calendar-outline" size={30} color={GlobalColor.PrimaryGradient} />
                     </TouchableOpacity>
                 </View>
 
@@ -270,7 +272,7 @@ const  PastBook = () => {
                         value={textinputSecondDate}
                     />
                     <TouchableOpacity onPress={() => setSecond(true)}>
-                        <Ionicons name="calendar-outline" size={30} color={'#0083B0'} />
+                        <Ionicons name="calendar-outline" size={30} color={GlobalColor.PrimaryGradient} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -287,7 +289,7 @@ const  PastBook = () => {
                 ) : null}
                 <LinearGradient
                     style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                    colors={['#4174D0', '#0083B0']}>
+                    colors={[GlobalColor.PrimaryGradient,GlobalColor.PrimaryGradient]}>
 
                     <Text style={{ color: '#fff', fontSize: 16 }}>UPDATE</Text>
                 </LinearGradient>

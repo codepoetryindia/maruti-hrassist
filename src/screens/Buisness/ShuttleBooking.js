@@ -6,6 +6,8 @@ import {
   StyleSheet,
 
   TouchableOpacity,
+  SafeAreaView
+
 
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,14 +16,19 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import FutureBook from './FutureBook';
 import PastBook from './PastBook';
 import Book from './Book';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import { Header } from '../../components/reusable/Header';
 
 const ShuttleBooking = ({ navigation }) => {
   const Tab = createMaterialTopTabNavigator();
   const [horizental, setHorizental] = useState(false);
 
   return (
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+      <Header title={"Shuttle Booking"}  />
     <View style={styles.container}>
-      <LinearGradient
+      {/* <LinearGradient
         colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
         style={{ padding: 20 }}>
         <View style={{ flexDirection: 'row' }}>
@@ -48,7 +55,7 @@ const ShuttleBooking = ({ navigation }) => {
 
           <Text
             style={{
-              color: '#fff',
+              color:GlobalColor.White,
               fontSize: 16,
               letterSpacing: 1,
               marginLeft: 30,
@@ -72,7 +79,7 @@ const ShuttleBooking = ({ navigation }) => {
               onPress={() => navigation.navigate('Guidelines')}
               style={{
                 padding: 10,
-                backgroundColor: '#fff',
+                backgroundColor: GlobalColor.White,
                 position: 'absolute',
                 top: 20,
                 right: 30,
@@ -83,19 +90,20 @@ const ShuttleBooking = ({ navigation }) => {
             </TouchableOpacity>
           ) : null}
         </View>
-      </LinearGradient>
+      </LinearGradient> */}
       <Tab.Navigator 
        screenOptions={{
         tabBarLabelStyle: { fontSize: 14 },
-        tabBarActiveTintColor: '#fff',
-        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
-        tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+        tabBarActiveTintColor: GlobalColor.White,
+        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: GlobalColor.White },
+        tabBarStyle: { backgroundColor: GlobalColor.PrimaryGradient, elevation: 0 },
       }}>
         <Tab.Screen name="Book" component={Book} />
         <Tab.Screen name="PastBook" component={PastBook} />
         <Tab.Screen name="FutureBook" component={FutureBook} />
       </Tab.Navigator>
     </View>
+    </SafeAreaView>
   );
 };
 
@@ -103,7 +111,7 @@ const ShuttleBooking = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
   },
 });
 
