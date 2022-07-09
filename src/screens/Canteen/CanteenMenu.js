@@ -23,6 +23,8 @@ import Accordion from './CanteenComponent/Accordion';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useFocusEffect } from '@react-navigation/native';
+import { GlobalFontSize } from '../../constants/FontSize';
+import { GlobalColor } from '../../constants/Colors';
 
 const Tab = createMaterialTopTabNavigator();
 const CanteenMenu = ({ navigation }) => {

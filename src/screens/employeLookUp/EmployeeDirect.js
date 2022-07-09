@@ -125,7 +125,10 @@ const EmployeeDirect = () => {
             style={{ width:"100%",marginHorizontal:0 }}
             contentContainerStyle={{ flexGrow:1 }}
             data={searchedData}
+
             ListEmptyComponent={() => <ListEmptyComponent title="No Data Found" subtitle={search ? "No results please retry with diffrent keyword": "Enter keyword and press search to continue"} enableRefresh={true} onRefreshCallback={()=>SearchEmployee()} refreshing={refresh}></ListEmptyComponent>}
+
+
             keyExtractor={({ item, index }) => index}
             renderItem={({ item, index }) => (
               <TouchableOpacity style={styles.FlatListData} onPress={()=>{

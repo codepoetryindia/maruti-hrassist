@@ -1,20 +1,23 @@
 //import liraries
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image,SafeAreaView} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image,SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Header } from '../../components/reusable/Header';
 import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
 import Home from '../Home';
 import Gst from './GST';
 import ShuttleBooking from './ShuttleBooking';
+
+
+
 // create a component
 const BuisnessTravel = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-      <Header title={"Business Travel"}/>
+    <Header title={"Business Travel"}/>
     <View style={styles.container}>
       {/*
       
@@ -47,7 +50,7 @@ const BuisnessTravel = ({navigation}) => {
           <Text
             style={{
               color: '#fff',
-              fontSize: 16,
+              
               letterSpacing: 1,
               marginLeft: 30,
             }}>
@@ -77,7 +80,7 @@ const BuisnessTravel = ({navigation}) => {
           </View>
         </View>
         <View style={styles.item}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+          <Text style={{}} Bold>
             MSIL GST Details
           </Text>
           <Ionicons name="chevron-forward-outline" size={20} />
@@ -104,7 +107,7 @@ const BuisnessTravel = ({navigation}) => {
           </View>
         </View>
         <View style={styles.item}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+          <Text style={{fontSize: 16}} Bold>
             Shuttle Booking
           </Text>
           <Ionicons name="chevron-forward-outline" size={20} />
@@ -119,12 +122,13 @@ const BuisnessTravel = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GlobalColor.White,
+    backgroundColor: GlobalColor.PrimaryLight,
+    paddingHorizontal:10
   },
   box: {
     flexDirection: 'row',
-    marginVertical: 20,
-    width: '90%',
+    marginTop: 20,
+    width: '100%',
     paddingVertical: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -138,7 +142,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 5,
-    borderRadius:6
+    borderRadius:5
   },
   iconBox: {
     width: '20%',

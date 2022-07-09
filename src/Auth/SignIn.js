@@ -241,7 +241,7 @@ const SignIn = ({ navigation }) => {
                             secureTextEntry={false}
                             onChangeText={handleChange('UserName')}
                             onBlur={handleBlur('UserName')}
-                            value={values.UserName}
+                            value={values.F}
                           />
                         </View>
                         {errors.UserName && touched.UserName && (

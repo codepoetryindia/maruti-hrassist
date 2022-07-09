@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
     View,
-    Text,
+
     StyleSheet,
     useWindowDimensions,
     Dimensions,
@@ -24,8 +24,13 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import Button from '../../components/reusable/Button';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import Text from '../../components/reusable/Text';
 
-const  PastBook = () => {
+
+const PastBook = () => {
     const [fromDate] = useState(new Date());
     const [toDate] = useState(new Date());
     const [firstDate, setFirstDate] = useState('')
@@ -39,7 +44,7 @@ const  PastBook = () => {
     const [loader, setLoader] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [bookingDetails, setBookingDetails] = useState([])
-    const [bktId,setBktId] = useState('');
+    const [bktId, setBktId] = useState('');
     const GetShutlPastFutrReportApi = (data) => {
         let token = AppUserData.token
         setLoader(true);
@@ -48,9 +53,11 @@ const  PastBook = () => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
-                {ApiValue.map((item) => {
-                    return(setBktId(item.BKDT_ID))
-                })}
+                {
+                    ApiValue.map((item) => {
+                        return (setBktId(item.BKDT_ID))
+                    })
+                }
                 setPastFuData(ApiValue)
             })
 
@@ -148,19 +155,19 @@ const  PastBook = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-          const unsubscribe = handleSubmit();
-          return () => unsubscribe;
+            const unsubscribe = handleSubmit();
+            return () => unsubscribe;
         }, [])
-      )
+    )
     const handleSubmit = () => {
         let userId = AppUserData.data.userId
         let payloadDate = moment(firstDate).format("DD-MMMM-YYYY").toUpperCase()
         let payloadDateSecond = moment(secondDate).format("DD-MMMM-YYYY").toUpperCase()
         let apiData = {
-          BKDTEmplID: userId,
-          BKDTFlag: "P",
-          FromDate: firstDate !== '' ? payloadDate : '',
-          ToDate: secondDate !== '' ? payloadDateSecond : '',
+            BKDTEmplID: userId,
+            BKDTFlag: "P",
+            FromDate: firstDate !== '' ? payloadDate : '',
+            ToDate: secondDate !== '' ? payloadDateSecond : '',
         }
         console.log("payload", apiData);
 
@@ -173,37 +180,27 @@ const  PastBook = () => {
             GetShutlPastFutrReportApi(apiData);
         }
     }
+
+    if (loader) {
+        return (
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: GlobalColor.White,
+            }}>
+                <LoadingScreen />
+            </SafeAreaView>
+        )
+    }
+
+
     return (
         <SafeAreaView
-            style={{ flex: 1, paddingHorizontal:10, width:"100%", alignSelf: 'center', paddingVertical: 5 }}>
+            style={{ flex: 1, paddingHorizontal: 10, width: "100%", alignSelf: 'center', paddingVertical: 5, backgroundColor: GlobalColor.PrimaryLight }}>
             <Text style={{ paddingVertical: 5, fontSize: 16, fontWeight: 'bold' }}>
                 Select Date
             </Text>
 
-            <View
-                style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                    borderWidth: 1,
-                    borderColor: '#fff',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    padding: 10,
-                    marginVertical: 8,
-                    backgroundColor: '#fff',
-                    shadowColor: GlobalColor.ShadowColor,
-                    shadowOffset: {
-                        width: -0,
-                        height: 1,
-                      },
-                      shadowOpacity: 0.22,
-                      shadowRadius: 2.22,
-                      elevation: 5,                  
-                    borderRadius: 8
-                }}>
-
-
+            <View style={styles.SelectDateInput}>
                 <DatePicker
                     modal
                     open={open}
@@ -221,15 +218,10 @@ const  PastBook = () => {
                     }}
                 />
                 <View
-                    style={{
-                        flexDirection: 'row',
-                        width: '49%',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}>
+                    style={styles.FromandToInput}>
                     <TextInput
                         placeholder="From"
-                        style={{ color: '#000', flex:1 }}
+                        style={{ color: '#000', flex: 1 }}
                         editable={false}
                         paddingHorizontal={14}
                         value={textinputDate}
@@ -238,8 +230,6 @@ const  PastBook = () => {
                         <Ionicons name="calendar-outline" size={30} color={GlobalColor.PrimaryGradient} />
                     </TouchableOpacity>
                 </View>
-
-
 
                 <DatePicker
                     modal
@@ -258,14 +248,9 @@ const  PastBook = () => {
                     }}
                 />
                 <View
-                    style={{
-                        flexDirection: 'row',
-                        width: '50%',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}>
+                    style={styles.FromandToInput}>
                     <TextInput
-                        style={{ color: '#000'}}
+                        style={{ color: '#000' }}
                         placeholder="To"
                         editable={false}
                         paddingHorizontal={14}
@@ -277,9 +262,7 @@ const  PastBook = () => {
                 </View>
             </View>
 
-            <TouchableOpacity onPress={() => {
-                handleSubmit();
-            }}>
+            <TouchableOpacity style={{ marginVertical: 5 }} >
                 {loader == true ? (
                     <Spinner
                         visible={loader}
@@ -287,48 +270,19 @@ const  PastBook = () => {
                         textStyle={{ color: '#fff' }}
                     />
                 ) : null}
-                <LinearGradient
-                    style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                    colors={[GlobalColor.PrimaryGradient,GlobalColor.PrimaryGradient]}>
 
-                    <Text style={{ color: '#fff', fontSize: 16 }}>UPDATE</Text>
-                </LinearGradient>
+                <Button title="UPDATE" onPress={() => { handleSubmit() }}></Button>
             </TouchableOpacity>
-
             {pastFudata.length > 0 ? (
                 <View
-                    style={{
-                        width: '100%',
-                        alignSelf: 'center',
-                        paddingVertical: 10,
-                        paddingHorizontal:10,
-                        backgroundColor: '#fff',
-                        shadowColor: '#000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 2,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 1.84,
-                        elevation: 5,
-                        borderRadius: 8,
-                        paddingBottom: 25
-                    }}>
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingVertical: 10,
-                            borderBottomWidth: 1,
-                            borderBottomColor: '#2757C3'
-                        }}>
-                        <Text>Date</Text>
-                        <Text>Emp ID</Text>
-                        <Text>Booking ID</Text>
-                        <Text>Source</Text>
-                        <Text>Destination</Text>
-                        <Text>Status</Text>
+                    style={styles.ListContainer}>
+                    <View style={styles.ListContainerCardDesign}>
+                        <Text bold>Date</Text>
+                        <Text bold>Emp ID</Text>
+                        <Text bold>Booking ID</Text>
+                        <Text bold>Source</Text>
+                        <Text bold>Destination</Text>
+                        <Text bold>Status</Text>
                     </View>
                     <View>
                         {
@@ -337,14 +291,7 @@ const  PastBook = () => {
                                     <TouchableOpacity
                                         onPress={() => {
                                             BookingDetailApi(item.BKDT_ID)
-                                        }} style={{
-                                            width: '100%',
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            paddingVertical: 10,
-                                            borderBottomWidth: 1,
-                                            borderBottomColor: '#2757C3'
-                                        }}>
+                                        }} style={styles.CardData}>
                                         <Text style={{ fontSize: 12 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
                                         <Text style={{ fontSize: 12 }}>{item.BKDT_EMPL_ID}</Text>
                                         <Text style={{ fontSize: 12 }}>{item.BKDT_ID}</Text>
@@ -365,26 +312,14 @@ const  PastBook = () => {
                             onPress={() => {
                                 setModalVisible(false)
                             }}
-                            style={{
-                                backgroundColor: '#000000aa',
-                                flex: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}>
+                            style={styles.ModalContainer}>
                             <View
-                                style={{
-                                    backgroundColor: '#fff',
-                                    padding: 20,
-                                    borderRadius: 15,
-                                    width: '70%',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                <Text style={{ fontSize: 20 }}>Booking Detail</Text>
+                                style={styles.ModalContant}>
+                                <Text style={{ fontSize: GlobalFontSize.H2 - 3 }} bold>Booking Detail</Text>
 
                                 {bookingDetails.map((item) => {
                                     return (
-                                        <View style={{ width: '90%', marginVertical: 15 }}>
+                                        <View style={{ width: '100%', marginVertical: 15 }}>
                                             <Text>Booking Id : {item.BKDT_ID} </Text>
                                             <Text>Registration No : {item.SHTL_REGISTRATION_NO} </Text>
                                             <Text>Booking For : {item.BKDT_EMPL_ID} </Text>
@@ -397,11 +332,10 @@ const  PastBook = () => {
                                         </View>
                                     )
                                 })}
-                                <View style={{ width: '90%', justifyContent: 'space-between', flexDirection: 'row' }}>
+                                <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
                                     <TouchableOpacity
-                                        onPress={() => {
-                                            setModalVisible(false)
-                                        }}>
+                                        style={{ width: '47%', }}
+                                    >
                                         {loader == true ? (
                                             <Spinner
                                                 visible={loader}
@@ -409,18 +343,15 @@ const  PastBook = () => {
                                                 textStyle={{ color: '#fff' }}
                                             />
                                         ) : null}
-                                        <LinearGradient
-                                            style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                                            colors={['#4174D0', '#0083B0']}>
+                                       
+                                        <Button btnStyle={{ paddingHorizontal: 10 }} title="OK" onPress={() => {
+                                            setModalVisible(false)
+                                        }} />
 
-                                            <Text style={{ color: '#fff', fontSize: 16 }}>OK</Text>
-                                        </LinearGradient>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={{ width: '90%', justifyContent: 'space-between', flexDirection: 'row' }}
-                                        onPress={() => {
-                                            ShuttleEligibilityApi()
-                                        }}>
+                                        style={{ width: '47%', }}
+                                    >
                                         {loader == true ? (
                                             <Spinner
                                                 visible={loader}
@@ -428,12 +359,15 @@ const  PastBook = () => {
                                                 textStyle={{ color: '#fff' }}
                                             />
                                         ) : null}
-                                        <LinearGradient
+                                        {/* <LinearGradient
                                             style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
                                             colors={['#4174D0', '#6ef7ff']}>
 
                                             <Text style={{ color: '#fff', fontSize: 16 }}>FEEDBACK</Text>
-                                        </LinearGradient>
+                                        </LinearGradient> */}
+                                        <Button title="FEEDBACK" onPress={() => {
+                                            ShuttleEligibilityApi()
+                                        }} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -442,7 +376,7 @@ const  PastBook = () => {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <Text>Not found</Text>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" ></ListEmptyComponent>}
                 </View>
             )}
 
@@ -450,4 +384,90 @@ const  PastBook = () => {
     );
 };
 
+
+
+
+
+const styles = StyleSheet.create({
+
+    SelectDateInput: {
+        width: '100%',
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderColor: '#fff',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        // padding: 10,
+        paddingHorizontal: 5,
+        backgroundColor: '#fff',
+        shadowColor: GlobalColor.ShadowColor,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        borderRadius: 4,
+    },
+    FromandToInput: {
+        flexDirection: 'row',
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+
+    ListContainer: {
+        width: '100%',
+        alignSelf: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 1.84,
+        elevation: 5,
+        borderRadius: 8,
+        paddingBottom: 25
+    },
+    ListContainerCardDesign: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: GlobalColor.Primary
+    },
+    CardData: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: GlobalColor.Secondary
+    },
+    ModalContainer: {
+        backgroundColor: '#000000aa',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    ModalContant: {
+        backgroundColor: GlobalColor.White,
+        padding: 20,
+        borderRadius: 15,
+        width: '90%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: "center"
+    }
+
+});
 export default PastBook;
+

@@ -2,10 +2,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   FlatList,
   ScrollView,
   SafeAreaView,
@@ -29,6 +27,13 @@ import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { GlobalColor } from '../../constants/Colors';
+import Text from '../../components/reusable/Text';
+import TextInput from '../../components/reusable/TextInput';
+import { Header } from '../../components/reusable/Header';
+import Button from '../../components/reusable/Button';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+
 
 const Gatepass = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext)
@@ -283,52 +288,27 @@ const Gatepass = ({ navigation }) => {
     hideDatePicker();
   };
 
+
+
+  // if(loader){
+  //   return(
+  //     <SafeAreaView style={{flex: 1,backgroundColor: GlobalColor.PrimaryLight}}>
+  //       <LoadingScreen/>
+  //     </SafeAreaView>
+  //   )
+  // }
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1,backgroundColor:GlobalColor.PrimaryLight }}>
       <Spinner
         visible={loader}
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
-      <LinearGradient
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate('Home')}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 30,
-              fontWeight: "700"
-            }}>
-            Visitor Gatepass
-          </Text>
-        </View>
-      </LinearGradient>
+      <Header title="Visitor Gatepass"/>
       {/* BODY */}
       <Formik
+        enableReinitialize
         innerRef={fromRef}
         validationSchema={gatePassScheema}
         initialValues={{
@@ -436,6 +416,7 @@ const Gatepass = ({ navigation }) => {
 
               <SelectDropdown
                 data={Locations}
+                defaultValue={values.office}
                 onSelect={(selectedItem, index) => {
                   // console.log(selectedItem, index);
                   console.log(selectedItem);
@@ -524,14 +505,14 @@ const Gatepass = ({ navigation }) => {
                     <TouchableOpacity
                       style={{
                         width: '100%',
-                        backgroundColor: '#fff',
+                        backgroundColor: GlobalColor.White,
                         borderWidth: 1,
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         flexDirection: 'row',
                         padding: 6,
                         alignSelf: 'center',
-                        borderColor: '#444'
+                        borderColor: GlobalColor.Secondary
                       }}
                       onPress={() => setOpenDateTimePicker(true)}
                     >
@@ -551,7 +532,7 @@ const Gatepass = ({ navigation }) => {
                           <Ionicons
                             name="calendar-outline"
                             size={25}
-                            color={'#0083B0'}
+                            color={GlobalColor.PrimaryGradient}
                           />
                         </View>
                       </View>
@@ -564,10 +545,9 @@ const Gatepass = ({ navigation }) => {
                       style={{
                         paddingHorizontal: 0,
                         paddingTop: 10,
-                        paddingVertical: 5,
-                        fontSize: 16,
-                        fontWeight: 'bold',
-                      }}>
+                        paddingVertical: 5,                
+                      
+                      }} bold>
                       Duration
                     </Text>
                     <TextInput
@@ -576,7 +556,7 @@ const Gatepass = ({ navigation }) => {
                         borderWidth: 1,
                         padding: 6,
                         backgroundColor: '#fff',
-                        borderColor: '#444'
+                        borderColor: GlobalColor.Secondary
                       }}
                       onChangeText={handleChange('duration')}
                       onBlur={handleBlur('duration')}
@@ -616,9 +596,10 @@ const Gatepass = ({ navigation }) => {
 
                 <SelectDropdown
                   data={searchLevelData}
+                  
                   onSelect={(selectedItem, index) => {
-                    // console.log(selectedItem, index);
-                    console.log(selectedItem);
+                    console.log(selectedItem, index);
+                    console.log("selectedItem",selectedItem);
                     setFieldValue('searchLevel', selectedItem.value);
 
                   }}
@@ -685,7 +666,7 @@ const Gatepass = ({ navigation }) => {
                       flexDirection: 'row',
                       padding: 6,
                       alignSelf: 'center',
-                      borderColor: '#444',
+                      borderColor: GlobalColor.Secondary,
                       fontSize: 16,
                     }}
                   />
@@ -851,7 +832,7 @@ const Gatepass = ({ navigation }) => {
                           flexDirection: 'row',
                           padding: 6,
                           alignSelf: 'center',
-                          borderColor: '#444',
+                          borderColor: GlobalColor.Secondary,
                           fontSize: 16,
                         }}
                       />
@@ -891,7 +872,8 @@ const Gatepass = ({ navigation }) => {
                       width: '100%',
                       borderWidth: 1,
                       borderRadius: 5,
-                      backgroundColor: '#fff'
+                      backgroundColor: '#fff',
+                      borderColor:GlobalColor.Secondary
                     }}>
                     <View
                       style={{
@@ -911,7 +893,7 @@ const Gatepass = ({ navigation }) => {
                               <View
                                 style={{
                                   padding: 5,
-                                  backgroundColor: '#ad3213',
+                                  backgroundColor: GlobalColor.Secondary,
                                   margin: 5,
                                   borderRadius: 20,
                                   flexDirection: 'row',
@@ -970,9 +952,9 @@ const Gatepass = ({ navigation }) => {
                           Select Buildings
                         </Text>
 
-
                         <FlatList
                           data={BuildingData}
+                          
                           numColumns={2}
                           keyExtractor={item => item.BID.toString()}
                           renderItem={({ item, index }) => (
@@ -981,7 +963,7 @@ const Gatepass = ({ navigation }) => {
                                 width: '48%',
                                 padding: 10,
                                 // borderWidth: 1,
-                                borderColor: '#6e6e6e',
+                                borderColor:GlobalColor.Secondary,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 margin: 2,
@@ -994,7 +976,6 @@ const Gatepass = ({ navigation }) => {
                                   newState[index].isSelected = false;
                                   setBuildingData(newState);
                                   setSelectBuilding(newState)
-
 
                                 } else {
                                   newState[index].isSelected = true;
@@ -1020,7 +1001,7 @@ const Gatepass = ({ navigation }) => {
                                   <Ionicons
                                     name="add-circle"
                                     size={25}
-                                    color={'#4e4e4e'}
+                                    color={GlobalColor.Secondary}
                                   />
                                 )}
                               </View>
@@ -1072,13 +1053,15 @@ const Gatepass = ({ navigation }) => {
                       borderWidth: 1,
                       borderRadius: 5,
                       alignSelf: 'center',
-                      backgroundColor: '#fff'
+                      backgroundColor: '#fff',
+                      borderColor:GlobalColor.Secondary
                     }}>
                     <View
                       style={{
                         width: '15%',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        
                       }}>
                       <Feather name="search" size={20} color={'#4174D0'} />
                     </View>
@@ -1158,7 +1141,7 @@ const Gatepass = ({ navigation }) => {
                   <TextInput
                     value={values.perName}
                     editable={false}
-                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 ,backgroundColor:GlobalColor.White ,borderColor:GlobalColor.Secondary}} />
 
                   <Text
                     style={{
@@ -1170,13 +1153,13 @@ const Gatepass = ({ navigation }) => {
                   <TextInput
                     value={values.Desig}
                     editable={false}
-                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8 }} />
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8,backgroundColor:GlobalColor.White,borderColor:GlobalColor.Secondary }} />
                 </View>
 
                 {/* Next Button */}
 
                 <View style={{ paddingVertical: 10 }}>
-                  <LinearGradient
+                  {/* <LinearGradient
                     colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
                     style={{
                       margin: 5,
@@ -1204,16 +1187,23 @@ const Gatepass = ({ navigation }) => {
                         Next
                       </Text>
                     </TouchableOpacity>
-                  </LinearGradient>
-                </View>
+                  </LinearGradient>*/}
+
+                   <Button title="Next"  onPress={() => {
+                        handleSubmit();
+                      }} />
+
+                </View> 
+               
               </View>
 
               {/* MOdal for searchEMP List */}
               <Modal transparent={false} visible={empmodalVisible}>
                 <Pressable
                   style={{
-                    backgroundColor: '#000000aa',
-                    minHeight: "60%",
+                    flex:1,
+                    // backgroundColor: '#000000aa',
+                    // minHeight: "60%",
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
@@ -1235,13 +1225,14 @@ const Gatepass = ({ navigation }) => {
                         style={styles.searchIcon}
                         name="close-circle-outline"
                         size={25}
-                        color="#2757C3" />
+                        color={GlobalColor.Secondary} /> 
                     </TouchableOpacity>
 
-                    {employ.length > 0 ? (
+                    {/* {employ.length > 0 ? ( */}
 
                       <FlatList
-                        style={{ width: "100%", marginHorizontal: 10 }}
+                        style={{ width: "100%", marginHorizontal: 10, }}
+                        ListEmptyComponent={<ListEmptyComponent title="No Data Found" enableRefresh={false} subtitle="Please change the Id & Employee Name"></ListEmptyComponent>}
                         data={employ}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => (
@@ -1260,7 +1251,7 @@ const Gatepass = ({ navigation }) => {
                               style={styles.searchIcon}
                               name="person-circle-outline"
                               size={25}
-                              color="#2757C3"
+                              color={GlobalColor.Secondary}
                             />
                             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10 }}>
                               <Text style={{ fontSize: 16 }}>
@@ -1275,14 +1266,14 @@ const Gatepass = ({ navigation }) => {
                                 style={styles.searchIcon}
                                 name="chevron-forward-circle-outline"
                                 size={25}
-                                color="#2757C3" />
+                                color= {GlobalColor.Secondary}/>
                             </TouchableOpacity>
                           </TouchableOpacity>
                         )}
                       />
-                    ) : (
-                      <Text>Searched Data not found</Text>
-                    )}
+                    {/* // ) : (
+                    //   <Text>Searched Data not found</Text>
+                    // )} */}
                   </View>
                 </Pressable>
               </Modal>
@@ -1315,7 +1306,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
-    backgroundColor: '#fff'
+    borderColor:GlobalColor.Secondary,
+    backgroundColor:GlobalColor.White
   },
 
   // Dropdown styles
@@ -1325,12 +1317,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 3,
     backgroundColor: '#FFF',
-    borderColor: '#444',
+    borderColor: GlobalColor.Secondary,
   },
-  dropdown2BtnTxtStyle: { color: '#444', textAlign: 'left', fontSize: 16 },
-  dropdown2DropdownStyle: { backgroundColor: '#EFEFEF' },
-  dropdown2RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
-  dropdown2RowTxtStyle: { color: '#444', textAlign: 'left', fontSize: 16 },
+  dropdown2BtnTxtStyle: { textAlign: 'left', fontSize: 16 },
+  dropdown2DropdownStyle: { backgroundColor: GlobalColor.White },
+  dropdown2RowStyle: { backgroundColor: GlobalColor.White, borderBottomColor: '#C5C5C5' },
+  dropdown2RowTxtStyle: {textAlign: 'left', fontSize: 16 },
   centeredView: {
     flex: 1,
     position: 'relative',
@@ -1340,12 +1332,13 @@ const styles = StyleSheet.create({
   Modalclose: {
     position: 'absolute',
     right: 0,
-    backgroundColor: '#f00',
+    backgroundColor: GlobalColor.Primary,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     zIndex: 55,
-    paddingHorizontal: 5,
-    paddingVertical: 2
+    borderRadius:3,
+    paddingHorizontal: 10,
+    paddingVertical: 4
   },
   Modalclosetxt: {
     fontWeight: '700',
