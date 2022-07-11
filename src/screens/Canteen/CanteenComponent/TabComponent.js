@@ -6,7 +6,7 @@ import Calender from './Calender';
 const TabComponent = ({lunch, snacks, dinner}) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-      <View>
+      <View >
         {/* <Calander /> */}
         <Accordion data={lunch} name={'Lunch'} handleDropDown={() => setIsOpen(isOpen === 'lunch' ? '' : 'lunch')} isOpen={isOpen === 'lunch'} />
         <Accordion data={snacks} name={'Snacks'} handleDropDown={() => setIsOpen(isOpen === 'snacks' ? '' : 'snacks')} isOpen={isOpen === 'snacks'} />

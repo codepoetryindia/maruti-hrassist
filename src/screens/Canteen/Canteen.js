@@ -1,105 +1,95 @@
 //import liraries
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import { GlobalFontSize } from '../../constants/FontSize';
 import { GlobalColor } from '../../constants/Colors';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
 
-const Canteen = ({navigation}) => {
+const Canteen = ({ navigation }) => {
   // ]);
   return (
-    <SafeAreaView style={{flex: 1, width: '100%', height: '100%'}}>
-    <LinearGradient
-     colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
+      <Header title="Canteen" />
 
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate("Home")}
+
+      <View style={{width:"100%",paddingHorizontal:10}}>
+        <TouchableOpacity
+          style={styles.canteen}
+          onPress={() => navigation.navigate("CanteenMenu")}>
+          {/* <View style={{ width: '20%', justifyContent: "center" }}>
+            <Image
+              source={require('../../assets/Images/canteen/fork.png')}
+              style={{ width: 45, height: 45 }}
+              resizeMode={'cover'}
             />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
+          </View> */}
+
+          <View style={styles.iconBox}>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: GlobalColor.PrimaryGradient,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/Images/canteen/fork.png')}
+                style={{ width: 30, height: 30 }}
+              />
+            </View>
           </View>
+          <View
+            style={styles.MenuContainer}>
+            <Text Bold>Canteen Menu</Text>
+            <Feather name="corner-up-right" size={20} />
+          </View>
+        </TouchableOpacity>
 
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Canteen
-          </Text>
-        </View>
-      </LinearGradient>
 
-      <TouchableOpacity
-        style={styles.canteen}
-        onPress={() => navigation.navigate("CanteenMenu")}>
-        <View style={{width: '20%'}}>
-          {/* <Image
-            style={{width: 50, height: 50}}
-            source={require('../../assets/Images/cutlery.gif')}
-          /> */}
+        <TouchableOpacity
+          style={styles.canteen}
+          onPress={() => navigation.navigate("FoodCount")}>
+          {/* <View style={{width: '20%',justifyContent:"center"}}>  
+
           <Image
-            source={require('../../assets/Images/cutlery.gif')}
-            style={{width: 50, height: 50}}
-            resizeMode={'cover'}
-          />
-        </View>
-        <View
-          style={{
-            width: '80%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 10,
-          }}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Canteen Menu</Text>
-          <Feather name="corner-up-right" size={20} />
-        </View>
-      </TouchableOpacity>
+            style={{width: 45, height: 45}}
+            source={require('../../assets/Images/canteen/turkey.png')}
+          />          
+        </View> */}
+          <View style={styles.iconBox}>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: GlobalColor.PrimaryGradient,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/Images/canteen/turkey.png')}
+                style={{ width: 30, height: 30 }}
+              />
+            </View>
+          </View>
+          <View
+            style={styles.MenuContainer}>
+            <Text Bold>Food Count</Text>
+            <Feather name="corner-up-right" size={20} />
+          </View>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.canteen}
-        onPress={() => navigation.navigate("FoodCount")}>
-        <View style={{width: '20%'}}>
-          <Image
-            style={{width: 50, height: 50}}
-            source={require('../../assets/Images/chicken.gif')}
-          />
-            {/* <GifImage
-           source={require('../../assets/Images/chicken.gif')}
-            style={{width: 50, height: 50}}
-            resizeMode={'cover'}
-          /> */}
-        </View>
-        <View
-          style={{
-            width: '80%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 10,
-          }}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Food Count</Text>
-          <Feather name="corner-up-right" size={20} />
-        </View>
-      </TouchableOpacity>
+
+
+      </View>
     </SafeAreaView>
   );
 };
@@ -113,24 +103,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   canteen: {
-    top:10,
+    top: 10,
     marginVertical: 10,
-    width: '90%',
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     alignSelf: 'center',
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: GlobalColor.Black,
     shadowOffset: {
       width: 0,
       height: 4,
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
     elevation: 8,
-    borderRadius:8
+    borderRadius: 5
+  },
+  MenuContainer: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  iconBox: {
+    width: '20%',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
