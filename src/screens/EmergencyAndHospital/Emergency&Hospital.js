@@ -14,6 +14,8 @@ import Hospital from './Hospital';
 import NearByHospital from './NearByHospital';
 import EmergencyContacts from './EmergencyContact';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { GlobalFontSize } from '../../constants/FontSize';
+import { GlobalColor } from '../../constants/Colors';
 
 const Tab = createMaterialTopTabNavigator();
 

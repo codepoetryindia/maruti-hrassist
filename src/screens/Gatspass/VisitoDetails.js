@@ -1,8 +1,7 @@
 //import liraries
 import React, { useState, useRef, useContext } from 'react';
 import {
-  View,
-  Text,
+  View,  
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -23,6 +22,7 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import AuthContext from '../../context/AuthContext';
 import moment from 'moment';
 import * as ApiService from '../../Utils/Utils';
+import Text from '../../components/reusable/Text';
 
 
 

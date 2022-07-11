@@ -1,11 +1,16 @@
 import React, { useState, useContext } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
+import { StyleSheet, View, SafeAreaView } from 'react-native'
 import moment from 'moment';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import Text from '../../components/reusable/Text';
+
 
 export default function FutureBook() {
 
@@ -96,9 +101,22 @@ export default function FutureBook() {
             return () => unsubscribe;
         }, [])
     )
+
+
+    if (loader) {
+        return (
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: GlobalColor.White,
+            }}>
+
+                <LoadingScreen />
+            </SafeAreaView>
+        )
+    }
     return (
-        <SafeAreaView 
-        style={{ flex: 1, width: '90%', alignSelf: 'center', paddingVertical: 5 }}>
+        <SafeAreaView
+            style={styles.container}>
             {loader == true ? (
                 <Spinner
                     visible={loader}
@@ -108,50 +126,28 @@ export default function FutureBook() {
             ) : null}
             {futureData.length > 0 ? (
                 <View
-                    style={{
-                        width: '110%',
-                        alignSelf: 'center',
-                        paddingVertical: 10,
-                        backgroundColor: '#fff',
-                        shadowColor: '#000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 2,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 1.84,
-                        elevation: 5,
-                        borderRadius: 8,
-                        paddingBottom: 25
-                    }}>
+                    style={styles.ListContainer}>
                     <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            paddingVertical: 10,
-                            borderBottomWidth: 1,
-                            borderBottomColor: '#2757C3'
-                        }}>
-                        <Text>Date</Text>
-                        <Text>Emp ID</Text>
-                        <Text>Booking ID</Text>
-                        <Text>Source</Text>
-                        <Text>Destination</Text>
-                        <Text>Status</Text>
+                        style={styles.ListContent}>
+                        <Text Bold>Date</Text>
+                        <Text Bold>Emp ID</Text>
+                        <Text Bold>Booking ID</Text>
+                        <Text Bold>Source</Text>
+                        <Text Bold>Destination</Text>
+                        <Text Bold>Status</Text>
                     </View>
                     <View>
                         {
                             futureData.map((item) => {
                                 return (
                                     <TouchableOpacity
-                                         style={{
+                                        style={{
                                             width: '100%',
                                             flexDirection: 'row',
                                             justifyContent: 'space-between',
                                             paddingVertical: 10,
                                             borderBottomWidth: 1,
-                                            borderBottomColor: '#2757C3'
+                                            borderBottomColor:GlobalColor.Secondary
                                         }}>
                                         <Text style={{ fontSize: 12 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
                                         <Text style={{ fontSize: 12 }}>{item.BKDT_EMPL_ID}</Text>
@@ -168,11 +164,46 @@ export default function FutureBook() {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <Text>Not found</Text>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" ></ListEmptyComponent>}
                 </View>
             )}
         </SafeAreaView>
     );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+        alignSelf: 'center',
+        paddingVertical: 5,
+        backgroundColor: GlobalColor.PrimaryLight
+    },
+
+    ListContainer: {
+        width: '110%',
+        alignSelf: 'center',
+        paddingVertical: 10,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 1.84,
+        elevation: 5,
+        borderRadius: 8,
+        paddingBottom: 25
+    },
+    ListContant:{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: GlobalColor.PrimaryGradient,
+    }
+
+});
+

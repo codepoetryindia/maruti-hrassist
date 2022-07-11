@@ -1,19 +1,39 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Image, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Image, SafeAreaView, ActivityIndicator, } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import TextInput from '../../components/reusable/TextInput'
+import { Header } from '../../components/reusable/Header';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import Text from '../../components/reusable/Text';
 // create a component
 const Gst = ({ navigation }) => {
   const [gst, setGst] = useState([])
-  const [loader, setLoader] = useState(false);
+
   const { authContext, AppUserData } = useContext(AuthContext);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [searchText, setSearchText] = useState('');
+
+
+  const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
   const GetGSTDetailstApi = () => {
@@ -68,9 +88,20 @@ const Gst = ({ navigation }) => {
     GetGSTDetailstApi()
     filterdData()
   }, [])
+
+  if (loader) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Header title={"GST Details"} back />
+        <LoadingScreen />
+      </SafeAreaView>
+    )
+  }
+
   return (
 
     <SafeAreaView style={styles.container}>
+      <Header title={"GST Details"} />
       {loader == true ? (
         <Spinner
           visible={loader}
@@ -78,172 +109,141 @@ const Gst = ({ navigation }) => {
           textStyle={styles.spinnerTextStyle}
         />
       ) : null}
-      <LinearGradient
-        style={{ padding: 20 }}
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}>
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate("BuisnessTravel")}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
 
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            GST Details
-          </Text>
-        </View>
-      </LinearGradient>
+      {/* BODY   ##########################3############       */}
 
+      {/* SEARCH BOX */}
+      <View style={styles.MainContainer}>
+      <View
+        style={styles.SearchContainer}>
+        <Ionicons
+          style={styles.searchIcon}
+          name="ios-search"
+          size={25}
+          color="#b2bec3"
+        />
 
-      {/* BODY */}
+        <TextInput
+          placeholder="Search By StateName"
+          secureTextEntry={false}
+          autoCapitalize='characters'
+          onChangeText={(text) => {
+            filterdData(text)
+          }}
+          value={searchText}
+        />
+      </View>
 
+      {/* FLATLIST */}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={filteredDataSource.length == 0 ? gst : filteredDataSource}
+        style={{ height: '80%' }}
 
+        ListEmptyComponent={() => <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => SearchEmployee()} refreshing={refresh}></ListEmptyComponent>}
 
-
-      {
-        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Please wait we are fetching your data</Text></View>) :
-          (<View>
-            {/* SEARCH BOX */}
-            <View
-              style={{
-                marginVertical: 10,
-                width: '90%',
-                flexDirection: 'row',
-                borderWidth: 1,
-                borderColor:'#4174D0',
-                borderRadius: 5,
-                alignSelf: 'center',
-              }}>
-              <TextInput
-                placeholder="Search By StateName"
-                autoCapitalize='characters'
-                onChangeText={(text) => {
-                  filterdData(text)
-                }}
-                value={searchText}
-                style={{
-                  width: '70%',
-                  paddingVertical: 5,
-                }}
-              />
+        keyExtractor={(item, index) => index}
+        renderItem={({ item, index }) => {
+          return (
+            <View>
+              <TouchableOpacity style={styles.TouchableOpacity}>
+                <View
+                  style={styles.HeadingContainer}>
+                  <Text style={{ fontSize: 16, color: GlobalColor.White, padding: 10, }}>
+                    {item.MAPP_GSTN_STATE_NAME}
+                  </Text>
+                </View>
+                <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                  <Text style={styles.GStBox}>GST Number</Text>
+                  <Text style={{ color: GlobalColor.Black }}>{item.MAPP_GSTN_REG_NO}</Text>
+                  <Text style={styles.GStBox}>Company Name</Text>
+                  <Text style={{ color: GlobalColor.Black }}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
+                  <Text style={styles.GStBox}>Address</Text>
+                  <Text style={{ color: GlobalColor.Black }}>{item.MAPP_GSTN_ADDRESS}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            
-            {/* FLATLIST */}
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={filteredDataSource.length == 0 ? gst : filteredDataSource}
-              style={{height:'80%'}}
-              ListEmptyComponent={() => {
-                return (
-                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={require('.././../assets/Images/dataNotFound.png')}
-                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                  </View>
-                )
-              }}
-              keyExtractor={(item, index) => index}
-              renderItem={({ item, index }) => {
-                return (
-                  <View>
-                    <TouchableOpacity style={styles.TouchableOpacity}>
-                      <View
-                        style={{
-                          width: '100%',
-                          backgroundColor: '#6ef7ff',
-                          alignSelf: 'center',
-                          overflow: 'hidden',
-                          borderWidth: 0.5,
-                          borderColor: '#6ef7ff',
-                          borderTopLeftRadius: 8,
-                          borderTopRightRadius: 8
-                        }}>
-                        <Text style={{ fontSize: 16, color: '#000', padding: 10, color: '#000' }}>
-                          {item.MAPP_GSTN_STATE_NAME}
-                        </Text>
-                      </View>
-                      <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                        <Text style={styles.GStBox}>GST Number</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_REG_NO}</Text>
-                        <Text style={styles.GStBox}>Company Name</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_COMPANY_NAME}</Text>
-                        <Text style={styles.GStBox}>Address</Text>
-                        <Text style={{ color: '#000' }}>{item.MAPP_GSTN_ADDRESS}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
-            />
-          </View>
-
-          )
-      }
+          );
+        }}
+      />
+      </View>
     </SafeAreaView>
   );
 };
 
 // define your styles
 const styles = StyleSheet.create({
+  
+
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,   
+  },
+  MainContainer:{
+    paddingHorizontal:20
+  },
+  SearchContainer: {
+    marginVertical: 10,
+    width: '100%',
+    flexDirection: 'row',
+    borderWidth: 0,
+    borderRadius: 5,
+    alignSelf: 'center',
+    backgroundColor: "#fff",
+    color: GlobalColor.Primary,
+    fontSize: GlobalFontSize.Small,
+    fontFamily: 'Roboto-Regular',
+    textAlign: 'left',
+    paddingHorizontal: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 4,
+
   },
 
+
   TouchableOpacity: {
-    width: '90%',
+    width: '100%',
     paddingTop: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     alignSelf: 'center',
     margin: 10,
     paddingVertical: 10,
-    shadowColor: '#000',
+    shadowColor: GlobalColor.ShadowColor,
     shadowOffset: {
-      width: 0,
-      height: 3,
+      width: -0,
+      height: 1,
     },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-    // borderWidth: 1,
-    // borderTopColor: '#80406A',
-    // borderStartColor: '#6ef7ff',
-    // borderBottomColor: '#2757C3',
-    // borderEndColor: '#6ef7ff',
-
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 5,
     borderRadius: 8,
+  },
+  HeadingContainer:{
+    width: '100%',
+    backgroundColor: GlobalColor.PrimaryGradient,
+    alignSelf: 'center',
+    overflow: 'hidden',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
+  },
+  searchIcon: {
+    padding: 10,
   },
   GStBox: {
     fontSize: 16,
-    color: 'grey',
+    color: GlobalColor.LightDark,
     paddingVertical: 10,
     paddingBottom: 5,
     letterSpacing: 1,
   },
   spinnerTextStyle: {
-    color: '#FFF'
+    color: GlobalColor.White,
   },
 });
 

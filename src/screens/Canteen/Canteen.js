@@ -4,6 +4,8 @@ import {View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView} from 'reac
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import { GlobalFontSize } from '../../constants/FontSize';
+import { GlobalColor } from '../../constants/Colors';
 
 const Canteen = ({navigation}) => {
   // ]);
