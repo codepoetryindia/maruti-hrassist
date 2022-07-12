@@ -24,6 +24,7 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import { GlobalColor } from '../../constants/Colors';
 import Text from '../../components/reusable/Text';
 import { Header } from '../../components/reusable/Header';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -225,6 +226,15 @@ const FoodCount = ({ navigation }) => {
     );
   };
 
+  // if(loader){
+  //   return(
+  //     <SafeAreaView style={styles.LoadingContainer}>
+  //     <Header title={"Notifications"} back/>
+  //       <LoadingScreen/>
+  //     </SafeAreaView>
+  //   )
+  // }
+
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
        <Header title="Food Count"/>        
@@ -325,7 +335,13 @@ const styles = StyleSheet.create({
     borderRadius:5,
     elevation: 2,
   },
-  AccordianContainer:{ marginTop: 70}
+  AccordianContainer:{ marginTop: 70},
+
+  // LoadingContainer: {
+  //   flex: 1,
+  //   backgroundColor:GlobalColor.PrimaryLight
+  //   // backgroundColor: '#fff',
+  // },
 });
 
 // //make this component available to the app

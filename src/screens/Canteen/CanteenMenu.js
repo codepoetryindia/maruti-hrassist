@@ -223,14 +223,14 @@ const CanteenMenu = ({ navigation }) => {
     );
   };
 
-  if(loader){
-    return(
-      <SafeAreaView style={styles.container}>
-      <Header title={"Notifications"} back/>
-        <LoadingScreen/>
-      </SafeAreaView>
-    )
-  }
+  // if(loader){
+  //   return(
+  //     <SafeAreaView style={styles.LoadingContainer}>
+  //     <Header title={"Notifications"} back/>
+  //       <LoadingScreen/>
+  //     </SafeAreaView>
+  //   )
+  // }
 
 
   return (
@@ -334,7 +334,12 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
-  AccordianContainer: { marginTop: 70,width:"100%" }
+  AccordianContainer: { marginTop: 70,width:"100%" },
+  // LoadingContainer: {
+  //   flex: 1,
+  //   backgroundColor:GlobalColor.PrimaryLight
+  //   // backgroundColor: '#fff',
+  // },
 });
 
 // //make this component available to the app
