@@ -38,17 +38,16 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
                         <FlatList
                             ListEmptyComponent={<ListEmptyComponent 
                             title="No Data Found"
-                            subtitle="please select date & retry"
-                            // onRefreshCallback={()=>NotifiApi(true)}
-                            // enableRefresh={false} 
-                            // refreshing={refresh}
-                            // showsVerticalScrollIndicator={false}
+                            subtitle="please select date & retry"                           
+                             enableRefresh={true} 
+                             refreshing={refresh}
+                             showsVerticalScrollIndicator={false}
                             ></ListEmptyComponent>}
                             data={data}
                             keyExtractor={({ item, index }) => index}
                             renderItem={
                                 ({ item, index }) => {
-                                    console.log("item",item)
+                                    
                                     return (
                                         <View>
                                             <Text >SHIFT {item.CANT_SHFT}</Text>

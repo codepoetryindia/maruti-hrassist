@@ -25,6 +25,7 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import { GlobalColor } from '../../constants/Colors';
 import Text from '../../components/reusable/Text';
 import { Header } from '../../components/reusable/Header';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 const Tab = createMaterialTopTabNavigator();
 const CanteenMenu = ({ navigation }) => {
@@ -221,6 +222,16 @@ const CanteenMenu = ({ navigation }) => {
       </SafeAreaView>
     );
   };
+
+  if(loader){
+    return(
+      <SafeAreaView style={styles.container}>
+      <Header title={"Notifications"} back/>
+        <LoadingScreen/>
+      </SafeAreaView>
+    )
+  }
+
 
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
