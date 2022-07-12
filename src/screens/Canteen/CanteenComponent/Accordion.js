@@ -1,6 +1,6 @@
 import { View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler';
 
 import ListEmptyComponent from '../../../components/reusable/ListEmptyComponent';
@@ -8,10 +8,26 @@ import Text from '../../../components/reusable/Text';
 import { GlobalColor } from '../../../constants/Colors';
 
 const Accordion = ({ data, name, handleDropDown, isOpen }) => {
+    const [refresh, setrefresh] = useState(false);
+    const [loader, setLoader] = useState(false);
+
+
+    const stopLoader = () => {
+        try {
+          setLoader(false);
+          setrefresh(false);
+        } catch(error){
+            console.log(error)
+        }
+    }
+    
+
     return (
 
         <View style={{paddingHorizontal:10}}>
-        <ScrollView style={styles.lunchBoxContainer}>
+        <View
+        // nestedScrollEnabled={true}
+        style={styles.lunchBoxContainer}>
             <TouchableOpacity style={styles.lunchBox} onPress={() => handleDropDown()}>
                 <Text Bold> {name} </Text>
                 <Ionicons name={isOpen == true ? 'ios-chevron-up' : 'ios-chevron-down'} size={20} />
@@ -20,11 +36,19 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
                 isOpen == true ?
                     <View style={styles.AccordionTab}>
                         <FlatList
-                            ListEmptyComponent={<ListEmptyComponent title="No Data Found" enableRefresh={false} subtitle="please select date & retry"></ListEmptyComponent>}
+                            ListEmptyComponent={<ListEmptyComponent 
+                            title="No Data Found"
+                            subtitle="please select date & retry"
+                            // onRefreshCallback={()=>NotifiApi(true)}
+                            // enableRefresh={false} 
+                            // refreshing={refresh}
+                            // showsVerticalScrollIndicator={false}
+                            ></ListEmptyComponent>}
                             data={data}
                             keyExtractor={({ item, index }) => index}
                             renderItem={
                                 ({ item, index }) => {
+                                    console.log("item",item)
                                     return (
                                         <View>
                                             <Text >SHIFT {item.CANT_SHFT}</Text>
@@ -50,7 +74,7 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
                     </View>
                     : null
             }
-        </ScrollView>
+        </View>
         </View>
     )
 }
