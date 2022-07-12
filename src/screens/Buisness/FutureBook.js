@@ -16,48 +16,23 @@ export default function FutureBook() {
 
     const [futureData, setFutureData] = useState([])
     const { authContext, AppUserData } = useContext(AuthContext);
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(false);
+    const [refresh, setrefresh] = useState(false);
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
 
-    // const GetShutlPastFutrReportApi = () => {
-    //     let token = AppUserData.token
-    //     let userId = AppUserData.data.userId
-    //      let apiData = {
-    //       BKDTEmplID: userId,
-    //       BKDTFlag: "F",
-    //       FromDate: '',
-    //       ToDate: '',
-    //     }
-    //     console.log("payload", apiData);
-    //     setLoader(true);
-    //     ApiService.PostMethode('/GetShuttlePastFutureReport', data, token)
-    //         .then(result => {
-    //             console.log("GetShutlPastFutrReportApi", result);
-    //             setLoader(false);
-    //             // let ApiValue = result.Value
-    //             // setData(ApiValue)
-    //         })
 
-    //         .catch(error => {
-    //             setLoader(false);
-    //             console.log('Error occurred==>', error);
-    //             if (error.response) {
-    //                 if (error.response.status == 401) {
-    //                     console.log('error from api', error.response);
-    //                 }
-    //                 // client received an error response (5xx, 4xx)
-    //                 Toast.show(error.response.data.title);
-    //             } else if (error.request) {
-    //                 // client never received a response, or request never left
-    //                 Toast.show('Network Error');
-    //                 // console.log("error.request", error.request._response);
-    //             } else {
-    //                 // anything else
-    //                 Toast.show('Something Went Wrong');
-    //             }
-    //         });
-    // };
+    
+    const stopLoader = () => {
+            try {
+            setLoader(false);
+            setrefresh(false);
+            } catch(error){
+                console.log(error)
+            }
+        }
+
+
     const GetShutlPastFutrReportApi = () => {
         let token = AppUserData.token
         let userId = AppUserData.data.userId
@@ -71,13 +46,13 @@ export default function FutureBook() {
         ApiService.PostMethode('/GetShuttlePastFutureReport', apiData, token)
             .then(result => {
                 console.log("GetShutlPastFutrReportApi", result);
-                setLoader(false);
+                stopLoader(false);
                 let ApiValue = result.Value
                 setFutureData(ApiValue)
             })
 
             .catch(error => {
-                setLoader(false);
+                stopLoader(false);
                 console.log('Error occurred==>', error);
                 if (error.response) {
                     if (error.response.status == 401) {
@@ -164,7 +139,7 @@ export default function FutureBook() {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" ></ListEmptyComponent>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh} ></ListEmptyComponent>}
                 </View>
             )}
         </SafeAreaView>

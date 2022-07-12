@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Linking, Image, SafeAreaView, Pressable } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Linking, Image, SafeAreaView, Pressable, Modal } from 'react-native';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
@@ -8,9 +8,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Spinner from 'react-native-loading-spinner-overlay';
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { GlobalColor } from '../../constants/Colors';
+import Text from '../../components/reusable/Text';
+
+
+
 // create a component
 const Hospital = ({ locationName }) => {
   const myNavigation = useNavigation();
@@ -20,7 +26,20 @@ const Hospital = ({ locationName }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItem, setModalItem] = useState('')
   const [hospitalLoc, setHospitalLoc] = useState([]);
-  const [filterModal,setFilterModal] = useState(false)
+  const [filterModal,setFilterModal] = useState(false);
+  const [refresh, setrefresh] = useState(false);
+
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+}
+
+
 
   const GetHospListApi = (data) => {
     let token = AppUserData.token
@@ -35,12 +54,14 @@ const Hospital = ({ locationName }) => {
     setLoader(true);
     ApiService.PostMethode('/GetHospList', apidata, token)
       .then(result => {
+        setFilterModal(false);
         console.log("setHospitallList", result);
         setLoader(false);
         let ApiValue = result.Value
         setHospitallList(ApiValue)
       })
       .catch(error => {
+        setFilterModal(false);
         setLoader(false);
         console.log('Error occurred==>', error);
         if (error.response) {
@@ -60,10 +81,11 @@ const Hospital = ({ locationName }) => {
       });
   };
 
+
   const GetHospLocnApi = () => {
+    setFilterModal(true);
     let token = AppUserData.token
     let apidata = {}
-    setLoader(true);
     ApiService.PostMethode('/GetHospLocn', apidata, token)
       .then(result => {
         setLoader(false);
@@ -92,145 +114,137 @@ const Hospital = ({ locationName }) => {
         }
       });
   };
+
+
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = GetHospListApi();
       return () => unsubscribe;
     }, [])
   )
-  return (
 
+  return (
     <SafeAreaView style={styles.container}>
       {/* Modal */}
-      {loader == true ? (
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      ) : null}
+        {loader == true ? (
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+        ) : null}
 
-
-      {loader == true ? (<View style={{ flex: 1, justifyContent: 'center', marginTop: '40%', marginLeft: '20%' }}>
-        <Text>We are fetching your data Please wait</Text>
-      </View>) : (
         <View style={styles.itemBox}>
           <Modal
-            backdropOpacity={0.5}
-            animationIn="fadeIn"
+            backdropOpacity={0.7}
+            animationType="slide"
             animationOut="fadeOut"
-            coverScreen={true}
-            isVisible={modalVisible}>
-            <View style={styles.modalBox}>
-              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            transparent={true}
+            visible={modalVisible}>
+            <View style={styles.modalBoxDetail}>
+              <View style={styles.modalBoxDetailInner}>      
+              <TouchableOpacity style={{ position:'absolute', top:0, right:0 }} onPress={() =>setModalVisible(false)}>
                 <Feather
                   name="x-circle"
-                  color={'#000'}
-                  size={20}
-                  onPress={() =>
-                    setModalVisible(false)}
+                  color={GlobalColor.Danger}
+                  size={25}                  
                   style={{ margin: 10 }}
                 />
               </TouchableOpacity>
-
               <View style={{ alignItems: 'center' }}>
                 <Image
-                  source={require('../../assets/Images/hospital.png')}
+                  source={require('../../assets/Images/hospitalnew.png')}
                   style={styles.modalImage}
                 />
-                <Text style={styles.modalText}>
+                <Text Bold>
                   {modalItem.HOSP_NAME}
                 </Text>
-                <Text style={[styles.modalText, { fontSize: 14, fontWeight: '500' }]}>{modalItem.ADDR}</Text>
+                <Text style={[styles.modalText, { fontSize: 14, fontWeight: '500', marginTop:10 }]}>{modalItem.ADDR}</Text>
 
                 <View style={styles.modalIcon}>
-                  <Feather name="phone-call" size={30} color={'#4174D0'}
+                  <TouchableOpacity
                     onPress={() => {
                       Linking.openURL(`tel:${modalItem.HOSP_PHONE_NO}`)
-                    }} />
-                  <FontAwesome5 name='map-marked-alt' size={30} color={'#4174D0'}
-                    onPress={() => {
-
+                    }}
+                  >
+                    <Feather name="phone-call" size={30} color={GlobalColor.Secondary} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                     onPress={() => {
                       Linking.openURL(`http://maps.google.com/maps?saddr=&daddr=${modalItem.ADDR}`)
-                    }} />
+                    }}>
+                  <FontAwesome5 name='map-marked-alt' size={30} color={GlobalColor.Secondary}/>
+                  </TouchableOpacity>
                 </View>
 
               </View>
-
+              </View>
             </View>
           </Modal>
 
           {/* Filter Modal */}
-
           <Modal
-            backdropOpacity={0.5}
-            animationIn="fadeIn"
-            animationOut="fadeOut"
-            coverScreen={true}
-            isVisible={filterModal}>
-            <View style={[styles.modalBox,{maxHeight:'90%'}]}>
-              <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+            backdropOpacity={0.7}
+            visible={filterModal}
+            transparent={true}
+            >
+            <View style={[styles.modalBox,{ position:'relative',flex:1}]}>
+              <TouchableOpacity style={{ position:'absolute',top:10, right:10, zIndex:555555 }}                   onPress={() =>
+                    setFilterModal(false)}     
+              >
                 <Feather
                   name="x-circle"
-                  color={'#000'}
-                  size={20}
-                  onPress={() =>
-                    setFilterModal(false)}
-                  style={{ margin: 10 }}
+                  color={GlobalColor.Primary}
+                  size={25}             
                 />
               </TouchableOpacity>
 
-              <View style={{ alignItems: 'center' }}>
+              <View style={{ paddingHorizontal:10, marginTop:20, flex:1 }}>
                 <FlatList
+                  contentContainerStyle={{ flexGrow:1 }}
                   data={hospitalLoc}
                   showsVerticalScrollIndicator={false}
                   ListEmptyComponent={() => {
                     return (
-                      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={require('../../assets/Images/dataNotFound.png')}
-                          style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                      </View>
+                      <ListEmptyComponent/>
                     )
                   }}
                   keyExtractor={({ item, index }) => index}
                   renderItem={({ item, index }) => {
                     return (
                       <TouchableOpacity
-                        onPress={() => {
-                        
-                          setFilterModal(false)
+                        onPress={() => {                                                
                           GetHospListApi(item.LOCN_DESC)
                         }}
-                        style={{ width: '100%', borderBottomWidth: 0.5, padding: 15 }}>
-                        <Text style={{ fontSize: 16, paddingHorizontal: 10 }}>{item.LOCN_DESC}</Text>
+                        style={{ borderBottomWidth: 0.5, borderBottomColor:GlobalColor.Secondary, paddingVertical:10 }}>
+                        <Text Bold style={{ fontSize: 16, paddingHorizontal: 0 }}>{item.LOCN_DESC}</Text>
                       </TouchableOpacity>
                     )
                   }} />
-
               </View>
-
             </View>
           </Modal>
 
-          <View style={{ width: '90%', alignItems: 'flex-end', alignSelf: 'center' }}>
-            <Ionicons
-
-              name="ios-filter"
-              size={35}
-              color={'#4174D0'}
-              onPress={() => GetHospLocnApi()}
-            />
+          <View style={{ width: '100%', justifyContent: 'flex-end', flexDirection:'row', padding:5 }}>
+            <Text Bold style={{ marginRight:10}}>Filter</Text>
+            <TouchableOpacity onPress={() => GetHospLocnApi()}>
+              <Ionicons
+                name="ios-filter"
+                size={25}
+                color={GlobalColor.Primary}                
+              />
+            </TouchableOpacity>
           </View>
+
+
+
+
           <FlatList
+            contentContainerStyle={{ flexGrow:1 }}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => {
               return (
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../../assets/Images/dataNotFound.png')}
-                    style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                </View>
+                <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={()=>GetHospListApi()} refreshing={refresh} ></ListEmptyComponent>
               )
             }}
             data={hospitalList}
@@ -242,14 +256,13 @@ const Hospital = ({ locationName }) => {
                     setModalItem(item)
                     setModalVisible(true);
                   }}
-                  style={{ width: '90%' }}>
-
-
-                  <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#000' }}>
+                  style={{ flex:1}}>
+                  <Text Bold style={{ fontSize: 16 }}>
                     {item.HOSP_NAME}
                   </Text>
                   <Text style={{ color: '#000' }}>{item.ADDR}</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity style={{ width: '10%' }}
                   onPress={() => {
                     Linking.openURL(`tel:${item.HOSP_PHONE_NO}`)
@@ -262,8 +275,6 @@ const Hospital = ({ locationName }) => {
 
 
         </View>
-      )}
-
     </SafeAreaView>
 
   );
@@ -273,56 +284,51 @@ const Hospital = ({ locationName }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
   },
   itemBox: {
-    backgroundColor: '#fff',
-    width: '90%',
-    alignSelf: 'center',
-    paddingVertical: 10,
-    marginVertical: 8,
-    backgroundColor: '#fff',
-    height: '100%',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+    flex:1,
+    width: '100%',
+    paddingHorizontal:10
   },
+  
   spinnerTextStyle: {
     color: '#FFF'
   },
   box: {
-    width: '90%',
+    width: '100%',
+    backgroundColor:GlobalColor.White,
+    paddingHorizontal:10,
+    marginBottom:10,
     paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5,
+    borderBottomColor: GlobalColor.Secondary,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   modalBox: {
-    width: '90%',
+    flex:1,
+    width: '100%',
     padding: 10,
     // justifyContent: "center",
-    textAlign: 'center',
     // alignItems: 'center',
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    alignSelf: 'center',
-    borderRadius: 8
+    borderRadius: 0
+  },
+
+  modalBoxDetail:{
+    backgroundColor:'rgba(0,0,0,0.7)',
+    flex:1, 
+    justifyContent:'center',
+    alignItems:'center',
+    paddingHorizontal:15
+  },
+  modalBoxDetailInner:{
+    backgroundColor:GlobalColor.White,
+    padding:20, 
+    position:'relative'
   },
   modalText: {
     fontSize: 16,
@@ -331,7 +337,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   modalImage: {
-    width: 100, height: 100,
+    width: 80,
+    height: 80,
     marginVertical: 10
   },
   modalIcon: {

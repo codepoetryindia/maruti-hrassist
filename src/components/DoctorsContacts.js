@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking, SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,10 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../Utils/Utils';
 import AuthContext from '../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Text from './reusable/Text';
+import { Header } from './reusable/Header'; 
+import { GlobalColor } from '../constants/Colors';
+import { LoadingScreen } from './reusable/LoadingScreen';
 
 // create a component
 const DoctorsContacts = ({ navigation, route }) => {
@@ -156,57 +160,17 @@ const DoctorsContacts = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#4174D0', '#6ef7ff']}
-        style={{ padding: 15 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            {PageName}
-          </Text>
-        </View>
-      </LinearGradient>
+      <Header title={PageName}/>
 
       {loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
-        </View>) : (
+        <LoadingScreen/>
+      ) : (
 
         <ScrollView
           style={{
-            width: '90%',
+            width: '95%',
             maxHeight: PageName === 'POSH Cell' ? '90%' : '70%',
-            marginTop: 30,
+            marginTop: 10,
             paddingVertical: 10,
             marginVertical: 10,
             alignSelf: 'center',
@@ -238,7 +202,6 @@ const DoctorsContacts = ({ navigation, route }) => {
                     >
                       <Feather name="phone-call" size={20} color={'#4174D0'} />
                     </TouchableOpacity>
-
                   </View>}
                 <View style={styles.responseBox}>
                   <Text>{chairperson && chairperson.EMAIL_ID}</Text>
@@ -832,7 +795,7 @@ const DoctorsContacts = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
   },
   responseBox: {
     width: '100%',

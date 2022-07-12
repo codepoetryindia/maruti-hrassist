@@ -37,7 +37,7 @@ const TouchableCard = ({navigation}) => {
     },
     {
       id: '3',
-      name: 'Compliances & Benifis',
+      name: 'Compensation and Benifits',
       images: require('../assets/Images/home/chart.png'),
     },
     {

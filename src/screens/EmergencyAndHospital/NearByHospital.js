@@ -1,17 +1,23 @@
 //import liraries
 import React, {Component, useEffect, useState,useContext} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image,SafeAreaView, ActivityIndicator,Linking} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image,SafeAreaView, ActivityIndicator,Linking} from 'react-native';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useFocusEffect } from '@react-navigation/native';
+import Text from '../../components/reusable/Text';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
 
 // create a component
 const NearByHospital = () => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
   const [hosLink,setHosLink] = useState('');
+
+
+
   const GetHospitalLinkApi = () => {
     let token = AppUserData.token
     let UserId = AppUserData.data
@@ -42,12 +48,15 @@ const NearByHospital = () => {
         }
       });
   };
+
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = GetHospitalLinkApi();
       return () => unsubscribe;
     }, [])
   )
+
+
   return (
     loader == true ? (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -59,34 +68,37 @@ const NearByHospital = () => {
       </View>
     ) :(
       <SafeAreaView style={styles.container}>
-      <View style={styles.box}>
-        <Text style={{fontSize:16, fontWeight:'bold'}}>
-          Near By Panel Hospital
-        </Text>
-        <TouchableOpacity
-         onPress={() => {
-           if(hosLink==''){
-             alert("URL Not Found")
-             return
-           }
-           else{
 
-             console.log("hoslink",hosLink);
-            Linking.openURL(hosLink)
-           }
-          }}
-           style={styles.circle}>
-          <Text style={{textAlign:'center',}}>Click here to</Text>
-          <Text  style={{textAlign:'center',}}>Search</Text>
-        </TouchableOpacity>
-        <Image source={require('../.././assets/Images/pin.png')} style={{width:40,height:40,marginVertical:8}}/>
-        <Text>Use Any web browser/Google Maps for better experience</Text>
-       <View style={{width:'100%',paddingHorizontal:10, flexDirection:'row',justifyContent:'space-between',marginVertical:8}}>
-       <Image source={require('../.././assets/Images/medicine.png')} style={{width:30,height:30,marginLeft:-8}}/>
-        <Text>Symbols in the maps are Geo-location of our panel Hospital</Text>
-       </View>
-      </View>
-    </SafeAreaView>)
+
+        <View style={styles.box}>
+          <Text style={{fontSize:GlobalFontSize.H4, color:GlobalColor.Primary}} Bold>
+            Near By Panel Hospital
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+            if(hosLink==''){
+              alert("URL Not Found")
+              return
+            }
+            else{
+              console.log("hoslink",hosLink);
+              Linking.openURL(hosLink)
+            }
+            }}
+            style={styles.circle}>
+            <Text   style={{textAlign:'center',}}>Click here to</Text>
+            <Text   style={{textAlign:'center',}}>Search</Text>
+          </TouchableOpacity>
+
+        {/* <Image source={require('../.././assets/Images/pin.png')} style={{width:40,height:40,marginVertical:8}}/> */}
+        <Text Bold>Use Any web browser/Google Maps for better experience</Text>
+        <View style={{paddingHorizontal:10, flexDirection:'row',justifyContent:'space-between',marginVertical:8}}>
+          {/* <Image source={require('../.././assets/Images/medicine.png')} style={{width:40,height:40, marginRight:15}}/> */}
+          <Text Bold>Symbols in the maps are Geo-location of our panel Hospital</Text>
+        </View>
+        </View>
+    </SafeAreaView>
+    )
   );
 };
 
@@ -94,7 +106,8 @@ const NearByHospital = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
+    paddingHorizontal:10,
     justifyContent: 'center',
   },
   spinnerTextStyle: {
@@ -102,7 +115,8 @@ const styles = StyleSheet.create({
   },
   box: {
     padding: 10,
-    width:'90%',
+    paddingVertical:20,
+    width:'100%',
     justifyContent: 'center',
     alignSelf: 'center',
     alignItems: 'center',
@@ -112,24 +126,24 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.5,
     shadowRadius: 4.65,
-    elevation: 8,
+    elevation: 5,
     borderWidth:0.2,
     borderRadius:10,
-    borderColor:'#fff'
+    borderColor:GlobalColor.Secondary
   },
   circle: {
     height: 100,
     width: 100,
-    borderWidth: 3,
-    borderColor: '#2757C3',
+    borderWidth: 5,
+    borderColor: GlobalColor.Secondary,
     borderRadius: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 12,
-    marginVertical: 10,
+    padding: 2,
+    marginVertical: 20,
   },
 });
 

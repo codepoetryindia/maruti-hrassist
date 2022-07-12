@@ -172,12 +172,10 @@ const Gst = ({ navigation }) => {
 };
 
 // define your styles
-const styles = StyleSheet.create({
-  
-
+const styles = StyleSheet.create({  
   container: {
     flex: 1,
-    backgroundColor: GlobalColor.White,   
+    backgroundColor: GlobalColor.PrimaryLight,   
   },
   MainContainer:{
     paddingHorizontal:20

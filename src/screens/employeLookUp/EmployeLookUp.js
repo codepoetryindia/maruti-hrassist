@@ -43,12 +43,12 @@ const EmployeLookUp = ({ navigation }) => {
       <Header title={"Employee Lookup"}/>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: GlobalFontSize.P, textTransform:'uppercase' },
+          tabBarLabelStyle: { textTransform:'uppercase' },
           tabBarActiveTintColor: '#fff',
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
           tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
         }}>
-        <Tab.Screen name="EmployeeDirect" component={EmployeeDirect} />
+        <Tab.Screen name="EmployeeDirectory" component={EmployeeDirect} />
         <Tab.Screen name="Birthdays" component={Birthdays} />
       </Tab.Navigator>
       {/* <TabView

@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   TouchableOpacity,
   Image,
   Linking,
@@ -24,7 +23,8 @@ import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
-
+import Text from '../components/reusable/Text';
+import { Header } from '../components/reusable/Header';
 
 
 // create a component
@@ -108,43 +108,8 @@ const OtherApps = ({ navigation }) => {
           textStyle={styles.spinnerTextStyle}
         />
 
-      <LinearGradient
-        style={{ padding: 20 }}
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        >
-        <View style={{ width:"100%"}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              // justifyContent: 'space-between',
-              // width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate('Home')}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 10,
-              }}>
-              Other Mobile Apps
-          </Text>
+      <Header title ="Other Mobile Apps"/>
 
-          </View>
-        </View>
-      </LinearGradient>
 
       {/* body */}
 

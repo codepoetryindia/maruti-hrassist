@@ -189,6 +189,7 @@ const Book = () => {
                 book.map((item) => {
                   return (
                     <TouchableOpacity
+                      key={item.SHTL_REGISTRATION_NO}
                       onPress={() => {
                         GetSeatsAvailabilityApi()
                         // setModalVisible(true)
@@ -224,13 +225,13 @@ const Book = () => {
                         <View style={{ flexDirection: 'row', marginVertical: 10, alignSelf: "center" }}>
                           <View
                             style={{ minWidth: 150 }}>
-                            <Button title="OK" onPress={() => {
+                            <Button title="Close" onPress={() => {
                               setModalVisible(false)
                             }} />
                           </View>
                           <View
                             style={{ minWidth: 150, marginLeft: 10 }}>
-                            <Button title="BOOK NOW" onPress={() => {
+                            <Button title="Book Now" onPress={() => {
                               setModalVisible(false)
                               navigation.navigate("SeatBook")
                             }} />

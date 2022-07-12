@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
     View,
-
     StyleSheet,
     useWindowDimensions,
     Dimensions,
@@ -10,6 +9,7 @@ import {
     SafeAreaView,
     Modal,
     Pressable,
+    Alert
 
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -127,9 +127,18 @@ const PastBook = () => {
                 console.log("ShuttleEligibility", result);
                 setLoader(false);
                 let ApiResult = result.Result
-                alert(ApiResult);
-                setModalVisible(false)
-
+                setModalVisible(false);
+                Alert.alert(
+                    "Eligible",
+                    ApiResult,
+                    [
+                      {
+                        text: "Okay",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                      },
+                    ]
+                  );
             })
             .catch(error => {
                 setLoader(false);
@@ -277,12 +286,12 @@ const PastBook = () => {
                 <View
                     style={styles.ListContainer}>
                     <View style={styles.ListContainerCardDesign}>
-                        <Text bold>Date</Text>
-                        <Text bold>Emp ID</Text>
-                        <Text bold>Booking ID</Text>
-                        <Text bold>Source</Text>
-                        <Text bold>Destination</Text>
-                        <Text bold>Status</Text>
+                        <Text Bold>Date</Text>
+                        <Text Bold>Emp ID</Text>
+                        <Text Bold>Booking ID</Text>
+                        <Text Bold>Source</Text>
+                        <Text Bold>Destination</Text>
+                        <Text Bold>Status</Text>
                     </View>
                     <View>
                         {
@@ -292,12 +301,12 @@ const PastBook = () => {
                                         onPress={() => {
                                             BookingDetailApi(item.BKDT_ID)
                                         }} style={styles.CardData}>
-                                        <Text style={{ fontSize: 12 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
-                                        <Text style={{ fontSize: 12 }}>{item.BKDT_EMPL_ID}</Text>
-                                        <Text style={{ fontSize: 12 }}>{item.BKDT_ID}</Text>
-                                        <Text style={{ fontSize: 12 }}>{item.ROUT_SOURCE}</Text>
-                                        <Text style={{ fontSize: 12 }}>{item.ROUT_DESTINATION}</Text>
-                                        <Text style={{ fontSize: 12 }}>{item.BKDT_STATUS_FLAG}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_EMPL_ID}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_ID}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.ROUT_SOURCE}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.ROUT_DESTINATION}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_STATUS_FLAG}</Text>
                                     </TouchableOpacity>
                                 )
                             })
@@ -315,7 +324,7 @@ const PastBook = () => {
                             style={styles.ModalContainer}>
                             <View
                                 style={styles.ModalContant}>
-                                <Text style={{ fontSize: GlobalFontSize.H2 - 3 }} bold>Booking Detail</Text>
+                                <Text style={{ fontSize: GlobalFontSize.H4 }} Bold>Booking Detail</Text>
 
                                 {bookingDetails.map((item) => {
                                     return (
@@ -333,42 +342,19 @@ const PastBook = () => {
                                     )
                                 })}
                                 <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
-                                    <TouchableOpacity
+                                    <View
                                         style={{ width: '47%', }}
-                                    >
-                                        {loader == true ? (
-                                            <Spinner
-                                                visible={loader}
-                                                textContent={'Loading...'}
-                                                textStyle={{ color: '#fff' }}
-                                            />
-                                        ) : null}
-                                       
-                                        <Button btnStyle={{ paddingHorizontal: 10 }} title="OK" onPress={() => {
+                                    >                                       
+                                        <Button btnStyle={{ paddingHorizontal: 10 }} title="Close" onPress={() => {
                                             setModalVisible(false)
                                         }} />
 
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={{ width: '47%', }}
-                                    >
-                                        {loader == true ? (
-                                            <Spinner
-                                                visible={loader}
-                                                textContent={'Loading...'}
-                                                textStyle={{ color: '#fff' }}
-                                            />
-                                        ) : null}
-                                        {/* <LinearGradient
-                                            style={{ padding: 20, margin: 5, borderRadius: 8, alignItems: 'center' }}
-                                            colors={['#4174D0', '#6ef7ff']}>
-
-                                            <Text style={{ color: '#fff', fontSize: 16 }}>FEEDBACK</Text>
-                                        </LinearGradient> */}
-                                        <Button title="FEEDBACK" onPress={() => {
+                                    </View>
+                                    <View style={{ width: '47%', }}>
+                                        <Button title="Feedback" onPress={() => {
                                             ShuttleEligibilityApi()
                                         }} />
-                                    </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
                         </Pressable>
@@ -376,7 +362,7 @@ const PastBook = () => {
                 </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" ></ListEmptyComponent>}
+                    {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" subtitle="Please select dates and submit to continue" ></ListEmptyComponent>}
                 </View>
             )}
 
@@ -432,7 +418,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 1.84,
         elevation: 5,
-        borderRadius: 8,
+        borderRadius: 0,
         paddingBottom: 25
     },
     ListContainerCardDesign: {
@@ -461,7 +447,7 @@ const styles = StyleSheet.create({
     ModalContant: {
         backgroundColor: GlobalColor.White,
         padding: 20,
-        borderRadius: 15,
+        borderRadius: 0,
         width: '90%',
         justifyContent: 'center',
         alignItems: 'center',

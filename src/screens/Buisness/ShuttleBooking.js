@@ -27,7 +27,7 @@ const ShuttleBooking = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Header title={"Shuttle Booking"}  />
-    <View style={styles.container}>      
+      <View style={styles.container}>      
       <Tab.Navigator 
        screenOptions={{
         tabBarLabelStyle: { fontSize: 14 },
