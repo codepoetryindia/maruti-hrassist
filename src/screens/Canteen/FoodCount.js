@@ -207,7 +207,6 @@ const FoodCount = ({ navigation }) => {
   const Rothak = ({ navigation }) => {
     const [isOpen, setIsOpen] = useState('');
     return (
-
       <SafeAreaView style={{ flex: 1, backgroundColor:GlobalColor.PrimaryLight }}>
       <View style={styles.AccordianContainer}>
         {loader == true ? (
@@ -243,7 +242,7 @@ const FoodCount = ({ navigation }) => {
         <Tab.Screen name="MPT" component={Mpt} />
         <Tab.Screen name="Rothak" component={Rothak} />
       </Tab.Navigator>
-      <View style={{  position: 'absolute', top: '16%',  alignSelf: "center" ,  }}>
+      <View style={{  position: 'absolute', top: '16%',  alignSelf: "center" ,marginHorizontal:24  }}>
         <DatePicker
           modal
           open={open}
@@ -265,8 +264,6 @@ const FoodCount = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-
-
     </View>
   );
 };
@@ -293,7 +290,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
     elevation: 8,
   },
   spinnerTextStyle: {
@@ -307,18 +303,17 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     // backgroundColor:'red'
   },
-  calander: {
-    width:"92.5%",
+  calander: {   
     backgroundColor: GlobalColor.White,
     justifyContent: 'space-around',
     alignItems: 'center',
+    width:"100%",
     alignSelf: 'center',
     flexDirection: 'row',
-    // paddingHorizontal:20,
-    paddingVertical: 8,
-
- 
+    paddingHorizontal:20,
+    paddingVertical: 8, 
     marginVertical: 10,
+    // marginHorizontal:20,
     borderRadius: 5,
     shadowColor: GlobalColor.Black,
     shadowOffset: {
@@ -328,7 +323,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     borderRadius:5,
-
     elevation: 2,
   },
   AccordianContainer:{ marginTop: 70}

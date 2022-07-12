@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
-
   StyleSheet,
   Image,
   TouchableOpacity,
