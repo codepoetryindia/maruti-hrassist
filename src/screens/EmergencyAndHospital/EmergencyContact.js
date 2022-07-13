@@ -80,19 +80,19 @@ const EmergencyContacts = ({ navigation }) => {
   const iconBox = (type) => {
     switch (type) {
       case "Doctor":
-        return require('../../assets/Images/doctorr.png')
+        return require('../../assets/Images/hospital/doctor.png')
         break;
       case "Vigilance":
-        return require('../../assets/Images/security-cameraa.png')
+        return require('../../assets/Images/hospital/camera.png')
         break;
       case "Fire Control":
-        return require('../../assets/Images/fire-extinguisher.png')
+        return require('../../assets/Images/hospital/fire-extinguisher.png')
         break;
       case "Electricity":
-        return require('../../assets/Images/electrical-energy.png')
+        return require('../../assets/Images/hospital/home.png')
         break;
       case "POSH Cell":
-        return require('../../assets/Images/user-interface.png')
+        return require('../../assets/Images/hospital/smartphone.png')
         break;
       default:
         return require('../../assets/Images/user-interface.png')
@@ -132,18 +132,18 @@ const EmergencyContacts = ({ navigation }) => {
                   <View style={styles.iconBox}>
                     <View
                       style={{
-                        width: 50,
-                        height: 50,
+                        width: 60,
+                        height: 60,
                         borderRadius: 100,
-                        borderWidth: 1,
-                        borderColor: '#6ef7ff',
+                        borderWidth: 2,
+                        borderColor: GlobalColor.Secondary,
                         justifyContent: 'center',
                         alignItems: 'center',
                         overflow: 'hidden'
                       }}>
                       <Image
                         source={image}
-                        style={{ width: 45, height: 45 }}
+                        style={{ width: 40, height: 40 }}
                       />
                     </View>
                   </View>

@@ -16,7 +16,7 @@ import { GlobalColor } from '../../constants/Colors';
 
 
 export default (props) =>{
-    const {title='No Data Found', subtitle="No data found please Pull down to refresh", enableRefresh=false,onRefreshCallback, refreshing=false}= props;
+    const {title='No Data Found', subtitle="No data found please pull down to refresh", enableRefresh=false,onRefreshCallback, refreshing=false}= props;
     return(
         <View style={styles.container}>
             <ScrollView
