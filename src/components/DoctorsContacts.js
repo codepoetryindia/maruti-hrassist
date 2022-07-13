@@ -804,7 +804,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         <View style={styles.responseBox}>
                           <Text>{manesar[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {
-                            Linking.openURL(`tel:${phoneNumber}`)
+                            Linking.openURL(`tel:${manesar[0].EMER_XNUM}`)
                           }}>
                             <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                           </TouchableOpacity>
@@ -821,7 +821,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         <View style={styles.responseBox}>
                           <Text>{casting[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {
-                            Linking.openURL(`tel:${phoneNumber}`)
+                            Linking.openURL(`tel:${casting[0].EMER_XNUM}`)
                           }}>
                             <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                           </TouchableOpacity>
@@ -838,7 +838,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         <View style={styles.responseBox}>
                           <Text>{rothak[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {
-                            Linking.openURL(`tel:${phoneNumber}`)
+                            Linking.openURL(`tel:${rothak[0].EMER_XNUM}`)
                           }}>
                             <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                           </TouchableOpacity>

@@ -22,11 +22,24 @@ import Toast from 'react-native-simple-toast'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Spinner from 'react-native-loading-spinner-overlay';
 import Onboarding from 'react-native-onboarding-swiper'; // 1.1.4
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const OnboardingScreen = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [showPass, setShowPass] = useState(true);
   const [Loader, setLoader] = useState(false);
+
+
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem('isnotfirstTime', "abcd").then(()=>{
+        navigation.navigate("SignIn");
+      })
+    } catch (e) {
+      // saving error
+    }
+  }
 
 
   const Done = ({ isLight, ...props }) => (
@@ -84,23 +97,25 @@ const OnboardingScreen = ({ navigation }) => {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/attandance.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Attandance & Leave',
-                // subtitle: 'Done with React Native Onboarding Swiper',
+                subtitle: 'Done with React Native Onboarding Swiper',
             },
             {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/compbenifit.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Comp. & Benifits',
-                // subtitle: 'This is the subtitle that sumplements the title.',
+                subtitle: 'This is the subtitle that sumplements the title.',
             },
             {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/emergency.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Emergency Help',
-                // subtitle: "Beautiful, isn't it?",
+                subtitle: "Beautiful, isn't it?",
             },
             ]}
             showSkip={false}
-            onDone={()=>navigation.navigate("SignIn")}
+            onDone={()=>{
+              storeData();              
+            }}
             bottomBarHighlight={false}
             DoneButtonComponent={Done}
             NextButtonComponent={Next}

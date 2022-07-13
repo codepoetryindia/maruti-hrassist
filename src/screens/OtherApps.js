@@ -24,7 +24,7 @@ import { Header } from '../components/reusable/Header';
 import { LoadingScreen } from '../components/reusable/LoadingScreen';
 import ListEmptyComponent from '../components/reusable/ListEmptyComponent';
 
-var SendIntentAndroid = require('react-native-send-intent');
+
 
 
 // create a component
@@ -80,44 +80,21 @@ const OtherApps = ({ navigation }) => {
       });
   };
 
-  // const SAPSF = () => {
-  //   SendIntentAndroid.isAppInstalled('com.successfactors.successfactors').then(isInstalled => {
-  //     if (isInstalled) {
-  //       SendIntentAndroid.openApp('com.successfactors.successfactors')
-  //       console.log('is installed true');
-  //     } else {
-  //       Linking.openURL('https://play.google.com/store/apps/details?id=com.successfactors.successfactors').catch(err => {
-  //         console.log(err);
-  //       });
-  //     }
-  //   });
-  // };
 
   const linkOpen = (link) => {
+
+    console.log(link);
+
 
     if(
       link.LINK_APP_CATG == 'HRASSIST_OTH_APP' && link.LINK_TYPE != 'In-House_App' && link.LINK_LINK5 == 'ANDROID'
     ){
       downloadApp(link.LINK_LINK1)
+    }else if(
+      link.LINK_APP_CATG == 'HRASSIST_OTH_APP' && link.LINK_TYPE == 'In-House_App' && link.LINK_LINK5 == 'ANDROID'
+    ){
+      downloadInhouseApp(link.LINK_LINK1, link.LINK_LINK4);
     }
-
-    return; 
-
-
-
-
-
-
-
-    if(Platform.OS === 'ios'){
-      if(link.LINK_LINK3){
-        Linking.openURL(link.LINK_LINK3)
-      }else{
-        Linking.openURL(link.LINK_LINK2)
-      }
-    }else{
-      Linking.openURL(link.LINK_LINK1)
-    }    
   }
 
   useEffect(() => {
@@ -127,18 +104,43 @@ const OtherApps = ({ navigation }) => {
 
   const downloadApp = (link)=>{
     let pack_name= link.split("=");
+    if(Platform.OS === 'android'){
+      console.log(pack_name[1]);
+      var SendIntentAndroid = require('react-native-send-intent');
+      SendIntentAndroid.isAppInstalled(pack_name[1]).then(isInstalled => {
+        if(isInstalled){
+          SendIntentAndroid.openApp(pack_name[1]).then(wasOpened => {
+            if(!wasOpened){
+              Linking.openURL(link);    
+            }
+          });
+        }else{
+          Linking.openURL(link);    
+        }
+      });
+    }else{
+      Linking.openURL(link);
+    }
+  }
 
-    console.log(SendIntentAndroid);  
-    SendIntentAndroid.isAppInstalled("com.google.android.gm").then(isInstalled => {
-      console.log(isInstalled);
-    });
-
-    // check if app is installed by package name
-    // IntentLauncher.isAppInstalled("com.android.chrome")
-    // .then((result) => {
-    //   console.log('isAppInstalled yes');
-    // })
-    // .catch((error) => console.warn('isAppInstalled: no', error));
+  const downloadInhouseApp = (link, link4)=>{
+    let pack_name= link.split("=");
+    if(Platform.OS === 'android'){
+      var SendIntentAndroid = require('react-native-send-intent');
+      SendIntentAndroid.isAppInstalled(link4).then(isInstalled => {
+        if(isInstalled){
+          SendIntentAndroid.openApp(link4).then(wasOpened => {
+            if(!wasOpened){
+              Linking.openURL(link);    
+            }
+          });
+        }else{
+          Linking.openURL(link);    
+        }
+      });
+    }else{
+      Linking.openURL(link);
+    }
   }
 
 

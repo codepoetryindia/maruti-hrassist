@@ -28,19 +28,17 @@ const EmergencyHospital = ({ navigation, route }) => {
       <Header title="Emergency & Hospital"/>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 14 },
+          tabBarLabelStyle: {  },
           tabBarActiveTintColor: '#fff',
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
           tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
+          tabBarItemStyle:{ paddingHorizontal:0}
         }}>
         <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
         <Tab.Screen name="Hospital" component={Hospital} />
         <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
       </Tab.Navigator>
     </SafeAreaView>
-
-
-
   );
 };
 

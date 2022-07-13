@@ -917,16 +917,15 @@ const Gatepass = ({ navigation }) => {
                               </View>
 
                             ) : null
-
                           )}
                         {selectBuilding.length < 0 ? 'hi':null }
                         
                       </ScrollView>
                       <TouchableOpacity onPress={toggleBuilding}>
                         {show == true ? (
-                          <Ionicons name="caret-up" size={30} />
+                          <Ionicons name="caret-up" size={30} color={'#4174D0'}/>
                         ) : (
-                          <Ionicons name="caret-down" size={30} />
+                          <Ionicons name="caret-down" size={30} color={'#4174D0'}/>
                         )}
                       </TouchableOpacity>
                     </View>

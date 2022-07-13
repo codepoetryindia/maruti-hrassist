@@ -19,7 +19,7 @@ export const LoadingScreen = ({stylesheet, message="Loading Please Wait"}) =>  {
                 Bold
                 style={{
                     ...styles.text, 
-                    color: stylesheet?.colors?.text
+                    // color: stylesheet?.colors?.text
                 }}>
                     {message}
             </Text>
@@ -36,6 +36,7 @@ const styles = {
     text: {
         marginTop: 30,
         fontSize: GlobalFontSize.P,
+        color:GlobalColor.Text
     }
 };
 

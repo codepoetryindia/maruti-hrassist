@@ -47,7 +47,6 @@ const SignIn = ({ navigation }) => {
     // console.log('api data', data);
     AuthService.Post('Login', data)
       .then(res => {
-        console.log(res);
         let contextData = {
           token: res.token,
           user: values.UserName,
@@ -241,7 +240,7 @@ const SignIn = ({ navigation }) => {
                             secureTextEntry={false}
                             onChangeText={handleChange('UserName')}
                             onBlur={handleBlur('UserName')}
-                            value={values.F}
+                            value={values.UserName}
                           />
                         </View>
                         {errors.UserName && touched.UserName && (
