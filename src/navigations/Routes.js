@@ -70,7 +70,6 @@ const Routes = () => {
             await AsyncStorage.setItem('userToken', userToken);
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             contextData = {token: userToken, data: userData};
-            // console.log('contextData', contextData);
             setAppUserData({
               token: userToken,
               data: userData,

@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Linking, SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,10 @@ import Toast from 'react-native-simple-toast'
 import * as ApiService from '../Utils/Utils';
 import AuthContext from '../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Text from './reusable/Text';
+import { Header } from './reusable/Header'; 
+import { GlobalColor } from '../constants/Colors';
+import { LoadingScreen } from './reusable/LoadingScreen';
 
 // create a component
 const DoctorsContacts = ({ navigation, route }) => {
@@ -156,57 +160,16 @@ const DoctorsContacts = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#4174D0', '#6ef7ff']}
-        style={{ padding: 15 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            {PageName}
-          </Text>
-        </View>
-      </LinearGradient>
+      <Header title={PageName}/>
 
       {loader == true ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
-        </View>) : (
-
+        <LoadingScreen/>
+      ) : (
         <ScrollView
           style={{
-            width: '90%',
-            maxHeight: PageName === 'POSH Cell' ? '90%' : '70%',
-            marginTop: 30,
+            width: '95%',
+            // maxHeight: PageName === 'POSH Cell' ? '90%' : '70%',
+            marginTop: 10,
             paddingVertical: 10,
             marginVertical: 10,
             alignSelf: 'center',
@@ -219,63 +182,69 @@ const DoctorsContacts = ({ navigation, route }) => {
             shadowOpacity: 0.3,
             shadowRadius: 4.65,
             elevation: 8,
-            borderRadius: 8,
+            borderRadius: 5,
           }}>
           {PageName === 'POSH Cell' ? (
             <View>
-              <Text
-                style={styles.headerText}>
-                CHAIRPERSON
-              </Text>
-              <View>
-                {chairperson == null ? <Text>Not Found</Text>
-                  : <View style={styles.responseBox}>
-                    <Text>{chairperson && chairperson.NAME}</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        Linking.openURL(`tel:${chairperson && chairperson.CONTACT_NUMBER}`)
-                      }}
-                    >
-                      <Feather name="phone-call" size={20} color={'#4174D0'} />
-                    </TouchableOpacity>
+              <View style={styles.boxsingle}>
+                <Text Bold style={styles.headerText}>CHAIRPERSON </Text>
+                <View>
+                  {chairperson == null ? <Text>Not Found</Text>
+                    : <View style={styles.responseBox}>
+                      <Text>{chairperson && chairperson.NAME}</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          Linking.openURL(`tel:${chairperson && chairperson.CONTACT_NUMBER}`)
+                        }}
+                      >
+                        <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                      </TouchableOpacity>
+                    </View>
+                  }
 
-                  </View>}
-                <View style={styles.responseBox}>
-                  <Text>{chairperson && chairperson.EMAIL_ID}</Text>
-                  <TouchableOpacity onPress={() => {
-                    Linking.openURL(`mailto:${chairperson && chairperson.EMAIL_ID}`)
-                  }}>
-                    <Feather name="mail" size={20} color={'#4174D0'} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <Text
-                style={styles.headerText}>
-                CO-CHAIRPERSON
-              </Text>
-              <View>
-                {CoChairperson == null ? <Text>Not Found</Text>
-                  : <View style={styles.responseBox}>
-                    <Text>{CoChairperson && CoChairperson.NAME}</Text>
+                  <View style={styles.responseBox}>
+                    <Text style={styles.linkcolor}>{chairperson && chairperson.EMAIL_ID}</Text>
                     <TouchableOpacity onPress={() => {
-                      Linking.openURL(`tel:${CoChairperson && CoChairperson.CONTACT_NUMBER}`)
-                    }}  >
-                      <Feather name="phone-call" size={20} color={'#4174D0'} />
+                      Linking.openURL(`mailto:${chairperson && chairperson.EMAIL_ID}`)
+                    }}>
+                      <Feather name="mail" size={20} color={GlobalColor.Secondary} />
                     </TouchableOpacity>
-
-                  </View>}
-                <View style={styles.responseBox}>
-                  <Text>{CoChairperson && CoChairperson.EMAIL_ID}</Text>
-                  <TouchableOpacity onPress={() => {
-                    Linking.openURL(`mailto:${CoChairperson && CoChairperson.EMAIL_ID}`)
-                  }}
-                  >
-                    <Feather name="mail" size={20} color={'#4174D0'} />
-                  </TouchableOpacity>
+                  </View>
+                  
                 </View>
               </View>
-              <Text
+              <View style={styles.boxsingle}>
+                <Text
+                  Bold
+                  style={styles.headerText}>
+                  CO-CHAIRPERSON
+                </Text>
+                <View>
+                  {CoChairperson == null ? <Text>Not Found</Text>
+                    : <View style={styles.responseBox}>
+                      <Text>{CoChairperson && CoChairperson.NAME}</Text>
+                      <TouchableOpacity onPress={() => {
+                        Linking.openURL(`tel:${CoChairperson && CoChairperson.CONTACT_NUMBER}`)
+                      }}  >
+                        <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                      </TouchableOpacity>
+
+                    </View>}
+                  <View style={styles.responseBox}>
+                    <Text style={styles.linkcolor}>{CoChairperson && CoChairperson.EMAIL_ID}</Text>
+                    <TouchableOpacity onPress={() => {
+                      Linking.openURL(`mailto:${CoChairperson && CoChairperson.EMAIL_ID}`)
+                    }}
+                    >
+                      <Feather name="mail" size={20} color={GlobalColor.Secondary} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.boxsingle}>
+              <Text 
+                Bold               
                 style={styles.headerText}>
                 EXECUTIVE MEMBERS
               </Text>
@@ -292,41 +261,39 @@ const DoctorsContacts = ({ navigation, route }) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderTopColor: '#80406A',
-                      borderStartColor: '#4174D0',
+                      borderStartColor: GlobalColor.Secondary,
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#4174D0',
+                      borderEndColor: GlobalColor.Secondary,
                       flexDirection: 'row',
                     }}>
                     <View style={{ width: '100%' }}>
-
                       <View style={styles.responseBox}>
                         <Text>{item && item.NAME}</Text>
                         <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${item && item.CONTACT_NUMBER}`)
+                          if(item.CONTACT_NUMBER){
+                            Linking.openURL(`tel:${item.CONTACT_NUMBER}`)
+                          }
                         }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
+                          <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                         </TouchableOpacity>
                       </View>
                       <View style={styles.responseBox}>
-                        <Text>{item && item.EMAIL_ID}</Text>
+                        <Text style={styles.linkcolor}>{item && item.EMAIL_ID}</Text>
                         <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tell:${item && item.CONTACT_NUMBER}`)
-                        }}
-                        >
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
+                          if(item.CONTACT_NUMBER){
+                            Linking.openURL(`tel:${item.CONTACT_NUMBER}`)
+                          }
+                        }}>
+                          <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                         </TouchableOpacity>
                       </View>
                     </View>
                   </View>)}
               />
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  borderBottomWidth: 1,
-                  padding: 5,
-                  marginLeft: 8,
-                }}>
+              </View>
+
+              <View style={styles.boxsingle}>
+              <Text style={styles.headerText} Bold>
                 EXTERNAL MEMBERS
               </Text>
               <FlatList
@@ -342,159 +309,179 @@ const DoctorsContacts = ({ navigation, route }) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderTopColor: '#80406A',
-                      borderStartColor: '#4174D0',
+                      borderStartColor: GlobalColor.Secondary,
                       borderBottomColor: '#2757C3',
-                      borderEndColor: '#4174D0',
+                      borderEndColor: GlobalColor.Secondary,
                       flexDirection: 'row',
                     }}>
                     <View style={{ width: '100%' }}>
                       <View style={styles.responseBox}>
                         <Text>{item.NAME}</Text>
                         <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${item && item.CONTACT_NUMBER}`)
+                          if(item.CONTACT_NUMBER){
+                            Linking.openURL(`tel:${item.CONTACT_NUMBER}`)
+                          }
                         }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
+                          <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                         </TouchableOpacity>
                       </View>
                       <View style={styles.responseBox}>
-                        <Text>{item.EMAIL_ID}</Text>
+                        <Text style={styles.linkcolor}>{item.EMAIL_ID}</Text>
                         <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${item && item.CONTACT_NUMBER}`)
+                          if(item.CONTACT_NUMBER){
+                            Linking.openURL(`tel:${item.CONTACT_NUMBER}`)
+                          }
                         }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
+                          <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                         </TouchableOpacity>
                       </View>
                     </View>
                   </View>
                 )}
               />
+              </View>
             </View>
           ) :
             <View>
               {
                 PageName === "Doctor" ? (
                   <View>
-                    <Text
-                      style={styles.headerText}>
-                      MPT ENGINE PLANT
-                    </Text>
-                    {mpt.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={mpt}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT ENGINE PLANT
+                      </Text>
+                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={mpt}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        GURGAON FACTORY
+                      </Text>
+                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
 
-                    <Text
-                      style={styles.headerText}>
-                      GURGAON FACTORY
-                    </Text>
-                    {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={gurgaon}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />
 
-                      <FlatList
-                        data={gurgaon}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />
+                      }
+                    </View>
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MANESAR
+                      </Text>
+                      {manesar.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={manesar}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_PNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_PNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
+                    
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT CASTING PLANT
+                      </Text>
+                      {casting.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={casting}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_PNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_PNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
 
-                    }
-                    <Text
-                      style={styles.headerText}>
-                      MANESAR
-                    </Text>
-                    {manesar.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={manesar}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_PNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_PNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-
-                    <Text
-                      style={styles.headerText}>
-                      MPT CASTING PLANT
-                    </Text>
-                    {casting.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={casting}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_PNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_PNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-
-                    <Text
-                      style={styles.headerText}>
-                      ROHTAK
-                    </Text>
-                    {rothak.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={rothak}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_PNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_PNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-
+                    <View style={styles.boxsingle}>
+                      <Text
+                      Bold
+                        style={styles.headerText}>
+                        ROHTAK
+                      </Text>
+                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={rothak}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_PNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_PNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>     
                   </View>
                 ) : (PageName === "Vigilance") ? (
                   <View>
+                    <View style={styles.boxsingle}>
                     <Text
+                      Bold
                       style={styles.headerText}>
                       MPT ENGINE PLANT
                     </Text>
@@ -511,40 +498,46 @@ const DoctorsContacts = ({ navigation, route }) => {
                                   Linking.openURL(`tel:${item.EMER_XNUM}`)
                                 }}
                               >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
+                                <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                               </TouchableOpacity>
                             </View>
                           )
                         }} />}
-                    <Text
-                      style={styles.headerText}>
-                      GURGAON FACTORY
-                    </Text>
-                    {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                    </View>
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        GURGAON FACTORY
+                      </Text>
+                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
 
-                      <FlatList
-                        data={gurgaon}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
+                        <FlatList
+                          data={gurgaon}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
+                    
+                    <View style={styles.boxsingle}>                      
                     <Text
+                      Bold
                       style={styles.headerText}>
                       MANESAR
                     </Text>
                     {manesar.length == 0 ? <Text>Not Found</Text> :
-
                       <FlatList
                         data={manesar}
                         keyExtractor={({ item, index }) => index}
@@ -557,36 +550,41 @@ const DoctorsContacts = ({ navigation, route }) => {
                                   Linking.openURL(`tel:${item.EMER_XNUM}`)
                                 }}
                               >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
+                                <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                               </TouchableOpacity>
                             </View>
                           )
                         }} />}
-                    <Text
-                      style={styles.headerText}>
-                      MPT CASTING PLANT
-                    </Text>
-                    {casting.length == 0 ? <Text>Not Found</Text> :
+                    </View>
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT CASTING PLANT
+                      </Text>
+                      {casting.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={casting}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
 
-                      <FlatList
-                        data={casting}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-
+                    <View style={styles.boxsingle}>
                     <Text
+                      Bold
                       style={styles.headerText}>
                       ROHTAK
                     </Text>
@@ -603,62 +601,70 @@ const DoctorsContacts = ({ navigation, route }) => {
                                   Linking.openURL(`tel:${item.EMER_XNUM}`)
                                 }}
                               >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
+                                <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                               </TouchableOpacity>
                             </View>
                           )
                         }} />}
-
+                    </View>
                   </View>
                 ) : (PageName === "Fire Control") ? (
                   <View>
-                    <Text
-                      style={styles.headerText}>
-                      MPT ENGINE PLANT
-                    </Text>
-                    {mpt.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={mpt}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_PNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_PNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT ENGINE PLANT
+                      </Text>
+                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={mpt}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_PNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_PNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
+                    
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        GURGAON FACTORY
+                      </Text>
+                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={gurgaon}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
 
-
+                    <View style={styles.boxsingle}>
                     <Text
-                      style={styles.headerText}>
-                      GURGAON FACTORY
-                    </Text>
-                    {gurgaon.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={gurgaon}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-                    <Text
+                      Bold
                       style={styles.headerText}>
                       MANESAR
                     </Text>
@@ -675,13 +681,15 @@ const DoctorsContacts = ({ navigation, route }) => {
                                   Linking.openURL(`tel:${item.EMER_XNUM}`)
                                 }}
                               >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
+                                <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                               </TouchableOpacity>
                             </View>
                           )
                         }} />}
-
+                    </View>
+                    <View style={styles.boxsingle}>
                     <Text
+                      Bold
                       style={styles.headerText}>
                       MPT CASTING PLANT
                     </Text>
@@ -698,123 +706,144 @@ const DoctorsContacts = ({ navigation, route }) => {
                                   Linking.openURL(`tel:${item.EMER_PNUM}`)
                                 }}
                               >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
+                                <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
                               </TouchableOpacity>
                             </View>
                           )
                         }} />}
+                    </View>
 
-
-                    <Text
-                      style={styles.headerText}>
-                      ROHTAK
-                    </Text>
-                    {rothak.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={rothak}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_PNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_PNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        ROHTAK
+                      </Text>
+                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={rothak}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_PNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_PNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
                   </View>
                 ) : (PageName === "Electricity") ? (
                   <View>
-                    <Text
-                      style={styles.headerText}>
-                      MPT ENGINE PLANT
-                    </Text>
-                    {mpt.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={mpt}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />}
-                    <Text
-                      style={styles.headerText}>
-                      GURGAON FACTORY
-                    </Text>
-                    {gurgaon.length == 0 ? <Text>Not Found</Text> :
-                      <FlatList
-                        data={gurgaon}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                          return (
-                            <View style={styles.responseBox}>
-                              <Text>{item.EMER_XNUM}</Text>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Linking.openURL(`tel:${item.EMER_XNUM}`)
-                                }}
-                              >
-                                <Feather name="phone-call" size={20} color={'#4174D0'} />
-                              </TouchableOpacity>
-                            </View>
-                          )
-                        }} />
-                    }
-                    <Text
-                       style={styles.headerText}>
-                      MANESAR
-                    </Text>
-                    {manesar.length == 0 ? <Text>Not Found</Text> :
-                      <View style={styles.responseBox}>
-                        <Text>{manesar[0].EMER_XNUM}</Text>
-                        <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${phoneNumber}`)
-                        }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
-                        </TouchableOpacity>
-                      </View>}
-                    <Text
-                      style={styles.headerText}>
-                      MPT CASTING PLANT
-                    </Text>
-                    {casting.length == 0 ? <Text>Not Found</Text> :
-                      <View style={styles.responseBox}>
-                        <Text>{casting[0].EMER_XNUM}</Text>
-                        <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${phoneNumber}`)
-                        }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
-                        </TouchableOpacity>
-                      </View>}
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT ENGINE PLANT
+                      </Text>
+                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                        <FlatList
+                          data={mpt}
+                          keyExtractor={({ item, index }) => index}
+                          renderItem={({ item, index }) => {
+                            return (
+                              <View style={styles.responseBox}>
+                                <Text>{item.EMER_XNUM}</Text>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                  }}
+                                >
+                                  <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          }} />}
+                    </View>
 
-                    <Text
-                       style={styles.headerText}>
-                      ROHTAK
-                    </Text>
-                    {rothak.length == 0 ? <Text>Not Found</Text> :
-                      <View style={styles.responseBox}>
-                        <Text>{rothak[0].EMER_XNUM}</Text>
-                        <TouchableOpacity onPress={() => {
-                          Linking.openURL(`tel:${phoneNumber}`)
-                        }}>
-                          <Feather name="phone-call" size={20} color={'#4174D0'} />
-                        </TouchableOpacity>
-                      </View>}
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        GURGAON FACTORY
+                      </Text>
+                        {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                          <FlatList
+                            data={gurgaon}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => {
+                              return (
+                                <View style={styles.responseBox}>
+                                  <Text>{item.EMER_XNUM}</Text>
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      Linking.openURL(`tel:${item.EMER_XNUM}`)
+                                    }}
+                                  >
+                                    <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                                  </TouchableOpacity>
+                                </View>
+                              )
+                            }} />
+                        }
+                    </View>
+
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MANESAR
+                      </Text>
+                      {manesar.length == 0 ? <Text>Not Found</Text> :
+                        <View style={styles.responseBox}>
+                          <Text>{manesar[0].EMER_XNUM}</Text>
+                          <TouchableOpacity onPress={() => {
+                            Linking.openURL(`tel:${manesar[0].EMER_XNUM}`)
+                          }}>
+                            <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                          </TouchableOpacity>
+                        </View>}
+                    </View>
+                    
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        MPT CASTING PLANT
+                      </Text>
+                      {casting.length == 0 ? <Text>Not Found</Text> :
+                        <View style={styles.responseBox}>
+                          <Text>{casting[0].EMER_XNUM}</Text>
+                          <TouchableOpacity onPress={() => {
+                            Linking.openURL(`tel:${casting[0].EMER_XNUM}`)
+                          }}>
+                            <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                          </TouchableOpacity>
+                        </View>}
+                    </View>
+                    
+                    <View style={styles.boxsingle}>
+                      <Text
+                        Bold
+                        style={styles.headerText}>
+                        ROHTAK
+                      </Text>
+                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                        <View style={styles.responseBox}>
+                          <Text>{rothak[0].EMER_XNUM}</Text>
+                          <TouchableOpacity onPress={() => {
+                            Linking.openURL(`tel:${rothak[0].EMER_XNUM}`)
+                          }}>
+                            <Feather name="phone-call" size={20} color={GlobalColor.Secondary} />
+                          </TouchableOpacity>
+                        </View>}
+                    </View>
 
                   </View>
                 ) : null
@@ -832,22 +861,30 @@ const DoctorsContacts = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
   },
   responseBox: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
-    paddingHorizontal: 20
+    marginTop: 5,
+    paddingHorizontal: 10
   },
   headerText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    borderBottomWidth: 1,
     padding: 5,
-    marginLeft: 8,
+    paddingHorizontal:10
+  },
+  boxsingle:{
+    marginBottom:10,
+    borderBottomWidth: 0.5,
+    borderBottomColor:GlobalColor.LightDark,
+    paddingHorizontal:5, 
+    borderBottomWidth:0.5, 
+    paddingBottom:10
+  },
+  linkcolor:{
+    color:GlobalColor.Secondary
   }
 });
 

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   useWindowDimensions,
   SafeAreaView
@@ -16,108 +15,30 @@ import EmergencyContacts from './EmergencyContact';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { GlobalFontSize } from '../../constants/FontSize';
 import { GlobalColor } from '../../constants/Colors';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+
+
 
 const Tab = createMaterialTopTabNavigator();
-
 const EmergencyHospital = ({ navigation, route }) => {
-  // let data = route.params
-  // console.log(data)
-  // const [locationName,setLocationName] = useState('')
-
-  // useEffect(() => {
-  //   setLocationName(route.params.selectedLoc)
-  //   console.log(route.params.selectedLoc)
-  // }, [route.params])
 
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-      <LinearGradient
-        // colors={['#4174D0', '#74f5fa']}
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-
-          </View>
-
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 16,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Emergency & Hospital
-          </Text>
-          {/* {index == 1 ? (
-            <Ionicons
-              style={{ marginLeft: 80 }}
-              name="ios-filter"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate("HosLocation")}
-            />
-          ) : null} */}
-        </View>
-      </LinearGradient>
-
+      <Header title="Emergency & Hospital"/>
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 14 },
+          tabBarLabelStyle: {  },
           tabBarActiveTintColor: '#fff',
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
           tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
-          
-        }}
-      >
+          tabBarItemStyle:{ paddingHorizontal:0}
+        }}>
         <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
-        <Tab.Screen name="Hospital" component={Hospital} onPress={() => console.log("pressed")} />
+        <Tab.Screen name="Hospital" component={Hospital} />
         <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
       </Tab.Navigator>
-
-      {/* <TabView
-        renderTabBar={props => {
-          return (
-            <LinearGradient colors={['#74f5fa', '#62cfec']} style={{ marginTop: -1, zIndex: -1, elevation: -1 }}>
-              <TabBar
-                renderLabel={({ route, focused, color }) => (
-                  <Text style={{ fontSize: 13, color: '#fff' }}>
-                    {route.title}
-                  </Text>
-                )}
-                {...props}
-                style={{ backgroundColor: 'transparent', elevation: 0 }}
-              />
-            </LinearGradient>
-          );
-        }}
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      /> */}
     </SafeAreaView>
-
-
-
   );
 };
 

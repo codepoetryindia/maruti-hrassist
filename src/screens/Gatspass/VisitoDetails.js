@@ -4,7 +4,6 @@ import {
   View,  
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   FlatList,
   ScrollView,
   SafeAreaView,
@@ -22,7 +21,14 @@ import Spinner from 'react-native-loading-spinner-overlay/lib';
 import AuthContext from '../../context/AuthContext';
 import moment from 'moment';
 import * as ApiService from '../../Utils/Utils';
+import { GlobalColor } from '../../constants/Colors';
 import Text from '../../components/reusable/Text';
+import TextInput from '../../components/reusable/TextInput';
+import { Header } from '../../components/reusable/Header';
+import Button from '../../components/reusable/Button';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { CommonActions } from '@react-navigation/native';
 
 
 
@@ -157,7 +163,26 @@ const VisitorDetails = ({navigation,route}) => {
         // alert( Apidata)
         Toast.show(Apidata);
         if(Apidata.includes("SUCCESS")){
-          navigation.navigate("Home");
+          // navigation.navigate("Home");
+
+          // navigation.dispatch(
+          //   CommonActions.reset({
+          //     index: 0,
+          //     routes: [
+          //       { name: 'Home' },
+          //       {
+          //         name: 'Gatepass'
+          //       },
+          //     ],
+          //   })
+          // );
+          navigation.dispatch(
+            CommonActions.navigate({
+              name: 'Home',
+            })
+          );
+          return;
+
         }
         setLoader(false);
       })
@@ -202,29 +227,6 @@ const VisitorDetails = ({navigation,route}) => {
   const schema = Yup.object().shape({
     actionPlans: Yup.array().of(
       Yup.object().shape({
-        // ColourQuentity: Yup.string()
-        //   .min(1, 'too short')
-        //   .required('Required')
-        //   .test('should', 'Please enter a valid number.', (text) => {
-        //     let reg1 = /^[1-9][0-9]*$/;
-        //     if (reg1.test(text) == false) {
-        //       return false;
-        //     }
-  
-        //     let reg = /^[0-9]*$/;
-        //     if (reg.test(text) === false) {
-        //       return false;
-        //     } else {
-        //       return true;
-        //     }
-        //   })
-        //   .test('Quantity', 'Max Quantity 15', (text) => {
-        //     if (text < 16) {
-        //       return true;
-        //     } else {
-        //       return false;
-        //     }
-        //   }), 
           // these constraints take precedence
           phone: Yup.string().min(1, 'too short').required('Required'), // these constraints take precedence
           vendor: Yup.string().min(1, 'too short').required('Required'), // these constraints take precedence
@@ -242,56 +244,18 @@ const VisitorDetails = ({navigation,route}) => {
 
 
   let visitorData =  route.params.visitorData;
-
-
-  // console.log("visitorData",visitorData);
   return (
-    <SafeAreaView style={{flex: 1}}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-
-        <LinearGradient
-          colors={['#00B4DB','#0083B0']}
-          style={styles.gradient}>
-          <View style={styles.container}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: 40,
-                alignItems: 'center',
-              }}>
-              <Ionicons
-                name="chevron-back-outline"
-                size={15}
-                color={'white'}
-                onPress={() => navigation.goBack()}
-              />
-              <Ionicons
-                name="menu-outline"
-                size={20}
-                color={'white'}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 30,
-                fontWeight:'700'
-              }}>
-              Visitor Details
-            </Text>
-          </View>
-        </LinearGradient>
+    <SafeAreaView style={{flex: 1, backgroundColor:GlobalColor.PrimaryLight}}>            
+        <Header title='Visitor Details'/>
         {/* Body */}
         <ScrollView nestedScrollEnabled={true} style={{paddingHorizontal:10}}>
+            {
+                      loader ? <Spinner  
+                      visible={loader}
+                      textContent={'Loading...'}
+                      textStyle={styles.spinnerTextStyle}
+                    />:null
+            }
 
             <Formik
               innerRef={fromRef}
@@ -301,25 +265,7 @@ const VisitorDetails = ({navigation,route}) => {
               }}
               validationSchema={schema}
               onSubmit={(values) => {
-
-                // console.log(values.actionPlans);
                 SubmitVGPE(values.actionPlans);
-
-                // return;
-                // if (!values.actionPlans.length) {
-                //   Alert.alert('Error', 'Minimum one product required');
-                //   return;
-                // }
-
-                // this.submitProducts(values);
-
-                // console.log(values.actionPlans.length);
-                // if (values.actionPlans.length > 0) {
-                //   submitAnswer(values);
-                // } else {
-                //   console.log('Updating');
-                //   UpdateAnswer();
-                // }
               }}>
               {({
                 values,
@@ -333,7 +279,6 @@ const VisitorDetails = ({navigation,route}) => {
                 return (
                   <FieldArray name="actionPlans">
                     {(arrayHelpers) => {
-                      // console.log(errors);
                       return (
                         <View>
                           {
@@ -352,6 +297,7 @@ const VisitorDetails = ({navigation,route}) => {
                                           style={styles.iconTrash}></Icon>
                                       </TouchableOpacity>
                                           <Text
+                                            Bold
                                             style={styles.labelHeading}>
                                            Enter Person Details
                                           </Text>
@@ -360,6 +306,7 @@ const VisitorDetails = ({navigation,route}) => {
                                       <View style={styles.singlerow}>
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Phone
                                           </Text>
@@ -385,7 +332,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .phone
@@ -398,6 +345,7 @@ const VisitorDetails = ({navigation,route}) => {
 
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Vendor
                                           </Text>
@@ -421,7 +369,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .vendor
@@ -436,24 +384,10 @@ const VisitorDetails = ({navigation,route}) => {
                                       <View style={styles.singlerow}>
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Title
                                           </Text>
-                                          {/* <TextInput
-                                            key={index.ColourQuentity}
-                                            // maxLength={5}
-                                            style={styles.input}
-                                            // placeholder="Enter title"
-                                            onChangeText={handleChange(
-                                              `actionPlans[${index}].title`,
-                                            )}
-                                            onBlur={() => {
-                                              handleBlur(
-                                                `actionPlans[${index}].title`,
-                                              );
-                                            }}
-                                          /> */}
-
                                         <SelectDropdown
                                           buttonTextAfterSelection={(selectedItem, index) => {
                                           // text represented after item is selected
@@ -496,7 +430,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .title
@@ -509,6 +443,7 @@ const VisitorDetails = ({navigation,route}) => {
 
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Name
                                           </Text>
@@ -532,7 +467,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .name
@@ -547,6 +482,7 @@ const VisitorDetails = ({navigation,route}) => {
                                       <View style={styles.singlerow}>
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Designation
                                           </Text>
@@ -570,7 +506,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .designation
@@ -583,6 +519,7 @@ const VisitorDetails = ({navigation,route}) => {
 
                                         <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Laptop/ipad/tablet
                                           </Text>
@@ -606,7 +543,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .laptop
@@ -620,6 +557,7 @@ const VisitorDetails = ({navigation,route}) => {
 
                                       <View style={styles.columnsingle}>
                                           <Text
+                                            Bold
                                             style={styles.label}>
                                            Adddress
                                           </Text>
@@ -643,7 +581,7 @@ const VisitorDetails = ({navigation,route}) => {
                                               <Text style={styles.errorLabel}>
                                                 {errors.actionPlans[index] !=
                                                 undefined ? (
-                                                  <Text>
+                                                  <Text style={styles.errorLabel}>
                                                     {
                                                       errors.actionPlans[index]
                                                         .adddress
@@ -704,6 +642,7 @@ const VisitorDetails = ({navigation,route}) => {
                               })
                             }>
                             <Text
+                              Bold
                               style={{
                                 textAlign: 'center',
                                 fontSize: 20,
@@ -712,27 +651,7 @@ const VisitorDetails = ({navigation,route}) => {
                               Add New
                             </Text>
                           </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: '#2980b9',
-                              marginTop: 20,
-                              marginBottom: 50,
-                              height: 50,
-                              justifyContent: 'center',
-                            }}
-                            name="submit"
-                            onPress={handleSubmit}>
-                            <Text
-                              style={{
-                                textAlign: 'center',
-                                fontSize: 20,
-                                color: '#fff',
-                                fontWeight: '700',
-                              }}>
-                              Submit
-                            </Text>
-                          </TouchableOpacity>
+                          <Button onPress={handleSubmit} title="SUBMIT"></Button>
                         </View>
                       );
                     }}
@@ -745,6 +664,9 @@ const VisitorDetails = ({navigation,route}) => {
   );
 };
   const styles = StyleSheet.create({
+    spinnerTextStyle:{
+      color:'#fff'
+    },
     container: {
       flexDirection: 'row',
     },
@@ -782,9 +704,9 @@ const VisitorDetails = ({navigation,route}) => {
     input: {
       flex: 1,
       borderWidth: 1,
-      borderColor:'#4a4a4a',
+      borderColor:GlobalColor.Secondary,
       padding: 5,
-      borderRadius: 5,
+      borderRadius: 0,
     },
     singlerow:{
       flexDirection:'row',
@@ -797,23 +719,22 @@ const VisitorDetails = ({navigation,route}) => {
     label:{
       paddingHorizontal: 0,
       fontSize: 16,
-      fontWeight: '700',
       marginBottom:3
     },
     labelHeading:{
       paddingHorizontal: 0,
       fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom:10
+      marginBottom:10,
+      color:GlobalColor.Primary
     },
     // Dropdown styles
     dropdown2BtnStyle: {
       width: '100%',
       height: 40,
       borderWidth:1,
-      borderRadius: 3,
+      borderRadius: 0,
       backgroundColor: '#FFF',
-      borderColor:'#444',
+      borderColor:GlobalColor.Secondary,
     },
     dropdown2BtnTxtStyle: {color: '#444', textAlign: 'left', fontSize:16},
     dropdown2DropdownStyle: {backgroundColor: '#EFEFEF'},

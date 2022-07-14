@@ -146,7 +146,7 @@ const Gatepass = ({ navigation }) => {
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {
-      alert("please enter a valid keyWord ")
+      alert("Please enter a valid keyWord ")
       return
     } else {
       let apiData = {
@@ -245,8 +245,8 @@ const Gatepass = ({ navigation }) => {
     duration: yup
       .string()
       .required('Duration  is required')
-      .max(24, 'duration should be less then 24 hours'),
-    searchLevel: yup.string().required('select one searchLevel please'),
+      .max(24, 'Duration should be less then 24 hours'),
+    searchLevel: yup.string().required('select one search level please'),
     reason: yup.string().required('Reason is required'),
     persionalVehical: yup.string().required('Select an option'),
     internalVehical: yup.string().required('Select an option'),
@@ -262,7 +262,7 @@ const Gatepass = ({ navigation }) => {
         }
       }
     }),
-    building: yup.string().required('you must select any building it is required'),
+    building: yup.string().required('Building it is required'),
     searchEmp: yup.string().required('Please select an employee'),
   });
   const fromRef = useRef(null);
@@ -308,7 +308,6 @@ const Gatepass = ({ navigation }) => {
       <Header title="Visitor Gatepass"/>
       {/* BODY */}
       <Formik
-        enableReinitialize
         innerRef={fromRef}
         validationSchema={gatePassScheema}
         initialValues={{
@@ -891,6 +890,7 @@ const Gatepass = ({ navigation }) => {
                          
                             element.isSelected ? (
                               <View
+                                key={index}
                                 style={{
                                   padding: 5,
                                   backgroundColor: GlobalColor.Secondary,
@@ -917,16 +917,15 @@ const Gatepass = ({ navigation }) => {
                               </View>
 
                             ) : null
-
                           )}
                         {selectBuilding.length < 0 ? 'hi':null }
                         
                       </ScrollView>
                       <TouchableOpacity onPress={toggleBuilding}>
                         {show == true ? (
-                          <Ionicons name="caret-up" size={30} />
+                          <Ionicons name="caret-up" size={30} color={'#4174D0'}/>
                         ) : (
-                          <Ionicons name="caret-down" size={30} />
+                          <Ionicons name="caret-down" size={30} color={'#4174D0'}/>
                         )}
                       </TouchableOpacity>
                     </View>
@@ -953,12 +952,12 @@ const Gatepass = ({ navigation }) => {
                         </Text>
 
                         <FlatList
-                          data={BuildingData}
-                          
+                          data={BuildingData}                          
                           numColumns={2}
                           keyExtractor={item => item.BID.toString()}
                           renderItem={({ item, index }) => (
                             <TouchableOpacity
+                              key={index}
                               style={{
                                 width: '48%',
                                 padding: 10,
@@ -1102,13 +1101,15 @@ const Gatepass = ({ navigation }) => {
                       <Ionicons name="send" size={20} color={'#4174D0'} />
                     </TouchableOpacity>
                   </View>
+
+
                   {search==''? (
-                          <View>
-                            <Text style={{ fontSize: 12, color: 'red',marginTop:10 }}>
-                              {errors.searchEmp}
-                            </Text>
-                          </View>
-                        ):null}
+                        <View>
+                          <Text style={{ fontSize: 12, color: 'red',marginTop:10 }}>
+                            {errors.searchEmp}
+                          </Text>
+                        </View>
+                  ):null}
                   
                   {/* {searchAlert !== '' ? (<View
                   style={{
@@ -1157,44 +1158,11 @@ const Gatepass = ({ navigation }) => {
                 </View>
 
                 {/* Next Button */}
-
                 <View style={{ paddingVertical: 10 }}>
-                  {/* <LinearGradient
-                    colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-                    style={{
-                      margin: 5,
-                      borderRadius: 8,
-                      width: '90%',
-                      alignSelf: 'center',
-                    }}>
-                    <TouchableOpacity
-                      style={{
-                        width: '100%',
-                        paddingVertical: 10,
-                        alignItems: 'center',
-                        marginTop: 5,
-                      }}
-                      onPress={() => {
-                        handleSubmit();
-                      }}>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          color: '#fff',
-                          letterSpacing: 2,
-                        }}>
-                        Next
-                      </Text>
-                    </TouchableOpacity>
-                  </LinearGradient>*/}
-
                    <Button title="Next"  onPress={() => {
                         handleSubmit();
                       }} />
-
-                </View> 
-               
+                </View>                
               </View>
 
               {/* MOdal for searchEMP List */}
@@ -1202,43 +1170,42 @@ const Gatepass = ({ navigation }) => {
                 <Pressable
                   style={{
                     flex:1,
-                    // backgroundColor: '#000000aa',
-                    // minHeight: "60%",
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
                   <View
                     style={{
-                      backgroundColor: '#fff',
-                      padding: 20,
-                      borderRadius: 15,
+                      backgroundColor: GlobalColor.White,
+                      padding: 0,
+                      borderRadius: 0,
                       width: '100%',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      position:'relative'
                     }}>
 
-                    <TouchableOpacity style={{ marginLeft: '90%', marginBottom: 10 }}
+                    <TouchableOpacity style={{ position:'absolute', top:0, right:0 }}
                       onPress={() => {
                         setEmpModalVisible(false)
                       }}>
                       <Ionicons
                         style={styles.searchIcon}
                         name="close-circle-outline"
-                        size={25}
-                        color={GlobalColor.Secondary} /> 
+                        size={30}
+                        color={GlobalColor.Primary} /> 
                     </TouchableOpacity>
 
                     {/* {employ.length > 0 ? ( */}
 
                       <FlatList
-                        style={{ width: "100%", marginHorizontal: 10, }}
+                        style={{ width: "100%", marginHorizontal: 0,marginTop:40 }}
                         ListEmptyComponent={<ListEmptyComponent title="No Data Found" enableRefresh={false} subtitle="Please change the Id & Employee Name"></ListEmptyComponent>}
                         data={employ}
-                        keyExtractor={({ item, index }) => index}
+                        keyExtractor={item => item['Staff No']}
                         renderItem={({ item, index }) => (
                           <TouchableOpacity style={styles.FlatListData}
+                            key={index}
                             onPress={() => {
-
                               setFieldValue("searchEmp", item.Name);
                               setFieldValue("perName", item.Name);                            
                               setFieldValue("empId", item['Staff No']);
@@ -1307,7 +1274,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     borderColor:GlobalColor.Secondary,
-    backgroundColor:GlobalColor.White
+    backgroundColor:GlobalColor.PrimaryLight
   },
 
   // Dropdown styles

@@ -30,6 +30,7 @@ export default (props) =>{
           fontFamily:'Roboto-Regular',
           textAlign:'left',                           
         }, props.style]}
+        placeholderTextColor={GlobalColor.LightDark}
       />
     )
 }

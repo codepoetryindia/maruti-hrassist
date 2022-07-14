@@ -24,7 +24,7 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import { GlobalColor } from '../../constants/Colors';
 import Text from '../../components/reusable/Text';
 import { Header } from '../../components/reusable/Header';
-import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import { Location } from './Locations/Location';
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -237,7 +237,7 @@ const FoodCount = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, width: '100%', height: '100%' }}>
-       <Header title="Food Count"/>        
+       <Header title="Food Court"/>        
 
       <Tab.Navigator
         screenOptions={{
@@ -247,33 +247,11 @@ const FoodCount = ({ navigation }) => {
           tabBarStyle: { backgroundColor:GlobalColor.Secondary, elevation: 0 },
         }}
       >
-        <Tab.Screen name="Gurgaon" component={Gurgaon} />
-        <Tab.Screen name="Manesar" component={Manesar} />
-        <Tab.Screen name="MPT" component={Mpt} />
-        <Tab.Screen name="Rothak" component={Rothak} />
+        <Tab.Screen name="Gurgaon" component={Location} initialParams={{ MenuLocation: "002", MenuType: "F" }}/>
+        <Tab.Screen name="Manesar" component={Location} initialParams={{ MenuLocation: "010", MenuType: "F" }}/>
+        <Tab.Screen name="MPT" component={Location} initialParams={{ MenuLocation: "011", MenuType: "F" }}/>
+        <Tab.Screen name="Rothak" component={Location} initialParams={{ MenuLocation: "041", MenuType: "F" }} />
       </Tab.Navigator>
-      <View style={{  position: 'absolute', top: '16%',  alignSelf: "center" ,marginHorizontal:24  }}>
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date)
-            console.log("new", date);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
-        <View
-          style={styles.calander}>
-          <Text style={{ color: '#000' }}>( Menu ) -- {moment(date).format('MMM Do YYYY')}</Text>
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <Ionicons name="calendar-outline" size={30} color={GlobalColor.PrimaryGradient} />
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   );
 };

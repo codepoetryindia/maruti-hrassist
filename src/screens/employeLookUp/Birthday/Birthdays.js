@@ -111,7 +111,7 @@ const Birthdays = () => {
         let response = result.Value
         if (response.Table) {
           // console.log("employeeresult", response.Table[0].profile_photo,);
-          let profile = response.Table[0].profile_photo;
+          let profile = response.Table[0] && response.Table ? response.Table[0].profile_photo: '';
           setModalItem(item);
           setEmpPhoto(profile);
           stopLoader(false);
@@ -123,7 +123,8 @@ const Birthdays = () => {
         }
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
+        setModalVisible(false);
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {

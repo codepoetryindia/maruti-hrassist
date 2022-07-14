@@ -1,6 +1,6 @@
 //import liraries
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, useWindowDimensions, SafeAreaView} from 'react-native';
+import {View,  StyleSheet, useWindowDimensions, SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
@@ -8,10 +8,16 @@ import Payroll from './Payroll';
 import Benifits from './Benifits';
 import TouchID from 'react-native-touch-id';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { Header } from '../../components/reusable/Header';
+import { GlobalColor } from '../../constants/Colors';
+import EmergencyContacts from '../EmergencyAndHospital/EmergencyContact';
+import Hospital from '../EmergencyAndHospital/Hospital';
+import NearByHospital from '../EmergencyAndHospital/NearByHospital';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 const FirstRoute = () => <Payroll />;
 const SecondRoute = () => <Benifits />;
 
+const Tab = createMaterialTopTabNavigator();
 
 const CompensationBenifits = ({navigation}) => {
   const [isAuth, setIsAuth] = useState();
@@ -57,90 +63,132 @@ const CompensationBenifits = ({navigation}) => {
       });
   };
 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'Payroll'},
-    {key: 'second', title: 'Benifits'},
-  ]);
+  // const renderScene = SceneMap({
+  //   first: FirstRoute,
+  //   second: SecondRoute,
+  // });
+  // const layout = useWindowDimensions();
+  // const [index, setIndex] = React.useState(0);
+  // const [routes] = React.useState([
+  //   {key: 'first', title: 'Payroll'},
+  //   {key: 'second', title: 'Benifits'},
+  // ]);
 
 
   return (
-    <SafeAreaView style={{flexGrow:1}}>
-    <View style={{flex:1}}>
-      {isAuth == true ? ( <View style={{flex:1}}>
-        <View style={{flex: 1, width: '100%', height: '100%'}}>
-          <LinearGradient
-          colors={['#4174D0','#5dc0e9']}
-            style={styles.gradient}>
-            <View style={styles.container}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: 40,
-                  alignItems: 'center',
-                }}>
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={25}
-                  color={'white'}
-                  onPress={() => navigation.goBack()}
-                />
-                <Ionicons
-                  name="menu-outline"
-                  size={25}
-                  color={'white'}
-                  onPress={() => navigation.openDrawer()}
-                />
-              </View>
 
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  letterSpacing: 1,
-                  marginLeft: 30,
-                }}>
-                Compensation And Benifits
-              </Text>
-            </View>
-          </LinearGradient>
-          <TabView
-            renderTabBar={props => {
-              return (
-                <LinearGradient
-              colors={['#5dc0e9', '#5dc0e9']}
-              style={{ marginTop: -1, zIndex: -1 }}>
-                  <TabBar
-                    {...props}
-                    style={{backgroundColor: 'transparent', elevation: 0}}
-                  />
-                </LinearGradient>
-              );
-            }}
-            navigationState={{index, routes}}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={{width: layout.width}}
-          />
-        </View>
-      </View>        
-      ) : (
-        <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
-            <Text>Please Run in a real device </Text>
-            <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
-              <Text>Go Back</Text>
-            </TouchableOpacity>
-        </View>
-      )      
-      }
-    </View>
-    </SafeAreaView>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+    <Header title="Compensation and Benefits" />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: {  },
+        tabBarActiveTintColor: GlobalColor.White,
+        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: GlobalColor.White },
+        tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
+        tabBarItemStyle:{ paddingHorizontal:0}
+      }}>
+      <Tab.Screen name="Payroll" component={Payroll} />
+      <Tab.Screen name="Benifits" component={Benifits} />
+      </Tab.Navigator>
+  </SafeAreaView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//     <SafeAreaView style={{flexGrow:1}}>
+//     <View style={{flex:1}}>
+//       {/* {isAuth == true ? (  */}
+      
+//       <View style={{flex:1}}>
+//         <View style={{flex: 1, width: '100%', height: '100%' ,}}>
+
+//         <Header title={"Compensation and Benefits"} back/>
+//           {/* <LinearGradient
+//           colors={['#4174D0','#5dc0e9']}
+//             style={styles.gradient}>
+//             <View style={styles.container}>
+//               <View
+//                 style={{
+//                   flexDirection: 'row',
+//                   justifyContent: 'space-between',
+//                   width: 40,
+//                   alignItems: 'center',
+//                 }}>
+//                 <Ionicons
+//                   name="chevron-back-outline"
+//                   size={25}
+//                   color={'white'}
+//                   onPress={() => navigation.goBack()}
+//                 />
+//                 <Ionicons
+//                   name="menu-outline"
+//                   size={25}
+//                   color={'white'}
+//                   onPress={() => navigation.openDrawer()}
+//                 />
+//               </View>
+
+//               <Text
+//                 style={{
+//                   color: '#fff',
+//                   fontSize: 16,
+//                   letterSpacing: 1,
+//                   marginLeft: 30,
+//                 }}>
+//                 Compensation And Benifits
+//               </Text>
+//             </View>
+//           </LinearGradient> */}
+
+
+
+//           <TabView
+//             renderTabBar={props => {
+//               return (
+//                 <LinearGradient
+//               colors={[GlobalColor.Secondary, GlobalColor.Secondary]}
+//               style={{ marginTop: -1, zIndex: -1 }}>
+//                   <TabBar
+//                     {...props}
+//                     // style={{backgroundColor: 'transparent', elevation: 0}}
+//                   />
+//                 </LinearGradient>
+//               );
+//             }}
+//             navigationState={{index, routes}}
+//             renderScene={renderScene}
+//             onIndexChange={setIndex}
+//             initialLayout={{width: layout.width}}
+//           />
+//         </View>
+//       </View>        
+//       {/* ) : ( */}
+
+
+// {/* 
+//         <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
+//             <Text>Please Run in a real device </Text>
+//             <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
+//               <Text>Go Back</Text>
+//             </TouchableOpacity>
+//         </View> */}
+
+
+
+//       {/* )      
+//       } */}
+//     </View>
+//     </SafeAreaView>
   );
 };
 
@@ -171,7 +219,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     color: '#424242',
   },
 });

@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,6 +12,11 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import { GlobalColor } from '../../constants/Colors';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 
 
 const SalarySlip = ({ navigation }) => {
@@ -19,13 +24,13 @@ const SalarySlip = ({ navigation }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [month, setMonth] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState('');
-    const [defaultDate, setDefaultDate] = useState('');
+    const [defaultDate, setDefaultDate] = useState('Select Month');
     const [loader, setLoader] = useState(false)
     const [table1Data, setTable1Data] = useState('')
     const [table2Data, setTable2Data] = useState('')
     const [table3Data, setTable3Data] = useState('')
     const [table4Data, setTable4Data] = useState('')
-    const [salaryType, setSalaryType = useState] = useState()
+    const [salaryType, setSalaryType = useState] = useState('')
     const { authContext, AppUserData } = useContext(AuthContext);
 
     const GetMonth = () => {
@@ -147,18 +152,33 @@ const SalarySlip = ({ navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+
+
+    // if(loader){
+    //     return(
+    //       <SafeAreaView style={styles.container}>     
+    //         <LoadingScreen/>
+    //       </SafeAreaView>
+    //     )
+    //   }
+
+
+
     return (
 
-        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-            {loader == true ? (
+        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
+            {/* {loader == true ? (
                 <Spinner
                     visible={loader}
                     textContent={'Loading...'}
                     textStyle={styles.spinnerTextStyle}
                 />
-            ) : null}
+            ) : null} */}
 
-            <LinearGradient
+
+            <Header title="Salary Slip" />
+
+            {/* <LinearGradient
                 colors={['#4174D0', '#6ef7ff']}
                 style={styles.gradient}>
                 <View style={styles.container}>
@@ -194,7 +214,9 @@ const SalarySlip = ({ navigation }) => {
                         Salary Slip
                     </Text>
                 </View>
-            </LinearGradient>
+            </LinearGradient> */}
+
+            <View style={{paddingHorizontal:10}}>
 
             <TouchableOpacity
                 style={styles.Salary}
@@ -210,7 +232,7 @@ const SalarySlip = ({ navigation }) => {
                         justifyContent: 'space-between',
                         paddingHorizontal: 10,
                     }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                    <Text >
                         {defaultDate}
                     </Text>
                     <Feather name="corner-up-right" size={20} />
@@ -238,11 +260,10 @@ const SalarySlip = ({ navigation }) => {
                         data={month}
                         ListEmptyComponent={() => {
                             return (
-                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image source={require('../../assets/Images/dataNotFound.png')}
-                                        style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                                </View>
+                                <ListEmptyComponent title="No Data Found"
+                                // enableRefresh={true}
+                                // onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh}
+                                ></ListEmptyComponent>
                             )
                         }}
                         keyExtractor={({ item, index }) => index}
@@ -271,31 +292,39 @@ const SalarySlip = ({ navigation }) => {
                         justifyContent: 'space-between',
                         paddingHorizontal: 10,
                     }}>
-                    {salaryType && salaryType.map((item) => {
-                        return (
-                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                                {item.PYDT_DESCRIPTION}
-                            </Text>
-                        )
-                    })}
+                    {salaryType == '' ? (
+                        <Text >
+                            Select Type
+                        </Text>
+                    ) : (
+
+                        salaryType && salaryType.map((item) => {
+                            return (
+                                <Text >
+                                    {item.PYDT_DESCRIPTION}
+                                </Text>
+                            )
+                        })
+
+                    )}
                     <Feather name="corner-up-right" size={20} />
                 </View>
             </TouchableOpacity>
 
             <ScrollView>
                 {/* Table */}
-                <View style={[styles.Table,{alignSelf:'center'}]}>
+                <View style={[styles.Table, { alignSelf: 'center' }]}>
                     <View style={styles.tableRow}>
-                        <Text>Pay Element</Text>
+                        <Text Bold>Pay Element</Text>
                     </View>
                     <View style={styles.tableRow}>
-                        <Text>Earnings</Text>
+                        <Text Bold>Earnings</Text>
                     </View>
                     <View style={styles.tableRow}>
-                        <Text>Deduction</Text>
+                        <Text Bold>Deduction</Text>
                     </View>
                     <View style={styles.tableRow}>
-                        <Text>Remarks</Text>
+                        <Text Bold>Remarks</Text>
                     </View>
 
 
@@ -324,15 +353,15 @@ const SalarySlip = ({ navigation }) => {
                         }} />
                 ) : null}
 
-                <View style={[styles.Table,{}]}>
+                <View style={[styles.Table, {}]}>
                     <View style={styles.tableRow}>
-                        <Text>Earnings</Text>
+                        <Text Bold>Earnings</Text>
                     </View>
                     <View style={styles.tableRow}>
-                        <Text>Deduction</Text>
+                        <Text Bold>Deduction</Text>
                     </View>
                     <View style={styles.tableRow}>
-                        <Text>Total</Text>
+                        <Text Bold>Total</Text>
                     </View>
                 </View>
                 {table4Data.length > 0 ? (
@@ -341,7 +370,7 @@ const SalarySlip = ({ navigation }) => {
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={[styles.Table,{alignSelf:'center',}]}>
+                                <View style={[styles.Table, { alignSelf: 'center', }]}>
                                     <View style={styles.tableRow}>
                                         <Text>{item.EARNING}</Text>
                                     </View>
@@ -355,7 +384,7 @@ const SalarySlip = ({ navigation }) => {
                             )
                         }} />
                 ) : null}
-                <View style={{alignItems:'flex-start',margin:15,}}>
+                <View style={{ alignItems: 'flex-start', marginVertical: 15, }}>
                     <Text>General Message</Text>
                 </View>
                 {table2Data.length > 0 ? (
@@ -366,29 +395,30 @@ const SalarySlip = ({ navigation }) => {
                             return (
                                 <View style={[styles.Table, { flexDirection: 'column' }]}>
                                     <Text>{item.GLMS_MESSAGES}</Text>
-                                   
+
                                 </View>
                             )
                         }} />
                 ) : null}
                 <View style={styles.Table}>
-                    <Text>Employee Message</Text>
+                    <Text Bold>Employee Message</Text>
                 </View>
                 {table3Data.length > 0 ? (
                     <FlatList
                         data={table3Data}
                         keyExtractor={({ item, index }) => index}
                         renderItem={({ item, index }) => {
-                           
+
                             return (
                                 <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                    <Text style = {{color:'#000'}}>{item.EXMS_MESSAGES}</Text>
-                                   
+                                    <Text style={{ color: '#000' }}>{item.EXMS_MESSAGES}</Text>
+
                                 </View>
                             )
                         }} />
                 ) : null}
             </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -398,8 +428,14 @@ const styles = StyleSheet.create({
     gradient: {
         padding: 20,
     },
+    containerLoading: {
+        flex: 1,
+        width: '100%', height: '100%',
+        backgroundColor: GlobalColor.PrimaryLight
+    },
     container: {
         flexDirection: 'row',
+
     },
     modal: {
         paddingVertical: 15,
@@ -421,7 +457,7 @@ const styles = StyleSheet.create({
     Salary: {
         top: 10,
         marginVertical: 10,
-        width: '90%',
+        width: '100%',
         backgroundColor: '#fff',
         alignSelf: 'center',
         padding: 10,
@@ -429,14 +465,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
-            width: 0,
-            height: 4,
+            width: -0,
+            height: 1,
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-
-        elevation: 8,
-        borderRadius: 8
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 5,
+        borderRadius: 5
     },
     textContainer: {
         width: '90%',
@@ -448,12 +483,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#4174D0'
     },
     Table: {
-        width: '90%',
+        width: '100%',
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent: 'space-evenly',
         padding: 5,
         borderBottomWidth: 0.5,
+        borderColor:GlobalColor.Secondary,
         marginTop: 30
     },
     tableRow: {
@@ -461,7 +497,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
-        alignSelf:'center'
+        alignSelf: 'center'
     }
 });
 

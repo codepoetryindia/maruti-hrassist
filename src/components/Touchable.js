@@ -37,7 +37,7 @@ const TouchableCard = ({navigation}) => {
     },
     {
       id: '3',
-      name: 'Compliances & Benifis',
+      name: 'Compensation and Benifits',
       images: require('../assets/Images/home/chart.png'),
     },
     {
@@ -89,8 +89,9 @@ const TouchableCard = ({navigation}) => {
               else if(item.name==='Attendance & Admin') {
                 navigation.navigate('AttendanceAdmin');
               }
-             else if(item.name==='Compliances & Benifis') {
+             else if(item.name==='Compensation and Benifits') {
                 navigation.navigate('CompensationBenifitsNav');
+                // console.log("hello");
               }
               else if(item.name==='Hospital & Emergency') {
                 navigation.navigate('HospitalNavs');
@@ -108,7 +109,6 @@ const TouchableCard = ({navigation}) => {
                 navigation.navigate('BuisnessTravel');
               }
              else if(item.name==='Share App') {
-               console.log('hello')
                myCustomeSharing()
               }
             }}>

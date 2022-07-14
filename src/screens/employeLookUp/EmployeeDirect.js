@@ -1,6 +1,6 @@
 //import liraries
 import React, { useEffect, useState, useContext, } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, FlatList, Image,SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Image,SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
@@ -12,7 +12,7 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import Text from '../../components/reusable/Text';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import { LoadingScreen } from '../../components/reusable/LoadingScreen';
-
+import TextInput from '../../components/reusable/TextInput';
 
 // create a component
 const EmployeeDirect = () => {

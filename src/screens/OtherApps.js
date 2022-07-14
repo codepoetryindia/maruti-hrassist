@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   TouchableOpacity,
   Image,
   Linking,
@@ -14,44 +13,59 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {
-  AppInstalledChecker,
-  CheckPackageInstallation,
-} from 'react-native-check-app-install';
 import AuthContext from '../context/AuthContext';
 import * as ApiService from '../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
+import Text from '../components/reusable/Text';
+import { Header } from '../components/reusable/Header';
+import { LoadingScreen } from '../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../components/reusable/ListEmptyComponent';
+
 
 
 
 // create a component
 const OtherApps = ({ navigation }) => {
-
   const [loader, setLoader] = useState(false)
   const { authContext, AppUserData } = useContext(AuthContext);
   const [appLink, setAppLink] = useState('');
+  const [refresh, setrefresh] = useState(false);
 
-  const GetAPPLinkApi = () => {
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+  }
+
+
+  const GetAPPLinkApi = (pulldown=false) => {
+    if(!pulldown){
+      setLoader(true);
+    }
+
+    let token = AppUserData.token;
     let userId = AppUserData.data.userId
-    console.log("userDetails", userId);
     let apiData = {
       UserName: userId,
       LinkName: "HR_ASSIST"
     }
-    let token = AppUserData.token
-    setLoader(true);
+
+
     ApiService.PostMethode('/GetAPPLink', apiData, token)
       .then(result => {
         let responseData = result.Value
-        console.log("responseData", responseData);
-        setLoader(false);
+        stopLoader(false);
         setAppLink(responseData);
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         // console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -66,31 +80,21 @@ const OtherApps = ({ navigation }) => {
       });
   };
 
-  var SendIntentAndroid = require('react-native-send-intent');
-  // const SAPSF = () => {
-  //   SendIntentAndroid.isAppInstalled('com.successfactors.successfactors').then(isInstalled => {
-  //     if (isInstalled) {
-  //       SendIntentAndroid.openApp('com.successfactors.successfactors')
-  //       console.log('is installed true');
-  //     } else {
-  //       Linking.openURL('https://play.google.com/store/apps/details?id=com.successfactors.successfactors').catch(err => {
-  //         console.log(err);
-  //       });
-  //     }
-  //   });
-  // };
 
   const linkOpen = (link) => {
 
-    if(Platform.OS === 'ios'){
-      if(link.LINK_LINK3){
-        Linking.openURL(link.LINK_LINK3)
-      }else{
-        Linking.openURL(link.LINK_LINK2)
-      }
-    }else{
-      Linking.openURL(link.LINK_LINK1)
-    }    
+    console.log(link);
+
+
+    if(
+      link.LINK_APP_CATG == 'HRASSIST_OTH_APP' && link.LINK_TYPE != 'In-House_App' && link.LINK_LINK5 == 'ANDROID'
+    ){
+      downloadApp(link.LINK_LINK1)
+    }else if(
+      link.LINK_APP_CATG == 'HRASSIST_OTH_APP' && link.LINK_TYPE == 'In-House_App' && link.LINK_LINK5 == 'ANDROID'
+    ){
+      downloadInhouseApp(link.LINK_LINK1, link.LINK_LINK4);
+    }
   }
 
   useEffect(() => {
@@ -98,91 +102,78 @@ const OtherApps = ({ navigation }) => {
   }, [])
 
 
-  return (
+  const downloadApp = (link)=>{
+    let pack_name= link.split("=");
+    if(Platform.OS === 'android'){
+      console.log(pack_name[1]);
+      var SendIntentAndroid = require('react-native-send-intent');
+      SendIntentAndroid.isAppInstalled(pack_name[1]).then(isInstalled => {
+        if(isInstalled){
+          SendIntentAndroid.openApp(pack_name[1]).then(wasOpened => {
+            if(!wasOpened){
+              Linking.openURL(link);    
+            }
+          });
+        }else{
+          Linking.openURL(link);    
+        }
+      });
+    }else{
+      Linking.openURL(link);
+    }
+  }
 
+  const downloadInhouseApp = (link, link4)=>{
+    let pack_name= link.split("=");
+    if(Platform.OS === 'android'){
+      var SendIntentAndroid = require('react-native-send-intent');
+      SendIntentAndroid.isAppInstalled(link4).then(isInstalled => {
+        if(isInstalled){
+          SendIntentAndroid.openApp(link4).then(wasOpened => {
+            if(!wasOpened){
+              Linking.openURL(link);    
+            }
+          });
+        }else{
+          Linking.openURL(link);    
+        }
+      });
+    }else{
+      Linking.openURL(link);
+    }
+  }
+
+
+
+  if(loader){
+    return(
+    <SafeAreaView style={styles.container}>
+      <Header title ="Other Mobile Apps"/>
+      <LoadingScreen/>
+    </SafeAreaView>
+    )
+  }
+
+
+  return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-
-      <LinearGradient
-        style={{ padding: 20 }}
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        >
-        <View style={{ width:"100%"}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              // justifyContent: 'space-between',
-              // width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.navigate('Home')}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 10,
-              }}>
-              Other Mobile Apps
-          </Text>
-
-          </View>
-        </View>
-      </LinearGradient>
-
-      {/* body */}
-
-      {
-        appLink !== '' ? (
-
+      <Header title ="Other Mobile Apps"/>
           <View style={{ flex: 1, paddingHorizontal:10 }}>
             <FlatList
+              contentContainerStyle={{ flex:1 }}
               data={appLink}
               numColumns={2}
+              ListEmptyComponent={<ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={()=>GetAPPLinkApi(true)} refreshing={refresh} />}
               showsVerticalScrollIndicator={false}
               keyExtractor={( item ) => item.LINK_ID.toString()}
               renderItem={({ item, index }) => (
-
                 <TouchableOpacity
                   onPress={() => {
                     linkOpen(item);
+                    // console.log(item);
                   }}
-                  style={{
-                    width: '48%',
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                    marginTop: 10,
-                    margin: 5,
-                    paddingHorizontal: 15,
-                    paddingVertical: 25,
-                    backgroundColor: '#fff',
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 1.29,
-                    shadowRadius: 10.65,
-                    elevation: 5,
-                    alignItems: 'center',
-                    borderRadius: 10,
-                  }}>
+                  style={styles.button}>
                   <Image
                     source={{ uri: item.LINK_LINK3 }}
                     style={{ width: 50, height: 50 }}
@@ -191,14 +182,8 @@ const OtherApps = ({ navigation }) => {
                     {item.LINK_DESC}
                   </Text>
                 </TouchableOpacity>
-
               )} />
           </View>
-        ) : (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-            {loader == true ? <Text>We are Loading your data</Text> : <Text>not found</Text>}
-          </View>
-        )}
       </View>
     </SafeAreaView>)
 };
@@ -210,6 +195,28 @@ const styles = StyleSheet.create({
     width:"100%",
     backgroundColor: '#fff',    
   },
+  button:{
+    width: '48%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    margin: 5,
+    borderColor:GlobalColor.Secondary,
+    borderWidth:0.5,
+    paddingHorizontal: 15,
+    paddingVertical: 25,
+    backgroundColor: GlobalColor.White,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1.29,
+    shadowRadius: 10.65,
+    elevation: 5,
+    alignItems: 'center',
+    borderRadius: 0,
+  }
 });
 
 //make this component available to the app

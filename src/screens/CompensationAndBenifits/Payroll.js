@@ -1,8 +1,9 @@
 //import liraries
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList,SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, FlatList,SafeAreaView } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
+import BillIcon from '../../assets/Images/compensation and benefits/bill.png'
 import Modal from 'react-native-modal';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
@@ -10,6 +11,10 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
+import Text from '../../components/reusable/Text';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import { GlobalColor } from '../../constants/Colors';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 
 // create a component
 const Payroll = () => {
@@ -183,9 +188,20 @@ const Payroll = () => {
   //   setModalVisible(!isModalVisible);
   // };
 
+  if(loader){
+    return(
+      <SafeAreaView style={styles.container}>     
+        <LoadingScreen/>
+      </SafeAreaView>
+    )
+  }
+
   return (
   
       <SafeAreaView style={styles.container}>
+
+
+
         {loader == true ? (
                 <Spinner
             visible={loader}
@@ -193,6 +209,8 @@ const Payroll = () => {
             textStyle={styles.spinnerTextStyle}
           />
               ):null }
+
+
         <TouchableOpacity
           onPress={() => {
             myNavigation.navigate('SalarySlip')
@@ -205,15 +223,18 @@ const Payroll = () => {
                 height: 50,
                 borderRadius: 100,
                 borderWidth: 1,
-                borderColor: '#4174D0',
+                borderColor: GlobalColor.Secondary,
                 justifyContent: 'center',
                 alignItems: 'center',
+         
               }}>
-              <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+              <Image 
+              source={require('../../assets/Images/bill.png')}
+              style={{width: 30, height: 30}} />
             </View>
           </View>
           <View style={styles.item}>
-            <Text>Salary Slip</Text>
+            <Text Bold>Salary Slip</Text>
             <Feather name="corner-up-right" size={20} />
           </View>
         </TouchableOpacity>
@@ -239,15 +260,17 @@ const Payroll = () => {
                   height: 50,
                   borderRadius: 100,
                   borderWidth: 1,
-                  borderColor: '#4174D0',
+                  borderColor: GlobalColor.Secondary,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+                 <Image 
+              source={require('../../assets/Images/bill.png')}
+              style={{width: 30, height: 30}} />
               </View>
             </View>
             <View style={styles.item}>
-              <Text>Tax Computation Slip</Text>
+              <Text Bold>Tax Computation Slip</Text>
               <Feather name="corner-up-right" size={20} />
             </View>
           </View>
@@ -273,10 +296,8 @@ const Payroll = () => {
                 />
               </TouchableOpacity>
               <View style={styles.textContainer}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Component</Text>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                  Amount(Rs.)
-                </Text>
+                <Text Bold>Component</Text>
+                <Text Bold>Amount (Rs.)</Text>
               </View>
               {taxData.length > 0 ? (
                 <FlatList
@@ -284,11 +305,10 @@ const Payroll = () => {
                   data={taxData}
                   ListEmptyComponent={() => {
                     return (
-                      <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={require('../../assets/Images/dataNotFound.png')}
-                          style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                        <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                      </View>
+                      <ListEmptyComponent title="No Data Found" 
+                      // enableRefresh={true}
+                      // onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh}
+                        ></ListEmptyComponent>
                     )
                   }}
                   keyExtractor={({ item, index }) => index}
@@ -300,7 +320,7 @@ const Payroll = () => {
                   )}
                 />)
 
-                : (<Text style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center' }}>something went wrong</Text>)}
+                : (<ListEmptyComponent title="No Data Found"  ></ListEmptyComponent>)}
 
             </View>
           </Modal>
@@ -328,15 +348,17 @@ const Payroll = () => {
                   height: 50,
                   borderRadius: 100,
                   borderWidth: 1,
-                  borderColor: '#4174D0',
+                  borderColor: GlobalColor.Secondary,
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+                 <Image 
+              source={require('../../assets/Images/bill.png')}
+              style={{width: 30, height: 30}} />
               </View>
             </View>
             <View style={styles.item}>
-              <Text>Pf Balance </Text>
+              <Text Bold>PF Balance </Text>
               <Feather name="corner-up-right" size={20} />
             </View>
           </View>
@@ -363,20 +385,20 @@ const Payroll = () => {
               </TouchableOpacity>
               <View>
                 <View style={styles.textContainer}>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employee's</Text>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                  <Text Bold>Employee's</Text>
+                  <Text Bold>
                     Rs.{employeePf}
                   </Text>
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Employer's</Text>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                  <Text Bold>Employer's</Text>
+                  <Text Bold>
                     Rs.{employerPf}
                   </Text>
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>NetBalance</Text>
-                  <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                  <Text Bold>Net Balance</Text>
+                  <Text Bold>
                     Rs.{netBalance}
                   </Text>
                 </View>
@@ -412,15 +434,17 @@ const Payroll = () => {
                 height: 50,
                 borderRadius: 100,
                 borderWidth: 1,
-                borderColor: '#4174D0',
+                borderColor: GlobalColor.Secondary,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Foundation name="page-export-pdf" size={20} color={'#4174D0'} />
+               <Image 
+              source={require('../../assets/Images/bill.png')}
+              style={{width: 30, height: 30}} />
             </View>
           </View>
           <View style={styles.item}>
-            <Text>Tax Saving</Text>
+            <Text Bold>Tax Savings</Text>
             <Feather name="corner-up-right" size={20} />
           </View>
         </TouchableOpacity>
@@ -439,9 +463,9 @@ const Payroll = () => {
               />
             </TouchableOpacity>
             <View style={styles.textContainer}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Description</Text>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                Amount(Rs.)
+              <Text Bold>Description</Text>
+              <Text Bold>
+                Amount (Rs.)
               </Text>
             </View>
 
@@ -450,11 +474,8 @@ const Payroll = () => {
               data={taxSaving}
               ListEmptyComponent={() => {
                 return (
-                  <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Image source={require('../../assets/Images/dataNotFound.png')}
-                      style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                  </View>
+                  <ListEmptyComponent title="No Data Found"  
+                   ></ListEmptyComponent>
                 )
               }}
               keyExtractor={({ item, index }) => index}
@@ -477,12 +498,13 @@ const Payroll = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
+    paddingHorizontal:10,
   },
   box: {
     flexDirection: 'row',
-    marginVertical: 20,
-    width: '90%',
+    marginVertical: 10,
+    width: '100%',
     paddingVertical: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -490,13 +512,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: -0,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 15,
-    borderRadius: 8
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 5,
+    borderRadius: 5
   },
   iconBox: {
     width: '20%',
@@ -516,7 +538,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#fff',
-    borderRadius: 5,
+    borderRadius: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

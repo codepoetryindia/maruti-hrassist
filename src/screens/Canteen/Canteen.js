@@ -82,7 +82,7 @@ const Canteen = ({ navigation }) => {
           </View>
           <View
             style={styles.MenuContainer}>
-            <Text Bold>Food Count</Text>
+            <Text Bold>Food Court</Text>
             <Feather name="corner-up-right" size={20} />
           </View>
         </TouchableOpacity>

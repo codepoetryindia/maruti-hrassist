@@ -6,6 +6,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ListEmptyComponent from '../../../components/reusable/ListEmptyComponent';
 import Text from '../../../components/reusable/Text';
 import { GlobalColor } from '../../../constants/Colors';
+ import Collapsible from 'react-native-collapsible';
+
+
+// import Accordion from 'react-native-collapsible/Accordion';
 
 const Accordion = ({ data, name, handleDropDown, isOpen }) => {
     const [refresh, setrefresh] = useState(false);
@@ -23,16 +27,48 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
     
 
     return (
-
-        <View style={{paddingHorizontal:10}}>
-        <View
-        // nestedScrollEnabled={true}
-        style={styles.lunchBoxContainer}>
+        <View style={{paddingHorizontal:0, flex:1}}>
+        <View style={styles.lunchBoxContainer}>
             <TouchableOpacity style={styles.lunchBox} onPress={() => handleDropDown()}>
                 <Text Bold> {name} </Text>
                 <Ionicons name={isOpen == true ? 'ios-chevron-up' : 'ios-chevron-down'} size={20} />
             </TouchableOpacity>
-            {
+            <Collapsible collapsed={!isOpen}>
+            <View style={styles.AccordionTab}>
+                        <FlatList
+                            ListEmptyComponent={<ListEmptyComponent 
+                            title="No Data Found"
+                            subtitle="please select date & retry"                           
+                             enableRefresh={true} 
+                             refreshing={refresh}
+                             showsVerticalScrollIndicator={false}
+                            ></ListEmptyComponent>}
+                            data={data}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={
+                                ({ item, index }) => {
+                                    
+                                    return (
+                                        <View>
+                                            <Text >SHIFT {item.CANT_SHFT}</Text>
+                                            <Text style={{marginTop: 10 }}>{item.CANT_ITEM1}</Text>
+                                            <Text >{item.CANT_ITEM2}</Text>
+                                            <Text >{item.CANT_ITEM3}</Text>
+                                            <Text >{item.CANT_ITEM4}</Text>
+                                            <Text >{item.CANT_ITEM5}</Text>
+                                            <Text >{item.CANT_ITEM6}</Text>
+                                            <Text style={{marginBottom: 30 }}>{item.CANT_ITEM7}</Text>
+                                        </View>
+                                    )
+                                }
+                            }
+                        />
+                    </View>
+            </Collapsible>
+
+
+
+            {/* {
                 isOpen == true ?
                     <View style={styles.AccordionTab}>
                         <FlatList
@@ -60,19 +96,12 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
                                             <Text style={{marginBottom: 30 }}>{item.CANT_ITEM7}</Text>
                                         </View>
                                     )
-                                    // return (<View key={index}>
-                                    //     {
-                                    //         Object.keys(item).map((key, index) => {
-                                    //             return <Text key={index} >{ item.CANT_ITEM1 }</Text>
-                                    //         })
-                                    //     }
-                                    // </View>)
                                 }
                             }
                         />
                     </View>
                     : null
-            }
+            } */}
         </View>
         </View>
     )
@@ -82,12 +111,12 @@ const Accordion = ({ data, name, handleDropDown, isOpen }) => {
 // define your styles
 const styles = StyleSheet.create({
     // Gurgaon Lunch section
-    lunchBoxContainer: {
-        width: '100%',       
+    lunchBoxContainer: {     
         marginVertical: 10,
+        paddingVertical:10,
         backgroundColor: GlobalColor.White,
         borderRadius: 4,
-        alignSelf: 'center',
+        // alignSelf: 'center',
         shadowColor: GlobalColor.Black,
         shadowOffset: {
             width: 0,
@@ -105,8 +134,7 @@ const styles = StyleSheet.create({
         borderColor:GlobalColor.Secondary
     },
     lunchBox: {
-        flexDirection: 'row',
-        
+        flexDirection: 'row',        
         justifyContent: 'space-between',
         padding: 10,
         alignItems: 'center',

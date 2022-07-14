@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, Image, FlatList,SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, FlatList,SafeAreaView, Linking } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -200,8 +200,10 @@ const EmployProfile = ({ navigation, route }) => {
                     <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
                   </View>
                   <View style={styles.box}>
-                    <Text style={styles.header}>Personal phone Number</Text>
-                    <Text>{item.PRESENT_PHONE}</Text>
+                    <Text style={styles.header}>Personal phone Number</Text>                    
+                    <TouchableOpacity onPress={()=>Linking.openURL(`tel:${item.PRESENT_PHONE}`)}>
+                      <Text style={{ color:GlobalColor.Secondary }} Bold>{item.PRESENT_PHONE}</Text>
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.box}>
                     <Text style={styles.header}>Offical Phone Number</Text>

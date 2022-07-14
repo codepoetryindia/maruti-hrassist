@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView, Modal, Pressable } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView, Modal, Pressable } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast'
@@ -8,31 +8,50 @@ import * as ApiService from '../../Utils/Utils';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useFocusEffect } from '@react-navigation/native';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import { GlobalColor } from '../../constants/Colors';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+
 
 // create a component
 const EmergencyContacts = ({ navigation }) => {
   const myNavigation = useNavigation();
-
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
   const [emerList, setEmerList] = useState();
-  // const [contact, setContact] = useState();
-  // const [modal, setModal] = useState(false)
 
-  const GetEmerMain = () => {
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch(error){
+        console.log(error)
+    }
+}
+
+
+  const GetEmerMain = (pulldown = false) => {
+
+    if(!pulldown){
+      setLoader(true);
+    }
+
     let apiData = {}
     let token = AppUserData.token
     // console.log(apiData)
     setLoader(true);
     ApiService.PostMethode('/GetEmerMain', apiData, token)
       .then(result => {
-        setLoader(false);
+        stopLoader(false);
         let ApiValue = result.Value
         console.log("APi value", ApiValue);
         setEmerList(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -50,6 +69,7 @@ const EmergencyContacts = ({ navigation }) => {
         }
       });
   };
+
   useFocusEffect(
     React.useCallback(() => {
       const unsubscribe = GetEmerMain();
@@ -60,19 +80,19 @@ const EmergencyContacts = ({ navigation }) => {
   const iconBox = (type) => {
     switch (type) {
       case "Doctor":
-        return require('../../assets/Images/doctorr.png')
+        return require('../../assets/Images/hospital/doctor.png')
         break;
       case "Vigilance":
-        return require('../../assets/Images/security-cameraa.png')
+        return require('../../assets/Images/hospital/camera.png')
         break;
       case "Fire Control":
-        return require('../../assets/Images/fire-extinguisher.png')
+        return require('../../assets/Images/hospital/fire-extinguisher.png')
         break;
       case "Electricity":
-        return require('../../assets/Images/electrical-energy.png')
+        return require('../../assets/Images/hospital/home.png')
         break;
       case "POSH Cell":
-        return require('../../assets/Images/user-interface.png')
+        return require('../../assets/Images/hospital/smartphone.png')
         break;
       default:
         return require('../../assets/Images/user-interface.png')
@@ -81,35 +101,27 @@ const EmergencyContacts = ({ navigation }) => {
   }
 
 
+  if(loader){
+    return(
+      <SafeAreaView style={styles.container}>
+        <LoadingScreen/>
+      </SafeAreaView>
+    )
+  }
+
+
   return (
 
     <SafeAreaView style={styles.container}>
-      {loader == true ? (
-        <Spinner
-          visible={loader}
-          textContent={'Loading...'}
-          textStyle={styles.spinnerTextStyle}
-        />
-      ) : null}
-       {
-        loader == true ? (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Please wait we are fetching your data</Text></View>) :(
-            <FlatList
+          <FlatList
+            contentContainerStyle={{ flex:1}}
             data={emerList}
-            ListEmptyComponent={() => {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../../assets/Images/dataNotFound.png')}
-                    style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-                  <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                </View>
-              )
-            }}
+            ListEmptyComponent={() => <ListEmptyComponent enableRefresh={true} onRefreshCallback={()=>GetEmerMain(true)} refreshing={refresh} />}
             renderItem={({ item }) => {
               let image = iconBox(item.EMER_DESC);
-              // console.log('post + image==>', image, item.EMER_DESC);
               return (
                 <TouchableOpacity
+                  key={item.CONTACT_NUMBER}
                   style={styles.box}
                   onPress={() => {
                     myNavigation.navigate("DoctorsContacts", {
@@ -120,31 +132,29 @@ const EmergencyContacts = ({ navigation }) => {
                   <View style={styles.iconBox}>
                     <View
                       style={{
-                        width: 50,
-                        height: 50,
+                        width: 60,
+                        height: 60,
                         borderRadius: 100,
-                        borderWidth: 1,
-                        borderColor: '#6ef7ff',
+                        borderWidth: 2,
+                        borderColor: GlobalColor.Secondary,
                         justifyContent: 'center',
                         alignItems: 'center',
                         overflow: 'hidden'
                       }}>
                       <Image
                         source={image}
-                        style={{ width: 45, height: 45 }}
+                        style={{ width: 40, height: 40 }}
                       />
                     </View>
                   </View>
                   <View style={styles.item}>
                     <Text>{item.EMER_DESC}</Text>
-                    <Feather name="corner-up-right" size={20} />
+                    <Feather name="corner-up-right" size={20} color={GlobalColor.Secondary}/>
                   </View>
                 </TouchableOpacity>
               )
             }}
-          />
-          )}
-      
+          />    
     </SafeAreaView>
 
   );
@@ -154,20 +164,23 @@ const EmergencyContacts = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.PrimaryLight,
+    paddingHorizontal:10
   },
   spinnerTextStyle: {
-    color: '#FFF'
+    color: GlobalColor.White
   },
   box: {
     flexDirection: 'row',
-    marginVertical: 10,
-    width: '90%',
+    marginTop: 10,
+    width: '100%',
     paddingVertical: 10,
     alignSelf: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
     backgroundColor: '#fff',
+    borderWidth:0.5,
+    borderColor:GlobalColor.Secondary,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -175,8 +188,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
-    elevation: 15,
+    elevation: 5,
   },
   iconBox: {
     width: '20%',

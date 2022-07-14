@@ -149,7 +149,7 @@ function CustomDrawer(props) {
               style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
-              label="Compensatino and Benifits"
+              label="Compensation and Benifits"
               onPress={() => navigation.navigate('CompensationBenifitsNav')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
