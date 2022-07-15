@@ -2,7 +2,6 @@ import { View, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-nativ
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React, { useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler';
-
 import ListEmptyComponent from '../../../components/reusable/ListEmptyComponent';
 import Text from '../../../components/reusable/Text';
 import { GlobalColor } from '../../../constants/Colors';

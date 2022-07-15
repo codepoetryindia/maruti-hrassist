@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,21 +12,30 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
-
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import { GlobalColor } from '../../constants/Colors';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { showErrorMessage } from '../../Utils/Utils';
 
 const SalarySlip = ({ navigation }) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [month, setMonth] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState('');
-    const [defaultDate, setDefaultDate] = useState('');
+    const [defaultDate, setDefaultDate] = useState('Select Month');
     const [loader, setLoader] = useState(false)
     const [table1Data, setTable1Data] = useState('')
     const [table2Data, setTable2Data] = useState('')
     const [table3Data, setTable3Data] = useState('')
     const [table4Data, setTable4Data] = useState('')
-    const [salaryType, setSalaryType = useState] = useState()
+    const [salaryType, setSalaryType = useState] = useState('')
     const { authContext, AppUserData } = useContext(AuthContext);
+    const [refresh, setrefresh] = useState(false);
+
+
+
 
     const GetMonth = () => {
         let token = AppUserData.token
@@ -34,11 +43,15 @@ const SalarySlip = ({ navigation }) => {
         let apiData = {
             EmplID: EmplID
         }
+        //set loader
         setLoader(true);
         ApiService.PostMethode('/GetSalaryMonth', apiData, token)
             .then(result => {
                 console.log('GetSalaryMonth', result);
-                setLoader(false);
+
+                // Stop Loader
+                stopLoader()
+
                 let responseData = result.Value
                 let defaultDate = result.Value[0].SHIS_YYMM_CODE
                 console.log('defaultDate', defaultDate);
@@ -48,18 +61,14 @@ const SalarySlip = ({ navigation }) => {
                 GetSalaryData(defaultDate)
             })
             .catch(error => {
-                setLoader(false);
+
+                // Stop Loader
+                stopLoader()
+
                 // console.log('Error occurred==>', error);
-                if (error.response) {
-                    if (error.response.status == 401) {
-                        console.log('error from api', error.response);
-                    }
-                    Toast.show(error.response.data.title);
-                } else if (error) {
-                    Toast.show('Network Error');
-                } else {
-                    Toast.show('Something Went Wrong');
-                }
+
+                //Show Error Massage
+                showErrorMessage(error)
             });
     };
 
@@ -72,27 +81,27 @@ const SalarySlip = ({ navigation }) => {
             "EmplID": EmplID,
         }
         console.log("SalaryMonth", apiData)
+        //set Loader
         setLoader(true);
         ApiService.PostMethode('/GetSalaryType', apiData, token)
             .then(result => {
-                setLoader(false);
+
+                // Stop Loader
+                stopLoader()
+
                 console.log('GetSalaryType', result);
                 let responseData = result.Value
                 setSalaryType(responseData)
             })
             .catch(error => {
-                setLoader(false);
+
+                // Stop Loader
+                stopLoader()
+
                 // console.log('Error occurred==>', error);
-                if (error.response) {
-                    if (error.response.status == 401) {
-                        console.log('error from api', error.response);
-                    }
-                    Toast.show(error.response.data.title);
-                } else if (error) {
-                    Toast.show('Network Error');
-                } else {
-                    Toast.show('Something Went Wrong');
-                }
+
+                //Show Error Massage
+                showErrorMessage(error)
             });
     };
     const GetSalaryData = (data) => {
@@ -105,10 +114,14 @@ const SalarySlip = ({ navigation }) => {
 
         }
         console.log("GetSalaryData", apiData)
+
+        //set Loader
         setLoader(true);
+
         ApiService.PostMethode('/GetSalaryData', apiData, token)
             .then(result => {
-                setLoader(false);
+                // Stop Loader
+                stopLoader()
                 let responseData = result.Value.Table1
                 let responseData2 = result.Value.Table2
                 let responseData3 = result.Value.Table3
@@ -122,18 +135,12 @@ const SalarySlip = ({ navigation }) => {
                 console.log('GetSalaryData4', responseData4,);
             })
             .catch(error => {
-                setLoader(false);
+                // Stop Loader
+                stopLoader()
                 // console.log('Error occurred==>', error);
-                if (error.response) {
-                    if (error.response.status == 401) {
-                        console.log('error from api', error.response);
-                    }
-                    Toast.show(error.response.data.title);
-                } else if (error) {
-                    Toast.show('Network Error');
-                } else {
-                    Toast.show('Something Went Wrong');
-                }
+
+                //Show Error Massage
+                showErrorMessage(error)
             });
     };
 
@@ -147,18 +154,40 @@ const SalarySlip = ({ navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+
+
+
+    const stopLoader = () => {
+        setLoader(false);
+        setrefresh(false);
+    }
+
+    if (loader) {
+        return (
+            <SafeAreaView style={styles.containerLoading}>
+                 <Header title="Salary Slip" />
+                <LoadingScreen />
+            </SafeAreaView>
+        )
+    }
+
+
+
     return (
 
-        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-            {loader == true ? (
+        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
+            {/* {loader == true ? (
                 <Spinner
                     visible={loader}
                     textContent={'Loading...'}
                     textStyle={styles.spinnerTextStyle}
                 />
-            ) : null}
+            ) : null} */}
 
-            <LinearGradient
+
+            <Header title="Salary Slip" />
+
+            {/* <LinearGradient
                 colors={['#4174D0', '#6ef7ff']}
                 style={styles.gradient}>
                 <View style={styles.container}>
@@ -194,201 +223,212 @@ const SalarySlip = ({ navigation }) => {
                         Salary Slip
                     </Text>
                 </View>
-            </LinearGradient>
+            </LinearGradient> */}
 
-            <TouchableOpacity
-                style={styles.Salary}
-                onPress={() => {
-                    // GetSalaryTypeApi()
-                    toggleModal()
-                    console.log(month)
-                }}>
-                <View
-                    style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: 10,
+            <View style={{ paddingHorizontal: 10 }}>
+
+                <TouchableOpacity
+                    style={styles.Salary}
+                    onPress={() => {
+                        // GetSalaryTypeApi()
+                        toggleModal()
+                        console.log(month)
                     }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                        {defaultDate}
-                    </Text>
-                    <Feather name="corner-up-right" size={20} />
-                </View>
-            </TouchableOpacity>
+                    <View
+                        style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingHorizontal: 10,
+                        }}>
+                        <Text >
+                            {defaultDate}
+                        </Text>
+                        <Feather name="corner-up-right" size={20} />
+                    </View>
+                </TouchableOpacity>
 
-            {/* salary month modal */}
+                {/* salary month modal */}
 
-            <Modal
-                backdropOpacity={0.1}
-                coverScreen={true}
-                isVisible={isModalVisible}>
-                <View style={styles.modal}>
-                    <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                        <Feather
-                            name="x-circle"
-                            color={'#000'}
-                            size={20}
-                            onPress={toggleModal}
-                            style={{ margin: 10 }}
+                <Modal
+                    backdropOpacity={0.1}
+                    coverScreen={true}
+                    isVisible={isModalVisible}>
+                    <View style={styles.modal}>
+                        <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                            <Feather
+                                name="x-circle"
+                                color={GlobalColor.Black}
+                                size={20}
+                                onPress={toggleModal}
+                                style={{ margin: 10 }}
+                            />
+                        </TouchableOpacity>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={month}
+                            ListEmptyComponent={() => {
+                                return (
+                                    <ListEmptyComponent title="No Data Found"
+                                    // enableRefresh={true}
+                                    // onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh}
+                                    ></ListEmptyComponent>
+                                )
+                            }}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        console.log(item.SHIS_YYMM_CODE)
+                                        setDefaultDate(item.SHIS_YYMM_CODE)
+                                        GetSalaryTypeApi(item.SHIS_YYMM_CODE)
+                                        GetSalaryData(item.SHIS_YYMM_CODE)
+                                        toggleModal()
+                                    }}
+                                    style={styles.textContainer}>
+                                    <Text style={{alignSelf:"center",paddingVertical:7,color:"#000"}}>{item.SHIS_YYMM_CODE}</Text>
+                                </TouchableOpacity>
+                            )}
                         />
-                    </TouchableOpacity>
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        data={month}
-                        ListEmptyComponent={() => {
-                            return (
-                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image source={require('../../assets/Images/dataNotFound.png')}
-                                        style={{ width: 300, height: 300, resizeMode: 'contain', }} />
-                                    <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-                                </View>
-                            )
-                        }}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    console.log(item.SHIS_YYMM_CODE)
-                                    setDefaultDate(item.SHIS_YYMM_CODE)
-                                    GetSalaryTypeApi(item.SHIS_YYMM_CODE)
-                                    GetSalaryData(item.SHIS_YYMM_CODE)
-                                    toggleModal()
-                                }}
-                                style={styles.textContainer}>
-                                <Text>{item.SHIS_YYMM_CODE}</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
-                </View>
-            </Modal>
-            <TouchableOpacity
-                style={styles.Salary}>
-                <View
-                    style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: 10,
-                    }}>
-                    {salaryType && salaryType.map((item) => {
-                        return (
-                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                                {item.PYDT_DESCRIPTION}
+                    </View>
+                </Modal>
+                <TouchableOpacity
+                    style={styles.Salary}>
+                    <View
+                        style={{
+                            width: '100%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            paddingHorizontal: 10,
+                        }}>
+                        {salaryType == '' ? (
+                            <Text >
+                                Select Type
                             </Text>
-                        )
-                    })}
-                    <Feather name="corner-up-right" size={20} />
-                </View>
-            </TouchableOpacity>
+                        ) : (
 
-            <ScrollView>
-                {/* Table */}
-                <View style={[styles.Table,{alignSelf:'center'}]}>
-                    <View style={styles.tableRow}>
-                        <Text>Pay Element</Text>
+                            salaryType && salaryType.map((item) => {
+                                return (
+                                    <Text >
+                                        {item.PYDT_DESCRIPTION}
+                                    </Text>
+                                )
+                            })
+
+                        )}
+                        <Feather name="corner-up-right" size={20} />
                     </View>
-                    <View style={styles.tableRow}>
-                        <Text>Earnings</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                        <Text>Deduction</Text>
-                    </View>
-                    <View style={styles.tableRow}>
-                        <Text>Remarks</Text>
-                    </View>
+                </TouchableOpacity>
+
+                <ScrollView>
+                    {/* Table */}
+                    <View style={[styles.Table, { alignSelf: 'center' }]}>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Pay Element</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Earnings</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Deduction</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Remarks</Text>
+                        </View>
 
 
-                </View>
-                {table1Data.length > 0 ? (
-                    <FlatList
-                        data={table1Data}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <View style={styles.Table}>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.MDESC}</Text>
+                    </View>
+                    {table1Data.length > 0 ? (
+                        <FlatList
+                            data={table1Data}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.Table}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.MDESC}</Text>
+                                        </View>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
+                                        </View>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
+                                        </View>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.SHIS_REMARKS}</Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.EARNING}</Text>
-                                    </View>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.DED}</Text>
-                                    </View>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.SHIS_REMARKS}</Text>
-                                    </View>
-                                </View>
-                            )
-                        }} />
-                ) : null}
+                                )
+                            }} />
+                    ) : null}
 
-                <View style={[styles.Table,{}]}>
-                    <View style={styles.tableRow}>
-                        <Text>Earnings</Text>
+                    <View style={[styles.Table, {}]}>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Earnings</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Deduction</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text Bold>Total</Text>
+                        </View>
                     </View>
-                    <View style={styles.tableRow}>
-                        <Text>Deduction</Text>
+                    {table4Data.length > 0 ? (
+                        <FlatList
+                            data={table4Data}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={[styles.Table, { alignSelf: 'center', }]}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
+                                        </View>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
+                                        </View>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.NET}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            }} />
+                    ) : null}
+                    <View style={styles.Table}>
+                        
+                        <Text Bold>General Message</Text>
                     </View>
-                    <View style={styles.tableRow}>
-                        <Text>Total</Text>
+                    {table2Data.length > 0 ? (
+                        <FlatList
+                            data={table2Data}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                        <Text style={{ color: GlobalColor.Black }}>{item.GLMS_MESSAGES}</Text>
+
+                                    </View>
+                                )
+                            }} />
+                    ) : null}
+                    <View style={styles.Table}>
+                        <Text Bold>Employee Message</Text>
                     </View>
-                </View>
-                {table4Data.length > 0 ? (
-                    <FlatList
-                        data={table4Data}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <View style={[styles.Table,{alignSelf:'center',}]}>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.EARNING}</Text>
+                    {table3Data.length > 0 ? (
+                        <FlatList
+                            data={table3Data}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => {
+
+                                return (
+                                    <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                        <Text style={{ color: GlobalColor.Black }}>{item.EXMS_MESSAGES}</Text>
+
                                     </View>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.DED}</Text>
-                                    </View>
-                                    <View style={styles.tableRow}>
-                                        <Text>{item.NET}</Text>
-                                    </View>
-                                </View>
-                            )
-                        }} />
-                ) : null}
-                <View style={{alignItems:'flex-start',margin:15,}}>
-                    <Text>General Message</Text>
-                </View>
-                {table2Data.length > 0 ? (
-                    <FlatList
-                        data={table2Data}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                    <Text>{item.GLMS_MESSAGES}</Text>
-                                   
-                                </View>
-                            )
-                        }} />
-                ) : null}
-                <View style={styles.Table}>
-                    <Text>Employee Message</Text>
-                </View>
-                {table3Data.length > 0 ? (
-                    <FlatList
-                        data={table3Data}
-                        keyExtractor={({ item, index }) => index}
-                        renderItem={({ item, index }) => {
-                           
-                            return (
-                                <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                    <Text style = {{color:'#000'}}>{item.EXMS_MESSAGES}</Text>
-                                   
-                                </View>
-                            )
-                        }} />
-                ) : null}
-            </ScrollView>
+                                )
+                            }} />
+                    ) : null}
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -398,17 +438,23 @@ const styles = StyleSheet.create({
     gradient: {
         padding: 20,
     },
+    containerLoading: {
+        flex: 1,
+        width: '100%', height: '100%',
+        backgroundColor: GlobalColor.PrimaryLight
+    },
     container: {
         flexDirection: 'row',
+
     },
     modal: {
         paddingVertical: 15,
         height: '100%',
         width: '100%',
         alignSelf: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: GlobalColor.White,
         borderRadius: 5,
-        shadowColor: '#000',
+        shadowColor: GlobalColor.Black,
         shadowOffset: {
             width: 0,
             height: 1,
@@ -421,39 +467,47 @@ const styles = StyleSheet.create({
     Salary: {
         top: 10,
         marginVertical: 10,
-        width: '90%',
-        backgroundColor: '#fff',
+        width: '100%',
+        backgroundColor: GlobalColor.White,
         alignSelf: 'center',
         padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: GlobalColor.Black,
         shadowOffset: {
-            width: 0,
-            height: 4,
+            width: -0,
+            height: 1,
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-
-        elevation: 8,
-        borderRadius: 8
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 5,
+        borderRadius: 5
     },
     textContainer: {
         width: '90%',
-        flexDirection: 'row',
+        paddong:5,
+        backgroundColor:GlobalColor.White,       
         alignSelf: 'center',
         justifyContent: 'space-between',
-        marginVertical: 8.5,
-        borderBottomWidth: 1,
-        borderBottomColor: '#4174D0'
+        marginVertical: 8.5,        
+        shadowColor: GlobalColor.Black,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 3.0,
+        elevation: 5,
+        borderRadius:3
     },
     Table: {
-        width: '90%',
+        width: '100%',
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent: 'space-evenly',
         padding: 5,
         borderBottomWidth: 0.5,
+        borderColor: GlobalColor.Secondary,
         marginTop: 30
     },
     tableRow: {
@@ -461,7 +515,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
-        alignSelf:'center'
+        alignSelf: 'center'
     }
 });
 
