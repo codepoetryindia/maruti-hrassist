@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-simple-toast'
@@ -12,6 +12,8 @@ import { Header } from '../../components/reusable/Header';
 import { GlobalColor } from '../../constants/Colors';
 import Button from '../../components/reusable/Button';
 import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import { showErrorMessage } from '../../Utils/Utils';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 
 const Plencashment = ({ navigation, route }) => {
 
@@ -22,7 +24,9 @@ const Plencashment = ({ navigation, route }) => {
   const [encashment, setEncashment] = useState([]);
   const [lta, setLta] = useState([]);
   const [ltaReport, setLtaReport] = useState([]);
-  const [encashDays, setEncashDays] = useState('')
+  const [encashDays, setEncashDays] = useState('');
+  const [refresh, setrefresh] = useState(false);
+  // const [refresh, setrefresh] = useState(false);
 
   const InitPLEncashmenApi = () => {
     let token = AppUserData.token
@@ -30,39 +34,38 @@ const Plencashment = ({ navigation, route }) => {
     let apidata = {
       "UserName": userId
     }
+
+    //set Loader
     setLoader(true);
+
     ApiService.PostMethode('/initPLEncashment', apidata, token)
       .then(result => {
-        setLoader(false);
+
+        // Stop Loader
+        stopLoader()
+
         let ApiValue = result.Value
         console.log("setEncashment", ApiValue);
         {
           ApiValue.map((item) => {
             return setEncashment(item)
-
           })
         }
         // setEncashment(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
+
+        // Stop Loader
+        stopLoader()
+
+        // console.log('Error occurred==>', error);
+
+        //Show Error Massage
+        showErrorMessage(error)
       });
   };
+
+
   const SubmitPLEncashmentApi = () => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
@@ -70,35 +73,30 @@ const Plencashment = ({ navigation, route }) => {
       UserName: userId,
       Encashdays: encashDays
     }
-    console.log("SubmitPLEncashmentApiapidata", apidata);
+    // console.log("SubmitPLEncashmentApiapidata", apidata);
     setLoader(true);
     ApiService.PostMethode('/SubmitPLEncashment', apidata, token)
       .then(result => {
-        console.log("SubmitPLEncashmentApi", result);
-        setLoader(false);
+        // console.log("SubmitPLEncashmentApi", result);
+
+        // Stop Loader
+        stopLoader()
         alert(result.Result)
+        // createTwoButtonAlert(result.Result)
 
         // setResult(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
+        // Stop Loader
+        stopLoader()
+
+        // console.log('Error occurred==>', error);
+
+        //Show Error Massage
+        showErrorMessage(error)
       });
   };
+
 
   //   LTA ENCASHMENT API 
 
@@ -108,31 +106,26 @@ const Plencashment = ({ navigation, route }) => {
     let apidata = {
       "UserName": userId
     }
+    //Set Loader
     setLoader(true);
     ApiService.PostMethode('/InitMEDEncashment', apidata, token)
       .then(result => {
-        setLoader(false);
-        console.log("InitMEDEncashment", ApiValue);
+
+        // Stop Loader
+        stopLoader()
+        // console.log("InitMEDEncashment", ApiValue);
         let ApiValue = result.Value
         setLta(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
+
+        // Stop Loader
+        stopLoader()
+
+        // console.log('Error occurred==>', error);
+
+        //Show Error Massage
+        showErrorMessage(error)
       });
   };
   const ReportLTC = () => {
@@ -141,73 +134,106 @@ const Plencashment = ({ navigation, route }) => {
     let apidata = {
       "StaffNo": userId
     }
+    //set error
     setLoader(true);
+
     ApiService.PostMethode('/ReportLTC', apidata, token)
       .then(result => {
-        console.log("ReportLTC", result);
-        setLoader(false);
+        // console.log("ReportLTC", result);
+
+        // Stop Loader
+        stopLoader()
         let ApiValue = result.Value
         setLtaReport(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
+
+        // Stop Loader
+        stopLoader()
+
+        // console.log('Error occurred==>', error);
+
+
+        //Show Error Massage
+        showErrorMessage(error)
       });
   };
+
+  const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Payroll",
+      "Are You Sure want to",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => {console.log("OK Pressed") }}
+      ]
+    );
+
+
+  const AlertOccurred = (title, body, btnTxt) => {
+    Alert.alert(title, body, [
+      {
+        text: btnTxt,
+        onPress: () => {
+          console.log(title);
+        },
+      },
+    ]);
+  };
+
+
+
+
+
   const SubmitMEDEncashmentApi = () => {
     let token = AppUserData.token
     let userId = AppUserData.data.userId
     let apidata = {
       "UserName": userId
     }
-    setLoader(true);
+    //set Loader
+
+    // setLoader(false);
+
+    // createTwoButtonAlert();
+
     ApiService.PostMethode('/SubmitMEDEncashment', apidata, token)
       .then(result => {
-        console.log("SubmitMEDEncashment", result);
-        setLoader(false);
+        // console.log("SubmitMEDEncashment", result);
+
+        // Stop Loader
+        stopLoader()
+
+
         let ApiValue = result.Result
         alert(ApiValue)
+        createTwoButtonAlert(ApiValue)
       })
       .catch(error => {
-        setLoader(false);
+        // Stop Loader
+        stopLoader()
         console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
+
+        //Show Error Massage
+        showErrorMessage(error)
       });
   };
 
   const encashmentData = () => {
     console.log("kusckgvdskdfdykudf", encashDays)
     if (encashDays == '') {
-      alert("Please enter days")
+      AlertOccurred('Payroll',"Please enter days",'ok')
       return
     }
+    if (encashDays == 0) {
+      AlertOccurred('Payroll', 'Please enter greater then zero', 'ok');
+    }
+
+
     else {
       SubmitPLEncashmentApi()
       setEncashDays('')
@@ -219,12 +245,18 @@ const Plencashment = ({ navigation, route }) => {
     ReportLTC()
   }, [])
 
-  if(loader){
-    return(
-      <SafeAreaView style={styles.container}>     
-        <LoadingScreen/>
+  if (loader) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Header title={pageName} />
+        <LoadingScreen />
       </SafeAreaView>
     )
+  }
+
+  const stopLoader = () => {
+    setLoader(false);
+    setrefresh(false);
   }
 
 
@@ -241,7 +273,7 @@ const Plencashment = ({ navigation, route }) => {
 
       <ScrollView style={styles.container}>
 
-        <Header title="PL Encashment" />
+        <Header title={pageName} />
 
         {/* <LinearGradient
           style={{ padding: 20 }}
@@ -290,8 +322,8 @@ const Plencashment = ({ navigation, route }) => {
                 justifyContent: 'center',
                 marginTop: 30,
                 paddingVertical: 10,
-                backgroundColor: '#fff',
-                shadowColor: '#000',
+                backgroundColor: GlobalColor.White,
+                shadowColor: GlobalColor.Black,
                 shadowOffset: {
                   width: -0,
                   height: 1,
@@ -316,7 +348,7 @@ const Plencashment = ({ navigation, route }) => {
                 </View>
                 <View style={styles.box}>
                   <Text>Encash</Text>
-                  <TextInput style={{ width: 50, borderBottomWidth: 1, fontWeight: 'bold' }}
+                  <TextInput style={{ width: 50, borderBottomWidth: 1, fontWeight: 'bold',textAlign:"right" }}
                     keyboardType={'numeric'} onChangeText={(text) => { setEncashDays(text) }} value={encashDays} />
                 </View>
               </View>
@@ -350,39 +382,41 @@ const Plencashment = ({ navigation, route }) => {
             </View>
           ) : <View>
             <View style={{
-              width: '100%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              marginTop: 30,
-              paddingVertical: 10,
-              borderRadius: 8,
-              backgroundColor: '#fff',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: -0,
-                height: 1,
-              },
-              shadowOpacity: 0.22,
-              shadowRadius: 2.22,
-              elevation: 5,
-              borderRadius: 5,
-              marginBottom: 10
+              // width: '100%',
+              // alignSelf: 'center',
+              // justifyContent: 'center',
+              // marginTop: 30,
+              // paddingVertical: 10,
+              // borderRadius: 8,
+              // backgroundColor: GlobalColor.White,
+              // shadowColor:GlobalColor.Black,
+              // shadowOffset: {
+              //   width: -0,
+              //   height: 1,
+              // },
+              // shadowOpacity: 0.22,
+              // shadowRadius: 2.22,
+              // elevation: 5,
+              // borderRadius: 5,
+              // marginBottom: 10
             }}>
 
               {lta.length > 0 ? (
                 <View>
                   {lta && lta.map((item) => {
                     return (
-                      <View>
-                        <View style={styles.box}>
+                      <>
+
+                        <View style={[styles.reportHeader, { marginTop: 15 }]}>
                           <Text>Financial Year</Text>
                           <Text Bold>{item.MENT_FNYR_YEAR}</Text>
                         </View>
-                        <View style={styles.box}>
+                        <View style={[styles.reportHeader, { marginTop: 0 }]}>
                           <Text>Staff No</Text>
                           <Text Bold>{item.MENT_EMPL_ID}</Text>
                         </View>
-                      </View>
+                      </>
+
                     )
                   })}
                 </View>
@@ -441,7 +475,17 @@ const Plencashment = ({ navigation, route }) => {
 
                   {ltaReport && ltaReport.map((item) => {
                     return (
-                      <TouchableOpacity style={[styles.reportHeader, { borderWidth: 0, borderBottomWidth: 0.5 }]}>
+                      <TouchableOpacity style={[styles.reportHeader, {
+                        borderWidth: 0, borderBottomWidth: 0, shadowColor: GlobalColor.Black,
+                        shadowOffset: {
+                          width: -0,
+                          height: 1,
+                        },
+                        shadowOpacity: 0.22,
+                        shadowRadius: 2.22,
+                        elevation: 5,
+                        borderRadius: 3
+                      }]}>
                         <Text>{item.LTCF_FAML_NAME}</Text>
                         <Text>{item.LTCF_YEARS}</Text>
                         <Text>{item.RLTY_DESC}</Text>
@@ -450,9 +494,11 @@ const Plencashment = ({ navigation, route }) => {
                   })}
                 </View>
               ) : (
-                <View style={{ width: '90%', marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
-                  <Text>Not Data Found</Text>
-                </View>
+                <ListEmptyComponent title="No Data Found"
+                ></ListEmptyComponent>
+                // <View style={{ width: '90%', marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
+                //   <Text>Not Data Found</Text>
+                // </View>
               )
             }
 
@@ -478,9 +524,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
-    
-    borderBottomWidth: 0.5,
-    borderColor:GlobalColor.PrimaryGradient,
+
+    borderWidth: 0,
+    borderColor: GlobalColor.PrimaryGradient,
   },
   spinnerTextStyle: {
     color: '#FFF'
@@ -492,10 +538,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     marginVertical: 10,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor:GlobalColor.Secondary,
-    borderRadius:4,
+    backgroundColor: GlobalColor.White,
+    borderBottomWidth: 0,
+    borderColor: GlobalColor.Secondary,
+    shadowColor: GlobalColor.Black,
+    shadowOffset: {
+      width: -0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 5,
+    borderRadius: 3
   },
   reportData: {
 

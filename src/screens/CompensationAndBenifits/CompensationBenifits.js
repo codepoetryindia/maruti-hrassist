@@ -1,9 +1,9 @@
 //import liraries
-import React, {useState, useEffect} from 'react';
-import {View,  StyleSheet, useWindowDimensions, SafeAreaView} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, useWindowDimensions, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Payroll from './Payroll';
 import Benifits from './Benifits';
 import TouchID from 'react-native-touch-id';
@@ -19,7 +19,7 @@ const SecondRoute = () => <Benifits />;
 
 const Tab = createMaterialTopTabNavigator();
 
-const CompensationBenifits = ({navigation}) => {
+const CompensationBenifits = ({ navigation }) => {
   const [isAuth, setIsAuth] = useState();
   const optionalConfigObject = {
     title: 'Authentication Required', // Android
@@ -35,7 +35,7 @@ const CompensationBenifits = ({navigation}) => {
   useEffect(() => {
     handelBiometric();
   }, []);
-  
+
   const handelBiometric = () => {
     TouchID.isSupported(optionalConfigObject)
       .then(biometryType => {
@@ -48,7 +48,7 @@ const CompensationBenifits = ({navigation}) => {
             .then(success => {
               console.log('Authenticated Successfully', success);
               setIsAuth(true);
-              console.log('state data',isAuth)
+              console.log('state data', isAuth)
             })
             .catch(error => {
               navigation.goBack();
@@ -78,19 +78,19 @@ const CompensationBenifits = ({navigation}) => {
   return (
 
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-    <Header title="Compensation and Benefits" />
-    <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: {  },
-        tabBarActiveTintColor: GlobalColor.White,
-        tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: GlobalColor.White },
-        tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
-        tabBarItemStyle:{ paddingHorizontal:0}
-      }}>
-      <Tab.Screen name="Payroll" component={Payroll} />
-      <Tab.Screen name="Benifits" component={Benifits} />
+      <Header title="Compensation and Benefits" />
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: {},
+          tabBarActiveTintColor: GlobalColor.White,
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: GlobalColor.White },
+          tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
+          tabBarItemStyle: { paddingHorizontal: 0 }
+        }}>
+        <Tab.Screen name="Payroll" component={Payroll} />
+        <Tab.Screen name="Benifits" component={Benifits} />
       </Tab.Navigator>
-  </SafeAreaView>
+    </SafeAreaView>
 
 
 
@@ -105,90 +105,90 @@ const CompensationBenifits = ({navigation}) => {
 
 
 
-//     <SafeAreaView style={{flexGrow:1}}>
-//     <View style={{flex:1}}>
-//       {/* {isAuth == true ? (  */}
-      
-//       <View style={{flex:1}}>
-//         <View style={{flex: 1, width: '100%', height: '100%' ,}}>
+    //     <SafeAreaView style={{flexGrow:1}}>
+    //     <View style={{flex:1}}>
+    //       {/* {isAuth == true ? (  */}
 
-//         <Header title={"Compensation and Benefits"} back/>
-//           {/* <LinearGradient
-//           colors={['#4174D0','#5dc0e9']}
-//             style={styles.gradient}>
-//             <View style={styles.container}>
-//               <View
-//                 style={{
-//                   flexDirection: 'row',
-//                   justifyContent: 'space-between',
-//                   width: 40,
-//                   alignItems: 'center',
-//                 }}>
-//                 <Ionicons
-//                   name="chevron-back-outline"
-//                   size={25}
-//                   color={'white'}
-//                   onPress={() => navigation.goBack()}
-//                 />
-//                 <Ionicons
-//                   name="menu-outline"
-//                   size={25}
-//                   color={'white'}
-//                   onPress={() => navigation.openDrawer()}
-//                 />
-//               </View>
+    //       <View style={{flex:1}}>
+    //         <View style={{flex: 1, width: '100%', height: '100%' ,}}>
 
-//               <Text
-//                 style={{
-//                   color: '#fff',
-//                   fontSize: 16,
-//                   letterSpacing: 1,
-//                   marginLeft: 30,
-//                 }}>
-//                 Compensation And Benifits
-//               </Text>
-//             </View>
-//           </LinearGradient> */}
+    //         <Header title={"Compensation and Benefits"} back/>
+    //           {/* <LinearGradient
+    //           colors={['#4174D0','#5dc0e9']}
+    //             style={styles.gradient}>
+    //             <View style={styles.container}>
+    //               <View
+    //                 style={{
+    //                   flexDirection: 'row',
+    //                   justifyContent: 'space-between',
+    //                   width: 40,
+    //                   alignItems: 'center',
+    //                 }}>
+    //                 <Ionicons
+    //                   name="chevron-back-outline"
+    //                   size={25}
+    //                   color={'white'}
+    //                   onPress={() => navigation.goBack()}
+    //                 />
+    //                 <Ionicons
+    //                   name="menu-outline"
+    //                   size={25}
+    //                   color={'white'}
+    //                   onPress={() => navigation.openDrawer()}
+    //                 />
+    //               </View>
 
-
-
-//           <TabView
-//             renderTabBar={props => {
-//               return (
-//                 <LinearGradient
-//               colors={[GlobalColor.Secondary, GlobalColor.Secondary]}
-//               style={{ marginTop: -1, zIndex: -1 }}>
-//                   <TabBar
-//                     {...props}
-//                     // style={{backgroundColor: 'transparent', elevation: 0}}
-//                   />
-//                 </LinearGradient>
-//               );
-//             }}
-//             navigationState={{index, routes}}
-//             renderScene={renderScene}
-//             onIndexChange={setIndex}
-//             initialLayout={{width: layout.width}}
-//           />
-//         </View>
-//       </View>        
-//       {/* ) : ( */}
-
-
-// {/* 
-//         <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
-//             <Text>Please Run in a real device </Text>
-//             <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
-//               <Text>Go Back</Text>
-//             </TouchableOpacity>
-//         </View> */}
+    //               <Text
+    //                 style={{
+    //                   color: '#fff',
+    //                   fontSize: 16,
+    //                   letterSpacing: 1,
+    //                   marginLeft: 30,
+    //                 }}>
+    //                 Compensation And Benifits
+    //               </Text>
+    //             </View>
+    //           </LinearGradient> */}
 
 
 
-//       {/* )      
-//       } */}
-//     </View>
-//     </SafeAreaView>
+    //           <TabView
+    //             renderTabBar={props => {
+    //               return (
+    //                 <LinearGradient
+    //               colors={[GlobalColor.Secondary, GlobalColor.Secondary]}
+    //               style={{ marginTop: -1, zIndex: -1 }}>
+    //                   <TabBar
+    //                     {...props}
+    //                     // style={{backgroundColor: 'transparent', elevation: 0}}
+    //                   />
+    //                 </LinearGradient>
+    //               );
+    //             }}
+    //             navigationState={{index, routes}}
+    //             renderScene={renderScene}
+    //             onIndexChange={setIndex}
+    //             initialLayout={{width: layout.width}}
+    //           />
+    //         </View>
+    //       </View>        
+    //       {/* ) : ( */}
+
+
+    // {/* 
+    //         <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
+    //             <Text>Please Run in a real device </Text>
+    //             <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
+    //               <Text>Go Back</Text>
+    //             </TouchableOpacity>
+    //         </View> */}
+
+
+
+    //       {/* )      
+    //       } */}
+    //     </View>
+    //     </SafeAreaView>
   );
 };
 
