@@ -2,7 +2,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   FlatList,
@@ -23,6 +22,13 @@ import Toast from 'react-native-simple-toast'
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useFocusEffect } from '@react-navigation/native';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
+import TextInput2 from '../../components/reusable/TextInput';
+import Button from './../../components/reusable/Button';
+
+
 
 
 // create a component
@@ -48,9 +54,43 @@ const Shift = ({navigation}) => {
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader,setLoader] = useState(false)
   const [horizental, setHorizental] = useState(false);
-  const handleShift = index => {
-    setShift(index);
-  };
+
+
+
+
+
+
+    const LoadInitial= ()=>{
+      FlexiShiftElig()
+      GetEmplShift()
+      flexiShiftPlanLov()
+      CurrentShift()
+      FlexiShiftStartDateLOV()
+      RptShiftStatus()
+    }
+
+    // ENd
+  // useEffect(() => {
+  //   FlexiShiftElig()
+  //   GetEmplShift()
+  //   flexiShiftPlanLov()
+  //   CurrentShift()
+  //   FlexiShiftStartDateLOV()
+  //   RptShiftStatus()
+  // }, [])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = LoadInitial();
+      return () => unsubscribe;
+    }, [])
+  )
+
+  
+    const handleShift = index => {
+      setShift(index);
+    };
+
 
 // SHIFT DETAILS API
   const GetEmplShift = () => {
@@ -127,6 +167,8 @@ const flexiShiftPlanLov = () => {
       }
     });
 }
+
+
 const CurrentShift = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
@@ -160,6 +202,9 @@ const CurrentShift = () => {
       }
     });
 }
+
+
+
 const SubmitFlexiShiftPlan = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
@@ -194,6 +239,8 @@ const SubmitFlexiShiftPlan = () => {
       }
     });
 }
+
+
 const RptShiftStatus = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
@@ -261,6 +308,8 @@ const FlexiShiftElig = () => {
       }
     });
 }
+
+
 const FlexiShiftStartDateLOV = () => {
   let userId = AppUserData.data.userId;
   let token = AppUserData.token;
@@ -307,22 +356,7 @@ const handleSubmit = () => {
     submitAlert('Warning', 'Are You Sure?', 'yes', 'No');
   }
 }
-// ENd
-  useEffect(() => {
-    FlexiShiftElig()
-    GetEmplShift()
-    flexiShiftPlanLov()
-    CurrentShift()
-    FlexiShiftStartDateLOV()
-    RptShiftStatus()
-  }, [])
 
-  //   useFocusEffect(
-  //   React.useCallback(() => {
-  //     const unsubscribe = PostBirthdayData();
-  //     return () => unsubscribe;
-  //   }, [])
-  // )
   
 
   const toggleModal = () => {
@@ -346,6 +380,8 @@ const handleSubmit = () => {
       },
     ]);
   };
+
+
   const rederReason = ({item}) => {
     return (
       <View
@@ -353,8 +389,8 @@ const handleSubmit = () => {
           padding: 10,
           margin: 2,
           borderBottomWidth: 1,
-          borderBottomColor: '#fff',
-          marginVertical: 10,
+          borderBottomColor: GlobalColor.Secondary,
+          paddingVertical:15
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -363,7 +399,7 @@ const handleSubmit = () => {
             setModalVisible(false);
             console.log('data', shiftName);
           }}>
-          <Text style={{color: '#fff', fontSize: 15, paddingHorizontal: 10}}>
+          <Text style={{ paddingHorizontal: 10}}>
             {item.SHIFT_DESCRIPTION}
           </Text>
         </TouchableOpacity>
@@ -371,8 +407,7 @@ const handleSubmit = () => {
     );
   };
 
-  return (
-   
+  return (   
     <SafeAreaView style={styles.container}>
        {loader == true ? (
           <Spinner
@@ -381,8 +416,9 @@ const handleSubmit = () => {
             textStyle={styles.spinnerTextStyle}
           />
         ) : null}
-      <View style={{width: '95%', alignSelf: 'center'}}>
-          <TouchableOpacity
+
+        <View style={{paddingHorizontal:10}}>
+          {/* <TouchableOpacity
             style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -392,10 +428,7 @@ const handleSubmit = () => {
               size={25}
               color={'#00B4DB'}
             />
-          </TouchableOpacity>
-
-          
-
+          </TouchableOpacity>        
           {horizental == true ? (
             <View
               style={{
@@ -416,50 +449,35 @@ const handleSubmit = () => {
                 </TouchableOpacity>
                
             </View>
-          ) : null}
+          ) : null} */}
 
 
         <SegmentedControlTab
-          borderRadius={0}
-          values={['Shift Details', 'Flexi Shift']}
-          selectedIndex={Shift}
-          onTabPress={index => {
-            handleShift(index);
-          }}
-          tabsContainerStyle={styles.tabsContainerStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-      </View>
+            borderRadius={0}
+            values={['Shift Details', 'Flexi Shift']}
+            selectedIndex={Shift}
+            onTabPress={index => {
+              handleShift(index);
+            }}
+            tabsContainerStyle={styles.tabsContainerStyle}
+            tabStyle={styles.tabStyle}
+            tabTextStyle={styles.tabTextStyle}
+            activeTabStyle={styles.activeTabStyle}
+            activeTabTextStyle={styles.activeTabTextStyle}
+          />
+        </View>
 
       {Shift == 0 ? (
-        <ScrollView style={{ flex:1, paddingHorizontal:10 }}> 
-          <Text style={{paddingTop: 10, paddingHorizontal: 0, fontSize:16, fontWeight:'700'}}>
+        <ScrollView 
+          style={{ paddingHorizontal:10 }} 
+          contentContainerStyle={{ flex:1 }}> 
+          <Text style={{paddingVertical: 10, paddingHorizontal: 0, fontSize:16, fontWeight:'700'}}>
             Select Date
           </Text>
+
+
           <View
-            style={{
-              width: '100%',
-              alignSelf: 'center',
-              borderWidth: 1,
-              borderColor: '#fff',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexDirection: 'row',
-              padding: 10,
-              marginVertical: 8,
-              backgroundColor: '#fff',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}>
+            style={styles.inlineDatepicker}>
             <DatePicker
               modal
               open={open}
@@ -483,15 +501,14 @@ const handleSubmit = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <TextInput
+              <TextInput2
                 placeholder="From"
-                style={{color: '#000', letterSpacing: 1}}
+                style={{color: '#000'}}
                 editable={false}
-                paddingHorizontal={14}
                 value={textinputDate}
               />
               <TouchableOpacity onPress={() => setOpen(true)}>
-                <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
+                <Ionicons name="calendar-outline" size={30} color={GlobalColor.Secondary} />
               </TouchableOpacity>
             </View>
             <DatePicker
@@ -517,84 +534,70 @@ const handleSubmit = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <TextInput
-                style={{color: '#000', letterSpacing: 1}}
+              <TextInput2
+                style={{color: '#000'}}
                 placeholder="To"
                 editable={false}
-                paddingHorizontal={14}
                 value={textinputSecondDate}
               />
+    
+
               <TouchableOpacity onPress={() => setSecond(true)}>
-                <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
+                <Ionicons name="calendar-outline" size={30} color={GlobalColor.Secondary} />
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* Button */}
+          <View style={{  marginTop:10, width:"100%",alignSelf:'center' }}>
+            <Button
+              onPress={() => {
+                GetEmplShift()
+                }}
+                title={"Submit"}
+              ></Button>
+          </View>
 
-          <TouchableOpacity
-            onPress={() => {
-              GetEmplShift()
-             
-            } }>
-            <LinearGradient
-              style={{
-                padding: 20,
-                borderRadius: 8,
-                alignItems: 'center',
-                width: '100%',
-                alignSelf: 'center',
-              }}
-           colors={['#4174D0','#6ef7ff']}>
-              <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+
+
+
 
           {/* Show Data */}
           <DataTable
             style={{
               width: '100%',
-              paddingHorizontal:10,
               backgroundColor: '#fff',
-              marginVertical: 10,
-              
+              marginVertical: 10,              
             }}>
             <DataTable.Header style={{backgroundColor: '#fff'}}>
               <DataTable.Title>
-                <Text style={{color: 'gray', fontSize: 16}}>Date</Text>
+                <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Date</Text>
               </DataTable.Title>
                <DataTable.Title numeric>
-                <Text style={{color: 'gray', fontSize: 16}}>
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>
                   Time
                 </Text>
               </DataTable.Title>
               <DataTable.Title numeric>
-                <Text style={{color: 'gray', fontSize: 16}}>Shift</Text>
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Shift</Text>
               </DataTable.Title>
             </DataTable.Header>
+            
             <FlatList
               data={shiftData}
               keyExtractor={item => Math.floor((Math.random() * 1000) + 1)}
               renderItem={({item}) => (
                 <View style={styles.dataRow}>
-                <View style={{flexDirection:'column'}}>
-                <Text>{item.START_DATE}</Text>
-                <Text>To</Text>
-                  <Text>{item.END_DATE}</Text>
-                </View>
-                <View style={{flexDirection:'column'}}>
-
-                  <Text>{item.STD_START}</Text>
-                  <Text>To</Text>
-                  <Text>{item.STD_STOP}</Text>
-                </View>
-                  <Text>{item.SHIFT}</Text>
-                  {/* <DataTable.Row>
-                    <DataTable.Cell numeric>{item.START_DATE}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.END_DATE}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.STD_START},{item.STD_STOP}</DataTable.Cell>
-                    <DataTable.Cell numeric>{item.SHIFT}</DataTable.Cell>
-                  </DataTable.Row> */}
+                  <View style={{flexDirection:'column'}}>
+                      <Text>{item.START_DATE}</Text>
+                      <Text>To</Text>
+                      <Text>{item.END_DATE}</Text>
+                  </View>
+                  <View style={{flexDirection:'column'}}>
+                    <Text>{item.STD_START}</Text>
+                    <Text>To</Text>
+                    <Text>{item.STD_STOP}</Text>
+                  </View>                  
+                    <Text style={{ marginRight:10 }}>{item.SHIFT}</Text>
                 </View>
               )}
             />
@@ -602,32 +605,30 @@ const handleSubmit = () => {
         </ScrollView>
       ) : (
         <ScrollView style={{ flex:1, paddingHorizontal:10 }}>
-          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
+          <Text style={{paddingVertical: 15, paddingHorizontal: 0,}} Bold>
             Shift Name
           </Text>
           <View style={styles.box}>
-
-
             <TouchableOpacity
               onPress={toggleModal}
               style={{
                 flexDirection: 'row',
-                alignItems: 'baseline',
+                alignItems: 'center',
                 paddingHorizontal: 10,
+                paddingVertical:5,
                 justifyContent: 'space-between',
               }}>
              {/* {shiftName==''} */}
-             <Text>{shiftName !==''? shiftName :(<Text> Select Shift</Text>)}</Text>
-              <Ionicons name="arrow-forward-outline" color={'#23d'} size={20} />
-              <Modal isVisible={isModalVisible}>
-                <View>
-                  <LinearGradient
-                 colors={['#4174D0','#6ef7ff']}
+             <Text Bold>{shiftName !==''? shiftName :(<Text Bold> Select Shift</Text>)}</Text>
+              <Ionicons name="arrow-forward-outline" color={'#23d'} size={25} />
+              <Modal isVisible={!isModalVisible}>
+                <View
                     style={{
                       height: '100%',
-                      backgroundColor: 'red',
+                      backgroundColor: GlobalColor.White,
                       borderRadius: 0,
-                    }}>
+                    }}
+                  >
                     <View
                       style={{
                         flexDirection: 'row',
@@ -637,18 +638,19 @@ const handleSubmit = () => {
                         paddingVertical: 5,
                       }}>
                       <Text
+                        Bold
                         style={{
-                          color: '#fff',
-                          fontSize: 18,
-                          letterSpacing: 1,
+                          color: GlobalColor.Primary,
+                          fontSize: GlobalFontSize.H4,
                         }}>
                         Select Shift
                       </Text>
+
                       <TouchableOpacity onPress={toggleModal}>
                         <Ionicons
                           name="close-circle-outline"
                           size={30}
-                          color={'#fff'}
+                          color={GlobalColor.Danger}
                         />
                       </TouchableOpacity>
                     </View>
@@ -657,15 +659,16 @@ const handleSubmit = () => {
                       keyExtractor={item => item.id}
                       renderItem={rederReason}
                     />
-                  </LinearGradient>
                 </View>
               </Modal>
             </TouchableOpacity>
           </View>
 
-          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
+
+          <Text Bold style={{paddingVertical: 15, paddingHorizontal: 0}}>
             Applicable Date
           </Text>
+
           <DatePicker
             modal
             open={openThird}
@@ -682,53 +685,48 @@ const handleSubmit = () => {
               setOpenThird(false);
             }}
           />
+
           <View style={styles.inputBox}>
-            <TextInput
+            <TextInput2
               placeholder="Select Date"
               width={'90%'}
               editable={false}
-              paddingHorizontal={14}
+              paddingHorizontal={10}
               value={choseDate}
             />
             <TouchableOpacity onPress={() => setOpenThird(true)}>
-              <Ionicons name="calendar-outline" size={30} color={'#6ef7ff'} />
+              <Ionicons name="calendar-outline" size={30} color={GlobalColor.Secondary} />
             </TouchableOpacity>
           </View>
-          <Text style={{paddingVertical: 15, paddingHorizontal: 0, fontSize:16, fontWeight:'400'}}>
+
+
+
+          <Text Bold style={{paddingVertical: 15, paddingHorizontal: 0}}>
             Current Shift
           </Text>
-
           <View style={styles.inputBox}>
-            <TextInput
+            <TextInput2
               value={currentShift}
               width={'80%'}
               editable={false}
-              paddingHorizontal={14}
+              paddingHorizontal={10}
             />
           </View>
           {/* Button */}
           
           {
             flexiShiftElig==='N' ? (
-          <TouchableOpacity onPress={() => {
-            handleSubmit()
-
-          }}>
-            <LinearGradient
-              style={{
-                width: '100%',
-                alignSelf: 'center',
-                padding: 15,
-                borderRadius: 8,
-                alignItems: 'center',
-                marginVertical: '5%',
-              }}
-           colors={['#4174D0','#6ef7ff']}>
-              <Text style={{fontSize: 16, color: '#fff'}}>SUBMIT</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              <View style={{  marginTop:10, width:"100%",alignSelf:'center' }}>
+                <Button
+                  onPress={() => {
+                    handleSubmit()
+                  }}
+                  title={"Submit"}
+                ></Button>
+            </View>
             ):null
           }
+
 
           {/* Report */}
           <Text style={{textAlign: 'center',marginTop:10}}>Report</Text>
@@ -738,21 +736,22 @@ const handleSubmit = () => {
               width: '100%',
               backgroundColor: '#fff',
               marginVertical: 10,
-              marginBottom: '20%',
             }}>
-            <DataTable.Header style={{backgroundColor: '#f8eded'}}>
+            <DataTable.Header style={{backgroundColor: GlobalColor.White}}>
               <DataTable.Title>
-                <Text style={{color: 'gray', fontSize: 16}}>Shift</Text>
+                <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Shift</Text>
               </DataTable.Title>
               <DataTable.Title numeric>
-                <Text style={{color: 'gray', fontSize: 16}}>
+                <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>
                   Applicable Date
                 </Text>
               </DataTable.Title>
               <DataTable.Title numeric>
-                <Text style={{color: 'gray', fontSize: 16}}>Status</Text>
+                <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Status</Text>
               </DataTable.Title>
             </DataTable.Header>
+
+
             <FlatList
               data={shiftStatus}
               keyExtractor={item => item.id}
@@ -762,8 +761,8 @@ const handleSubmit = () => {
                   backgroundColor: '#fff',
                   marginVertical: 10,
                   flexDirection:'row',
-                 justifyContent:'space-between',
-                 padding:10
+                  justifyContent:'space-between',
+                  padding:10
                 }}>
                   <Text>{item.SHFT_START_SHIFT}</Text>
                   <Text>{moment(item.SHFT_START_DATE).format('DD-MMM-YYYY')}</Text>
@@ -787,16 +786,14 @@ const handleSubmit = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    alignSelf: 'center',
-    marginTop: 10,
+    backgroundColor:GlobalColor.PrimaryLight
   },
   box: {
     width: '100%',
     padding: 5,
     paddingVertical:10,
     backgroundColor: '#FFF',
-    alignSelf: 'center',
+    // alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -807,9 +804,29 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 0,
   },
+    inlineDatepicker:{
+      width: '100%',
+      alignSelf: 'center',
+      borderWidth: 1,
+      borderColor: '#fff',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      padding: 10,
+      marginVertical: 0,
+      backgroundColor: '#fff',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
   inputBox: {
     width: '100%',
-    alignSelf: 'center',
+    // alignSelf: 'center',
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -825,54 +842,60 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 0,
   },
+  tabsContainerStyle: {
+    marginTop: 10,
+    borderRadius:0,
+    width:'100%',
+  },
   tabStyle: {
-    //custom styles
     paddingVertical: 10,
-    borderColor: '#6ef7ff',
+    borderWidth: 1,
+    borderRadius:0,
+    borderColor:GlobalColor.Secondary
   },
   tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
+    fontSize:GlobalFontSize.P,
     color: 'grey',
+    fontFamily:'Roboto-Bold',
   },
   activeTabStyle: {
-    //custom styles
-    backgroundColor: 'transparent',
+    backgroundColor: GlobalColor.PrimaryLight,
     borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
-    // borderColor:Colors.primaryColor
+    borderBottomColor: GlobalColor.Secondary,
   },
   activeTabTextStyle: {
-    color: '#2757C3',
+    color: GlobalColor.Secondary,
   },
-  content: {
-    top: 10,
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 2.0,
+  // content: {
+  //   top: 10,
+  //   alignItems: 'center',
+  //   padding: 10,
+  //   backgroundColor: 'white',
+  //   borderRadius: 5,
+  //   shadowColor: '#000',
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 1,
+  //   },
+  //   shadowOpacity: 0.18,
+  //   shadowRadius: 2.0,
 
-    elevation: 5,
+  //   elevation: 5,
+  // },
+  dataRow:{
+    width:'100%',
+    justifyContent:'space-between',
+    flexDirection:'row',
+    borderBottomWidth:0.5,
+    paddingHorizontal:10, 
+    paddingVertical:5
   },
-  dataRow:{width:'100%',
-  justifyContent:'space-between',
-  flexDirection:'row',
-  marginVertical:5,
-  borderBottomWidth:0.5,
-  padding:20},
-  addtnlBtn:{
-    position:'absolute',
-    right:10,
-    top:0,
-    zIndex:55555
-  }
+  // addtnlBtn:{
+  //   position:'absolute',
+  //   right:10,
+  //   top:0,
+  //   zIndex:55555
+  // }
 });
 
 //make this component available to the app

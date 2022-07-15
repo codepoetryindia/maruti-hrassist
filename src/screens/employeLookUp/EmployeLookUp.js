@@ -38,6 +38,8 @@ const EmployeLookUp = ({ navigation }) => {
 
     return unsubscribe;
   }, [navigation]);
+
+  
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
       <Header title={"Employee Lookup"}/>

@@ -253,9 +253,10 @@ const Attendance = ({navigation}) => {
 
   const CallAPIToStoreAddress= (location, dati, lat, lon)=> {
     let token = AppUserData.token
-    let EmplID = AppUserData.data
+    let EmplID = AppUserData.data.userId
     let apiData = {
-        EmplID: EmplID
+        // EmplID: EmplID
+        StaffNo: EmplID
     }
     setLoader(true);
     ApiService.PostMethode('/SubmitPunchRO', apiData, token)

@@ -38,6 +38,8 @@ import { GlobalColor } from '../../constants/Colors';
 import { GlobalFontSize } from '../../constants/FontSize';
 import Button from './../../components/reusable/Button';
 import Text from '../../components/reusable/Text';
+import CheckBox from '@react-native-community/checkbox';
+import TextInput2 from '../../components/reusable/TextInput';
 
 
 
@@ -59,7 +61,7 @@ const Leave = ({navigation}) => {
   const [applyLeave, setapplyLeave] = useState([0]);
   const [isSelected, setSelection] = useState('');
   const [period, setPeriod] = useState('');
-  const [checked, setChecked] = useState('');
+  const [checked, setChecked] = useState(null);
   const [validReason, setValidReason] = useState('Select Reason');
   const { authContext, AppUserData } = useContext(AuthContext);
   // const [comment, setComment] = useState('');
@@ -286,12 +288,12 @@ const Leave = ({navigation}) => {
     setLoader(true);
     ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
       .then(result => {
-        console.log("APiresult GetEmplLevDetail", result);
+        // console.log("APiresult GetEmplLevDetail", result);
         setLoader(false);
         let arr =[]
         if (result.Value) {
           arr.push(result.Value)
-          console.log("arr",arr);
+          // console.log("arr",arr);
           setEmpLeaveDetail(...arr);
         } else {
           Toast.show('No Leave type found');
@@ -380,11 +382,12 @@ const Leave = ({navigation}) => {
     return (
       <View
         style={{
-          padding: 10,
+          paddingVertical: 15,
+          paddingHorizontal:10,
           margin: 2,
           borderBottomWidth: 1,
-          borderBottomColor: '#fff',
-          marginVertical: 10,
+          borderBottomColor: GlobalColor.Secondary,
+          marginVertical: 0,
         }}>
         <TouchableOpacity
           onPress={() => {
@@ -393,25 +396,33 @@ const Leave = ({navigation}) => {
             fromRef.current.setFieldValue('reason', item.LOOKUP_CODE);
             setModalVisible(false);
           }}>
-          <Text style={{ color: '#fff', fontSize: 15 }}>{item.REASON}</Text>
+          <Text style={{  }}>{item.REASON}</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
+
+
   return (
     <SafeAreaView style={{ flex: 1}}>
-                  <Spinner
-                    visible={loader}
-                    textContent={'Loading...'}
-                    textStyle={styles.spinnerTextStyle}
-                  />
+
+      {
+        loader ?
+        <Spinner
+        visible={loader}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
+        : null
+      }
+
+
       <KeyboardAwareScrollView
         style={styles.container}
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
+        contentContainerStyle={{ flexGrow: 1 }}>
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -421,23 +432,7 @@ const Leave = ({navigation}) => {
               size={30}
               color={'#00B4DB'}
             />
-          </TouchableOpacity>
-          <View style={{ width: '90%', alignSelf: 'center', marginTop:30 }}>
-            <SegmentedControlTab
-              borderRadius={2}
-              values={['Apply Leave', 'View Report']}
-              selectedIndex={applyLeave}
-              onTabPress={index => {
-                handleLeave(index);
-              }}
-              tabsContainerStyle={styles.tabsContainerStyle}
-              tabStyle={styles.tabStyle}
-              tabTextStyle={styles.tabTextStyle}
-              activeTabStyle={styles.activeTabStyle}
-              activeTabTextStyle={styles.activeTabTextStyle}
-            />
-          </View>
-          
+          </TouchableOpacity>          
           {horizental == true ? (
             <View
               style={{
@@ -465,9 +460,24 @@ const Leave = ({navigation}) => {
               <Text style={{color:'#fff'}}>Salary Deduction</Text>
                 </TouchableOpacity>
             </View>
-          ) : null}
+          ) : null} */}
 
-          <View >
+          <View style={{ width: '100%', alignSelf: 'center', marginTop:30,paddingHorizontal:10 }}>
+            <SegmentedControlTab
+              borderRadius={2}
+              values={['Apply Leave', 'View Report']}
+              selectedIndex={applyLeave}
+              onTabPress={index => {
+                handleLeave(index);
+              }}
+              tabsContainerStyle={styles.tabsContainerStyle}
+              tabStyle={styles.tabStyle}
+              tabTextStyle={styles.tabTextStyle}
+              activeTabStyle={styles.activeTabStyle}
+              activeTabTextStyle={styles.activeTabTextStyle}
+            />
+          </View>
+          <View style={{ flexGrow:1, paddingHorizontal:10 }}>
             {applyLeave == 0 ? (
               <Formik
                 innerRef={fromRef}
@@ -518,48 +528,47 @@ const Leave = ({navigation}) => {
                   touched,
                   isValid,
                 }) => (
-                  <View
-                    showsVerticalScrollIndicator={false}
-                    style={{ height: '80%', paddingVertical: 1 }}>
-                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
-                      Leave Type
+                  <View style={{ flex:1 }}>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
+                    Leave Type
                     </Text>
                     <View style={styles.box}>
                       <FlatList
-                        numColumns={4}
+                        numColumns={6}
                         data={LeaveTypes}
                         keyExtractor={item => item.ABSENCE_ID.toString()}
                         renderItem={({ item }) => (
-                          <TouchableOpacity
-                            onPress={() => {
-                              GetLeaveReason(item.value);
-                              setChecked(item.id);
-                              fromRef.current.setFieldValue('leave', item.ABSENCE_ID);
-                              // setFieldValue(item.id);
-                            }}
-                            style={[
-                              styles.circle,
-                              {
-                                backgroundColor:
-                                  checked == item.id ? '#00B4DB' : null,
-                              },
-                            ]}>
-                            <Text
-                              style={{
-                                color: checked == item.id ? '#fff' : '#000',
-                              }}>
-                              {item.Type}
-                            </Text>
-                          </TouchableOpacity>
-
-
+                          <View style={styles.circleBox}>                          
+                            <TouchableOpacity
+                              onPress={() => {
+                                GetLeaveReason(item.value);
+                                setChecked(item.id);
+                                fromRef.current.setFieldValue('leave', item.ABSENCE_ID);
+                                // setFieldValue(item.id);
+                              }}
+                              style={[
+                                styles.circle,
+                                {
+                                  backgroundColor:
+                                    checked == item.id ? '#00B4DB' : null,
+                                },
+                              ]}>
+                              <Text
+                                style={{
+                                  color: checked == item.id ? '#fff' : '#000',
+                                  fontSize:GlobalFontSize.Error
+                                }}>
+                                {item.Type}
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
                         )}
                       />
                     </View>
                     {errors.leave && touched.leave && (
                       <View
                         style={{
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
@@ -569,32 +578,59 @@ const Leave = ({navigation}) => {
                       </View>
                     )}
 
-                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
                       Planned/Unplanned
                     </Text>
                     <View style={styles.box}>
-                      <View style={{ flexDirection: 'row', padding: 8 }}>
-                        <RadioForm
+                      <View style={{ flexDirection: 'row', paddingVertical: 5, justifyContent:'space-between' }}>
+                        {/* <RadioForm
+                          formHorizontal={true}
+                          labelHorizontal={true}
                           borderRadius={0}
                           radio_props={radio_props}
                           initial={isSelected}
                           onPress={value => {
                             setSelection(isSelected);
                             fromRef.current.setFieldValue('planned', value);
-                            // console.log('value', value);
                           }}
                           borderWidth={0.5}
                           buttonInnerColor={'#e74c3c'}
                           buttonOuterColor={'#23f'}
                           buttonSize={10}
-                          buttonOuterSize={20}
-                        />
+                          buttonOuterSize={20}                          
+                        /> */}
+                        <View style={styles.checkboxContainer}>
+                          <CheckBox
+                            disabled={false}
+                            value={values.planned == "P" ? true : false}
+                            onValueChange={(newValue) => 
+                              fromRef.current.setFieldValue('planned', "P")
+                            }
+                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark} }
+                          />
+                          <Text style={styles.checkboxText}>Planned</Text>
+                        </View>
+
+
+                        <View style={styles.checkboxContainer}>
+                          <CheckBox
+                            disabled={false}
+                            value={values.planned == "U" ? true : false}
+                            onValueChange={(newValue) => {
+                              fromRef.current.setFieldValue('planned', "U")
+                            }}
+                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                          />
+                          <Text style={styles.checkboxText}>Unplanned</Text>
+                        </View>
+
+
                       </View>
                     </View>
                     {errors.planned && touched.planned && (
                       <View
                         style={{
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
@@ -604,12 +640,12 @@ const Leave = ({navigation}) => {
                       </View>
                     )}
 
-                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
                       Period
                     </Text>
                     <View style={styles.box}>
-                      <View style={{ flexDirection: 'row', padding: 8 }}>
-                        <RadioForm
+                      <View style={{ flexDirection: 'row', paddingTop: 8 }}>
+                        {/* <RadioForm
                           borderRadius={0}
                           radio_props={radio_propsSecond}
                           initial={period}
@@ -627,13 +663,49 @@ const Leave = ({navigation}) => {
                           buttonOuterColor={'#23f'}
                           buttonSize={10}
                           buttonOuterSize={20}
-                        />
+                        /> */}
+                        <View style={styles.checkboxContainer}>
+                          <CheckBox
+                            disabled={false}
+                            value={values.period == "3" ? true : false}
+                            onValueChange={(newValue) => {
+                              fromRef.current.setFieldValue('period', "3")
+                            }}
+                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                          />
+                          <Text style={styles.checkboxText}>Full Day</Text>
+                        </View>
+                        <View style={styles.checkboxContainer}>
+                          <CheckBox
+                            disabled={false}
+                            value={values.period == "1" ? true : false}
+                            onValueChange={(newValue) => {
+                              fromRef.current.setFieldValue('period', "1")
+                            }}
+                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                          />
+                          <Text style={styles.checkboxText}>1st Half</Text>
+                        </View>
+                      </View>
+
+                      <View style={{ flexDirection: 'row', paddingVertical: 8 }}>
+                      <View style={styles.checkboxContainer}>
+                          <CheckBox
+                            disabled={false}
+                            value={values.period == "2" ? true : false}
+                            onValueChange={(newValue) => {
+                              fromRef.current.setFieldValue('period', "2")
+                            }}
+                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                          />
+                          <Text style={styles.checkboxText}>2nd Half</Text>
+                        </View>
                       </View>
                     </View>
                     {errors.period && touched.period && (
                       <View
                         style={{
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
@@ -642,12 +714,15 @@ const Leave = ({navigation}) => {
                         </Text>
                       </View>
                     )}
-                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
+
+
+
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
                       Select Date
                     </Text>
                     <View
                       style={{
-                        width: '90%',
+                        width: '100%',
                         alignSelf: 'center',
                         borderWidth: 1,
                         borderColor: '#fff',
@@ -690,11 +765,10 @@ const Leave = ({navigation}) => {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                         }}>
-                        <TextInput
+                        <TextInput2
                           placeholder="From"
                           style={{
                             color: '#000',
-                            letterSpacing: 0,
                           }}
                           editable={false}
                           paddingHorizontal={14}
@@ -735,7 +809,7 @@ const Leave = ({navigation}) => {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                         }}>
-                        <TextInput
+                        <TextInput2
                           style={{ color: '#000', letterSpacing: 1 }}
                           placeholder="To"
                           editable={false}
@@ -763,47 +837,52 @@ const Leave = ({navigation}) => {
                         </Text>
                       </View>
                     )}
-                    <Text style={{ paddingVertical: 10, paddingHorizontal: 20 }} Bold>
-                      Choose Your Reason
+                    <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
+                      Enter Your Reason
                     </Text>
 
                     <View style={styles.box}>
                       <TouchableOpacity
-                        onPress={toggleModal}
+                        onPress={()=>{
+                          if(checked == null){
+                            Toast.show("Please select leave type");
+                            return;
+                          }
+                          toggleModal()
+                        }}
                         style={{
                           flexDirection: 'row',
                           alignItems: 'baseline',
                           padding: 10,
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={{ fontWeight: '700' }}>{validReason}</Text>
+                        <Text style={{  }}>{validReason}</Text>
                         <Ionicons
                           name="arrow-forward-outline"
                           color={'#23d'}
                           size={20}
                         />
+
+
                         <Modal isVisible={isModalVisible}>
-                          <View>
-                            <LinearGradient
-                              colors={['#4174D0', '#6ef7ff']}
+                            <View 
                               style={{
                                 height: '100%',
-                                backgroundColor: 'red',
-                                borderRadius: 10,
+                                backgroundColor: GlobalColor.White,
+                                borderRadius: 0,
                               }}>
                               <View
                                 style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
                                   justifyContent: 'space-between',
-                                  paddingHorizontal: 30,
+                                  paddingHorizontal: 10,
                                   paddingVertical: 5,
                                 }}>
                                 <Text
+                                  Bold
                                   style={{
-                                    color: '#fff',
-                                    fontSize: 18,
-                                    letterSpacing: 1,
+                                    fontSize: GlobalFontSize.H4
                                   }}>
                                   Select Reason
                                 </Text>
@@ -811,7 +890,7 @@ const Leave = ({navigation}) => {
                                   <Ionicons
                                     name="close-circle-outline"
                                     size={30}
-                                    color={'#fff'}
+                                    color={GlobalColor.Danger}
                                   />
                                 </TouchableOpacity>
                               </View>
@@ -820,7 +899,6 @@ const Leave = ({navigation}) => {
                                 keyExtractor={item => item.id}
                                 renderItem={rederReason}
                               />
-                            </LinearGradient>
                           </View>
                         </Modal>
                       </TouchableOpacity>
@@ -828,7 +906,7 @@ const Leave = ({navigation}) => {
                     {errors.reason && touched.reason && (
                       <View
                         style={{
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
@@ -841,7 +919,7 @@ const Leave = ({navigation}) => {
                       <TextInput
                         multiline={true}
                         numberOfLines={10}
-                        placeholder={'Comment'}
+                        placeholder={'Comments'}
                         onChangeText={handleChange('comment')}
                         onBlur={handleBlur('comment')}
                         value={values.comment}
@@ -851,7 +929,7 @@ const Leave = ({navigation}) => {
                     {errors.comment && touched.comment && (
                       <View
                         style={{
-                          width: '90%',
+                          width: '100%',
                           alignSelf: 'center',
                           paddingVertical: 2,
                         }}>
@@ -860,7 +938,7 @@ const Leave = ({navigation}) => {
                         </Text>
                       </View>
                     )}
-                    <View style={{ height: 100, marginTop:20, width:"90%",alignSelf:'center' }}>
+                    <View style={{ height: 100, marginTop:20, width:"100%",alignSelf:'center' }}>
                       <Button
                         onPress={() => {
                           handleSubmit();
@@ -872,12 +950,11 @@ const Leave = ({navigation}) => {
                 )}
               </Formik>
             ) : (
-              <View style={{ paddingVertical: 10, height: '82%' }}>
-
-                <Text style={{ paddingHorizontal: 20 }}>Select Financial Year</Text>
+              <View style={{ flex:1 }}>
+                <Text Bold style={{ paddingHorizontal: 0, marginTop:5 }}>Select Financial Year</Text>
                 <View
                   style={{
-                    width: '90%',
+                    width: '100%',
                     alignSelf: 'center',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -891,7 +968,7 @@ const Leave = ({navigation}) => {
                     shadowOpacity: 0.18,
                     shadowRadius: 2.0,
                     elevation: 2,
-                    marginVertical: 15,
+                    marginVertical: 10,
                   }}>
                   <SelectDropdown
                     defaultButtonText="Select Any Year"
@@ -899,12 +976,12 @@ const Leave = ({navigation}) => {
                     buttonStyle={{
                       backgroundColor: 'transparent',
                       width: '100%',
-                      height: 40,
+                      height: 50,
                       borderRadius: 0,
                     }}
                     dropdownStyle={{ borderRadius: 0 }}
                     rowTextStyle={{ textAlign: 'left', marginLeft: 5 }}
-                    buttonTextStyle={{ textAlign: 'left', marginLeft: 1 }}
+                    buttonTextStyle={{ textAlign: 'left', marginLeft: 5 }}
                     renderDropdownIcon={isOpened => {
                       return (
                         <FontAwesome
@@ -935,39 +1012,40 @@ const Leave = ({navigation}) => {
 
                 {/* Headings */}
 
-                <View style={{marginBottom:60, flex:1,paddingHorizontal:10}}>
+                <View style={{ flex:1,paddingHorizontal:0, marginTop:5}}>
                   <DataTable
                     style={{
                       width: '100%',
                       backgroundColor: '#fff',
-                      marginVertical: '5%',
+                      // marginVertical: '%',
                     }}>
-                    <DataTable.Header style={{ backgroundColor: '#f8eded' }}>
+                    <DataTable.Header style={{ backgroundColor: GlobalColor.White }}>
                       <DataTable.Title>
-                        <Text style={{ color: 'gray', fontSize: 18 }}>Date</Text>
+                        <Text Bold style={{ color: GlobalColor.Primary, fontSize: GlobalFontSize.Small }}>Date</Text>
                       </DataTable.Title>
                       <DataTable.Title numeric>
-                        <Text style={{ color: 'gray', fontSize: 16 }}>Type</Text>
+                        <Text Bold style={{ color: GlobalColor.Primary, fontSize: GlobalFontSize.Small }}>Type</Text>
                       </DataTable.Title>
                       <DataTable.Title numeric>
-                        <Text style={{ color: 'gray', fontSize: 16 }}>Period</Text>
+                        <Text Bold style={{ color: GlobalColor.Primary, fontSize: GlobalFontSize.Small }}>Period</Text>
                       </DataTable.Title>
                       <DataTable.Title numeric>
-                        <Text style={{ color: 'gray', fontSize: 16 }}>Status</Text>
+                        <Text Bold style={{ color: GlobalColor.Primary, fontSize: GlobalFontSize.Small }}>Status</Text>
                       </DataTable.Title>
                     </DataTable.Header>
+
                     <FlatList
                       data={EmpLeaveDetail}
                       keyExtractor={item => item.id}
                       renderItem={({ item }) => (
                         
-                        <View style={{flex:1}} key={item.id}>
+                        <View style={{flex:1}} key={item['Application ID']}>
                           <TouchableOpacity 
-                           style={{}} onPress={() => {
-                            console.log(item)
-                            setModalData(item)
-                            setLeaveDetailModal(!LeaveDetailModal)
-                            
+                           style={{flex:1}}
+                            key={item.id}                           
+                            onPress={() => {
+                              setModalData(item)
+                              setLeaveDetailModal(true)                            
                           }}>
                             <DataTable.Row
                               style={{borderBottomWidth: 1, paddingVertical: 5, }}>
@@ -1003,7 +1081,7 @@ const Leave = ({navigation}) => {
                     // animationType="slide"
                     transparent={true}
                   >
-                    <View style={{ backgroundColor: '#fff', padding: 10 ,borderRadius:8}}>
+                    <View style={{ backgroundColor: '#fff', padding: 10 ,borderRadius:0}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1013,22 +1091,24 @@ const Leave = ({navigation}) => {
                           paddingVertical: 5,
                         }}>
                         <Text
+                          Bold
                           style={{
-                            color: '#444',
-                            fontSize: 18,
-                            letterSpacing: 1,
-                            fontWeight: '700'
+                            fontSize: GlobalFontSize.H4, 
+                            color:GlobalColor.Primary
                           }}>
                           Leave Details
                         </Text>
+
                         <TouchableOpacity onPress={() => setLeaveDetailModal(!LeaveDetailModal)}>
                           <Ionicons
                             name="close-circle-outline"
                             size={30}
-                            color={'#444'}
+                            color={GlobalColor.Danger}
                           />
                         </TouchableOpacity>
                       </View>
+
+                      
 
                       <View style={{ flexDirection: 'row', }}>
                         <View style={{ width: '90%', }}>
@@ -1058,29 +1138,28 @@ const Leave = ({navigation}) => {
                           </Text>
                           <View style={{width:'100%',flexDirection:'row',justifyContent:'flex-end'}}>
 
-                            {
+                          {
                               modalData.Status && modalData.Status.toLowerCase() == 'pending' ? (
                                 <TouchableOpacity
-                                style={{ padding: 12, borderRadius: 5,backgroundColor: "#4174D0", minWidth:100, marginRight:25 }} 
+                                style={{ padding: 12, borderRadius: 5,backgroundColor: GlobalColor.Secondary, minWidth:100, marginRight:25 }} 
                                 onPress={() => {
                                   setLeaveDetailModal(!LeaveDetailModal);
                                   DeleteLeavePending(modalData);
                                 }}>
-                                <Text style={{color:'#fff', alignSelf:'center'}}>Delete</Text>
+                                <Text style={{color:'#fff', alignSelf:'center'}} Bold>Delete</Text>
                               </TouchableOpacity>
                               ) : null
                             }
                               <TouchableOpacity
-                                style={{ padding: 12, borderRadius: 5,backgroundColor: "#4174D0", minWidth:100 }} 
+                                style={{ padding: 12, borderRadius: 5,backgroundColor: GlobalColor.Secondary, minWidth:100 }} 
                                 onPress={() => {
                                   setLeaveDetailModal(!LeaveDetailModal)
                                 }}>
-                                <Text style={{color:'#fff', alignSelf:'center'}}>Okay</Text>
+                                <Text style={{color:'#fff', alignSelf:'center'}} Bold>Okay</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
-                      </View>
-
+                      </View>                  
                     </View>
                   </Modal>
 
@@ -1097,7 +1176,7 @@ const Leave = ({navigation}) => {
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     width: '100%',
     backgroundColor:GlobalColor.PrimaryLight
   },
@@ -1125,25 +1204,31 @@ const styles = StyleSheet.create({
   activeTabTextStyle: {
     color: GlobalColor.Secondary,
   },
+  circleBox:{
+    width:"16.6%",
+    height:60,
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center'
+  },
   circle: {
     borderWidth: 1,
     borderColor: '#00B4DB',
-    width: 50,
-    // height: 30,
-    // borderRadius: 50,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
     padding: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 10,
-    marginRight:15
+    // marginBottom: 10,
+    // marginRight:15
     // marginHorizontal: 28,
   },
   box: {
-    width: '90%',
+    // width: '90%',
     padding: 5,
     backgroundColor: '#FFF',
-    alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -1156,7 +1241,7 @@ const styles = StyleSheet.create({
   comment: {
     marginTop: 20,
     alignSelf: 'center',
-    width: '90%',
+    width: '100%',
     maxHeight: 100,
     backgroundColor: '#fff',
     borderWidth: 1,
@@ -1171,6 +1256,14 @@ const styles = StyleSheet.create({
     right:10,
     top:0,
     zIndex:55555
+  },
+  checkboxContainer:{
+    width:"50%",
+    flexDirection:'row', 
+    alignItems:'center'
+  },
+  checkboxText:{
+    marginLeft:2
   }
 });
 

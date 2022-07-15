@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ScrollView,
   TextInput,
@@ -21,6 +20,9 @@ import * as ApiService from '../../Utils/Utils';
 import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import moment from 'moment';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
 
 
 
@@ -63,6 +65,7 @@ const HolidayCalendar = () => {
       return () => unsubscribe;
     }, [])
   )
+  
   const LoadcalenderData = () => {
     const m_names_month = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
     let apiData = { "UserName": AppUserData.data.userId };
@@ -273,7 +276,7 @@ const renderItemHolidaysingle=({item})=>{
         style={styles.container}
         // contentContainerStyle={{ flexGrow: 1 }}
       >
-      <View style={{width: '100%', paddingHorizontal:5, marginTop:10}}>
+      <View style={{width: '100%', paddingHorizontal:5, marginTop:0}}>
         <SegmentedControlTab
           borderRadius={5}
           values={['MSIL 249', 'MSIL 280', 'SMG', 'MNS/HQ']}
@@ -289,9 +292,9 @@ const renderItemHolidaysingle=({item})=>{
         />
       </View>
       
-      <View style={{paddingHorizontal:10,marginTop:10, flex:1}}>
+      <View style={{paddingHorizontal:10,marginTop:5, flex:1}}>
         {HolidayCalendar == 0 ? (
-          <View style={{flex:1, marginBottom:70}}>
+          <View style={{flex:1}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -327,7 +330,7 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         ) : HolidayCalendar == 1 ? (
-          <View style={{flex:1, marginBottom:70}}>
+          <View style={{flex:1, marginBottom:0}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -348,7 +351,7 @@ const renderItemHolidaysingle=({item})=>{
               <View
               style={{
                 width: '100%',
-                padding: 10,
+                padding: 5,
                 backgroundColor:'#fff',
                 marginVertical: 5,
               }}>
@@ -358,12 +361,12 @@ const renderItemHolidaysingle=({item})=>{
                 <FlatList
                   data={MonthlyHolidays}
                   renderItem={renderItemHolidaysingle}
-                  // keyExtractor={item => item.date}
+                  keyExtractor={item => item.date}
                 />
               </View>
           </View>
         ) : HolidayCalendar == 2 ? (
-          <View style={{flex:1, marginBottom:70}}>
+          <View style={{flex:1, marginBottom:0}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -399,7 +402,7 @@ const renderItemHolidaysingle=({item})=>{
               </View>
           </View>
         ) : (
-          <View style={{flex:1, marginBottom:70}}>
+          <View style={{flex:1, marginBottom:0}}>
               <View style={styles.calenderContainer}>
                 <CalendarPicker
                     onDateChange={(date)=> change249(date)}
@@ -449,25 +452,29 @@ const styles = StyleSheet.create({
     // height:"100%"
     // alignSelf: 'center',
   },
+  tabsContainerStyle: {
+    marginTop: 10,
+    borderRadius:0,
+    width:'100%',
+  },
   tabStyle: {
     paddingVertical: 10,
     borderWidth: 1,
-    borderTopColor: '#80406A',
-    borderStartColor: '#6ef7ff',
-    borderBottomColor: '#2757C3',
-    borderEndColor: '#6ef7ff',
+    borderRadius:0,
+    borderColor:GlobalColor.Secondary
   },
   tabTextStyle: {
-    fontWeight: '700',
+    fontSize:GlobalFontSize.P,
     color: 'grey',
+    fontFamily:'Roboto-Bold',
   },
   activeTabStyle: {
-    backgroundColor: 'transparent',
+    backgroundColor: GlobalColor.PrimaryLight,
     borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
+    borderBottomColor: GlobalColor.Secondary,
   },
   activeTabTextStyle: {
-    color: '#2757C3',
+    color: GlobalColor.Secondary,
   },
   content: {
     top: 10,

@@ -66,10 +66,7 @@ export const Header = ({back=false, title="", onPress }) =>  {
             
             {onPress?(
             <TouchableOpacity 
-                style={{alignSelf:'flex-end'}}
-                onPress={() => {
-                navigation.navigate('ManagerMode');
-              }}>                
+                style={{alignSelf:'flex-end'}}>                
               <Image  source={require("../../assets/Images/setting.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
             </TouchableOpacity>
             ): null}

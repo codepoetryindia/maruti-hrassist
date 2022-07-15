@@ -47,7 +47,9 @@ function Tabs() {
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="calendar-edit" color={color} size={size} />
         ),
-      }} />
+        tabBarStyle: { display: "none" },
+      }} 
+    />
       <Tab.Screen name="Gatepass" component={Gatepass}
        options={{
         tabBarLabel: 'Gatepass',

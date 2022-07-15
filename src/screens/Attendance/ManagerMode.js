@@ -2,7 +2,6 @@
 import React, { Component, useState, useEffect, useContext } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
@@ -24,58 +23,17 @@ import AuthContext from '../../context/AuthContext';
 import moment from 'moment';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { GlobalColor } from '../../constants/Colors';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import { GlobalFontSize } from '../../constants/FontSize';
+
+
 
 const Tab = createMaterialTopTabNavigator();
-
 const ManagerMode = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-      <LinearGradient
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              // justifyContent: 'space-between',
-              flex:1,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 18,
-                letterSpacing: 1,
-                marginLeft: 10,
-              }}>
-              ManagerMode
-            </Text>
-          </View>
-
-
-          <TouchableOpacity
-            style={{ marginLeft: 100 }}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Image source={require("../../assets/Images/Avtar.png")} style={{ width: 30, height: 30, }} />
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
-
-
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor:GlobalColor.PrimaryLight }}>
+      <Header title="ManagerMode"/>
       <Tab.Navigator
         screenOptions={{
           tabBarLabelStyle: { fontSize: 12, fontWeight:'700' },
@@ -89,6 +47,16 @@ const ManagerMode = ({ navigation }) => {
         <Tab.Screen name="Taxi" component={Taxi} />
         <Tab.Screen name="Attendance" component={Attendance} />
       </Tab.Navigator>
+
+      <TouchableOpacity style={styles.fullWidthButton}
+        onPress={() => {
+          navigation.goBack();
+        }}>
+      <Image  source={require("./../../assets/Images/group.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
+        <Text style={styles.fullWidthButtonText} Bold>
+          Back to Employee Mode
+        </Text>
+      </TouchableOpacity>
 
     </SafeAreaView>
   );
@@ -190,7 +158,7 @@ export const Leave = () => {
     setApprove(index);
   };
   return (
-    <View style={{ flex: 1, paddingHorizontal:10 }}>
+    <View style={{ flex: 1, paddingHorizontal:10, backgroundColor:GlobalColor.PrimaryLight }}>
       <View style={{ width: '100%', alignSelf: 'center',marginVertical:10, paddingHorizontal:10 }}>
         <SegmentedControlTab
           borderRadius={0}
@@ -215,9 +183,7 @@ export const Leave = () => {
               Tap On Leave To View Details
             </Text>
           </TouchableOpacity>
-
           {getPendingLeaveReq.length>0 ? (
-
            <View style={styles.header}>
            <Text>NAME</Text>
            <Text>FROM_DATE</Text>
@@ -258,19 +224,19 @@ export const Leave = () => {
         ) : (
           <View style={{ flex: 1}}>
 
-            <Text style={{ color: '#000', fontWeight: '600', marginVertical: '5%', marginLeft: 15 }}>Employee</Text>
+            <Text Back style={{ color: '#000', paddingVertical:10 }}>Employee</Text>
 
             <TouchableOpacity style={styles.reportHeader}>
-              <Text style={{ color: '#000', fontWeight: '600', paddingHorizontal: '5%' }}>{userId}  {UserName}</Text>
-              <Ionicons name="send" size={20} color={'#6ef7ff'} />
+              <Text style={{ color: '#000' }}>{userId}  {UserName}</Text>
+              <Ionicons name="send" size={20} color={GlobalColor.Secondary} />
             </TouchableOpacity>
 
 
             <View style={styles.header}>
-              <Text>Date</Text>
-              <Text>type</Text>
-              <Text>Period</Text>
-              <Text>Status</Text>
+              <Text Bold>Date</Text>
+              <Text Bold>Type</Text>
+              <Text Bold>Period</Text>
+              <Text Bold>Status</Text>
             </View>
             {loader == true ? (
               <Spinner
@@ -804,29 +770,37 @@ const styles = StyleSheet.create({
   gradient: {
     padding: 20,
   },
+  tabsContainerStyle: {
+    marginTop: 10,
+    borderRadius:0,
+    width:'100%',
+  },
   tabStyle: {
-    //custom styles
     paddingVertical: 10,
-    borderColor: '#6ef7ff',
+    borderWidth: 1,
+    borderRadius:0,
+    borderColor:GlobalColor.Secondary
   },
   tabTextStyle: {
-    //custom styles
-    fontWeight: '700',
+    fontSize:GlobalFontSize.P,
     color: 'grey',
+    fontFamily:'Roboto-Bold',
   },
   activeTabStyle: {
-    //custom styles
-    backgroundColor: 'transparent',
+    backgroundColor: GlobalColor.PrimaryLight,
     borderBottomWidth: 4,
-    borderBottomColor: '#2757C3',
-    // borderColor:Colors.primaryColor
+    borderBottomColor: GlobalColor.Secondary,
+  },
+  activeTabTextStyle: {
+    color: GlobalColor.Secondary,
   },
   reportHeader: {
     width: '100%',
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    padding: 15,
+    padding:5,
+    paddingVertical:15,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
@@ -836,17 +810,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.18,
     shadowRadius: 2.0,
     elevation: 5,
-    borderRadius: 8,
+    borderRadius: 5,
   },
   reportStyle: {
     width: '100%',
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    // marginTop: 5,
     padding: 12,
-    // borderBottomWidth: 1,
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    borderBottomWidth:0.5,
+    borderBottomColor:GlobalColor.Secondary
   },
 
   activeTabTextStyle: {
@@ -898,12 +873,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderColor:'#ccc',
-    marginVertical: 10,
+    marginTop: 10,
     padding: 10,
+    paddingVertical:15,
     backgroundColor:'#fff'
   },
   spinnerTextStyle:{
     color:'#fff'
+  },
+  fullWidthButton:{
+    backgroundColor:GlobalColor.Primary, 
+    paddingVertical:10,
+    flexDirection:'row', 
+    alignItems:'center', 
+    justifyContent:'center'
+  },
+  fullWidthButtonText:{
+    color:GlobalColor.White, 
+    marginLeft:8
   }
 });
 

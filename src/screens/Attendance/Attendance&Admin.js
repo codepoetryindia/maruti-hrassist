@@ -2,7 +2,6 @@
 import React, {useState, useEffect,useContext} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
@@ -22,6 +21,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { GlobalColor } from '../../constants/Colors';
 import {Header} from './../../components/reusable/Header';
+import Text from '../../components/reusable/Text';
 
 
 
@@ -31,7 +31,9 @@ const AttendanceAdmin = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, width: '100%'}}>
-      <Header title={"Attendance & Admin"} onPress={() => {navigation.navigate('ManagerMode')}}/>
+      <Header title={"Attendance & Admin"} 
+        // onPress={() => {navigation.navigate('ManagerMode')}}
+      />
       <Tab.Navigator 
        screenOptions={{
         tabBarLabelStyle: { fontSize: 12,fontWeight:'700'},
@@ -45,13 +47,34 @@ const AttendanceAdmin = ({navigation}) => {
         <Tab.Screen name="Shift" component={Shift} />
         <Tab.Screen name="Holiday" component={HolidayCalendar} />
       </Tab.Navigator>
+
+      <TouchableOpacity style={styles.fullWidthButton}
+        onPress={() => {
+          navigation.navigate('ManagerMode');
+        }}>
+      <Image  source={require("./../../assets/Images/setting.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
+        <Text style={styles.fullWidthButtonText} Bold>
+          Goto Manager Mode
+        </Text>
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-
+  fullWidthButton:{
+    backgroundColor:GlobalColor.Primary, 
+    paddingVertical:10,
+    flexDirection:'row', 
+    alignItems:'center', 
+    justifyContent:'center'
+  },
+  fullWidthButtonText:{
+    color:GlobalColor.White, 
+    marginLeft:8
+  }
 });
 
 export default AttendanceAdmin;
