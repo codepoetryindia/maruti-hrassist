@@ -169,7 +169,7 @@ const Plencashment = ({ navigation, route }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () => {console.log("OK Pressed") }}
+        { text: "OK", onPress: () => { console.log("OK Pressed") } }
       ]
     );
 
@@ -226,7 +226,7 @@ const Plencashment = ({ navigation, route }) => {
   const encashmentData = () => {
     console.log("kusckgvdskdfdykudf", encashDays)
     if (encashDays == '') {
-      AlertOccurred('Payroll',"Please enter days",'ok')
+      AlertOccurred('Payroll', "Please enter days", 'ok')
       return
     }
     if (encashDays == 0) {
@@ -348,7 +348,7 @@ const Plencashment = ({ navigation, route }) => {
                 </View>
                 <View style={styles.box}>
                   <Text>Encash</Text>
-                  <TextInput style={{ width: 50, borderBottomWidth: 1, fontWeight: 'bold',textAlign:"right" }}
+                  <TextInput style={{ width: 50, borderBottomWidth: 1, fontWeight: 'bold', textAlign: "right" }}
                     keyboardType={'numeric'} onChangeText={(text) => { setEncashDays(text) }} value={encashDays} />
                 </View>
               </View>
@@ -411,7 +411,7 @@ const Plencashment = ({ navigation, route }) => {
                           <Text>Financial Year</Text>
                           <Text Bold>{item.MENT_FNYR_YEAR}</Text>
                         </View>
-                        <View style={[styles.reportHeader, { marginTop: 0 }]}>
+                        <View style={[styles.reportHeader, { marginTop: 5 }]}>
                           <Text>Staff No</Text>
                           <Text Bold>{item.MENT_EMPL_ID}</Text>
                         </View>
@@ -476,15 +476,15 @@ const Plencashment = ({ navigation, route }) => {
                   {ltaReport && ltaReport.map((item) => {
                     return (
                       <TouchableOpacity style={[styles.reportHeader, {
-                        borderWidth: 0, borderBottomWidth: 0, shadowColor: GlobalColor.Black,
-                        shadowOffset: {
-                          width: -0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.22,
-                        shadowRadius: 2.22,
-                        elevation: 5,
-                        borderRadius: 3
+
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        backgroundColor: '#fff',
+                        marginBottom: 3,
+                        borderWidth: 0.5,
+                        borderColor: GlobalColor.LightDark
                       }]}>
                         <Text>{item.LTCF_FAML_NAME}</Text>
                         <Text>{item.LTCF_YEARS}</Text>
@@ -532,24 +532,18 @@ const styles = StyleSheet.create({
     color: '#FFF'
   },
   reportHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
     alignSelf: 'center',
-    padding: 10,
-    marginVertical: 10,
+    marginVertical: 7,
     backgroundColor: GlobalColor.White,
-    borderBottomWidth: 0,
-    borderColor: GlobalColor.Secondary,
-    shadowColor: GlobalColor.Black,
-    shadowOffset: {
-      width: -0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 5,
-    borderRadius: 3
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+    marginBottom: 8,
+    borderWidth: 0.5,
+    borderColor: GlobalColor.LightDark
   },
   reportData: {
 

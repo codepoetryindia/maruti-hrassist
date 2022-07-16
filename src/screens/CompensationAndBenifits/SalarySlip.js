@@ -18,6 +18,7 @@ import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 import { GlobalColor } from '../../constants/Colors';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import { showErrorMessage } from '../../Utils/Utils';
+import { GlobalFontSize } from '../../constants/FontSize';
 
 const SalarySlip = ({ navigation }) => {
 
@@ -165,7 +166,7 @@ const SalarySlip = ({ navigation }) => {
     if (loader) {
         return (
             <SafeAreaView style={styles.containerLoading}>
-                 <Header title="Salary Slip" />
+                <Header title="Salary Slip" />
                 <LoadingScreen />
             </SafeAreaView>
         )
@@ -286,7 +287,7 @@ const SalarySlip = ({ navigation }) => {
                                         toggleModal()
                                     }}
                                     style={styles.textContainer}>
-                                    <Text style={{alignSelf:"center",paddingVertical:7,color:"#000"}}>{item.SHIS_YYMM_CODE}</Text>
+                                    <Text style={{ paddingVertical: 5, paddingHorizontal: 8, color: "#000",fontSize: GlobalFontSize.P }}>{item.SHIS_YYMM_CODE}</Text>
                                 </TouchableOpacity>
                             )}
                         />
@@ -394,7 +395,7 @@ const SalarySlip = ({ navigation }) => {
                             }} />
                     ) : null}
                     <View style={styles.Table}>
-                        
+
                         <Text Bold>General Message</Text>
                     </View>
                     {table2Data.length > 0 ? (
@@ -484,21 +485,27 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     textContainer: {
-        width: '90%',
-        paddong:5,
-        backgroundColor:GlobalColor.White,       
+        width: '100%',
+        padding: 5,
+        backgroundColor: GlobalColor.White,
         alignSelf: 'center',
+        // marginVertical: 8.5,
+        // shadowColor: GlobalColor.Black,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 1,
+        // },
+        // shadowOpacity: 0.18,
+        // shadowRadius: 3.0,
+        // elevation: 5,
+        // borderRadius:3,
+        // paddingVertical: 10,
+        // paddingHorizontal: 7,
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 8.5,        
-        shadowColor: GlobalColor.Black,
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 3.0,
-        elevation: 5,
-        borderRadius:3
+        marginTop: 5,
+        borderBottomWidth: 0.5,
+        borderColor: GlobalColor.LightDark
     },
     Table: {
         width: '100%',

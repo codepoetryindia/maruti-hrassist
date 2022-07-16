@@ -24,8 +24,8 @@ const Benifits = () => {
 
   const GetConvElig = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data.EMPL_NAME
-    console.log(EmplID)
+    let EmplID =  AppUserData.data.userId 
+    console.log("this empid",EmplID)
     let apiData = {
       "UserName": EmplID
     }
@@ -35,17 +35,22 @@ const Benifits = () => {
 
     ApiService.PostMethode('/GetConvElig', apiData, token)
       .then(result => {
-        console.log('setTaxSaving', result);
+        console.log( 'This setTaxSaving', result);
 
         //stop Loader
         stopLoader();
 
         let responseData = result.Result
+        console.log("This responseData",responseData)
         if (responseData == 0) {
           alert("You are not Authorized");
         }
         else {
-          alert(responseData)
+          //  myNavigation.navigate("ConveyanceBillsSubmission")
+           myNavigation.navigate("ConveyanceBillsSubmission", {
+            Conveyancepayload: responseData,
+          }) 
+          // alert(responseData)
         }
       })
       .catch(error => {
@@ -90,6 +95,7 @@ const Benifits = () => {
           <TouchableOpacity style={styles.box}
             onPress={() => {
               if (item.text === 'Conveyance Bills (SMGR & Above)') {
+                
                 GetConvElig()
               }
               else {
