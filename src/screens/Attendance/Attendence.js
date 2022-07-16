@@ -324,7 +324,7 @@ if(loader){
 
   return (
         <View style={styles.container}>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
              
@@ -337,7 +337,7 @@ if(loader){
             />
           </TouchableOpacity>
           
-                   {horizental == true ? (
+          {horizental == true ? (
             <View
               style={{
                 padding: 5,
@@ -351,12 +351,13 @@ if(loader){
                 borderRadius:2
               }}>
                 <TouchableOpacity onPress={() => {
+                  setHorizental(false)
                   navigation.navigate('AttendancePer')
                 }}>                  
                   <Text style={{ color:"#fff"}}>Attendance Percentage</Text>
                 </TouchableOpacity>
             </View>
-          ) : null}*/}
+          ) : null}
 
 
         <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>      
@@ -376,7 +377,7 @@ if(loader){
               activeTabTextStyle={styles.activeTabTextStyle}
             />
               ):(
-                <Text style={[styles.titleLabel, {marginTop:10}]} bold>View Report</Text>
+                <Text style={[styles.titleLabel, {marginTop:10}]} bold>Attendance Report</Text>
               )
             }
         </View>

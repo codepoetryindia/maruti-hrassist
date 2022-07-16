@@ -14,9 +14,9 @@ import Text from './reusable/Text';
 
 const myCustomeSharing =async () =>{
   const shareOption = {
-    message:"install this app https://play.google.com/store/apps/details?id=com.successfactors.successfactors",
+    message:"install this app https://msilappstore.in/hrassist/",
   }
-  try {const shareResponse = await Share.open(shareOption);}
+  try {const shareResponse = await Share.open(shareOption)}
     catch(error){
       console.log('error',error);
   }

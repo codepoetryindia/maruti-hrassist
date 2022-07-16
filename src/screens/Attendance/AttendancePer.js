@@ -2,13 +2,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
   TextInput,
   useWindowDimensions,
-  Alert
+  Alert,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,30 +19,51 @@ import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 
 const AttendancePer = ({ navigation }) => {
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
-  const [Attendance, setAttendance] = useState('')
+  const [Attendance, setAttendance] = useState('');
+  const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
 
-  const GetAttendancePercentageYearwise = () => {
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const GetAttendancePercentageYearwise = (pulldown = false) => {
+    if (!pulldown) {
+      //Set Loader
+      setLoader(true);
+    }
     let userId = AppUserData.data.userId;
     let token = AppUserData.token;
     let apiData = {
       "UserName": userId,
+      "Years":3
     };
-    setLoader(true);
     ApiService.PostMethode('/GetAttendancePercentageYearwise  ', apiData, token)
       .then(result => {
         console.log("GetAttendancePercentageYearwise", result);
-        setLoader(false);
+        stopLoader(false);
         let ApiResult = result.Value
         setAttendance(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -62,69 +83,32 @@ const AttendancePer = ({ navigation }) => {
   }
   useEffect(() => {
     GetAttendancePercentageYearwise();
-  }, [])
+  }, []);
+
+
+
+
   return (
-    <View style={{ flex: 1, width: '100%', height: '100%' }}>
-      <LinearGradient
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-            Attendance Percentage
-          </Text>
-        </View>
-      </LinearGradient>
-
-      <FlatList
-        data={Attendance}
-        ListEmptyComponent={() => {
-          return (
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image source={require('../../assets/Images/dataNotFound.png')}
-                style={{ width: 300, height: 300, resizeMode: 'contain', marginLeft: -50 }} />
-              <Text style={{ fontSize: 20, textAlign: 'center', }}>No Data found</Text>
-            </View>
-          )
-        }}
-        keyExtractor={({ item, index }) => index}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity
-              style={styles.canteen}>
-              <Text>{item.MATT_FNYR_YEAR}</Text>
-              <Text>{item.MATT_PERCENT}</Text>
-            </TouchableOpacity>
-          )
-        }}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+      <Header title="Attendance Percentage"/>
+      <View style={{ flex:1, paddingHorizontal:10 }}>
+        <FlatList
+          contentContainerStyle={{ flexGrow: 1 }}
+          data={Attendance}
+          ListEmptyComponent={() =>  <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => GetAttendancePercentageYearwise(true)} refreshing={refresh} ></ListEmptyComponent>}
+          keyExtractor={({ item, index }) => index}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                style={styles.canteen}>
+                <Text>{item.MATT_FNYR_YEAR}</Text>
+                <Text>{item.MATT_PERCENT}</Text>
+              </TouchableOpacity>
+            )
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -139,10 +123,11 @@ const styles = StyleSheet.create({
   canteen: {
     top: 10,
     marginVertical: 10,
-    width: '90%',
+    width: '100%',
     backgroundColor: '#fff',
     alignSelf: 'center',
     padding: 10,
+    paddingVertical:15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -153,9 +138,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
     elevation: 8,
-    borderRadius: 5
+    borderRadius: 0
   },
 });
 

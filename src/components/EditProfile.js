@@ -36,6 +36,7 @@ const EditProfile = ({ navigation, route }) => {
       .then(result => {
         stopLoader(false);
         let responseData = result.Value.Table;
+        console.log(responseData);
         let NominationData = result.Value.Table1
         let Phone =result.Value.Table[0].EXTN
         setEmpPhone(Phone)
@@ -57,6 +58,10 @@ const EditProfile = ({ navigation, route }) => {
         }
       });
   };
+
+
+
+
 
 
   const UpdateEmpProf = () => {
@@ -223,11 +228,11 @@ const EditProfile = ({ navigation, route }) => {
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.header}>Offical Phone Number</Text>
-                  <Text> {item.Phone ? (item.Phone) : "N.A"}</Text>
+                  <Text> {item.Phone}</Text>
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.header}>Email Id</Text>
-                  <Text> {item.Email ? (item.Email) : "N.A"}</Text>
+                  <Text> {item.EMPL_EMAIL_ID ? (item.EMPL_EMAIL_ID) +"@maruti.co.in": "N.A"}</Text>
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.header}>HRBP</Text>
@@ -246,31 +251,29 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.box}>
                   <Text style={styles.header}>Permanent Address</Text>
 
-                  <Text>{item.PERMANENT_ADDRESS}</Text>
+                  <Text>{item.PERMANENT_ADDRESS_LINE1}, {item.PERMANENT_ADDRESS_LINE2}, {item.PERMANENT_ADDRESS_LINE3}, {item.PERMANENT_CITY}, {item.PERMANENT_ADDRESS}, {item.PERMANENT_PINCODE}</Text>
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.header}>Present Address</Text>
-                  <Text>{item.PRESENT_ADDRESS}</Text>
+                  <Text>
+                    {item.PRESENT_ADDRESS_LINE1}, {item.PRESENT_ADDRESS_LINE2}, {item.PRESENT_ADDRESS_LINE3}, {item.PRESENT_CITY}, {item.PRESENT_ADDRESS}, {item.PRESENT_PINCODE} 
+                    </Text>
                 </View>
                 <View style={styles.box}>
-                  <Text style={styles.header}>Location</Text>
-                  <Text>{item.LOCN_DESC}</Text>
-                </View>
-                <View style={styles.box}>
-                  <Text style={styles.header}>Nominies</Text>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text>Check in Details</Text>
-                    <Ionicons
-                      name="arrow-forward-outline"
-                      size={30}
-                      color={'red'}
+                  <Text style={styles.header}>Nominations</Text>
+                  <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}
                       onPress={() => {
                         navigation.navigate('Nomination', {
                           data: nominiData
                         })
-                      }}
+                      }}>
+                    <Text style={{ color:GlobalColor.Secondary }}>Check in Details</Text>
+                    <Ionicons
+                      name="arrow-forward-outline"
+                      size={30}
+                      color={'red'}
                     />
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             )} />

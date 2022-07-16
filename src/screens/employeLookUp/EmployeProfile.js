@@ -33,14 +33,17 @@ const EmployProfile = ({ navigation, route }) => {
   const employeProfile = () => {
     let token = AppUserData.token
     let apiData = {
-      UserName: userId
+      // UserName: userId
+      StaffNO:userId
     }
     setLoader(true);
-    ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
+    // ApiService.PostMethode('/GetEmployeeProfile', apiData, token)
+    ApiService.PostMethode('/GetEmpSearch', apiData, token)
       .then(result => {
         stopLoader();
         if(result.Value?.Table.length > 0){
-          let responseData = result.Value.Table;
+          console.log(result.Value?.Table);
+          let responseData = result.Value.Table;          
           let Profile = responseData?.[0].profile_photo
           setEmployeeData(responseData)
           setPhoto(Profile);
@@ -196,35 +199,42 @@ const EmployProfile = ({ navigation, route }) => {
                 <View>
                   <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
                   <View style={styles.box}>
-                    <Text style={styles.header}>Vertical / Div ./Department</Text>
-                    <Text>{item.DIVN_DIRC_CODE} / {item.EMPL_DIVN_CODE} / {item.EMPL_DEPT_CODE}</Text>
+                    <Text style={styles.header}>Employee ID</Text>
+                    <Text>{item.EMPL_ID}</Text>
                   </View>
                   <View style={styles.box}>
-                    <Text style={styles.header}>Personal phone Number</Text>                    
-                    <TouchableOpacity onPress={()=>Linking.openURL(`tel:${item.PRESENT_PHONE}`)}>
-                      <Text style={{ color:GlobalColor.Secondary }} Bold>{item.PRESENT_PHONE}</Text>
+                    <Text style={styles.header}>Designation</Text>
+                    <Text>{item.EMPL_DESG_CODE}</Text>
+                  </View>
+
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Department</Text>
+                    <Text>{item.EMPL_DEPT_CODE}</Text>
+                  </View>
+
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Division</Text>
+                    <Text>{item.EMPL_DIVN_CODE}</Text>
+                  </View>
+
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Email</Text>
+                    <Text> {item.EMPL_EMAIL_ID}@maruti.co.in</Text>
+                  </View>
+
+                  <View style={styles.box}>
+                    <Text style={styles.header}>Phone No.</Text>                    
+                    <TouchableOpacity onPress={()=>Linking.openURL(`tel:${item.PHNE_PERS}`)}>
+                      <Text style={{ color:GlobalColor.Secondary }} Bold>{item.PHNE_PERS}</Text>
                     </TouchableOpacity>
                   </View>
                   <View style={styles.box}>
-                    <Text style={styles.header}>Offical Phone Number</Text>
-                    <Text> {item.Phone ? (item.Phone) : "N.A"}</Text>
+                    <Text style={styles.header}>Offical Phone No.</Text>
+                    <Text> {item.PHNE_EXTN}</Text>
                   </View>
                   <View style={styles.box}>
-                    <Text style={styles.header}>Email Id</Text>
-                    <Text> {item.Email ? (item.Email) : "N.A"}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>HRBP</Text>
-                    <Text>{item.HRBP}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Permanent Address</Text>
-
-                    <Text>{item.PERMANENT_ADDRESS}</Text>
-                  </View>
-                  <View style={styles.box}>
-                    <Text style={styles.header}>Present Address</Text>
-                    <Text>{item.PRESENT_ADDRESS}</Text>
+                    <Text style={styles.header}>Reports To</Text>
+                    <Text>{item.EMPL_REPORT_EMPL_ID}</Text>
                   </View>
                   <View style={styles.box}>
                     <Text style={styles.header}>Location</Text>

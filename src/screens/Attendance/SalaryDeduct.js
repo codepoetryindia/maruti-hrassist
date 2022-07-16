@@ -2,12 +2,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
   TextInput,
   useWindowDimensions,
+  SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -18,33 +18,53 @@ import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 
 const SalaryDeduct = ({ navigation }) => {
-
-
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
-  const [Attendance, setAttendance] = useState('')
-  const [salDedList, setSalDedList] = useState('')
+  const [loader, setLoader] = useState(false);
+  const [Attendance, setAttendance] = useState([]);
+  const [salDedList, setSalDedList] = useState('');
+  const [refresh, setrefresh] = useState(false);
 
-  const SalDedList = () => {
+
+  const stopLoader = () => {
+    try {
+      setLoader(false);
+      setrefresh(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  const SalDedList = (pulldown = false) => {
+    if (!pulldown) {
+      setLoader(true);
+    }
+
     let userId= AppUserData.data.userId
      let token = AppUserData.token;
     let apiData = { 
       "StaffNo" : userId
      };
-    setLoader(true);
+
     ApiService.PostMethode('/SalDedList  ', apiData, token)
       .then(result => {
         console.log("APiresult SalDedList", result);
-        setLoader(false);
+        stopLoader(false);
         ApiResult=result.Value
-        setSalDedList(ApiResult)
+        setAttendance(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader(false);
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -62,67 +82,55 @@ const SalaryDeduct = ({ navigation }) => {
         }
       });
   }
+
+
   useEffect(() => {
     SalDedList();
   }, [])
+
+  if (loader) {
+    return (
+      <SafeAreaView style={{ flex:1 }}>
+        <Header title={"Salary Deduction"} back/>
+        <LoadingScreen />
+      </SafeAreaView>
+    )
+  }
+
+
+
+
   return (
-    <View style={{ flex: 1, width: '100%', height: '100%' }}>
-      <LinearGradient
-        colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-        style={styles.gradient}>
-        <View style={styles.container}>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: 40,
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name="chevron-back-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.goBack()}
-            />
-            <Ionicons
-              name="menu-outline"
-              size={25}
-              color={'white'}
-              onPress={() => navigation.openDrawer()}
-            />
-          </View>
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 18,
-              letterSpacing: 1,
-              marginLeft: 30,
-            }}>
-          Salary Deduction
-          </Text>
-        </View>
-      </LinearGradient>
-
-      <FlatList
-        data={Attendance}
-        keyExtractor={({ item, index }) => index}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity
-              style={styles.canteen}>
-              <Text>{item.Date}</Text>
-              <Text>{item.Description}</Text>
-            </TouchableOpacity>
-          )
-        }}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight}}>    
+      <Header title="Salary Deduction" back/>
+      <View style={{ flex:1, paddingHorizontal:10 }}>
+        <FlatList
+          contentContainerStyle={{ flexGrow: 1 }}
+          ListEmptyComponent={() =>  <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => SalDedList(true)} refreshing={refresh} ></ListEmptyComponent>}
+          data={Attendance}
+          keyExtractor={({ item, index }) => index}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                style={styles.canteen}>
+                <Text>{item.Date}</Text>
+                <Text>{item['Half/Full Day']} Deducted</Text>
+              </TouchableOpacity>
+            )
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
 // define your styles
 const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    // flexGrow: 1,
+    backgroundColor: GlobalColor.PrimaryLight
+  },
   gradient: {
     padding: 20,
   },
@@ -132,10 +140,11 @@ const styles = StyleSheet.create({
   canteen: {
     top: 10,
     marginVertical: 10,
-    width: '90%',
+    width: '100%',
     backgroundColor: '#fff',
     alignSelf: 'center',
     padding: 10,
+    paddingVertical:15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -146,9 +155,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-
     elevation: 8,
-    borderRadius: 5
+    borderRadius: 0
   },
 });
 

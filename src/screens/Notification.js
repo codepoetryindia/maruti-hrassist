@@ -147,7 +147,8 @@ const Notification = ({ navigation }) => {
           />
         </View>
       </View>
-    </SafeAreaView>)
+    </SafeAreaView>
+  )
 };
 
 // define your styles
