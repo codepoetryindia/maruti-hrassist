@@ -338,6 +338,8 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
 
                                 <SelectDropdown
+                                defaultButtonText='Fuel Type'
+                                dropdownIconPosition={'right'}
                                     data={FuelValue}
                                     onSelect={(selectedItem, index) => {
                                         console.log(selectedItem, index)
@@ -352,6 +354,15 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                                         // if data array is an array of objects then return item.property to represent item in dropdown
                                         return item
                                     }}
+                                    buttonStyle={styles.dropdown2BtnStyle}
+                                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                                    renderDropdownIcon={isOpened => {
+                                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                                    }}
+                                    
+                                    dropdownStyle={styles.dropdown2DropdownStyle}
+                                    rowStyle={styles.dropdown2RowStyle}
+                                    rowTextStyle={styles.dropdown2RowTxtStyle}
                                 />
                             </View>
 
