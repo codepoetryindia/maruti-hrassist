@@ -45,7 +45,7 @@ const AttendanceAdmin = ({navigation}) => {
         <Tab.Screen name="Attendance" component={Attendance} />
         <Tab.Screen name="Leave" component={Leave} />
         <Tab.Screen name="Shift" component={Shift} />
-        <Tab.Screen name="Holiday" component={HolidayCalendar} />
+        <Tab.Screen name="Holiday Calendar" component={HolidayCalendar} />
       </Tab.Navigator>
 
       <TouchableOpacity style={styles.fullWidthButton}

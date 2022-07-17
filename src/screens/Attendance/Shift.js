@@ -418,8 +418,8 @@ const handleSubmit = () => {
         ) : null}
 
         <View style={{paddingHorizontal:10}}>
-          {/* <TouchableOpacity
-            style={{alignSelf: 'flex-end',paddingHorizontal:20,marginBottom:10}}
+          <TouchableOpacity
+            style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
             }}>
@@ -443,30 +443,31 @@ const handleSubmit = () => {
               }}>
                 <TouchableOpacity
                 style={{paddingVertical:10}} onPress={() => {
+                  setHorizental(false)
                   navigation.navigate("CompayShiftDe")
                 }}>                      
                   <Text style={{color:'#fff',}}>Company Shift Details</Text>
                 </TouchableOpacity>
                
             </View>
-          ) : null} */}
+          ) : null}
 
-
-        <SegmentedControlTab
-            borderRadius={0}
-            values={['Shift Details', 'Flexi Shift']}
-            selectedIndex={Shift}
-            onTabPress={index => {
-              handleShift(index);
-            }}
-            tabsContainerStyle={styles.tabsContainerStyle}
-            tabStyle={styles.tabStyle}
-            tabTextStyle={styles.tabTextStyle}
-            activeTabStyle={styles.activeTabStyle}
-            activeTabTextStyle={styles.activeTabTextStyle}
-          />
+        <View style={{ width: '100%', alignSelf: 'center', marginTop:20,paddingHorizontal:0 }}>
+          <SegmentedControlTab
+              borderRadius={0}
+              values={['Shift Details', 'Flexi Shift']}
+              selectedIndex={Shift}
+              onTabPress={index => {
+                handleShift(index);
+              }}
+              tabsContainerStyle={styles.tabsContainerStyle}
+              tabStyle={styles.tabStyle}
+              tabTextStyle={styles.tabTextStyle}
+              activeTabStyle={styles.activeTabStyle}
+              activeTabTextStyle={styles.activeTabTextStyle}
+            />
         </View>
-
+      </View>
       {Shift == 0 ? (
         <ScrollView 
           style={{ paddingHorizontal:10 }} 
@@ -474,8 +475,6 @@ const handleSubmit = () => {
           <Text style={{paddingVertical: 10, paddingHorizontal: 0, fontSize:16, fontWeight:'700'}}>
             Select Date
           </Text>
-
-
           <View
             style={styles.inlineDatepicker}>
             <DatePicker
@@ -621,7 +620,7 @@ const handleSubmit = () => {
              {/* {shiftName==''} */}
              <Text Bold>{shiftName !==''? shiftName :(<Text Bold> Select Shift</Text>)}</Text>
               <Ionicons name="arrow-forward-outline" color={'#23d'} size={25} />
-              <Modal isVisible={!isModalVisible}>
+              <Modal isVisible={isModalVisible}>
                 <View
                     style={{
                       height: '100%',
@@ -896,6 +895,12 @@ const styles = StyleSheet.create({
   //   top:0,
   //   zIndex:55555
   // }
+  addtnlBtn:{
+    position:'absolute',
+    right:10,
+    top:0,
+    zIndex:55555
+  },
 });
 
 //make this component available to the app

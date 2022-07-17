@@ -50,7 +50,7 @@ const EmployeLookUp = ({ navigation }) => {
           tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
           tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
         }}>
-        <Tab.Screen name="EmployeeDirectory" component={EmployeeDirect} />
+        <Tab.Screen name="Employee Directory" component={EmployeeDirect} />
         <Tab.Screen name="Birthdays" component={Birthdays} />
       </Tab.Navigator>
       {/* <TabView

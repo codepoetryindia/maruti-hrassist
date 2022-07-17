@@ -238,11 +238,15 @@ const Leave = ({navigation}) => {
     setLoader(true);
     ApiService.PostMethode('/LeaveStatus  ', apiData, token)
       .then(result => {
-        console.log("APiresult getfinancialyear", result);
+        console.log(result.Value);
         setLoader(false);
         if (result.Value) {
           let reasons = [];
           setFinancialYear(result.Value.Table);
+          if(result.Value && result.Value.Table[0].FNYR_YEAR){
+            setSelectedYear(result.Value.Table[0].FNYR_YEAR);
+            getEmpLeaveDetail(result.Value.Table[0].FNYR_YEAR);
+          }
         } else {
           Toast.show('No Leave type found');
         }
@@ -422,7 +426,7 @@ const Leave = ({navigation}) => {
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}>
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-            {/* <TouchableOpacity
+            <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -437,7 +441,7 @@ const Leave = ({navigation}) => {
             <View
               style={{
                 padding: 10,
-                backgroundColor: '#00B4DB',
+                backgroundColor: GlobalColor.Secondary,
                 position: 'absolute',
                 top: 10,
                 right: 50,
@@ -447,6 +451,7 @@ const Leave = ({navigation}) => {
               }}>
                 <TouchableOpacity
                 style={{borderBottomWidth:1,paddingVertical:10}} onPress={() => {
+                  setHorizental(false)
                   navigation.navigate('LeaveBalance')
                 }}>
                   
@@ -454,13 +459,14 @@ const Leave = ({navigation}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{paddingVertical:10}} onPress={() => {
+                  setHorizental(false)
                   navigation.navigate('SalaryDeduct')
                 }}>
                   
               <Text style={{color:'#fff'}}>Salary Deduction</Text>
                 </TouchableOpacity>
             </View>
-          ) : null} */}
+          ) : null}
 
           <View style={{ width: '100%', alignSelf: 'center', marginTop:30,paddingHorizontal:10 }}>
             <SegmentedControlTab
@@ -971,8 +977,10 @@ const Leave = ({navigation}) => {
                     marginVertical: 10,
                   }}>
                   <SelectDropdown
-                    defaultButtonText="Select Any Year"
+                    defaultButtonText={SelectedYear}
                     data={FinancialYear}
+                    defaultValue={SelectedYear}
+                    defaultValueByIndex={0}
                     buttonStyle={{
                       backgroundColor: 'transparent',
                       width: '100%',

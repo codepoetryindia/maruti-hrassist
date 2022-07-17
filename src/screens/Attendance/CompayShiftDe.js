@@ -2,12 +2,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     Image,
     ScrollView,
     TextInput,
     useWindowDimensions,
+    SafeAreaView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -18,6 +18,12 @@ import Toast from 'react-native-simple-toast'
 import { useFocusEffect } from '@react-navigation/native';
 import AuthContext from '../../context/AuthContext';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../constants/Colors';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Text from '../../components/reusable/Text';
+import { Header } from '../../components/reusable/Header';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 
@@ -26,24 +32,38 @@ const CompayShiftDe = ({ navigation }) => {
 
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false)
-    const [companyShiftMaster, setCompanyShiftMaster] = useState('')
+    const [companyShiftMaster, setCompanyShiftMaster] = useState('');
+    const [refresh, setrefresh] = useState(false);
 
-    const CompanyShiftMaster = () => {
+
+    const stopLoader = () => {
+      try {
+        setLoader(false);
+        setrefresh(false);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  
+
+    const CompanyShiftMaster = (pulldown = false) => {
+        if (!pulldown) {
+            setLoader(true);
+          }
         let userId = AppUserData.data.userId
         let token = AppUserData.token;
         let apiData = {
             "UserName": userId
         };
-        setLoader(true);
         ApiService.PostMethode('/CompanyShiftMaster  ', apiData, token)
             .then(result => {
                 console.log("APiresult CompanyShiftMaster", result);
-                setLoader(false);
+                stopLoader(false);
                 ApiResult = result.Value
                 setCompanyShiftMaster(ApiResult)
             })
             .catch(error => {
-                setLoader(false);
+                stopLoader(false);
                 console.log('Error occurred==>', error);
                 if (error.response) {
                     if (error.response.status == 401) {
@@ -63,67 +83,52 @@ const CompayShiftDe = ({ navigation }) => {
     }
     useEffect(() => {
         CompanyShiftMaster();
-    }, [])
-    return (
-        <View style={{ flex: 1, width: '100%', height: '100%' }}>
-            <LinearGradient
-                colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-                style={styles.gradient}>
-                <View style={styles.container}>
+    }, []);
 
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: 40,
-                            alignItems: 'center',
-                        }}>
-                        <Ionicons
-                            name="chevron-back-outline"
-                            size={25}
-                            color={'white'}
-                            onPress={() => navigation.goBack()}
-                        />
-                        <Ionicons
-                            name="menu-outline"
-                            size={25}
-                            color={'white'}
-                            onPress={() => navigation.openDrawer()}
-                        />
-                    </View>
-                    <Text
-                        style={{
-                            color: '#fff',
-                            fontSize: 18,
-                            letterSpacing: 1,
-                            marginLeft: 30,
-                        }}>
-                        Company Shift Details
-                    </Text>
+
+    if (loader) {
+        return (
+          <SafeAreaView style={{ flex:1 }}>
+            <Header title={"Company Shift Details"} back/>
+            <LoadingScreen />
+          </SafeAreaView>
+        )
+      }
+
+
+
+    return (
+        <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
+            <Header title={"Company Shift Details"} back/>
+            <View style={{ flex:1, backgroundColor:GlobalColor.PrimaryLight, paddingHorizontal:10, paddingTop:10 }}>
+
+                <View style={styles.canteenBox}>
+                    <Text Bold>Cal Type</Text>
+                    <Text Bold>Shift</Text>
+                    <Text Bold>Start</Text>
+                    <Text Bold>1st Half</Text>
                 </View>
-            </LinearGradient>
-            <View style={styles.canteen}>
-                <Text>Cal Type</Text>
-                <Text>Shift</Text>
-                <Text>Start</Text>
-                <Text>1st Half</Text>
+
+
+                <FlatList
+                    contentContainerStyle={{ flexGrow:1, marginTop:10 }}
+                    data={companyShiftMaster}
+                    ListEmptyComponent={() =>  <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => CompanyShiftMaster(true)} refreshing={refresh} ></ListEmptyComponent>}
+                    keyExtractor={({ item, index }) => index}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <View
+                                style={styles.canteen}>
+                                <Text>{item.CAL_NO}</Text>
+                                <Text>{item.SHIFT}</Text>
+                                <Text>{item.START_TIME}</Text>
+                                <Text>{item.FIRST_HALF_END}</Text>
+                            </View>
+                        )
+                    }}
+                />
             </View>
-            <FlatList
-                data={companyShiftMaster}
-                keyExtractor={({ item, index }) => index}
-                renderItem={({ item, index }) => {
-                    return (
-                        <View
-                            style={styles.canteen}>
-                            <Text>{item.CAL_NO}</Text>
-                            <Text>{item.SHIFT}</Text>
-                            <Text>{item.START_TIME}</Text>
-                            <Text>{item.FIRST_HALF_END}</Text>
-                        </View>
-                    )
-                }}
-            />
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -135,26 +140,33 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
     },
-    canteen: {
-        top: 10,
-        marginVertical: 10,
-        width: '90%',
+
+    canteenBox:{
+        width: '100%',
         backgroundColor: '#fff',
         alignSelf: 'center',
         padding: 10,
+        paddingVertical:15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // shadowColor: '#000',
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 4,
-        // },
-        // shadowOpacity: 0.3,
-        // shadowRadius: 4.65,
-
-        // elevation: 8,
-        borderRadius: 5
+        borderRadius: 0,
+        borderBottomWidth:1,
+        borderBottomColor:GlobalColor.Secondary
+    },
+    canteen: {
+        width: '100%',
+        backgroundColor: '#fff',
+        alignSelf: 'center',
+        padding: 10,
+        paddingVertical:15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 0,
+        borderWidth:0.5, 
+        borderColor:GlobalColor.Secondary, 
+        marginBottom:10
     },
 });
 
