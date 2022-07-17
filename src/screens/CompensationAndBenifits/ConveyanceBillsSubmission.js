@@ -16,10 +16,13 @@ import DatePicker from 'react-native-date-picker';
 import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
 import { showErrorMessage } from '../../Utils/Utils';
+import { DataTable } from 'react-native-paper';
+import Toast from 'react-native-simple-toast';
 
 
 
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import { GlobalFontSize } from '../../constants/FontSize';
 
 const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
@@ -29,18 +32,17 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
     const [loader, setLoader] = useState(false)
     const [encashment, setEncashment] = useState([]);
 
-    const [encashDays, setEncashDays] = useState('');
-    // const [encashDays, setEncashDays] = useState('');
-    // const [encashDays, setEncashDays] = useState('');
-    // const [encashDays, setEncashDays] = useState('');
-    // const [encashDays, setEncashDays] = useState('');
+    const [BillNo, setBillNo] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [FuelType, setFuelType] = useState('');
+    const [Mileage, setMileage] = useState('');
+    const [Amount, setAmount] = useState('');
 
 
 
 
 
     const [refresh, setrefresh] = useState(false);
-    const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
     // const [refresh, setrefresh] = useState(false);
     const { authContext, AppUserData } = useContext(AuthContext);
@@ -77,7 +79,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
         ApiService.PostMethode('/reportCONV', apiData, token)
             .then(result => {
-                console.log('This setTaxSaving', result.Value[0]);
+                console.log('This yyygygygygygy', result);
 
                 setBill(result.Value)
 
@@ -138,31 +140,58 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
 
     const SubmitConveyance = () => {
+
+        if(!BillNo){
+            Toast.show('Please enter bill no.');
+            return
+        }
+        
+        if(!Mileage){
+            Toast.show('Please enter Mileage ');
+            return
+        }
+        if(!FuelType){
+            Toast.show('Please enter FuelType ');
+            return
+        }
+        if(!Amount){
+            Toast.show('Please enter Amount ');
+            return
+        }
+        
+
         let token = AppUserData.token
         let EmplID = AppUserData.data.userId
-        console.log("this empid", EmplID)
         let apiData = {
 
             "UserName": EmplID,
-            "BillNo": "",
-            "BillDate": "01-APR-2022",
-            "BillAmount": "1000",
-            "BillKMR": "200",
-            "BillType": "2"
+            "BillNo": BillNo,
+            "BillDate": moment(date).format('DD-MMM-YYYY'),
+            "BillAmount": Amount,
+            "BillKMR": Mileage,
+            "BillType": FuelType
 
         }
+
+        console.log('apiData', apiData);
 
         //Set Loader
         setLoader(true);
 
         ApiService.PostMethode('/SubmitConveyBill', apiData, token)
             .then(result => {
-                console.log('submit data result', result.Value);
-
-                setFuel(result.Value)
+                console.log('submit data result', result.Result);
+                Toast.show(result.Result);
 
                 //stop Loader
+                GetConvElig();
                 stopLoader();
+
+                setBillNo('')
+                setDate(new Date())
+                setAmount('')
+                setMileage('')
+                setFuelType('')
 
             })
             .catch(error => {
@@ -250,7 +279,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                                 <Text Bold>Bill No.</Text>
                                 <View style={{ paddingHorizontal: 20 }}>
                                     <TextInput style={{ width: 200, height: 35, borderBottomWidth: 0.5, borderColor: GlobalColor.LightDark, textAlign: "left", }}
-                                        keyboardType={'numeric'} onChangeText={(text) => { setEncashDays(text) }} value={encashDays} />
+                                        keyboardType={'numeric'} onChangeText={setBillNo} value={BillNo} />
                                 </View>
                             </View>
                             <View style={[styles.box,]}>
@@ -265,7 +294,6 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                                         onConfirm={date => {
                                             setOpen(false);
                                             setDate(date);
-                                            console.log(date);
                                         }}
                                         onCancel={() => {
                                             setOpen(false);
@@ -338,20 +366,20 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
 
                                 <SelectDropdown
-                                defaultButtonText='Fuel Type'
-                                dropdownIconPosition={'right'}
+                                    defaultButtonText='Fuel Type'
+                                    dropdownIconPosition={'right'}
                                     data={FuelValue}
                                     onSelect={(selectedItem, index) => {
-                                        console.log(selectedItem, index)
+                                        setFuelType(selectedItem)
+
+                                        // console.log(selectedItem, index)
                                     }}
                                     buttonTextAfterSelection={(selectedItem, index) => {
-                                        // text represented after item is selected
-                                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+
                                         return selectedItem
                                     }}
                                     rowTextForSelection={(item, index) => {
-                                        // text represented for each item in dropdown
-                                        // if data array is an array of objects then return item.property to represent item in dropdown
+
                                         return item
                                     }}
                                     buttonStyle={styles.dropdown2BtnStyle}
@@ -359,7 +387,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                                     renderDropdownIcon={isOpened => {
                                         return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
                                     }}
-                                    
+
                                     dropdownStyle={styles.dropdown2DropdownStyle}
                                     rowStyle={styles.dropdown2RowStyle}
                                     rowTextStyle={styles.dropdown2RowTxtStyle}
@@ -370,15 +398,15 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                                 <Text Bold>Mileage (Kms)</Text>
                                 <View style={{ paddingHorizontal: 20 }}>
                                     <TextInput style={{ width: 200, height: 35, borderBottomWidth: 0.5, borderColor: GlobalColor.LightDark, textAlign: "left", }}
-                                        keyboardType={'numeric'} onChangeText={(text) => { setEncashDays(text) }} value={encashDays} placeholder="Kms" />
+                                        keyboardType={'numeric'} onChangeText={(numeric) => { setMileage(numeric) }} value={Mileage} placeholder="Kms" />
                                 </View>
 
                             </View>
                             <View style={[styles.box, { borderBottomWidth: 0 }]}>
-                                <Text Bold>Amout</Text>
+                                <Text Bold>Amount</Text>
                                 <View style={{ paddingHorizontal: 20 }}>
                                     <TextInput style={{ width: 200, height: 35, borderBottomWidth: 0.5, borderColor: GlobalColor.LightDark, textAlign: "left", }}
-                                        keyboardType={'numeric'} onChangeText={(text) => { setEncashDays(text) }} value={encashDays} placeholder="Kms" />
+                                        keyboardType={'numeric'} onChangeText={(numeric) => { setAmount(numeric) }} value={Amount} placeholder="Kms" />
                                 </View>
                             </View>
                         </View>
@@ -395,16 +423,16 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
                 <View style={{ paddingHorizontal: 10 }}>
 
-                    <View
+                    {/* <View
                         style={styles.reportHeader}>
                         <Text Bold>Bill No</Text>
                         <Text Bold>Bill Date</Text>
                         <Text Bold>Amount (Rs.)</Text>
-                    </View>
+                    </View> */}
 
 
 
-                    <FlatList
+                    {/* <FlatList
                         data={Bill}
                         ListEmptyComponent={() => {
                             return (
@@ -418,16 +446,34 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
                         renderItem={({ item, index }) => (
                             // console.log("ITEN", item)
                             <View style={styles.reportHeader}>
-                                <Text>{item.BILL_NO}</Text>
-                                <Text>{item.BILL_DATE}</Text>
-                                <Text>{item.BILL_AMT}</Text>
+                                <Text>{item.BILL_NO ?item.BILL_NO:'-'}</Text>
+                                <Text>{item.BILL_DATE ? item.BILL_DATE:'-'}</Text>
+                                <Text>{item.BILL_AMT ? item.BILL_AMT : '-'}</Text>
                             </View>
                         )}
 
-                    />
+                    /> */}
 
 
+                    <DataTable>
+                        <DataTable.Header style={styles.reportHeader}>
+                            <DataTable.Title> <Text>Bill No</Text></DataTable.Title>
+                            <DataTable.Title><Text>Bill Date</Text></DataTable.Title>
+                            <DataTable.Title><Text>Amount (Rs.)</Text></DataTable.Title>
+                        </DataTable.Header>
 
+                        {
+                            Bill.length > 0 ?
+                            Bill.map((item, index) => (
+                                <DataTable.Row key={index}>
+                                    <DataTable.Cell>{item.BILL_NO ?item.BILL_NO:'-'}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{item.BILL_DATE ? item.BILL_DATE:'-'}</DataTable.Cell>
+                                    <DataTable.Cell numeric>{item.BILL_AMT ? item.BILL_AMT : '-'}</DataTable.Cell>
+                                </DataTable.Row>
+                            ))
+                            :  <ListEmptyComponent title="No Data Found"></ListEmptyComponent>
+                        }
+                    </DataTable>
 
 
 
@@ -488,6 +534,7 @@ const styles = StyleSheet.create({
     reportHeader: {
         width: '100%',
         alignSelf: 'center',
+        alignItems:"center",
         marginVertical: 7,
         backgroundColor: GlobalColor.White,
         paddingVertical: 15,
@@ -496,6 +543,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 8,
         borderWidth: 0.5,
+
         borderColor: GlobalColor.LightDark
 
 
