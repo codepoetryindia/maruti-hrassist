@@ -196,19 +196,14 @@ const Plencashment = ({ navigation, route }) => {
       "UserName": userId
     }
     //set Loader
-
     // setLoader(false);
-
     // createTwoButtonAlert();
-
     ApiService.PostMethode('/SubmitMEDEncashment', apidata, token)
       .then(result => {
         // console.log("SubmitMEDEncashment", result);
 
         // Stop Loader
         stopLoader()
-
-
         let ApiValue = result.Result
         alert(ApiValue)
         createTwoButtonAlert(ApiValue)
@@ -217,11 +212,11 @@ const Plencashment = ({ navigation, route }) => {
         // Stop Loader
         stopLoader()
         console.log('Error occurred==>', error);
-
         //Show Error Massage
         showErrorMessage(error)
       });
   };
+
 
   const encashmentData = () => {
     console.log("kusckgvdskdfdykudf", encashDays)
@@ -239,6 +234,10 @@ const Plencashment = ({ navigation, route }) => {
       setEncashDays('')
     }
   }
+
+
+
+
   useEffect(() => {
     InitPLEncashmenApi()
     InitMEDEncashment()

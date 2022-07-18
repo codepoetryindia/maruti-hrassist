@@ -19,7 +19,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const Tab = createMaterialTopTabNavigator();
 
 const CompensationBenifits = ({ navigation }) => {
-  const [isAuth, setIsAuth] = useState();
+  const [isAuth, setIsAuth] = useState('');
 
   const optionalConfigObject = {
     title: 'Authentication Required', // Android

@@ -5,11 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
-  TextInput,
   Image,
   FlatList,
   SafeAreaView,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -26,21 +26,24 @@ import { GlobalColor } from '../../constants/Colors';
 import Text from '../../components/reusable/Text';
 import { Header } from '../../components/reusable/Header';
 import { GlobalFontSize } from '../../constants/FontSize';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import TextInput from '../../components/reusable/TextInput';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 
 const Tab = createMaterialTopTabNavigator();
 const ManagerMode = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor:GlobalColor.PrimaryLight }}>
-      <Header title="ManagerMode"/>
+    <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
+      <Header title="Manager Mode" />
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 12, fontWeight:'700' },
-          tabBarActiveTintColor: '#fff',
-          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: '#fff' },
-          tabBarStyle: { backgroundColor: '#0083B0', elevation: 0 },
-          tabBarItemStyle: { paddingHorizontal:0 },
+          tabBarLabelStyle: { fontSize: 12, fontWeight: '700' },
+          tabBarActiveTintColor: GlobalColor.White,
+          tabBarIndicatorStyle: { borderBottomWidth: 5, borderBottomColor: GlobalColor.White },
+          tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
+          tabBarItemStyle: { paddingHorizontal: 0 },
         }}>
         <Tab.Screen name="Leave" component={Leave} />
         <Tab.Screen name="FlexiShift" component={FlexiShift} />
@@ -52,7 +55,7 @@ const ManagerMode = ({ navigation }) => {
         onPress={() => {
           navigation.goBack();
         }}>
-      <Image  source={require("./../../assets/Images/group.png")} style={{width:30,height:30,tintColor:'#fff'}}/>
+        <Image source={require("./../../assets/Images/group.png")} style={{ width: 30, height: 30, tintColor: GlobalColor.White }} />
         <Text style={styles.fullWidthButtonText} Bold>
           Back to Employee Mode
         </Text>
@@ -63,6 +66,8 @@ const ManagerMode = ({ navigation }) => {
 };
 
 
+
+
 // create a component
 export const Leave = () => {
   const [approve, setApprove] = useState(0);
@@ -70,14 +75,17 @@ export const Leave = () => {
   const [getPendingLeaveReq, setGetPendingLeaveReq] = useState([]);
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false)
-
+  const [refresh, setrefresh] = useState(false);
 
 
   let userId = AppUserData.data.userId;
   let UserName = AppUserData.data.EMPL_NAME
   let date = moment(new Date()).format("DD-MMMM-YYYY");
 
-
+  const stopLoader = () => {
+    setLoader(false);
+    // setrefresh(false);
+  }
 
   const GetEmplLevDetail = () => {
     let userId = AppUserData.data.userId
@@ -91,12 +99,12 @@ export const Leave = () => {
     ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
       .then(result => {
         console.log("APiresult GetEmplLevDetail", result);
-        setLoader(false);
+        stopLoader();
         ApiResult = result.Value
         setGetEmplLevDetail(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -116,7 +124,14 @@ export const Leave = () => {
   }
 
 
+
   const GetPendingLeaveReq = () => {
+
+    const stopLoader = () => {
+      setLoader(false);
+      // setrefresh(false);
+    }
+
     let UserName = AppUserData.data.EMPL_NAME
     let token = AppUserData.token;
     let apiData = {
@@ -127,12 +142,12 @@ export const Leave = () => {
     ApiService.PostMethode('/GetPendingLeaveReq  ', apiData, token)
       .then(result => {
         console.log("APiresult GetPendingLeaveReq", result);
-        setLoader(false);
+        stopLoader();
         ApiResult = result.Value
         setGetPendingLeaveReq(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -150,6 +165,7 @@ export const Leave = () => {
         }
       });
   }
+
   useEffect(() => {
     GetPendingLeaveReq();
     GetEmplLevDetail();
@@ -158,8 +174,8 @@ export const Leave = () => {
     setApprove(index);
   };
   return (
-    <View style={{ flex: 1, paddingHorizontal:10, backgroundColor:GlobalColor.PrimaryLight }}>
-      <View style={{ width: '100%', alignSelf: 'center',marginVertical:10, paddingHorizontal:10 }}>
+    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: GlobalColor.PrimaryLight }}>
+      <View style={{ width: '100%', alignSelf: 'center', marginVertical: 10, paddingHorizontal: 10 }}>
         <SegmentedControlTab
           borderRadius={0}
           values={['Approve Leave', 'View Report']}
@@ -175,56 +191,56 @@ export const Leave = () => {
         />
       </View>
 
-      <View style={{ paddingHoriZontal:10 , flex:1}}>
+      <View style={{ paddingHoriZontal: 10, flex: 1 }}>
         {approve == 0 ? (
-          <View style={{ flex: 1}}>
-          <TouchableOpacity style={{ padding: 10, backgroundColor: '#a9bce7' }}>
-            <Text style={{ color: '#000', fontWeight: '600' }}>
-              Tap On Leave To View Details
-            </Text>
-          </TouchableOpacity>
-          {getPendingLeaveReq.length>0 ? (
-           <View style={styles.header}>
-           <Text>NAME</Text>
-           <Text>FROM_DATE</Text>
-           <Text>PERIOD</Text>
-           <Text>DAYS</Text>
-         </View>
-          ):null}
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity style={{ padding: 10, backgroundColor: '#a9bce7' }}>
+              <Text style={{ color: '#000', fontWeight: '600' }}>
+                Tap On Leave To View Details
+              </Text>
+            </TouchableOpacity>
+            {getPendingLeaveReq.length > 0 ? (
+              <View style={styles.header}>
+                <Text>NAME</Text>
+                <Text>FROM_DATE</Text>
+                <Text>PERIOD</Text>
+                <Text>DAYS</Text>
+              </View>
+            ) : null}
 
 
-         {loader == true ? (
-           <Spinner
-             visible={loader}
-             textContent={'Loading...'}
-             textStyle={styles.spinnerTextStyle}
-           />
-         ) : null}
+            {loader == true ? (
+              <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+            ) : null}
 
 
-         <FlatList
-           data={getPendingLeaveReq}
-           keyExtractor={({ item, index }) => index}
-           renderItem={({ item, index }) => {
-             let Name = item.EMPL_NAME
-             let slice= Name.slice(0,10)
-             return (
-               <View
-                 style={styles.reportStyle}>
-                   <Text>{slice}</Text>
-                   <Text>{item.FROM_DATE}</Text>
-                 <Text>{item.PERIOD}</Text>
-                 <Text>{item.DAYS}</Text>
-                
-               </View>
-             )
-           }}
-         />
-         </View>
+            <FlatList
+              data={getPendingLeaveReq}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item, index }) => {
+                let Name = item.EMPL_NAME
+                let slice = Name.slice(0, 10)
+                return (
+                  <View
+                    style={styles.reportStyle}>
+                    <Text>{slice}</Text>
+                    <Text>{item.FROM_DATE}</Text>
+                    <Text>{item.PERIOD}</Text>
+                    <Text>{item.DAYS}</Text>
+
+                  </View>
+                )
+              }}
+            />
+          </View>
         ) : (
-          <View style={{ flex: 1}}>
+          <View style={{ flex: 1 }}>
 
-            <Text Back style={{ color: '#000', paddingVertical:10 }}>Employee</Text>
+            <Text Back style={{ color: '#000', paddingVertical: 10 }}>Employee</Text>
 
             <TouchableOpacity style={styles.reportHeader}>
               <Text style={{ color: '#000' }}>{userId}  {UserName}</Text>
@@ -275,7 +291,15 @@ export const FlexiShift = () => {
   const [flexiShift, setFlexiShift] = useState('')
   const { authContext, AppUserData } = useContext(AuthContext);
   const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
+
   const FlexiShiftPendAppLOV = () => {
+
+    const stopLoader = () => {
+      setLoader(false);
+      // setrefresh(false);
+    }
+
     let userId = AppUserData.data.userId
     let token = AppUserData.token;
     let apiData = {
@@ -286,12 +310,12 @@ export const FlexiShift = () => {
     ApiService.PostMethode('/FlexiShiftPendAppLOV  ', apiData, token)
       .then(result => {
         console.log("APiresult FlexiShiftPendAppLOV", result);
-        setLoader(false);
+        stopLoader();
         ApiResult = result.Value
         setFlexiShift(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -314,24 +338,32 @@ export const FlexiShift = () => {
     FlexiShiftPendAppLOV()
   }, [])
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Text>FlexiShift</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>
+      <ListEmptyComponent title="No Data Found"
+      ></ListEmptyComponent>
     </SafeAreaView>
   );
 };
 
 
 
+
 export const Taxi = () => {
   const [approve, setApprove] = useState(0);
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
-  const [taxiPending, setTaxiPending] = useState([])
-  const [approvedTaxiReport, setApprovedTaxiReport] = useState([])
-  const [search, setSearch] = useState('')
-  const [employ, setEmploy] = useState([])
+  const [loader, setLoader] = useState(false);
+  const [taxiPending, setTaxiPending] = useState([]);
+  const [approvedTaxiReport, setApprovedTaxiReport] = useState([]);
+  const [search, setSearch] = useState('');
+  const [employ, setEmploy] = useState([]);
+
 
   const GetTaxiPendingList = () => {
+    const stopLoader = () => {
+      setLoader(false);
+      // setrefresh(false);
+    }
+
     let userId = AppUserData.data.userId
     let token = AppUserData.token;
     let apiData = {
@@ -343,12 +375,12 @@ export const Taxi = () => {
     ApiService.PostMethode('/GetTaxiPendingList  ', apiData, token)
       .then(result => {
         console.log("APiresult GetTaxiPendingList", result);
-        setLoader(false);
+        stopLoader();
         ApiResult = result.Value
         setTaxiPending(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -366,7 +398,12 @@ export const Taxi = () => {
         }
       });
   }
+
   const ApprovedTaxiReport = () => {
+    const stopLoader = () => {
+      setLoader(false);
+      // setrefresh(false);
+    }
     let userId = AppUserData.data.userId
     let token = AppUserData.token;
     let apiData = {
@@ -376,12 +413,12 @@ export const Taxi = () => {
     ApiService.PostMethode('/ApprovedTaxiReport  ', apiData, token)
       .then(result => {
         console.log("APiresult ApprovedTaxiReport", result);
-        setLoader(false);
+        stopLoader();
         ApiResult = result.Value
         setApprovedTaxiReport(ApiResult)
       })
       .catch(error => {
-        setLoader(false);
+        stopLoader();
         console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
@@ -402,9 +439,14 @@ export const Taxi = () => {
 
 
   const SearchEmployee = () => {
+    const stopLoader = () => {
+      setLoader(false);
+      // setrefresh(false);
+    }
+
     console.log('post data', search);
     if (search === '') {
-      alert("please enter a valid keyWord ")
+      Alert.alert("please enter a valid keyWord ")
       return
     } else {
       let apiData = {
@@ -414,7 +456,7 @@ export const Taxi = () => {
       setLoader(true);
       ApiService.PostMethode('/GetEmplLookup', apiData, token)
         .then(result => {
-          setLoader(false);
+          stopLoader();
 
           console.log('ApiResult', result);
 
@@ -423,7 +465,7 @@ export const Taxi = () => {
           setEmploy(responseData)
         })
         .catch(error => {
-          setLoader(false);
+          stopLoader();
           // console.log('Error occurred==>', error);
           if (error.response) {
             if (error.response.status == 401) {
@@ -450,8 +492,9 @@ export const Taxi = () => {
   const emptyList = () => {
     setSearch('')
   }
+
   return (
-    <View style={{ flex: 1, paddingHorizontal:10 }}>
+    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: GlobalColor.PrimaryLight }}>
 
       <View style={{ width: '100%', marginVertical: 15 }}>
         <SegmentedControlTab
@@ -470,26 +513,18 @@ export const Taxi = () => {
       </View>
 
 
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         {approve == 0 ? (
-          <View style={{ width: '100%', marginVertical: 10,flex: 1 }}>
+          <View style={{flex: 1, width: '100%', marginVertical: 10,  }}>
             <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderWidth: 1,
-                borderRadius: 5,
-                alignSelf: 'center',
-                backgroundColor: '#fff'
-              }}>
+              style={styles.SearchInput}>
               <View
                 style={{
                   width: '15%',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Feather name="search" size={20} color={'#4174D0'} />
+                <Feather name="search" size={20} color={GlobalColor.Secondary} />
               </View>
               <TextInput
                 placeholder="Search By Name/Dept/Staff/ID"
@@ -505,12 +540,12 @@ export const Taxi = () => {
               />
               {search !== '' ? (
                 <TouchableOpacity
-                  style={{ borderRadius: 8, marginLeft: -20, alignSelf: 'center' }} onPress={() => { emptyList() }}>
+                  style={{}} onPress={() => { emptyList() }}>
                   <Ionicons
                     style={styles.searchIcon}
                     name="close-circle-outline"
                     size={25}
-                    color="#b2bec3"
+                    color={GlobalColor.Secondary}
                   />
                 </TouchableOpacity>
               ) : null}
@@ -523,7 +558,7 @@ export const Taxi = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Ionicons name="send" size={20} color={'#4174D0'} />
+                <Ionicons name="send" size={20} color={GlobalColor.Secondary} />
               </TouchableOpacity>
             </View>
             {loader == true ? (
@@ -536,6 +571,14 @@ export const Taxi = () => {
             <FlatList
               data={employ}
               keyExtractor={({ item, index }) => index}
+              ListEmptyComponent={() => {
+                return (
+
+                 <ListEmptyComponent title="No Data Found"
+                  ></ListEmptyComponent>
+                
+                )
+              }}
               renderItem={({ item, index }) => {
                 return (
                   <TouchableOpacity style={styles.FlatListData}>
@@ -543,10 +586,10 @@ export const Taxi = () => {
                       style={styles.searchIcon}
                       name="person-circle-outline"
                       size={25}
-                      color="#2757C3"
+                      color={GlobalColor.Secondary}
                     />
                     <View style={{ flexDirection: 'column', width: '70%' }}>
-                      <Text style={{ fontSize: 16 }}>
+                      <Text >
                         {item.Name}
                       </Text>
                       <Text>
@@ -558,7 +601,7 @@ export const Taxi = () => {
                         style={styles.searchIcon}
                         name="chevron-forward-circle-outline"
                         size={25}
-                        color="#2757C3"
+                        color={GlobalColor.Secondary}
                       />
                     </TouchableOpacity>
                   </TouchableOpacity>
@@ -566,19 +609,21 @@ export const Taxi = () => {
               }} />
           </View>
         ) : (
-          <SafeAreaView style={{ flex: 1}}>
-            <View style={{ 
+          <SafeAreaView style={{ flex: 1 }}>
+            <View style={{              
               width: '100%', flexDirection: 'row',
               justifyContent: 'space-between',
               borderBottomWidth: 1,
-              marginVertical: 10, padding: 10,
-              backgroundColor:'#fff', 
-              borderColor:'#ccc'
+              marginTop: 10,
+              marginBottom: 6,
+              padding: 10,
+              backgroundColor: GlobalColor.White,
+              borderColor: '#ccc'
             }}>
-              <Text>Dept-Code</Text>
-              <Text>Name</Text>
-              <Text>TCar Approval</Text>
-              <Text>KM</Text>
+              <Text Bold>Dept-Code</Text>
+              <Text Bold>Name</Text>
+              <Text Bold>TCar Approval</Text>
+              <Text Bold>KM</Text>
             </View>
             {loader == true ? (
               <Spinner
@@ -590,6 +635,12 @@ export const Taxi = () => {
             <FlatList
               data={approvedTaxiReport}
               keyExtractor={({ item, index }) => index}
+              ListEmptyComponent={() => {
+                return (
+                  <ListEmptyComponent title="No Data Found"
+                  ></ListEmptyComponent>
+                )
+              }}
               renderItem={({ item, index }) => {
                 return (
                   <View
@@ -615,12 +666,17 @@ export const Attendance = () => {
   const [search, setSearch] = useState('')
   const [employ, setEmploy] = useState([])
   const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
+  const [refresh, setrefresh] = useState(false);
+  const stopLoader = () => {
+    setLoader(false);
+    // setrefresh(false);
+  }
 
   const SearchEmployee = () => {
     console.log('post data', search);
     if (search === '') {
-      alert("please enter a valid keyWord ")
+      Alert.alert("please enter a valid keyWord ")
       return
     } else {
       let apiData = {
@@ -630,7 +686,7 @@ export const Attendance = () => {
       setLoader(true);
       ApiService.PostMethode('/GetEmplLookup', apiData, token)
         .then(result => {
-          setLoader(false);
+          stopLoader();
 
           console.log('ApiResult', result);
 
@@ -639,7 +695,7 @@ export const Attendance = () => {
           setEmploy(responseData)
         })
         .catch(error => {
-          setLoader(false);
+          stopLoader();
           // console.log('Error occurred==>', error);
           if (error.response) {
             if (error.response.status == 401) {
@@ -659,107 +715,116 @@ export const Attendance = () => {
     setSearch('')
   }
   return (
-      <View style={{ width: '100%', marginVertical: 10 }}>
+    <View style={{ flex:1, width: '100%', paddingHorizontal: 10, backgroundColor: GlobalColor.PrimaryLight }}>
+      <View
+        style={{
+          marginVertical: 10,
+          width: '100%',          
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          borderWidth: 1,
+          borderColor: GlobalColor.Secondary,
+          borderRadius: 5,
+          alignSelf: 'center',
+          backgroundColor: GlobalColor.White,
+        }}>
         <View
           style={{
-            width: '95%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            borderWidth: 1,
-            borderRadius: 5,
-            alignSelf: 'center',
-            backgroundColor: '#fff'
+            width: '15%',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-          <View
-            style={{
-              width: '15%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Feather name="search" size={20} color={'#4174D0'} />
-          </View>
-          <TextInput
-            placeholder="Search By Name/Dept/Staff/ID"
-            value={search}
-            onChangeText={(data) => {
-              setSearch(data)
-            }}
-            style={{
-              width: '65%',
-              paddingVertical: 5,
-              fontSize: 16
-            }}
-          />
-          {search !== '' ? (
-            <TouchableOpacity
-              style={{ borderRadius: 8, marginLeft: -20, alignSelf: 'center' }} onPress={() => { emptyList() }}>
-              <Ionicons
-                style={styles.searchIcon}
-                name="close-circle-outline"
-                size={25}
-                color="#b2bec3"
-              />
-            </TouchableOpacity>
-          ) : null}
-          <TouchableOpacity
-            onPress={() => {
-              SearchEmployee()
-            }}
-            style={{
-              width: '15%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Ionicons name="send" size={20} color={'#4174D0'} />
-          </TouchableOpacity>
+          <Feather name="search" size={20} color={GlobalColor.Secondary} />
         </View>
-        {loader == true ? (
-          <Spinner
-            visible={loader}
-            textContent={'Loading...'}
-            textStyle={styles.spinnerTextStyle}
-          />
+        <TextInput
+          placeholder="Search By Name/Dept/Staff/ID"
+          value={search}
+          onChangeText={(data) => {
+            setSearch(data)
+          }}
+          style={{
+            width: '65%',
+            paddingVertical: 5,
+            fontSize: 16
+          }}
+        />
+        {search !== '' ? (
+          <TouchableOpacity
+            style={{ borderRadius: 8, marginLeft: -20, alignSelf: 'center' }} onPress={() => { emptyList() }}>
+            <Ionicons
+              style={styles.searchIcon}
+              name="close-circle-outline"
+              size={25}
+              color={GlobalColor.Secondary}
+            />
+          </TouchableOpacity>
         ) : null}
-        {employ.length > 0 ? (
+        <TouchableOpacity
+          onPress={() => {
+            SearchEmployee()
+          }}
+          style={{
+            width: '15%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Ionicons name="send" size={20} color={GlobalColor.Secondary} />
+        </TouchableOpacity>
+      </View>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      ) : null}
+      {employ.length > 0 ? (
 
-          <FlatList
-            data={employ}
-            keyExtractor={({ item, index }) => index}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity style={styles.FlatListData}>
+        <FlatList
+          data={employ}
+          keyExtractor={({ item, index }) => index}
+          ListEmptyComponent={() => {
+            return (
+              <ListEmptyComponent title="No Data Found"
+              ></ListEmptyComponent>
+            )
+          }}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity style={[styles.FlatListData,]}>
+                <Ionicons
+                  style={styles.searchIcon}
+                  name="person-circle-outline"
+                  size={25}
+                  color={GlobalColor.Secondary}
+                />
+                <View style={{ flexDirection: 'column', width: '70%' }}>
+                  <Text style={{ fontSize: 16 }}>
+                    {item.Name}
+                  </Text>
+                  <Text>
+                    {item.Desg} , {item.Dept} ({item['Staff No']})
+                  </Text>
+                </View>
+                <TouchableOpacity>
                   <Ionicons
                     style={styles.searchIcon}
-                    name="person-circle-outline"
+                    name="chevron-forward-circle-outline"
                     size={25}
-                    color="#2757C3"
+                    color={GlobalColor.Secondary}
                   />
-                  <View style={{ flexDirection: 'column', width: '70%' }}>
-                    <Text style={{ fontSize: 16 }}>
-                      {item.Name}
-                    </Text>
-                    <Text>
-                      {item.Desg} , {item.Dept} ({item['Staff No']})
-                    </Text>
-                  </View>
-                  <TouchableOpacity>
-                    <Ionicons
-                      style={styles.searchIcon}
-                      name="chevron-forward-circle-outline"
-                      size={25}
-                      color="#2757C3"
-                    />
-                  </TouchableOpacity>
                 </TouchableOpacity>
-              )
-            }} />
-        ) : (
+              </TouchableOpacity>
+            )
+          }} />
+      ) : (
 
-          <View style={{ margin: '5%', }}>
-            <Text>Search Contacts</Text>
-          </View>
-        )}
-      </View>
+        
+          <ListEmptyComponent title="No Data Found"
+              ></ListEmptyComponent>
+       
+      )}
+    </View>
   );
 };
 
@@ -767,24 +832,31 @@ export const Attendance = () => {
 
 // define your styles
 const styles = StyleSheet.create({
+
+  Loadercontainer: {
+    flex: 1,
+    backgroundColor: GlobalColor.PrimaryLight,
+    paddingHorizontal: 10,
+  },
+
   gradient: {
     padding: 20,
   },
   tabsContainerStyle: {
     marginTop: 10,
-    borderRadius:0,
-    width:'100%',
+    borderRadius: 0,
+    width: '100%',
   },
   tabStyle: {
     paddingVertical: 10,
     borderWidth: 1,
-    borderRadius:0,
-    borderColor:GlobalColor.Secondary
+    borderRadius: 0,
+    borderColor: GlobalColor.Secondary
   },
   tabTextStyle: {
-    fontSize:GlobalFontSize.P,
+    fontSize: GlobalFontSize.P,
     color: 'grey',
-    fontFamily:'Roboto-Bold',
+    fontFamily: 'Roboto-Bold',
   },
   activeTabStyle: {
     backgroundColor: GlobalColor.PrimaryLight,
@@ -799,10 +871,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    padding:5,
-    paddingVertical:15,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
+    padding: 5,
+    paddingVertical: 15,
+    backgroundColor: GlobalColor.White,
+    shadowColor: GlobalColor.Black,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -817,30 +889,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    // marginTop: 5,
+    marginTop: 8,
     padding: 12,
-    backgroundColor:'#fff',
-    borderBottomWidth:0.5,
-    borderBottomColor:GlobalColor.Secondary
+    backgroundColor: GlobalColor.White,
+    borderBottomWidth: 0.5,
+    borderBottomColor: GlobalColor.Secondary,
+    shadowColor: GlobalColor.Black,
+    shadowOffset: {
+      width: -0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+
   },
 
   activeTabTextStyle: {
-    color: '#2757C3',
+    color: GlobalColor.Secondary,
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  searchSection: {
-    top: 10,
-    width: '90%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#d9d9d9',
-    borderRadius: 7,
-  },
+
   searchIcon: {
     padding: 10,
   },
@@ -850,48 +922,65 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
-    backgroundColor: '#fff',
+    backgroundColor: GlobalColor.White,
     color: '#424242',
   },
   FlatListData: {
-    width: "95%",
-    borderWidth: 1,
-    borderColor: '#2757C3',
-    borderRadius: 7,
+    width: "100%",    
     flexDirection: 'row',
-    marginVertical: 10,
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 5,
-    marginBottom: 10,
-    backgroundColor: '#fff'
+    marginTop: 10,
+    backgroundColor: GlobalColor.White,
+    shadowColor: GlobalColor.Black,
+    shadowOffset: {
+      width: -0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 5,
+    borderRadius: 3,
   },
   header: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderColor:'#ccc',
+    borderColor: '#ccc',
     marginTop: 10,
     padding: 10,
-    paddingVertical:15,
-    backgroundColor:'#fff'
+    paddingVertical: 15,
+    backgroundColor: GlobalColor.White
   },
-  spinnerTextStyle:{
-    color:'#fff'
+  spinnerTextStyle: {
+    color: GlobalColor.White
   },
-  fullWidthButton:{
-    backgroundColor:GlobalColor.Primary, 
-    paddingVertical:10,
-    flexDirection:'row', 
-    alignItems:'center', 
-    justifyContent:'center'
+  fullWidthButton: {
+    backgroundColor: GlobalColor.Primary,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  fullWidthButtonText:{
-    color:GlobalColor.White, 
-    marginLeft:8
+  fullWidthButtonText: {
+    color: GlobalColor.White,
+    marginLeft: 8
+  },
+  SearchInput: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: GlobalColor.Secondary,
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginBottom: 7,
+    backgroundColor: GlobalColor.White
   }
+
 });
 
 export default ManagerMode;
