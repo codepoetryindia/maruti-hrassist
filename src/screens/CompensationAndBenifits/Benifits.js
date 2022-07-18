@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, ScrollView, Image, SafeAreaView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, ScrollView, Image, SafeAreaView,Alert} from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
@@ -43,7 +43,7 @@ const Benifits = () => {
         let responseData = result.Result
         console.log("This responseData",responseData)
         if (responseData == 0) {
-          alert("You are not Authorized");
+          Alert.alert("Payroll", "You are not Authorized");
         }
         else {
           //  myNavigation.navigate("ConveyanceBillsSubmission")
@@ -54,10 +54,8 @@ const Benifits = () => {
         }
       })
       .catch(error => {
-
         //stop Loader
         stopLoader();
-
         //Show Error Massage
         showErrorMessage(error)
       });
@@ -114,7 +112,7 @@ const Benifits = () => {
             </View>
             <View style={styles.item}>
               <Text Bold>{item.text}</Text>
-              <Feather name="corner-up-right" size={20} />
+              <Feather name="corner-up-right" size={20} color={GlobalColor.Secondary}/>
             </View>
           </TouchableOpacity>
         )}
