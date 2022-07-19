@@ -35,7 +35,7 @@ export default function FutureBook() {
 
     const GetShutlPastFutrReportApi = () => {
         let token = AppUserData.token
-        let userId = AppUserData.data.userId
+        let userId = AppUserData?.data?.userId
         let apiData = {
             BKDTEmplID: userId,
             BKDTFlag: "F",

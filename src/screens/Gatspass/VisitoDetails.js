@@ -43,7 +43,7 @@ const VisitorDetails = ({navigation,route}) => {
 
   const SubmitVGPE = (userdata) => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apiData = {
          "UserName" : userId,
          "Type" : route.params.visitorpayload.VisType,
@@ -92,7 +92,7 @@ const VisitorDetails = ({navigation,route}) => {
 
   const GetVisitorPhoneBygps = (phone, index) => {
     let token = AppUserData.token;
-    let userId = AppUserData.data.userId;
+    let userId = AppUserData?.data?.userId;
     let apiData ={"Search": phone};
     setLoader(true);
     ApiService.PostMethode('/GetVisitorByPhoneVGPS', apiData, token)
@@ -134,7 +134,7 @@ const VisitorDetails = ({navigation,route}) => {
     let dataarr = [...userdata]
     console.log("dataarr",dataarr);
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = 
       dataarr.map((item)=>{
      let obj= {

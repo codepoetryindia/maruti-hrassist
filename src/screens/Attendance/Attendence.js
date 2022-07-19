@@ -50,8 +50,8 @@ const Attendance = ({navigation}) => {
   );
 
     const checkGpsAvailable = () =>{
-      let apiData = { "UserName":AppUserData.data.userId };
-      // AppUserData.data.userId 222852
+      let apiData = { "UserName":AppUserData?.data?.userId };
+      // AppUserData?.data?.userId 222852
       let token = AppUserData.token;
       setLoader(true);
       ApiService.PostMethode('/GetValidGPSUser', apiData, token)
@@ -111,10 +111,10 @@ const Attendance = ({navigation}) => {
       let apiData = { 
         "FromDate" : moment(fromDate).format('DD-MMM-YYYY'),
         "ToDate" :  moment(toDate).format('DD-MMM-YYYY'),
-          "StaffNo" : AppUserData.data.userId 
+          "StaffNo" : AppUserData?.data?.userId 
       };
       // console.log(apiData);
-      // AppUserData.data.userId
+      // AppUserData?.data?.userId
       let token = AppUserData.token;
       setLoader(true);
       ApiService.PostMethode('/GetRawPunch', apiData, token)
@@ -175,10 +175,10 @@ const Attendance = ({navigation}) => {
   const [location, setLocation] = useState('');
 
   const getMobDevice = () => {
-    let apiData = { "UserName":AppUserData.data.userId };
+    let apiData = { "UserName":AppUserData?.data?.userId };
       setLoader(true);
       if(Platform.OS == 'android'){
-          // AppUserData.data.userId 222852
+          // AppUserData?.data?.userId 222852
         let token = AppUserData.token;
         ApiService.PostMethode('/GetMobDevice', apiData, token)
           .then(result => {
@@ -253,7 +253,7 @@ const Attendance = ({navigation}) => {
 
   const CallAPIToStoreAddress= (location, dati, lat, lon)=> {
     let token = AppUserData.token
-    let EmplID = AppUserData.data.userId
+    let EmplID = AppUserData?.data?.userId
     let apiData = {
         // EmplID: EmplID
         StaffNo: EmplID

@@ -30,7 +30,7 @@ const Plencashment = ({ navigation, route }) => {
 
   const InitPLEncashmenApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = {
       "UserName": userId
     }
@@ -68,7 +68,7 @@ const Plencashment = ({ navigation, route }) => {
 
   const SubmitPLEncashmentApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = {
       UserName: userId,
       Encashdays: encashDays
@@ -102,7 +102,7 @@ const Plencashment = ({ navigation, route }) => {
 
   const InitMEDEncashment = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = {
       "UserName": userId
     }
@@ -130,7 +130,7 @@ const Plencashment = ({ navigation, route }) => {
   };
   const ReportLTC = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = {
       "StaffNo": userId
     }
@@ -191,7 +191,7 @@ const Plencashment = ({ navigation, route }) => {
 
   const SubmitMEDEncashmentApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apidata = {
       "UserName": userId
     }

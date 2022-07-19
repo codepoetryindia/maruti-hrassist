@@ -39,7 +39,7 @@ const SeatBook = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false)
 
 
-    let inputNameData = AppUserData.data.EMPL_NAME
+    let inputNameData = AppUserData?.data?.EMPL_NAME
     let inputDegnData = AppUserData.data.EMPL_DESG_CODE
     console.log(inputDegnData);
 
@@ -80,7 +80,7 @@ const SeatBook = ({ navigation }) => {
     };
     const BookShuttleSeatApi = () => {
         let token = AppUserData.token
-        let userId = AppUserData.data.userId
+        let userId = AppUserData?.data?.userId
         let apiData;
         if (isSelected == 0) {
             apiData = {

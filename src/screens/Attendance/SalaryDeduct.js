@@ -50,7 +50,7 @@ const SalaryDeduct = ({ navigation }) => {
       setLoader(true);
     }
 
-    let userId= AppUserData.data.userId
+    let userId= AppUserData?.data?.userId
      let token = AppUserData.token;
     let apiData = { 
       "StaffNo" : userId

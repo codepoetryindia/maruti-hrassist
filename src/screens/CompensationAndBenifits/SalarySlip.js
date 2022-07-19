@@ -40,7 +40,7 @@ const SalarySlip = ({ navigation }) => {
 
     const GetMonth = () => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data.userId
+        let EmplID = AppUserData?.data?.userId
         let apiData = {
             EmplID: EmplID
         }
@@ -76,7 +76,7 @@ const SalarySlip = ({ navigation }) => {
 
     const GetSalaryTypeApi = (data) => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data.userId
+        let EmplID = AppUserData?.data?.userId
         let apiData = {
             "SalaryMonth": data,
             "EmplID": EmplID,
@@ -107,7 +107,7 @@ const SalarySlip = ({ navigation }) => {
     };
     const GetSalaryData = (data) => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data.userId
+        let EmplID = AppUserData?.data?.userId
         let apiData = {
             "EmplID": EmplID,
             "SalaryMonth": data,

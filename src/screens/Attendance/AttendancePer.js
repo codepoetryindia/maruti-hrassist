@@ -49,7 +49,7 @@ const AttendancePer = ({ navigation }) => {
       //Set Loader
       setLoader(true);
     }
-    let userId = AppUserData.data.userId;
+    let userId = AppUserData?.data?.userId;
     let token = AppUserData.token;
     let apiData = {
       "UserName": userId,

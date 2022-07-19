@@ -94,7 +94,7 @@ const Home = ({navigation}) => {
                   textTransform: 'capitalize'
                 }}
                 Bold>
-                {AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}
+                {AppUserData.data && AppUserData?.data?.EMPL_NAME ? AppUserData?.data?.EMPL_NAME : "User"}
               </Text>
             </View>
           </View>

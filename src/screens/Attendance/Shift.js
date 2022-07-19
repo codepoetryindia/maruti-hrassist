@@ -94,7 +94,7 @@ const Shift = ({navigation}) => {
 
 // SHIFT DETAILS API
   const GetEmplShift = () => {
-    let userId = AppUserData.data.userId;
+    let userId = AppUserData?.data?.userId;
     let token = AppUserData.token;
     let fromdate =moment(fromDate).format('DD-MMM-YYYY');
     let toDate =moment(toDate).format('DD-MMM-YYYY');
@@ -135,7 +135,7 @@ const Shift = ({navigation}) => {
 // FLEXI SHIFT API
 
 const flexiShiftPlanLov = () => {
-  let userId = AppUserData.data.EMPL_NAME;
+  let userId = AppUserData?.data?.EMPL_NAME;
   let token = AppUserData.token;
   let apiData = {
     "UserName": userId,
@@ -170,7 +170,7 @@ const flexiShiftPlanLov = () => {
 
 
 const CurrentShift = () => {
-  let userId = AppUserData.data.userId;
+  let userId = AppUserData?.data?.userId;
   let token = AppUserData.token;
   let apiData = {
     "StaffNo": userId,
@@ -206,7 +206,7 @@ const CurrentShift = () => {
 
 
 const SubmitFlexiShiftPlan = () => {
-  let userId = AppUserData.data.userId;
+  let userId = AppUserData?.data?.userId;
   let token = AppUserData.token;
   let apiData = {
     "Staffid": userId,
@@ -242,7 +242,7 @@ const SubmitFlexiShiftPlan = () => {
 
 
 const RptShiftStatus = () => {
-  let userId = AppUserData.data.userId;
+  let userId = AppUserData?.data?.userId;
   let token = AppUserData.token;
   let apiData = {
     "StaffNo": "222852",
@@ -276,7 +276,7 @@ const RptShiftStatus = () => {
 }
 
 const FlexiShiftElig = () => {
-  let userId = AppUserData.data.userId;
+  let userId = AppUserData?.data?.userId;
   let token = AppUserData.token;
   let apiData = {
     "UserName": userId,
@@ -311,7 +311,7 @@ const FlexiShiftElig = () => {
 
 
 const FlexiShiftStartDateLOV = () => {
-  let userId = AppUserData.data.userId;
+  let userId = AppUserData?.data?.userId;
   let token = AppUserData.token;
   let apiData = {
     "StaffNo": userId,

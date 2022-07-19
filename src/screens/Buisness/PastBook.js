@@ -116,7 +116,7 @@ const PastBook = () => {
     };
     const ShuttleEligibilityApi = (data) => {
         let token = AppUserData.token
-        let userId = AppUserData.data.userId
+        let userId = AppUserData?.data?.userId
         let apiData = {
             UserName: userId,
         }
@@ -169,7 +169,7 @@ const PastBook = () => {
         }, [])
     )
     const handleSubmit = () => {
-        let userId = AppUserData.data.userId
+        let userId = AppUserData?.data?.userId
         let payloadDate = moment(firstDate).format("DD-MMMM-YYYY").toUpperCase()
         let payloadDateSecond = moment(secondDate).format("DD-MMMM-YYYY").toUpperCase()
         let apiData = {
