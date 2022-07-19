@@ -8,8 +8,7 @@ import Gatepass from '../screens/Gatspass/Gatepass';
 import OtherApps from '../screens/OtherApps';
 import LinearGradient from 'react-native-linear-gradient';
 import AttendanceAdminNav from './AttendanceAdminNav';
-import AttendanceAdmin from '../screens/Attendance/Attendance&Admin'
-
+import AttendanceAdmin from '../screens/Attendance/Attendance&Admin';
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
 import Text from '../components/reusable/Text';
