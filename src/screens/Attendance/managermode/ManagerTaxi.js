@@ -34,7 +34,7 @@ import { LoadingScreen } from '../../../components/reusable/LoadingScreen';
 
 
 
-export const ManagerTaxi = () => {
+export const ManagerTaxi = ({navigation}) => {
     const [flexiShift, setFlexiShift] = useState('')
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false);
@@ -363,7 +363,11 @@ export const ManagerTaxi = () => {
               }}
               renderItem={({ item, index }) => {
                 return (
-                  <TouchableOpacity style={styles.FlatListData}>
+                  <TouchableOpacity style={styles.FlatListData} 
+                  onPress={() => {
+                    navigation.navigate('ManagerTaxiApproval',{data:item})
+                  }}
+                  >
                     <Ionicons
                       style={styles.searchIcon}
                       name="person-circle-outline"

@@ -26,6 +26,7 @@ import LeaveBalance from'../screens/Attendance/LeaveBalance';
 import CompayShiftDe from '../screens/Attendance/CompayShiftDe';
 import SalaryDeduct from '../screens/Attendance/SalaryDeduct';
 import ManagerMode from '../screens/Attendance/ManagerMode';
+import ManagerTaxiApproval from '../screens/Attendance/managermode/ManagerTaxiApproval';
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
   return (
@@ -58,6 +59,7 @@ const MyDrawer = () => {
       <Drawer.Screen name='LeaveBalance' component={LeaveBalance}/>
       <Drawer.Screen name='CompayShiftDe' component={CompayShiftDe}/>
       <Drawer.Screen name='SalaryDeduct' component={SalaryDeduct}/>
+      <Drawer.Screen name='ManagerTaxiApproval' component={ManagerTaxiApproval}/>
       
     </Drawer.Navigator>
   );

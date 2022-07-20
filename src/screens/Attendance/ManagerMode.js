@@ -33,6 +33,7 @@ import ManagerFlexiShift from './managermode/ManagerFlexiShift';
 import ManagerLeave from './managermode/ManagerLeave';
 import ManagerTaxi from './managermode/ManagerTaxi';
 
+
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -52,6 +53,7 @@ const ManagerMode = ({ navigation }) => {
         <Tab.Screen name="FlexiShift" component={ManagerFlexiShift} />
         <Tab.Screen name="Taxi" component={ManagerTaxi} />
         <Tab.Screen name="Attendance" component={Attendance} />
+        
       </Tab.Navigator>
 
       <TouchableOpacity style={styles.fullWidthButton}
