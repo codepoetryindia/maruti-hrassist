@@ -45,7 +45,7 @@ const CanteenMenu = ({ navigation }) => {
         <Tab.Screen name="Gurgaon" component={Location}  initialParams={{ MenuLocation: "002", MenuType: "Canteen" }}/>
         <Tab.Screen name="Manesar" component={Location} initialParams={{ MenuLocation: "010", MenuType: "Canteen" }}/>
         <Tab.Screen name="MPT" component={Location}  initialParams={{ MenuLocation: "011", MenuType: "Canteen" }}/>
-        <Tab.Screen name="Rothak" component={Location} initialParams={{ MenuLocation: "041", MenuType: "Canteen" }}/>
+        <Tab.Screen name="Rohtak" component={Location} initialParams={{ MenuLocation: "041", MenuType: "Canteen" }}/>
       </Tab.Navigator>
     </View>
   );

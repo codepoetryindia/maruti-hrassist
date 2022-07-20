@@ -50,7 +50,7 @@ import TextInput2 from '../../components/reusable/TextInput';
 
 
 // create a component
-const Leave = ({navigation}) => {
+const Leave = ({ navigation }) => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [loader, setLoader] = useState(false);
@@ -243,7 +243,7 @@ const Leave = ({navigation}) => {
         if (result.Value) {
           let reasons = [];
           setFinancialYear(result.Value.Table);
-          if(result.Value && result.Value.Table[0].FNYR_YEAR){
+          if (result.Value && result.Value.Table[0].FNYR_YEAR) {
             setSelectedYear(result.Value.Table[0].FNYR_YEAR);
             getEmpLeaveDetail(result.Value.Table[0].FNYR_YEAR);
           }
@@ -294,7 +294,7 @@ const Leave = ({navigation}) => {
       .then(result => {
         // console.log("APiresult GetEmplLevDetail", result);
         setLoader(false);
-        let arr =[]
+        let arr = []
         if (result.Value) {
           arr.push(result.Value)
           // console.log("arr",arr);
@@ -325,10 +325,10 @@ const Leave = ({navigation}) => {
 
 
   const DeleteLeavePending = (data) => {
-    
+
     let apiData = {
-        "UserName" : AppUserData?.data?.userId,
-        "ApplicationID" : data['Application ID']
+      "UserName": AppUserData?.data?.userId,
+      "ApplicationID": data['Application ID']
     }
     // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
@@ -365,7 +365,7 @@ const Leave = ({navigation}) => {
   }
 
 
-  
+
 
 
   const toggleModal = () => {
@@ -387,7 +387,7 @@ const Leave = ({navigation}) => {
       <View
         style={{
           paddingVertical: 15,
-          paddingHorizontal:10,
+          paddingHorizontal: 10,
           margin: 2,
           borderBottomWidth: 1,
           borderBottomColor: GlobalColor.Secondary,
@@ -400,7 +400,7 @@ const Leave = ({navigation}) => {
             fromRef.current.setFieldValue('reason', item.LOOKUP_CODE);
             setModalVisible(false);
           }}>
-          <Text style={{  }}>{item.REASON}</Text>
+          <Text style={{}}>{item.REASON}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -409,16 +409,16 @@ const Leave = ({navigation}) => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
 
       {
         loader ?
-        <Spinner
-        visible={loader}
-        textContent={'Loading...'}
-        textStyle={styles.spinnerTextStyle}
-      />
-        : null
+          <Spinner
+            visible={loader}
+            textContent={'Loading...'}
+            textStyle={styles.spinnerTextStyle}
+          />
+          : null
       }
 
 
@@ -426,7 +426,7 @@ const Leave = ({navigation}) => {
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}>
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-            <TouchableOpacity
+          <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -436,7 +436,7 @@ const Leave = ({navigation}) => {
               size={30}
               color={'#00B4DB'}
             />
-          </TouchableOpacity>          
+          </TouchableOpacity>
           {horizental == true ? (
             <View
               style={{
@@ -445,30 +445,30 @@ const Leave = ({navigation}) => {
                 position: 'absolute',
                 top: 10,
                 right: 50,
-                zIndex:1000,
-                borderRadius:0,
-                
+                zIndex: 1000,
+                borderRadius: 0,
+
               }}>
-                <TouchableOpacity
-                style={{borderBottomWidth:1,paddingVertical:10}} onPress={() => {
+              <TouchableOpacity
+                style={{ borderBottomWidth: 1, paddingVertical: 10 }} onPress={() => {
                   setHorizental(false)
                   navigation.navigate('LeaveBalance')
                 }}>
-                  
-              <Text style={{color:'#fff',}}>Leave Balance</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{paddingVertical:10}} onPress={() => {
+
+                <Text style={{ color: '#fff', }}>Leave Balance</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ paddingVertical: 10 }} onPress={() => {
                   setHorizental(false)
                   navigation.navigate('SalaryDeduct')
                 }}>
-                  
-              <Text style={{color:'#fff'}}>Salary Deduction</Text>
-                </TouchableOpacity>
+
+                <Text style={{ color: '#fff' }}>Salary Deduction</Text>
+              </TouchableOpacity>
             </View>
           ) : null}
 
-          <View style={{ width: '100%', alignSelf: 'center', marginTop:30,paddingHorizontal:10 }}>
+          <View style={{ width: '100%', alignSelf: 'center', marginTop: 30, paddingHorizontal: 10 }}>
             <SegmentedControlTab
               borderRadius={2}
               values={['Apply Leave', 'View Report']}
@@ -483,7 +483,7 @@ const Leave = ({navigation}) => {
               activeTabTextStyle={styles.activeTabTextStyle}
             />
           </View>
-          <View style={{ flexGrow:1, paddingHorizontal:10 }}>
+          <View style={{ flexGrow: 1, paddingHorizontal: 10 }}>
             {applyLeave == 0 ? (
               <Formik
                 innerRef={fromRef}
@@ -534,9 +534,9 @@ const Leave = ({navigation}) => {
                   touched,
                   isValid,
                 }) => (
-                  <View style={{ flex:1 }}>
+                  <View style={{ flex: 1 }}>
                     <Text style={{ paddingVertical: 10, paddingHorizontal: 0 }} Bold>
-                    Leave Type
+                      Leave Type
                     </Text>
                     <View style={styles.box}>
                       <FlatList
@@ -544,7 +544,7 @@ const Leave = ({navigation}) => {
                         data={LeaveTypes}
                         keyExtractor={item => item.ABSENCE_ID.toString()}
                         renderItem={({ item }) => (
-                          <View style={styles.circleBox}>                          
+                          <View style={styles.circleBox}>
                             <TouchableOpacity
                               onPress={() => {
                                 GetLeaveReason(item.value);
@@ -562,7 +562,7 @@ const Leave = ({navigation}) => {
                               <Text
                                 style={{
                                   color: checked == item.id ? '#fff' : '#000',
-                                  fontSize:GlobalFontSize.Error
+                                  fontSize: GlobalFontSize.Error
                                 }}>
                                 {item.Type}
                               </Text>
@@ -588,7 +588,7 @@ const Leave = ({navigation}) => {
                       Planned/Unplanned
                     </Text>
                     <View style={styles.box}>
-                      <View style={{ flexDirection: 'row', paddingVertical: 5, justifyContent:'space-between' }}>
+                      <View style={{ flexDirection: 'row', paddingVertical: 5, justifyContent: 'space-between' }}>
                         {/* <RadioForm
                           formHorizontal={true}
                           labelHorizontal={true}
@@ -609,10 +609,10 @@ const Leave = ({navigation}) => {
                           <CheckBox
                             disabled={false}
                             value={values.planned == "P" ? true : false}
-                            onValueChange={(newValue) => 
+                            onValueChange={(newValue) =>
                               fromRef.current.setFieldValue('planned', "P")
                             }
-                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark} }
+                            tintColors={{ true: GlobalColor.Secondary, false: GlobalColor.LightDark }}
                           />
                           <Text style={styles.checkboxText}>Planned</Text>
                         </View>
@@ -625,7 +625,7 @@ const Leave = ({navigation}) => {
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('planned', "U")
                             }}
-                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                            tintColors={{ true: GlobalColor.Secondary, false: GlobalColor.LightDark }}
                           />
                           <Text style={styles.checkboxText}>Unplanned</Text>
                         </View>
@@ -677,7 +677,7 @@ const Leave = ({navigation}) => {
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "3")
                             }}
-                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                            tintColors={{ true: GlobalColor.Secondary, false: GlobalColor.LightDark }}
                           />
                           <Text style={styles.checkboxText}>Full Day</Text>
                         </View>
@@ -688,21 +688,21 @@ const Leave = ({navigation}) => {
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "1")
                             }}
-                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                            tintColors={{ true: GlobalColor.Secondary, false: GlobalColor.LightDark }}
                           />
                           <Text style={styles.checkboxText}>1st Half</Text>
                         </View>
                       </View>
 
                       <View style={{ flexDirection: 'row', paddingVertical: 8 }}>
-                      <View style={styles.checkboxContainer}>
+                        <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
                             value={values.period == "2" ? true : false}
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "2")
                             }}
-                            tintColors={ {true: GlobalColor.Secondary, false: GlobalColor.LightDark}}
+                            tintColors={{ true: GlobalColor.Secondary, false: GlobalColor.LightDark }}
                           />
                           <Text style={styles.checkboxText}>2nd Half</Text>
                         </View>
@@ -772,7 +772,7 @@ const Leave = ({navigation}) => {
                           justifyContent: 'space-between',
                         }}>
                         <TextInput2
-                          placeholder="From"
+                          placeholder="Start date"
                           style={{
                             color: '#000',
                           }}
@@ -817,7 +817,7 @@ const Leave = ({navigation}) => {
                         }}>
                         <TextInput2
                           style={{ color: '#000', letterSpacing: 1 }}
-                          placeholder="To"
+                          placeholder="End Date"
                           editable={false}
                           paddingHorizontal={14}
                           value={values.selectDateSecond}
@@ -849,8 +849,8 @@ const Leave = ({navigation}) => {
 
                     <View style={styles.box}>
                       <TouchableOpacity
-                        onPress={()=>{
-                          if(checked == null){
+                        onPress={() => {
+                          if (checked == null) {
                             Toast.show("Please select leave type");
                             return;
                           }
@@ -862,7 +862,7 @@ const Leave = ({navigation}) => {
                           padding: 10,
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={{  }}>{validReason}</Text>
+                        <Text style={{}}>{validReason}</Text>
                         <Ionicons
                           name="arrow-forward-outline"
                           color={'#23d'}
@@ -871,40 +871,40 @@ const Leave = ({navigation}) => {
 
 
                         <Modal isVisible={isModalVisible}>
-                            <View 
+                          <View
+                            style={{
+                              height: '100%',
+                              backgroundColor: GlobalColor.White,
+                              borderRadius: 0,
+                            }}>
+                            <View
                               style={{
-                                height: '100%',
-                                backgroundColor: GlobalColor.White,
-                                borderRadius: 0,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                paddingHorizontal: 10,
+                                paddingVertical: 5,
                               }}>
-                              <View
+                              <Text
+                                Bold
                                 style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                  paddingHorizontal: 10,
-                                  paddingVertical: 5,
+                                  fontSize: GlobalFontSize.H4
                                 }}>
-                                <Text
-                                  Bold
-                                  style={{
-                                    fontSize: GlobalFontSize.H4
-                                  }}>
-                                  Select Reason
-                                </Text>
-                                <TouchableOpacity onPress={toggleModal}>
-                                  <Ionicons
-                                    name="close-circle-outline"
-                                    size={30}
-                                    color={GlobalColor.Danger}
-                                  />
-                                </TouchableOpacity>
-                              </View>
-                              <FlatList
-                                data={Leavereason}
-                                keyExtractor={item => item.id}
-                                renderItem={rederReason}
-                              />
+                                Select Reason
+                              </Text>
+                              <TouchableOpacity onPress={toggleModal}>
+                                <Ionicons
+                                  name="close-circle-outline"
+                                  size={30}
+                                  color={GlobalColor.Danger}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                            <FlatList
+                              data={Leavereason}
+                              keyExtractor={item => item.id}
+                              renderItem={rederReason}
+                            />
                           </View>
                         </Modal>
                       </TouchableOpacity>
@@ -944,7 +944,7 @@ const Leave = ({navigation}) => {
                         </Text>
                       </View>
                     )}
-                    <View style={{ height: 100, marginTop:20, width:"100%",alignSelf:'center' }}>
+                    <View style={{ height: 100, marginTop: 20, width: "100%", alignSelf: 'center' }}>
                       <Button
                         onPress={() => {
                           handleSubmit();
@@ -956,8 +956,8 @@ const Leave = ({navigation}) => {
                 )}
               </Formik>
             ) : (
-              <View style={{ flex:1 }}>
-                <Text Bold style={{ paddingHorizontal: 0, marginTop:5 }}>Select Financial Year</Text>
+              <View style={{ flex: 1 }}>
+                <Text Bold style={{ paddingHorizontal: 0, marginTop: 5 }}>Select Financial Year</Text>
                 <View
                   style={{
                     width: '100%',
@@ -1020,7 +1020,7 @@ const Leave = ({navigation}) => {
 
                 {/* Headings */}
 
-                <View style={{ flex:1,paddingHorizontal:0, marginTop:5}}>
+                <View style={{ flex: 1, paddingHorizontal: 0, marginTop: 5 }}>
                   <DataTable
                     style={{
                       width: '100%',
@@ -1045,25 +1045,31 @@ const Leave = ({navigation}) => {
                     <FlatList
                       data={EmpLeaveDetail}
                       keyExtractor={item => item.id}
-                      renderItem={({ item }) => (
-                        
-                        <View style={{flex:1}} key={item['Application ID']}>
-                          <TouchableOpacity 
-                           style={{flex:1}}
-                            key={item.id}                           
+                      renderItem={({ item }) =>
+
+
+                      (
+
+                        <View style={{ flex: 1 }} key={item['Application ID']}>
+                          <TouchableOpacity
+                            style={{ flex: 1 }}
+                            key={item.id}
                             onPress={() => {
                               setModalData(item)
-                              setLeaveDetailModal(true)                            
-                          }}>
+                              setLeaveDetailModal(true)
+                            }}>
                             <DataTable.Row
-                              style={{borderBottomWidth: 1, paddingVertical: 5, }}>
+                              style={{ borderBottomWidth: 1, paddingVertical: 5, }}>
                               <View
                                 style={{
                                   flexDirection: 'column',
                                   // marginTop: '2%',
                                 }}>
-                                <DataTable.Cell numeric>
-                                  {item['From Date']}
+                                <DataTable.Cell >
+                                                                    
+                                    {item['From Date']}
+                                    {/* {item['To Date']} */}
+
                                 </DataTable.Cell>
                               </View>
 
@@ -1089,7 +1095,7 @@ const Leave = ({navigation}) => {
                     // animationType="slide"
                     transparent={true}
                   >
-                    <View style={{ backgroundColor: '#fff', padding: 10 ,borderRadius:0}}>
+                    <View style={{ backgroundColor: '#fff', padding: 10, borderRadius: 0 }}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1101,8 +1107,8 @@ const Leave = ({navigation}) => {
                         <Text
                           Bold
                           style={{
-                            fontSize: GlobalFontSize.H4, 
-                            color:GlobalColor.Primary
+                            fontSize: GlobalFontSize.H4,
+                            color: GlobalColor.Primary
                           }}>
                           Leave Details
                         </Text>
@@ -1116,7 +1122,7 @@ const Leave = ({navigation}) => {
                         </TouchableOpacity>
                       </View>
 
-                      
+
 
                       <View style={{ flexDirection: 'row', }}>
                         <View style={{ width: '90%', }}>
@@ -1132,9 +1138,9 @@ const Leave = ({navigation}) => {
                           <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             No of Days : {modalData.Days}
                           </Text>
-                          <Text style={{fontWeight: "700", marginVertical: 8}}>
-                              Planned/Unplanned : {modalData['Planned/Unplanned']}
-                          </Text>                                      
+                          <Text style={{ fontWeight: "700", marginVertical: 8 }}>
+                            Planned/Unplanned : {modalData['Planned/Unplanned']}
+                          </Text>
                           <Text style={{ fontWeight: "700", marginVertical: 8 }}>
                             Period : {modalData.Period}
                           </Text>
@@ -1144,30 +1150,30 @@ const Leave = ({navigation}) => {
                           <Text style={{ fontWeight: "700", marginVertical: 12 }}>
                             Remark :
                           </Text>
-                          <View style={{width:'100%',flexDirection:'row',justifyContent:'flex-end'}}>
+                          <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
 
-                          {
+                            {
                               modalData.Status && modalData.Status.toLowerCase() == 'pending' ? (
                                 <TouchableOpacity
-                                style={{ padding: 12, borderRadius: 5,backgroundColor: GlobalColor.Secondary, minWidth:100, marginRight:25 }} 
-                                onPress={() => {
-                                  setLeaveDetailModal(!LeaveDetailModal);
-                                  DeleteLeavePending(modalData);
-                                }}>
-                                <Text style={{color:'#fff', alignSelf:'center'}} Bold>Delete</Text>
-                              </TouchableOpacity>
+                                  style={{ padding: 12, borderRadius: 5, backgroundColor: GlobalColor.Secondary, minWidth: 100, marginRight: 25 }}
+                                  onPress={() => {
+                                    setLeaveDetailModal(!LeaveDetailModal);
+                                    DeleteLeavePending(modalData);
+                                  }}>
+                                  <Text style={{ color: '#fff', alignSelf: 'center' }} Bold>Delete</Text>
+                                </TouchableOpacity>
                               ) : null
                             }
-                              <TouchableOpacity
-                                style={{ padding: 12, borderRadius: 5,backgroundColor: GlobalColor.Secondary, minWidth:100 }} 
-                                onPress={() => {
-                                  setLeaveDetailModal(!LeaveDetailModal)
-                                }}>
-                                <Text style={{color:'#fff', alignSelf:'center'}} Bold>Okay</Text>
+                            <TouchableOpacity
+                              style={{ padding: 12, borderRadius: 5, backgroundColor: GlobalColor.Secondary, minWidth: 100 }}
+                              onPress={() => {
+                                setLeaveDetailModal(!LeaveDetailModal)
+                              }}>
+                              <Text style={{ color: '#fff', alignSelf: 'center' }} Bold>Okay</Text>
                             </TouchableOpacity>
                           </View>
                         </View>
-                      </View>                  
+                      </View>
                     </View>
                   </Modal>
 
@@ -1186,23 +1192,23 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     width: '100%',
-    backgroundColor:GlobalColor.PrimaryLight
+    backgroundColor: GlobalColor.PrimaryLight
   },
   tabsContainerStyle: {
     marginTop: 10,
-    borderRadius:0,
-    width:'100%'
+    borderRadius: 0,
+    width: '100%'
   },
   tabStyle: {
     paddingVertical: 10,
     borderWidth: 1,
-    borderRadius:0,
-    borderColor:GlobalColor.Secondary
+    borderRadius: 0,
+    borderColor: GlobalColor.Secondary
   },
   tabTextStyle: {
-    fontSize:GlobalFontSize.P,
+    fontSize: GlobalFontSize.P,
     color: 'grey',
-    fontFamily:'Roboto-Bold',
+    fontFamily: 'Roboto-Bold',
   },
   activeTabStyle: {
     backgroundColor: GlobalColor.PrimaryLight,
@@ -1212,12 +1218,12 @@ const styles = StyleSheet.create({
   activeTabTextStyle: {
     color: GlobalColor.Secondary,
   },
-  circleBox:{
-    width:"16.6%",
-    height:60,
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
+  circleBox: {
+    width: "16.6%",
+    height: 60,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   circle: {
     borderWidth: 1,
@@ -1256,22 +1262,22 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     padding: 10
   },
-  spinnerTextStyle:{
-    color:'#fff'
+  spinnerTextStyle: {
+    color: '#fff'
   },
-  addtnlBtn:{
-    position:'absolute',
-    right:10,
-    top:0,
-    zIndex:55555
+  addtnlBtn: {
+    position: 'absolute',
+    right: 10,
+    top: 0,
+    zIndex: 55555
   },
-  checkboxContainer:{
-    width:"50%",
-    flexDirection:'row', 
-    alignItems:'center'
+  checkboxContainer: {
+    width: "50%",
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  checkboxText:{
-    marginLeft:2
+  checkboxText: {
+    marginLeft: 2
   }
 });
 

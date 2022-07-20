@@ -327,6 +327,7 @@ const PastBook = () => {
                                 <Text style={{ fontSize: GlobalFontSize.H4 }} Bold>Booking Detail</Text>
 
                                 {bookingDetails.map((item) => {
+                                    console.log("first",item)
                                     return (
                                         <View style={{ width: '100%', marginVertical: 15 }}>
                                             <Text>Booking Id : {item.BKDT_ID} </Text>
