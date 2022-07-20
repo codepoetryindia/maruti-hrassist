@@ -309,7 +309,7 @@ export const FlexiShift = () => {
     setLoader(true);
     ApiService.PostMethode('/FlexiShiftPendAppLOV  ', apiData, token)
       .then(result => {
-        console.log("APiresult FlexiShiftPendAppLOV", result);
+        console.log("APiresult FlexiShiftPendAppLOV", result.value,);
         stopLoader();
         ApiResult = result.Value
         setFlexiShift(ApiResult)
