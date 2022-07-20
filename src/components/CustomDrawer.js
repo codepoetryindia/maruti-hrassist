@@ -80,7 +80,7 @@ function CustomDrawer(props) {
               />
             )}
             <View style={{ flex:1}}>
-              <Text style={styles.textTitle} Bold>{AppUserData.data && AppUserData.data.EMPL_NAME ? AppUserData.data.EMPL_NAME : "User"}</Text>
+              <Text style={styles.textTitle} Bold>{AppUserData.data && AppUserData?.data?.EMPL_NAME ? AppUserData?.data?.EMPL_NAME : "User"}</Text>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('EditProfile');

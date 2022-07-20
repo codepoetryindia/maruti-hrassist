@@ -68,8 +68,8 @@ const HolidayCalendar = () => {
   
   const LoadcalenderData = () => {
     const m_names_month = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-    let apiData = { "UserName": AppUserData.data.userId };
-    // AppUserData.data.userId 222852
+    let apiData = { "UserName": AppUserData?.data?.userId };
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/GetEmplCal  ', apiData, token)

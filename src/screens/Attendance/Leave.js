@@ -150,8 +150,8 @@ const Leave = ({navigation}) => {
   };
 
   const getleavetypes = () => {
-    let apiData = { "UserName": AppUserData.data.userId };
-    // AppUserData.data.userId 222852
+    let apiData = { "UserName": AppUserData?.data?.userId };
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/GetInitialLeave  ', apiData, token)
@@ -191,7 +191,7 @@ const Leave = ({navigation}) => {
 
   const GetLeaveReason = (type) => {
     let apiData = { "LeaveType": type };
-    // AppUserData.data.userId 222852
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/GetLeaveReason  ', apiData, token)
@@ -231,9 +231,9 @@ const Leave = ({navigation}) => {
 
   const getfinancialyear = () => {
     let apiData = {
-      "UserName": AppUserData.data.userId
+      "UserName": AppUserData?.data?.userId
     };
-    // AppUserData.data.userId 222852
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/LeaveStatus  ', apiData, token)
@@ -282,12 +282,12 @@ const Leave = ({navigation}) => {
     }
     var to = '31-mar-' + curryear + ((fnyear.toString()).substring(2, 4));
     let apiData = {
-      "StaffNo": AppUserData.data.userId,
+      "StaffNo": AppUserData?.data?.userId,
       "FromDate": from,
       "ToDate": to
     };
 
-    // AppUserData.data.userId 222852
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
@@ -327,10 +327,10 @@ const Leave = ({navigation}) => {
   const DeleteLeavePending = (data) => {
     
     let apiData = {
-        "UserName" : AppUserData.data.userId,
+        "UserName" : AppUserData?.data?.userId,
         "ApplicationID" : data['Application ID']
     }
-    // AppUserData.data.userId 222852
+    // AppUserData?.data?.userId 222852
     let token = AppUserData.token;
     setLoader(true);
     ApiService.PostMethode('/DeleteLeave  ', apiData, token)
@@ -499,8 +499,8 @@ const Leave = ({navigation}) => {
                 }}
                 onSubmit={values => {
                   let data = {
-                    UserName: AppUserData.data.userId,
-                    StaffNo: AppUserData.data.userId,
+                    UserName: AppUserData?.data?.userId,
+                    StaffNo: AppUserData?.data?.userId,
                     PlannedUnplanned: values.planned,
                     LeaveType: values.leave,
                     Period: values.period,
@@ -512,8 +512,8 @@ const Leave = ({navigation}) => {
 
                   let submitData =
                   {
-                    "UserName": AppUserData.data.userId,
-                    "StaffNo": AppUserData.data.userId,
+                    "UserName": AppUserData?.data?.userId,
+                    "StaffNo": AppUserData?.data?.userId,
                     "PlannedUnplanned": values.planned,
                     "LeaveType": values.leave,
                     "Period": values.period.toString(),

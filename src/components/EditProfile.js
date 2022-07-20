@@ -27,7 +27,7 @@ const EditProfile = ({ navigation, route }) => {
 
   const employeProfile = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apiData = {
       UserName: userId
     }
@@ -66,7 +66,7 @@ const EditProfile = ({ navigation, route }) => {
 
   const UpdateEmpProf = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let apiData = {
         "StaffNo" : userId,
         "PresonalNo" : "",

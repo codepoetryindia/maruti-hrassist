@@ -64,7 +64,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
     const GetConvElig = () => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data.userId
+        let EmplID = AppUserData?.data?.userId
         console.log("this empid", EmplID)
         let apiData = {
             "UserName": EmplID
@@ -95,7 +95,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
 
     const FuelConvElig = () => {
         let token = AppUserData.token
-        let EmplID = AppUserData.data.userId
+        let EmplID = AppUserData?.data?.userId
         console.log("this empid", EmplID)
         let apiData = {
 
@@ -141,7 +141,7 @@ const ConveyanceBillsSubmission = ({ navigation, route }) => {
               },
               { text: "OK", onPress: () => {
                 let token = AppUserData.token
-                let EmplID = AppUserData.data.userId
+                let EmplID = AppUserData?.data?.userId
                 let apiData = {
                     "UserName": EmplID,
                     ...values

@@ -47,7 +47,7 @@ const Payroll = () => {
     try {
       //Get Data
       let result = await ApiService.PostMethode('/GetTaxApp', {
-        "UserName": AppUserData.data.userId
+        "UserName": AppUserData?.data?.userId
       }, AppUserData.token)
 
       // Stop Loader
@@ -68,7 +68,7 @@ const Payroll = () => {
   //   // financial year Api
   const GetMonth = () => {
     let token = AppUserData.token
-    let EmplID = AppUserData.data.userId
+    let EmplID = AppUserData?.data?.userId
     let apiData = {
       "EmplID": EmplID
     }
@@ -98,7 +98,7 @@ const Payroll = () => {
 
       //get Api Data
       let result = await ApiService.PostMethode('/GetPFStatement', {
-        "EmplID": AppUserData.data.userId,
+        "EmplID": AppUserData?.data?.userId,
         "FNYR": month
       }, AppUserData.token)
 
@@ -129,7 +129,7 @@ const Payroll = () => {
     try {
       //getting Data
       let result = await ApiService.PostMethode('/GetTaxSavings', {
-        "EmplID": AppUserData.data.userId,
+        "EmplID": AppUserData?.data?.userId,
         "FNYR": month,
       }, AppUserData.token)
 

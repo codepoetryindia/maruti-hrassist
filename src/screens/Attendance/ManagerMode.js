@@ -29,10 +29,13 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import TextInput from '../../components/reusable/TextInput';
 import { LoadingScreen } from '../../components/reusable/LoadingScreen';
-
-
+import ManagerFlexiShift from './managermode/ManagerFlexiShift';
+import ManagerLeave from './managermode/ManagerLeave';
+import ManagerTaxi from './managermode/ManagerTaxi';
 
 const Tab = createMaterialTopTabNavigator();
+
+
 const ManagerMode = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
@@ -45,9 +48,9 @@ const ManagerMode = ({ navigation }) => {
           tabBarStyle: { backgroundColor: GlobalColor.Secondary, elevation: 0 },
           tabBarItemStyle: { paddingHorizontal: 0 },
         }}>
-        <Tab.Screen name="Leave" component={Leave} />
-        <Tab.Screen name="FlexiShift" component={FlexiShift} />
-        <Tab.Screen name="Taxi" component={Taxi} />
+        <Tab.Screen name="Leave" component={ManagerLeave} />
+        <Tab.Screen name="FlexiShift" component={ManagerFlexiShift} />
+        <Tab.Screen name="Taxi" component={ManagerTaxi} />
         <Tab.Screen name="Attendance" component={Attendance} />
       </Tab.Navigator>
 
@@ -60,292 +63,9 @@ const ManagerMode = ({ navigation }) => {
           Back to Employee Mode
         </Text>
       </TouchableOpacity>
-
     </SafeAreaView>
   );
 };
-
-
-
-
-// create a component
-export const Leave = () => {
-  const [approve, setApprove] = useState(0);
-  const [getEmplLevDetail, setGetEmplLevDetail] = useState([]);
-  const [getPendingLeaveReq, setGetPendingLeaveReq] = useState([]);
-  const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false)
-  const [refresh, setrefresh] = useState(false);
-
-
-  let userId = AppUserData.data.userId;
-  let UserName = AppUserData.data.EMPL_NAME
-  let date = moment(new Date()).format("DD-MMMM-YYYY");
-
-  const stopLoader = () => {
-    setLoader(false);
-    // setrefresh(false);
-  }
-
-  const GetEmplLevDetail = () => {
-    let userId = AppUserData.data.userId
-    let token = AppUserData.token;
-    let apiData = {
-      "StaffNo": userId,
-      "FromDate": "01-Feb-2020",
-      "ToDate": date
-    };
-    setLoader(true);
-    ApiService.PostMethode('/GetEmplLevDetail  ', apiData, token)
-      .then(result => {
-        console.log("APiresult GetEmplLevDetail", result);
-        stopLoader();
-        ApiResult = result.Value
-        setGetEmplLevDetail(ApiResult)
-      })
-      .catch(error => {
-        stopLoader();
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
-      });
-  }
-
-
-
-  const GetPendingLeaveReq = () => {
-
-    const stopLoader = () => {
-      setLoader(false);
-      // setrefresh(false);
-    }
-
-    let UserName = AppUserData.data.EMPL_NAME
-    let token = AppUserData.token;
-    let apiData = {
-      "UserName": "spnayak",
-      // "UserName": UserName,
-    };
-    setLoader(true);
-    ApiService.PostMethode('/GetPendingLeaveReq  ', apiData, token)
-      .then(result => {
-        console.log("APiresult GetPendingLeaveReq", result);
-        stopLoader();
-        ApiResult = result.Value
-        setGetPendingLeaveReq(ApiResult)
-      })
-      .catch(error => {
-        stopLoader();
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
-      });
-  }
-
-  useEffect(() => {
-    GetPendingLeaveReq();
-    GetEmplLevDetail();
-  }, [])
-  const handleApprove = index => {
-    setApprove(index);
-  };
-  return (
-    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: GlobalColor.PrimaryLight }}>
-      <View style={{ width: '100%', alignSelf: 'center', marginVertical: 10, paddingHorizontal: 10 }}>
-        <SegmentedControlTab
-          borderRadius={0}
-          values={['Approve Leave', 'View Report']}
-          selectedIndex={approve}
-          onTabPress={index => {
-            handleApprove(index);
-          }}
-          tabsContainerStyle={styles.tabsContainerStyle}
-          tabStyle={styles.tabStyle}
-          tabTextStyle={styles.tabTextStyle}
-          activeTabStyle={styles.activeTabStyle}
-          activeTabTextStyle={styles.activeTabTextStyle}
-        />
-      </View>
-
-      <View style={{ paddingHoriZontal: 10, flex: 1 }}>
-        {approve == 0 ? (
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity style={{ padding: 10, backgroundColor: '#a9bce7' }}>
-              <Text style={{ color: '#000', fontWeight: '600' }}>
-                Tap On Leave To View Details
-              </Text>
-            </TouchableOpacity>
-            {getPendingLeaveReq.length > 0 ? (
-              <View style={styles.header}>
-                <Text>NAME</Text>
-                <Text>FROM_DATE</Text>
-                <Text>PERIOD</Text>
-                <Text>DAYS</Text>
-              </View>
-            ) : null}
-
-
-            {loader == true ? (
-              <Spinner
-                visible={loader}
-                textContent={'Loading...'}
-                textStyle={styles.spinnerTextStyle}
-              />
-            ) : null}
-
-
-            <FlatList
-              data={getPendingLeaveReq}
-              keyExtractor={({ item, index }) => index}
-              renderItem={({ item, index }) => {
-                let Name = item.EMPL_NAME
-                let slice = Name.slice(0, 10)
-                return (
-                  <View
-                    style={styles.reportStyle}>
-                    <Text>{slice}</Text>
-                    <Text>{item.FROM_DATE}</Text>
-                    <Text>{item.PERIOD}</Text>
-                    <Text>{item.DAYS}</Text>
-
-                  </View>
-                )
-              }}
-            />
-          </View>
-        ) : (
-          <View style={{ flex: 1 }}>
-
-            <Text Back style={{ color: '#000', paddingVertical: 10 }}>Employee</Text>
-
-            <TouchableOpacity style={styles.reportHeader}>
-              <Text style={{ color: '#000' }}>{userId}  {UserName}</Text>
-              <Ionicons name="send" size={20} color={GlobalColor.Secondary} />
-            </TouchableOpacity>
-
-
-            <View style={styles.header}>
-              <Text Bold>Date</Text>
-              <Text Bold>Type</Text>
-              <Text Bold>Period</Text>
-              <Text Bold>Status</Text>
-            </View>
-            {loader == true ? (
-              <Spinner
-                visible={loader}
-                textContent={'Loading...'}
-                textStyle={styles.spinnerTextStyle}
-              />
-            ) : null}
-            <FlatList
-              data={getEmplLevDetail}
-              keyExtractor={({ item, index }) => index}
-              renderItem={({ item, index }) => {
-                return (
-                  <View
-                    style={styles.reportStyle}>
-                    <View style={{ flexDirection: 'column' }}>
-                      <Text>{item["From Date"]}</Text>
-                      <Text>{item["To Date"]}</Text></View>
-                    <Text>{item["Leave Type"]}</Text>
-                    <Text>{item.Period}</Text>
-                    <Text>{item.Status}</Text>
-                  </View>
-                )
-              }}
-            />
-          </View>
-
-        )}
-      </View>
-    </View>
-  );
-};
-
-
-export const FlexiShift = () => {
-  const [flexiShift, setFlexiShift] = useState('')
-  const { authContext, AppUserData } = useContext(AuthContext);
-  const [loader, setLoader] = useState(false);
-  const [refresh, setrefresh] = useState(false);
-
-  const FlexiShiftPendAppLOV = () => {
-
-    const stopLoader = () => {
-      setLoader(false);
-      // setrefresh(false);
-    }
-
-    let userId = AppUserData.data.userId
-    let token = AppUserData.token;
-    let apiData = {
-      // "UserName": "spnayak",
-      "StaffNo": userId,
-    };
-    setLoader(true);
-    ApiService.PostMethode('/FlexiShiftPendAppLOV  ', apiData, token)
-      .then(result => {
-        console.log("APiresult FlexiShiftPendAppLOV", result.value,);
-        stopLoader();
-        ApiResult = result.Value
-        setFlexiShift(ApiResult)
-      })
-      .catch(error => {
-        stopLoader();
-        console.log('Error occurred==>', error);
-        if (error.response) {
-          if (error.response.status == 401) {
-            console.log('error from api', error.response);
-          }
-          // client received an error response (5xx, 4xx)
-          Toast.show(error.response.data.title);
-        } else if (error.request) {
-          // client never received a response, or request never left
-          Toast.show('Network Error');
-          // console.log("error.request", error.request._response);
-        } else {
-          // anything else
-          Toast.show('Something Went Wrong');
-        }
-      });
-  }
-
-  useEffect(() => {
-    FlexiShiftPendAppLOV()
-  }, [])
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>
-      <ListEmptyComponent title="No Data Found"
-      ></ListEmptyComponent>
-    </SafeAreaView>
-  );
-};
-
-
 
 
 export const Taxi = () => {
@@ -364,7 +84,7 @@ export const Taxi = () => {
       // setrefresh(false);
     }
 
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let token = AppUserData.token;
     let apiData = {
       // "UserName": "spnayak",
@@ -404,10 +124,10 @@ export const Taxi = () => {
       setLoader(false);
       // setrefresh(false);
     }
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     let token = AppUserData.token;
     let apiData = {
-      "UserName": "NSTHAKUR"
+      "UserName": userId//"NSTHAKUR"
     };
     setLoader(true);
     ApiService.PostMethode('/ApprovedTaxiReport  ', apiData, token)
@@ -660,6 +380,8 @@ export const Taxi = () => {
     </View>
   );
 };
+
+
 
 
 export const Attendance = () => {

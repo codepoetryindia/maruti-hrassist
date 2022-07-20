@@ -24,7 +24,7 @@ const Benifits = () => {
 
   const GetConvElig = () => {
     let token = AppUserData.token
-    let EmplID =  AppUserData.data.userId 
+    let EmplID =  AppUserData?.data?.userId 
     console.log("this empid",EmplID)
     let apiData = {
       "UserName": EmplID

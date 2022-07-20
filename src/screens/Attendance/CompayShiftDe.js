@@ -50,7 +50,7 @@ const CompayShiftDe = ({ navigation }) => {
         if (!pulldown) {
             setLoader(true);
           }
-        let userId = AppUserData.data.userId
+        let userId = AppUserData?.data?.userId
         let token = AppUserData.token;
         let apiData = {
             "UserName": userId

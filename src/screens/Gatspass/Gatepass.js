@@ -70,7 +70,7 @@ const Gatepass = ({ navigation }) => {
 
   const GetLocationListVGPSApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     console.log("UserName", userId);
     let apiData = { "UserName": userId }
     console.log(apiData)
@@ -111,7 +111,7 @@ const Gatepass = ({ navigation }) => {
 
   const GetSearchLevelsListVGPSApi = () => {
     let token = AppUserData.token
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     console.log("UserName", userId);
     let apiData = { "UserName": userId }
     console.log(apiData)
@@ -183,7 +183,7 @@ const Gatepass = ({ navigation }) => {
     }
   };
   const GetAccessListVGPSApi = (locationcode = '001') => {
-    let userId = AppUserData.data.userId
+    let userId = AppUserData?.data?.userId
     // let newLoc = empLocCode.split(",")[0]
     let apiData = {
       UserName: userId,
@@ -364,7 +364,7 @@ const Gatepass = ({ navigation }) => {
             "id": "1",
             "location": values.office.split(",")[0],
             "visitDate": moment(values.date).format('YY/MM/DD'),
-            "authorizedPerson": AppUserData.data.userId,
+            "authorizedPerson": AppUserData?.data?.userId,
             "Pvehicle": values.persionalVehical,
             "VisType": "O",
             "visLevel": "1",
