@@ -418,7 +418,7 @@ const handleSubmit = () => {
         ) : null}
 
         <View style={{paddingHorizontal:10}}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -450,9 +450,9 @@ const handleSubmit = () => {
                 </TouchableOpacity>
                
             </View>
-          ) : null}
+          ) : null} */}
 
-        <View style={{ width: '100%', alignSelf: 'center', marginTop:20,paddingHorizontal:0 }}>
+        <View style={{ width: '100%', alignSelf: 'center', marginTop:10,paddingHorizontal:0 }}>
           <SegmentedControlTab
               borderRadius={0}
               values={['Shift Details', 'Flexi Shift']}

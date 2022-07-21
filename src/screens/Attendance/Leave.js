@@ -426,7 +426,7 @@ const Leave = ({ navigation }) => {
         style={styles.container}
         contentContainerStyle={{ flexGrow: 1 }}>
         <View showsVerticalScrollIndicator={false} style={styles.container}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
               horizental == true ? setHorizental(false) : setHorizental(true);
@@ -466,9 +466,9 @@ const Leave = ({ navigation }) => {
                 <Text style={{ color: '#fff' }}>Salary Deduction</Text>
               </TouchableOpacity>
             </View>
-          ) : null}
+          ) : null} */}
 
-          <View style={{ width: '100%', alignSelf: 'center', marginTop: 30, paddingHorizontal: 10 }}>
+          <View style={{ width: '100%', alignSelf: 'center', marginTop: 10, paddingHorizontal: 10 }}>
             <SegmentedControlTab
               borderRadius={2}
               values={['Apply Leave', 'View Report']}
