@@ -22,6 +22,7 @@ import { GlobalFontSize } from '../../constants/FontSize';
 import Text from '../../components/reusable/Text';
 import {LoadingScreen} from './../../components/reusable/LoadingScreen';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import {DataTable} from 'react-native-paper';
 
 
 
@@ -147,10 +148,13 @@ const Attendance = ({navigation}) => {
 
 
     const renderItem =({item})=>{
+      // console.log("first data sujsdhg", item)
       return(
         <View style={styles.renderitem}>
             <Text>{item['Staff No']}</Text>
-            <Text>{item.Date}</Text>
+               <Text>{item.Date.slice(0, 12)}</Text> 
+               <Text>{item.Date.slice("12", 17)}</Text> 
+            {/* <Text>{item.Date}</Text> */}
             <Text>{item['Moble/Machine']}</Text>
         </View>
       )
@@ -504,6 +508,30 @@ if(loader){
               />
             </View>
             <Button onPress={() => {handelDate()}} title={"Submit"}></Button>
+            <DataTable
+            style={{
+              width: '100%',
+              backgroundColor: '#fff',
+              marginVertical: 10,   
+              flex:1           
+            }}>
+
+            <DataTable.Header style={{backgroundColor: '#fff'}}>
+              <DataTable.Title>
+                <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Staff Id</Text>
+              </DataTable.Title>
+               <DataTable.Title numeric >
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>
+                  Date
+                </Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Time</Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Source</Text>
+              </DataTable.Title>
+            </DataTable.Header>
 
             <FlatList
               contentContainerStyle={{ flexGrow:1 }}
@@ -512,6 +540,7 @@ if(loader){
               ListEmptyComponent={()=><ListEmptyComponent title="No Data Found" subtitle="Please select dates and submit to view data"></ListEmptyComponent>}
               keyExtractor={item => item.Date.toString()}
             />
+            </DataTable>
           </View>
         )}
       </View>

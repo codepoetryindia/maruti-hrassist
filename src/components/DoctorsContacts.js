@@ -189,7 +189,7 @@ const DoctorsContacts = ({ navigation, route }) => {
               <View style={styles.boxsingle}>
                 <Text Bold style={styles.headerText}>CHAIRPERSON </Text>
                 <View>
-                  {chairperson == null ? <Text>Not Found</Text>
+                  {chairperson == null ? <Text style={{paddingHorizontal:10}}>Not Found</Text>
                     : <View style={styles.responseBox}>
                       <Text>{chairperson && chairperson.NAME}</Text>
                       <TouchableOpacity
@@ -220,7 +220,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                   CO-CHAIRPERSON
                 </Text>
                 <View>
-                  {CoChairperson == null ? <Text>Not Found</Text>
+                  {CoChairperson == null ? <Text style={{paddingHorizontal:10}}>Not Found</Text>
                     : <View style={styles.responseBox}>
                       <Text>{CoChairperson && CoChairperson.NAME}</Text>
                       <TouchableOpacity onPress={() => {
@@ -352,7 +352,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT ENGINE PLANT
                       </Text>
-                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                      {mpt.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={mpt}
                           keyExtractor={({ item, index }) => index}
@@ -377,7 +377,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         GURGAON FACTORY
                       </Text>
-                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                      {gurgaon.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
 
                         <FlatList
                           data={gurgaon}
@@ -405,7 +405,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MANESAR
                       </Text>
-                      {manesar.length == 0 ? <Text>Not Found</Text> :
+                      {manesar.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={manesar}
                           keyExtractor={({ item, index }) => index}
@@ -431,7 +431,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT CASTING PLANT
                       </Text>
-                      {casting.length == 0 ? <Text>Not Found</Text> :
+                      {casting.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={casting}
                           keyExtractor={({ item, index }) => index}
@@ -457,7 +457,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         ROHTAK
                       </Text>
-                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                      {rothak.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={rothak}
                           keyExtractor={({ item, index }) => index}
@@ -485,7 +485,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       style={styles.headerText}>
                       MPT ENGINE PLANT
                     </Text>
-                    {mpt.length == 0 ? <Text>Not Found</Text> :
+                    {mpt.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                       <FlatList
                         data={mpt}
                         keyExtractor={({ item, index }) => index}
@@ -510,7 +510,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         GURGAON FACTORY
                       </Text>
-                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                      {gurgaon.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
 
                         <FlatList
                           data={gurgaon}
@@ -537,7 +537,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       style={styles.headerText}>
                       MANESAR
                     </Text>
-                    {manesar.length == 0 ? <Text>Not Found</Text> :
+                    {manesar.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                       <FlatList
                         data={manesar}
                         keyExtractor={({ item, index }) => index}
@@ -562,7 +562,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT CASTING PLANT
                       </Text>
-                      {casting.length == 0 ? <Text>Not Found</Text> :
+                      {casting.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={casting}
                           keyExtractor={({ item, index }) => index}
@@ -588,7 +588,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       style={styles.headerText}>
                       ROHTAK
                     </Text>
-                    {rothak.length == 0 ? <Text>Not Found</Text> :
+                    {rothak.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                       <FlatList
                         data={rothak}
                         keyExtractor={({ item, index }) => index}
@@ -616,7 +616,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT ENGINE PLANT
                       </Text>
-                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                      {mpt.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={mpt}
                           keyExtractor={({ item, index }) => index}
@@ -642,7 +642,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         GURGAON FACTORY
                       </Text>
-                      {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                      {gurgaon.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={gurgaon}
                           keyExtractor={({ item, index }) => index}
@@ -668,7 +668,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       style={styles.headerText}>
                       MANESAR
                     </Text>
-                    {manesar.length == 0 ? <Text>Not Found</Text> :
+                    {manesar.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                       <FlatList
                         data={manesar}
                         keyExtractor={({ item, index }) => index}
@@ -693,7 +693,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                       style={styles.headerText}>
                       MPT CASTING PLANT
                     </Text>
-                    {casting.length == 0 ? <Text>Not Found</Text> :
+                    {casting.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                       <FlatList
                         data={casting}
                         keyExtractor={({ item, index }) => index}
@@ -719,7 +719,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         ROHTAK
                       </Text>
-                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                      {rothak.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={rothak}
                           keyExtractor={({ item, index }) => index}
@@ -747,7 +747,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT ENGINE PLANT
                       </Text>
-                      {mpt.length == 0 ? <Text>Not Found</Text> :
+                      {mpt.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <FlatList
                           data={mpt}
                           keyExtractor={({ item, index }) => index}
@@ -773,7 +773,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         GURGAON FACTORY
                       </Text>
-                        {gurgaon.length == 0 ? <Text>Not Found</Text> :
+                        {gurgaon.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                           <FlatList
                             data={gurgaon}
                             keyExtractor={({ item, index }) => index}
@@ -800,7 +800,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MANESAR
                       </Text>
-                      {manesar.length == 0 ? <Text>Not Found</Text> :
+                      {manesar.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <View style={styles.responseBox}>
                           <Text>{manesar[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {
@@ -817,7 +817,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         MPT CASTING PLANT
                       </Text>
-                      {casting.length == 0 ? <Text>Not Found</Text> :
+                      {casting.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <View style={styles.responseBox}>
                           <Text>{casting[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {
@@ -834,7 +834,7 @@ const DoctorsContacts = ({ navigation, route }) => {
                         style={styles.headerText}>
                         ROHTAK
                       </Text>
-                      {rothak.length == 0 ? <Text>Not Found</Text> :
+                      {rothak.length == 0 ? <Text style={{paddingHorizontal:10}}>Not Found</Text> :
                         <View style={styles.responseBox}>
                           <Text>{rothak[0].EMER_XNUM}</Text>
                           <TouchableOpacity onPress={() => {

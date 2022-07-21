@@ -36,7 +36,7 @@ const EmergencyHospital = ({ navigation, route }) => {
         }}>
         <Tab.Screen name="Emergency Contacts" component={EmergencyContacts} />
         <Tab.Screen name="Hospital" component={Hospital} />
-        <Tab.Screen name="NearBy Hospital" component={NearByHospital} />
+        <Tab.Screen name="Near By Hospital" component={NearByHospital} />
       </Tab.Navigator>
     </SafeAreaView>
   );

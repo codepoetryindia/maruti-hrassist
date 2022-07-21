@@ -571,9 +571,14 @@ const handleSubmit = () => {
               <DataTable.Title>
                 <Text Bold style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>Date</Text>
               </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>
+                  In
+                </Text>
+              </DataTable.Title>
                <DataTable.Title numeric>
                 <Text Bold  style={{color: GlobalColor.Primary, fontSize: GlobalFontSize.Small}}>
-                  Time
+                  Out
                 </Text>
               </DataTable.Title>
               <DataTable.Title numeric>
@@ -591,11 +596,11 @@ const handleSubmit = () => {
                       <Text>To</Text>
                       <Text>{item.END_DATE}</Text>
                   </View>
-                  <View style={{flexDirection:'column'}}>
+                 
                     <Text>{item.STD_START}</Text>
-                    <Text>To</Text>
+                    
                     <Text>{item.STD_STOP}</Text>
-                  </View>                  
+                              
                     <Text style={{ marginRight:10 }}>{item.SHIFT}</Text>
                 </View>
               )}

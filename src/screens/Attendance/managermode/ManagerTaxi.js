@@ -355,7 +355,7 @@ export const ManagerTaxi = ({navigation}) => {
                 <Feather name="search" size={20} color={GlobalColor.Secondary} />
               </View>
               <TextInput
-                placeholder="Search By Name/Dept/Staff/ID"
+                placeholder="Search By Slip No/Staff ID"
                 value={search}
                 onChangeText={(data) => {
                   setSearch(data)
