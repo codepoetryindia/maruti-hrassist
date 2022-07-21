@@ -97,19 +97,19 @@ const OnboardingScreen = ({ navigation }) => {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/attandance.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Attandance & Leave',
-                subtitle: 'Done with React Native Onboarding Swiper',
+                // subtitle: 'Done with React Native Onboarding Swiper',
             },
             {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/compbenifit.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Comp. & Benifits',
-                subtitle: 'This is the subtitle that sumplements the title.',
+                // subtitle: 'This is the subtitle that sumplements the title.',
             },
             {
                 backgroundColor: '#fff',
                 image: <Image source={require("../assets/Images/onboarding/emergency.png")} style={{width:150, height:150}} resizeMode="cover"/>,
                 title: 'Emergency Help',
-                subtitle: "Beautiful, isn't it?",
+                // subtitle: "Beautiful, isn't it?",
             },
             ]}
             showSkip={false}

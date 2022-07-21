@@ -30,16 +30,13 @@ import TextInput from '../../../components/reusable/TextInput';
 import { LoadingScreen } from '../../../components/reusable/LoadingScreen';
 
 
-
-
-
-
 export const ManagerTaxi = ({navigation}) => {
     const [flexiShift, setFlexiShift] = useState('')
     const { authContext, AppUserData } = useContext(AuthContext);
     const [loader, setLoader] = useState(false);
     const [refresh, setrefresh] = useState(false);
     const [taxiPending, setTaxiPending] = useState([]);
+    const [taxiPendingFiltered, setTaxiPendingFiltered] = useState([]);
     const [approvedTaxiReport, setApprovedTaxiReport] = useState([]);
     const [search, setSearch] = useState('');
     const [employ, setEmploy] = useState([]);
@@ -52,6 +49,7 @@ export const ManagerTaxi = ({navigation}) => {
     }  
 
     const GetTaxiPendingList = () => {
+
         const stopLoader = () => {
           setLoader(false);
           // setrefresh(false);
@@ -59,21 +57,25 @@ export const ManagerTaxi = ({navigation}) => {
     
         let userId = AppUserData?.data?.userId
         let token = AppUserData.token;
+        console.log(token);
+
         let apiData = {
           // "UserName": "spnayak",
           "StaffNo": userId,
     
         };
         setLoader(true);
-        ApiService.PostMethode('/GetTaxiPendingList  ', apiData, token)
+        ApiService.PostMethode('/GetTaxiPendingList', apiData, token)
           .then(result => {
             console.log("APiresult GetTaxiPendingList", result);
             stopLoader();
             if(result.Value && result.Value.length > 0){
               ApiResult = result.Value
-              setTaxiPending(ApiResult)
+              setTaxiPending(ApiResult);
+              setTaxiPendingFiltered(ApiResult);              
             }else{
               setTaxiPending([]);
+              setTaxiPendingFiltered([]);              
               Toast.show("No pending request found");
             }
           })
@@ -157,6 +159,7 @@ export const ManagerTaxi = ({navigation}) => {
           setLoader(true);
           ApiService.PostMethode('/GetEmplLookup', apiData, token)
             .then(result => {
+              console.log("GetEmplLookup",result);
               stopLoader();
               if(result.Value && result.Value.length > 0 ){
                 let responseData = result.Value;
@@ -181,6 +184,26 @@ export const ManagerTaxi = ({navigation}) => {
             });
         }
       };
+
+
+      const searchFilterFunction = (text) => {
+        setSearch(text)
+        // console.log(text);
+        const newData = taxiPending.filter((item) => {
+          // ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}
+          const itemData = `${item.TCAR_EMPL_ID}`;
+          const itemDataSlip = `${item.TCAR_SLIP_NO}`;
+          const textData = text;
+          if(itemData.indexOf(text) > -1){
+            console.log("yes");
+            return item;
+          }else if(itemDataSlip.indexOf(text) > -1){
+            console.log("yes yes");
+            return item;
+          }
+        });
+        setTaxiPendingFiltered(newData);
+      };
     
 
 
@@ -190,7 +213,8 @@ export const ManagerTaxi = ({navigation}) => {
       };
       
       const emptyList = () => {
-        setSearch('')
+        setSearch('');
+        setTaxiPendingFiltered(taxiPending);
       }
 
     const rejectFlexiShift = (data) =>{
@@ -358,7 +382,7 @@ export const ManagerTaxi = ({navigation}) => {
                 placeholder="Search By Slip No/Staff ID"
                 value={search}
                 onChangeText={(data) => {
-                  setSearch(data)
+                  searchFilterFunction(data);
                 }}
                 style={{
                   width: '65%',
@@ -381,9 +405,9 @@ export const ManagerTaxi = ({navigation}) => {
 
 
               <TouchableOpacity
-                onPress={() => {
-                  SearchEmployee()
-                }}
+                // onPress={() => {
+                //   SearchEmployee()
+                // }}
                 style={{
                   width: '15%',
                   alignItems: 'center',
@@ -396,14 +420,15 @@ export const ManagerTaxi = ({navigation}) => {
 
             <FlatList 
               contentContainerStyle={{ flexGrow:1 }}            
-              data={taxiPending}
+              data={taxiPendingFiltered}
               ListHeaderComponent={FlatList_Header_Approve}
               keyExtractor={({ item, index }) => index}
               ListHeaderComponentStyle={{ borderBottomColor: GlobalColor.Secondary, borderBottomWidth: 1 }}
               ListEmptyComponent={() => {
                 return (
                     <ListEmptyComponent 
-                    title="No Data Found"
+                    title={"No Data Found"}
+                    subtitle={search?"Not found please try with diffrent key":"No data found please pull down to refresh"}
                     enableRefresh={true} onRefreshCallback={() => ApprovedTaxiReport(true)} refreshing={refresh}
                     ></ListEmptyComponent>      
                 )
