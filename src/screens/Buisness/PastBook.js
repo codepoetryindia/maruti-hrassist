@@ -132,13 +132,13 @@ const PastBook = () => {
                     "Eligible",
                     ApiResult,
                     [
-                      {
-                        text: "Okay",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
-                      },
+                        {
+                            text: "Okay",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel"
+                        },
                     ]
-                  );
+                );
             })
             .catch(error => {
                 setLoader(false);
@@ -301,12 +301,12 @@ const PastBook = () => {
                                         onPress={() => {
                                             BookingDetailApi(item.BKDT_ID)
                                         }} style={styles.CardData}>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_EMPL_ID}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_ID}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.ROUT_SOURCE}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.ROUT_DESTINATION}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small-2 }}>{item.BKDT_STATUS_FLAG}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_EMPL_ID}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_ID}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.ROUT_SOURCE}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.ROUT_DESTINATION}</Text>
+                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_STATUS_FLAG}</Text>
                                     </TouchableOpacity>
                                 )
                             })
@@ -327,7 +327,7 @@ const PastBook = () => {
                                 <Text style={{ fontSize: GlobalFontSize.H4 }} Bold>Booking Detail</Text>
 
                                 {bookingDetails.map((item) => {
-                                    console.log("first",item)
+                                    console.log("first", item)
                                     return (
                                         <View style={{ width: '100%', marginVertical: 15 }}>
                                             <Text>Booking Id : {item.BKDT_ID} </Text>
@@ -345,7 +345,7 @@ const PastBook = () => {
                                 <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
                                     <View
                                         style={{ width: '47%', }}
-                                    >                                       
+                                    >
                                         <Button btnStyle={{ paddingHorizontal: 10 }} title="Close" onPress={() => {
                                             setModalVisible(false)
                                         }} />
@@ -428,15 +428,25 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 10,
         borderBottomWidth: 1,
-        borderBottomColor: GlobalColor.Primary
+        borderBottomColor: GlobalColor.Secondary
     },
     CardData: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: GlobalColor.Secondary
+        marginBottom: 8,
+        backgroundColor: GlobalColor.White,
+        paddingVertical: 15,
+        paddingHorizontal:5,
+        backgroundColor: '#FFF',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 2.0,
+        elevation: 5,
     },
     ModalContainer: {
         backgroundColor: '#000000aa',

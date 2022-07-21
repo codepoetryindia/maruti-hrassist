@@ -78,7 +78,7 @@ const CompensationBenifits = ({ navigation }) => {
   return (
          <SafeAreaView style={{flexGrow:1}}>
          <View style={{flex:1}}>
-           {isAuth == true ? ( 
+           {/* {isAuth == true ? (  */}
             <View style={{flex:1}}>
                 <Header title="Compensation and Benefits" />
                     <Tab.Navigator
@@ -93,7 +93,7 @@ const CompensationBenifits = ({ navigation }) => {
                       <Tab.Screen name="Benifits" component={Benifits} />
                     </Tab.Navigator>
             </View>
-            ) : ( 
+            {/* ) : ( 
              <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
                  <Text>Please Run in a real device </Text>
                  <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
@@ -101,7 +101,7 @@ const CompensationBenifits = ({ navigation }) => {
                  </TouchableOpacity>
              </View> 
             )      
-           }
+           }  */}
           </View>
          </SafeAreaView>
   );

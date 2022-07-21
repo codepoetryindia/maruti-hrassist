@@ -10,6 +10,7 @@ import { GlobalColor } from '../../constants/Colors';
 import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import Text from '../../components/reusable/Text';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function FutureBook() {
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingBottom: 25
     },
-    ListContant:{
+    ListContent:{
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
