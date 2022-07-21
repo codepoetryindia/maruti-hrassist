@@ -378,6 +378,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onBlur={handleBlur('empid')}
                                                 value={values.empid}
                                                 style={styles.TextInputStyle}
+                                                editable={false}
                                             />
                                         </View>
 
@@ -396,6 +397,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('slipno')}
                                                 onBlur={handleBlur('slipno')}
                                                 value={values.slipno}
+                                                editable={false}
                                                 />
                                         </View>
                                     </View>
@@ -422,6 +424,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('duration')}
                                                 onBlur={handleBlur('duration')}
                                                 value={values.Dept}
+                                                editable={false}
                                             />
                                         </View>
                                         <View style={{ width: "67%" }}>
@@ -438,6 +441,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('duration')}
                                                 onBlur={handleBlur('duration')}
                                                 value={values.Name}
+                                                editable={false}
                                             />
                                         </View>
                                     </View>
@@ -588,6 +592,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                             onBlur={handleBlur('reason')}
                                             value={values.purpose}
                                             style={styles.TextInputStyle}
+                                            editable={false}
                                         />
                                         {errors.reason && touched.reason && (
                                             <View
@@ -630,6 +635,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('StartPoint')}
                                                 onBlur={handleBlur('StartPoint')}
                                                 value={values.StartPoint}
+                                                editable={false}
 
                                             />
                                         </View>
@@ -649,6 +655,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('desig')}
                                                 onBlur={handleBlur('desig')}
                                                 value={values.desig}
+                                                editable={false}
 
                                             />
                                         </View>
@@ -679,6 +686,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('kms')}
                                                 onBlur={handleBlur('kms')}
                                                 value={values.kms}
+                                                editable={false}
                                                 />
                                         </View>
                                         <View style={{ width: "67%" }}>
@@ -696,6 +704,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('Partycode')}
                                                 onBlur={handleBlur('Partycode')}
                                                 value={values.Partycode}
+                                                editable={false}
                                                 />
                                         </View>
                                     </View>
@@ -723,6 +732,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('Addperson')}
                                                 onBlur={handleBlur('Addperson')}
                                                 value={values.Addperson}
+                                                editable={false}
                                                 />
                                         </View>
                                         <View style={{ width: "67%" }}>
@@ -740,6 +750,7 @@ const ManagerTaxiApproval = ({ navigation, route }) => {
                                                 onChangeText={handleChange('perempid')}
                                                 onBlur={handleBlur('perempid')}
                                                 value={values.perempid}
+                                                editable={false}
                                                 />
                                         </View>
                                     </View>
