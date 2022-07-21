@@ -61,7 +61,7 @@ export const ManagerTaxi = ({navigation}) => {
         let token = AppUserData.token;
         let apiData = {
           // "UserName": "spnayak",
-          "StaffNo": "516260",
+          "StaffNo": userId,
     
         };
         setLoader(true);
@@ -69,8 +69,13 @@ export const ManagerTaxi = ({navigation}) => {
           .then(result => {
             console.log("APiresult GetTaxiPendingList", result);
             stopLoader();
-            ApiResult = result.Value
-            setTaxiPending(ApiResult)
+            if(result.Value && result.Value.length > 0){
+              ApiResult = result.Value
+              setTaxiPending(ApiResult)
+            }else{
+              setTaxiPending([]);
+              Toast.show("No pending request found");
+            }
           })
           .catch(error => {
             stopLoader();
@@ -250,6 +255,27 @@ export const ManagerTaxi = ({navigation}) => {
     </View>
   );
 
+  const ItemRender_Approve = ({ item }) => (
+    <TouchableOpacity style={styles.item}
+      onPress={()=>{
+        navigation.navigate('ManagerTaxiApproval',{data:item.TCAR_SLIP_NO})
+      }}
+    >
+       <View style={[styles.itemColumn,{flex:0.40}]}>
+         <Text style={styles.itemText}>{moment(item.TCAR_APPROX_TIME_OUT).format("MM/DD/YY")}</Text>
+       </View>
+       <View style={[styles.itemColumn]}>
+         <Text style={styles.itemText}>{item.TCAR_SLIP_NO}</Text>
+       </View>
+       <View style={[styles.itemColumn, {flex:0.40}]}>
+         <Text style={styles.itemText}>{item.EMPL_NAME}</Text>
+       </View>
+       <View style={[styles.itemColumn, {flex:0.15}]}>         
+        <Text style={styles.itemText}>{item.DEPT_CODE}</Text>        
+       </View>      
+    </TouchableOpacity>
+  );
+
 
   const FlatList_Header = () => {
     return (
@@ -265,6 +291,25 @@ export const ManagerTaxi = ({navigation}) => {
         <Text Bold style={[styles.HeaderColumn, {flex:0.40}]}>Name</Text>
         <Text Bold style={styles.HeaderColumn}>Slip No.</Text>
         <Text Bold style={styles.HeaderColumn}>Dept</Text>
+      </View>
+    );
+  }
+
+
+  const FlatList_Header_Approve = () => {
+    return (
+      <View style={{
+        width: "100%",
+        justifyContent: 'space-between',
+        paddingHorizontal:10,
+        paddingVertical:15,
+        backgroundColor:GlobalColor.White,
+        flexDirection:'row'
+      }}>        
+        <Text Bold style={[styles.HeaderColumn,{flex:0.40}]}>Travel Date & Time</Text>
+        <Text Bold style={[styles.HeaderColumn]}>Slip No.</Text>
+        <Text Bold style={[styles.HeaderColumn, {flex:0.40}]}>Emp. Name</Text>
+        <Text Bold style={[styles.HeaderColumn, {flex:0.15}]}>Dept.</Text>
       </View>
     );
   }
@@ -349,10 +394,12 @@ export const ManagerTaxi = ({navigation}) => {
             </View>
 
 
-            <FlatList
+            <FlatList 
               contentContainerStyle={{ flexGrow:1 }}            
-              data={employ}
+              data={taxiPending}
+              ListHeaderComponent={FlatList_Header_Approve}
               keyExtractor={({ item, index }) => index}
+              ListHeaderComponentStyle={{ borderBottomColor: GlobalColor.Secondary, borderBottomWidth: 1 }}
               ListEmptyComponent={() => {
                 return (
                     <ListEmptyComponent 
@@ -361,38 +408,7 @@ export const ManagerTaxi = ({navigation}) => {
                     ></ListEmptyComponent>      
                 )
               }}
-              renderItem={({ item, index }) => {
-                return (
-                  <TouchableOpacity style={styles.FlatListData} 
-                  onPress={() => {
-                    navigation.navigate('ManagerTaxiApproval',{data:item})
-                  }}
-                  >
-                    <Ionicons
-                      style={styles.searchIcon}
-                      name="person-circle-outline"
-                      size={25}
-                      color={GlobalColor.Secondary}
-                    />
-                    <View style={{ flexDirection: 'column', width: '70%' }}>
-                      <Text >
-                        {item.Name}
-                      </Text>
-                      <Text>
-                        {item.Desg} , {item.Dept} ({item['Staff No']})
-                      </Text>
-                    </View>
-                    <TouchableOpacity>
-                      <Ionicons
-                        style={styles.searchIcon}
-                        name="chevron-forward-circle-outline"
-                        size={25}
-                        color={GlobalColor.Secondary}
-                      />
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                )
-              }} />
+              renderItem={ItemRender_Approve} />
           </View>
         ) : (
           <View style={{ flex: 1 }}>

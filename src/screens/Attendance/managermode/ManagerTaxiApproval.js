@@ -8,7 +8,8 @@ import {
     ScrollView,
     SafeAreaView,
     Pressable,
-    Alert
+    Alert,
+    TextInput
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,69 +20,89 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-
+import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast'
 import * as ApiService from '../../../Utils/Utils';
 import AuthContext from '../../../context/AuthContext'
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import { GlobalColor } from '../../../constants/Colors';
 import Text from '../../../components/reusable/Text';
-import TextInput from '../../../components/reusable/TextInput';
+// import TextInput from '../../../components/reusable/TextInput';
 import { Header } from '../../../components/reusable/Header';
 import Button from '../../../components/reusable/Button';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 
-const ManagerTaxiApproval = ({ navigation }) => {
+const ManagerTaxiApproval = ({ navigation, route }) => {
     const { authContext, AppUserData } = useContext(AuthContext)
     const [isModalVisible, setModalVisible] = useState(false);
-    const [modalVisibleSecond, setmodalVisibleSecond] = useState(false);
-    const [empLoc, setEmpLoc] = useState([]);
-    const [empLocCode, setEmpLocCode] = useState([]);
-    const [searchLevel] = useState();
     const [searchLevelData, setSearchLevelData] = useState([])
-    const [loader, setLoader] = useState(false)
-
-    const [selectBuilding, setSelectBuilding] = useState([]);
+    const [loader, setLoader] = useState(false);
+    const [refresh, setrefresh] = useState(false);
     const [BuildingData, setBuildingData] = useState([]);
-    const [removeBuilding, setRemoveBuilding] = useState()
-    const [selectTime, setselectTime] = useState();
     const [OpenDateTimePicker, setOpenDateTimePicker] = useState(false);
     const [OpenDateTimePicker2, setOpenDateTimePicker2] = useState(false);
-
-    const [duration, setDuration] = useState('');
-    const [reason, setReason] = useState('');
-    const [employ, setEmploy] = useState([]);
     const [show, setShow] = useState(false);
-    const [search, setSearch] = useState('');
-    const [searchedNameData, setSearchedNameData] = useState('');
-    const [empmodalVisible, setEmpModalVisible] = useState(false);
+    const [TaxiApiData, setTaxiApiData] = useState({});
+    const [Alldata, setAlldata] = useState({})
+    const [taxitypeList, settaxitypeList] = useState([]);
+    const [TimeoutMax, setTimeoutMax] = useState(new Date());
+    // const [TimeoutMin, setTimeoutMin] = useState(new Date());
+    // const [TimeoutVal, setTimeoutVal] = useState(new Date());
+
+    const [TimeinMax, setTimeinMax] = useState(new Date());
+    // const [TimeinMin, setTimeinMin] = useState(new Date());
+    
 
 
-    const [Locations, setLocations] = useState([]);
 
 
-    const GetLocationListVGPSApi = () => {
-        let token = AppUserData.token
-        let userId = AppUserData?.data?.userId
-        console.log("UserName", userId);
-        let apiData = { "UserName": userId }
-        console.log(apiData)
+    const fromRef = useRef(null);
+    const stopLoader = () => {
+        setLoader(false);
+        setrefresh(false);
+    }  
+
+
+    const getTaxiDetails = () => {
+        let token = AppUserData.token;
+        let userId = AppUserData?.data?.userId;
+        let apiData = { "SlipNO": route?.params?.data};
         setLoader(true);
-        ApiService.PostMethode('/GetLocationListVGPS', apiData, token)
+        ApiService.PostMethode('/GetRequestDetail', apiData, token)
             .then(result => {
-                console.log("APiresult GetLocationListVGPS", result);
-                setLoader(false);
+                console.log("APiresult GetRequest_Detail", result);
+                stopLoader(false);
+                if(result.Value &&result.Value){
+                    setTaxiApiData({
+                        empid:result.Value[0].TCAR_EMPL_ID.toString(),
+                        Name:result.Value[0].EMPL_NAME,
+                        slipno:result.Value[0].TCAR_SLIP_NO.toString(),
+                        Dept:result.Value[0].DEPT_CODE,
+                        Time_OUTSHOW: new Date(result.Value[0].DATE_OUT +" "+result.Value[0].TIME_OUT),
+                        Time_INSHOW : new Date(result.Value[0].DATE_IN +" "+result.Value[0].TIME_IN),
+                        // Time_OUTSHOW = data.d[0].DATE_OUT + " " +data.d[0].TIME_OUT;
+                        // Time_INSHOW = data.d[0].DATE_IN + " " +data.d[0].TIME_IN;+
+                        purpose:result.Value[0].TCAR_PURPOSE_VISIT,
+                        StartPoint:result.Value[0].TCAR_START_PLACE,
+                        desig:result.Value[0].TCAR_DESTINATION,
+                        kms:result.Value[0].TCAR_APPOX_KMS_USAGE.toString(),
+                        Partycode:result.Value[0].CODE_DESCRIPTION,
+                        Addperson:result.Value[0].TCAR_NO_PERSONS.toString(),
+                        perempid:result.Value[0]?.TCAR_STAFF_NO_PERSONS.split('@')[0],
+                        Dpm_Taxi_Type:''
+                    });
+                    setAlldata(result.Value[0]);
+                    getTaxiType(result.Value[0]?.TCAR_PARTY_CODE);
+                    getcalender(result.Value[0]?.TCAR_LOCATION)
+                }else{
+                    Toast.show("No data found");
 
-                setLocations(result.Value);
-                let Location = result.Value[0].LOCN
-                let LocationCode = result.Value[0].CODE
-                console.log("LocationCode", LocationCode)
-                setEmpLoc(Location)
-                setEmpLocCode(LocationCode)
+                }
             })
             .catch(error => {
-                setLoader(false);
+                stopLoader(false);
                 console.log('Error occurred==>', error);
                 if (error.response) {
                     if (error.response.status == 401) {
@@ -100,24 +121,23 @@ const ManagerTaxiApproval = ({ navigation }) => {
             });
     };
 
-
-
-    const GetSearchLevelsListVGPSApi = () => {
-        let token = AppUserData.token
-        let userId = AppUserData?.data?.userId
-        console.log("UserName", userId);
-        let apiData = { "UserName": userId }
-        console.log(apiData)
+    const getTaxiType = (party_Code) =>{
+        let token = AppUserData.token;
+        let userId = AppUserData?.data?.userId;
+        let apiData = { "PartyCode": party_Code};
         setLoader(true);
-        ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
+        ApiService.PostMethode('/GetTaxiType', apiData, token)
             .then(result => {
-                console.log(result);
-                setLoader(false);
-                let arrData = result.Value.map((item) => { return { 'label': item.MEANING, value: item.VAL } })
-                setSearchLevelData(arrData)
+                // console.log("APiresult GetTaxiType", result);
+                stopLoader(false);
+                if(result.Value &&result.Value.length > 0){
+                    settaxitypeList(result.Value);
+                }else{
+                    Toast.show("No data found");
+                }
             })
             .catch(error => {
-                setLoader(false);
+                stopLoader(false);
                 console.log('Error occurred==>', error);
                 if (error.response) {
                     if (error.response.status == 401) {
@@ -134,131 +154,150 @@ const ManagerTaxiApproval = ({ navigation }) => {
                     Toast.show('Something Went Wrong');
                 }
             });
-    };
+    }
 
-    const SearchEmployee = () => {
-        console.log('post data', search);
-        if (search === '') {
-            alert("Please enter a valid keyWord ")
-            return
-        } else {
-            let apiData = {
-                Search: search
-            }
-            let token = AppUserData.token
-            setLoader(true);
-            ApiService.PostMethode('/GetEmplLookup', apiData, token)
-                .then(result => {
-                    setLoader(false);
-
-                    console.log('ApiResult', result);
-
-                    let responseData = result.Value;
-                    console.log('ApiResult', responseData);
-                    setEmploy(responseData)
-                    setEmpModalVisible(true)
-
-                })
-                .catch(error => {
-                    setLoader(false);
-                    // console.log('Error occurred==>', error);
-                    if (error.response) {
-                        if (error.response.status == 401) {
-                            console.log('error from api', error.response);
-                        }
-                        Toast.show(error.response.data.title);
-                    } else if (error) {
-                        Toast.show('Network Error');
-                    } else {
-                        Toast.show('Something Went Wrong');
+    const getcalender = (locncode)=>{
+        let token = AppUserData.token;
+        let userId = AppUserData?.data?.userId;
+        let apiData = { "Location": locncode};
+        setLoader(true);
+        ApiService.PostMethode('/GetCalender', apiData, token)
+            .then(result => {
+                console.log("APiresult GetCalender", result);
+                stopLoader(false);
+                if(result.Value &&result.Value.length > 0){
+                    // settaxitypeList(result.Value);
+                    let calender = result.Value.length-1;
+                    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+                    let date = new Date() ;
+                    date.setMinutes(date.getMinutes());
+                    let datetoshow = date.getDate();
+                    let monthtoshow = monthNames[date.getMonth()];
+                    let enddate = date.setDate(date.getDate() + calender);                                    
+                    setTimeoutMax(new Date(enddate));
+                    setTimeinMax(new Date(enddate));
+                }else{
+                    Toast.show("No data found");
+                }
+            })
+            .catch(error => {
+                stopLoader(false);
+                console.log('Error occurred==>', error);
+                if (error.response) {
+                    if (error.response.status == 401) {
+                        console.log('error from api', error.response);
                     }
-                });
-        }
-    };
-    const GetAccessListVGPSApi = (locationcode = '001') => {
-        let userId = AppUserData?.data?.userId
-        // let newLoc = empLocCode.split(",")[0]
+                    // client received an error response (5xx, 4xx)
+                    Toast.show(error.response.data.title);
+                } else if (error.request) {
+                    // client never received a response, or request never left
+                    Toast.show('Network Error');
+                    // console.log("error.request", error.request._response);
+                } else {
+                    // anything else
+                    Toast.show('Something Went Wrong');
+                }
+            });
+    }
+
+
+    const SubmitData = (values)=>{
+        let token = AppUserData.token;
+        let userId = AppUserData?.data?.userId;
+
+        // {
+        //     "TimeOut" : "04-APR-2022 10:30" ,
+        //     "TimeIn" : "04-APR-2022 15:30",
+        //     "Origin" : "Delhi",
+        //     "Dest" : "Gurgaon",
+        //     "Km" : "70",
+        //     "PassCount" : "0",
+        //     "AddPerson" : "0",
+        //     "Purpose" : "ffgx",
+        //     "VisitType" : "GENERAL",
+        //     "ReqTaxiType" : "Dzire",
+        //     "DPMTaxiType" : "Dzire",
+        //     "SupTaxiType" : "Dzire",
+        //     "PartyCode" : "TA056",
+        //     "ExtnNo" : "",
+        //     "SlipNo" : "11100",
+        //     "UserName" : "174475",
+        //     "Source" : ""
+        //     }
+
+
         let apiData = {
-            UserName: userId,
-            LocationCode: locationcode,
-            LevelID: "1"
-        }
-        console.log('post data', apiData);
-        console.log('post userId', userId);
-        let token = AppUserData.token
+                "TimeOut" : moment(values.Time_OUTSHOW).format("DD-MMMM-YYYY hh:mm"),
+                "TimeIn" : moment(values.Time_INSHOW).format("DD-MMMM-YYYY hh:mm"),
+                "Origin" : values.StartPoint,
+                "Dest" : values.desig,
+                "Km" : values.kms,
+                "PassCount" : values.Addperson,
+                "AddPerson" : values.Addperson,
+                "Purpose" : values.purpose,
+                "VisitType" : values.TCAR_VISIT_TYPE,
+                "ReqTaxiType" : Alldata.TCAR_TYPE,
+                "DPMTaxiType" : values.Dpm_Taxi_Type,
+                "SupTaxiType" : values.Dpm_Taxi_Type,
+                "PartyCode" : Alldata.TCAR_PARTY_CODE,
+                "ExtnNo" : Alldata.TCAR_EXT_NO,
+                "SlipNo" : route?.params?.data,
+                "UserName" : userId,
+                "Source" : ""
+                };
         setLoader(true);
-        ApiService.PostMethode('/GetAccessListVGPS', apiData, token)
+        ApiService.PostMethode('/ApproveTaxiRequest', apiData, token)
             .then(result => {
-                setLoader(false);
-                let responseData = result.Value
-                // console.log('building data', responseData)
-                let responseDataNew = responseData.map(element => {
-                    return {
-                        ...element,
-                        isSelected: false
+                console.log("APiresult ApproveTaxiRequest", result);
+                stopLoader(false);
+                if(result.Value && result.Value.length > 0){
+                    if(result.Value[0].P_OUT_ERROR == "SUCCESS"){
+                        Toast.show(result.Value[0].P_OUT_ERROR);
+                        navigation.goBack();
+                    }else{
+                        Toast.show(result.Value[0].P_OUT_ERROR);
                     }
-                })
-                // console.log("response data new", responseDataNew);
-                setBuildingData(responseDataNew)
+                }else{
+                    Toast.show("No data found");
+                }
             })
             .catch(error => {
-                setLoader(false);
-                // console.log('Error occurred==>', error);
+                stopLoader(false);
+                console.log('Error occurred==>', error);
                 if (error.response) {
                     if (error.response.status == 401) {
                         console.log('error from api', error.response);
                     }
+                    // client received an error response (5xx, 4xx)
                     Toast.show(error.response.data.title);
-                } else if (error) {
+                } else if (error.request) {
+                    // client never received a response, or request never left
                     Toast.show('Network Error');
+                    // console.log("error.request", error.request._response);
                 } else {
+                    // anything else
                     Toast.show('Something Went Wrong');
                 }
             });
     }
 
 
-    useEffect(() => {
-        GetLocationListVGPSApi()
-        GetSearchLevelsListVGPSApi()
-        GetAccessListVGPSApi()
-    }, [])
-    // useEffect(() => {
-    //   console.log(selectBuilding);
-    // }, [selectBuilding])
 
-    const emptyList = () => {
-        setSearch('')
-    }
+    useFocusEffect(
+        React.useCallback(() => {
+          const unsubscribe = getTaxiDetails();
+          return () => unsubscribe;
+        }, [])
+    );
+    
+
 
 
     const gatePassScheema = yup.object().shape({
-        office: yup.string().required('Location is required'),
-        // date: yup.string().required('select one is required'),
-        duration: yup
-            .string()
-            .required('Duration  is required')
-            .max(24, 'Duration should be less then 24 hours'),
-        searchLevel: yup.string().required('select one search level please'),
-        reason: yup.string().required('Reason is required'),
-        persionalVehical: yup.string().required('Select an option'),
-        internalVehical: yup.string().required('Select an option'),
-        vehicleNumber: yup.string()
-            .test('Vehicle Number is required', function () {
-                if (this.parent.persionalVehical === 'N') {
-                    return true;
-                } else {
-                    if (this.parent.vehicleNumber) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }),
-        building: yup.string().required('Building it is required'),
-        searchEmp: yup.string().required('Please select an employee'),
+        Dpm_Taxi_Type: yup.string().required('Please select an taxi type'),
     });
-    const fromRef = useRef(null);
 
 
     const toggleModal = () => {
@@ -283,561 +322,499 @@ const ManagerTaxiApproval = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>
-            <Spinner
-                visible={loader}
-                textContent={'Loading...'}
-                textStyle={styles.spinnerTextStyle}
-            />
-            <Header title="Taxi Approval" back />
-            {/* BODY */}
-            <Formik
-                innerRef={fromRef}
-                validationSchema={gatePassScheema}
-                initialValues={{
-                    office: '',
-                    date: new Date(),
-                    duration: '',
-                    searchLevel: '',
-                    reason: '',
-                    persionalVehical: '',
-                    internalVehical: '',
-                    vehicleNumber: '',
-                    building: '',
-                    searchEmp: '',
-                    "perName": "",
-                    "Desig": "",
-                    "noOfPerson": "",
-                    "empId": "",
-                }}
-                onSubmit={values => {
-                    console.log("values", BuildingData);
-
-                    let buldings = BuildingData.filter(element => {
-                        if (element.isSelected) {
-                            return element.BID;
-                        }
-                    }).map(obj => obj.BID)
-
-                    if (buldings.length == 0) {
-                        Alert.alert(
-                            "Error",
-                            "Building Not selected",
-                            [
-                                {
-                                    text: "okay",
-                                    onPress: () => console.log("Cancel Pressed"),
-                                    style: "cancel"
-                                },
-                            ]
-                        );
-                        return;
-                    }
-                    let newdata = {
-                        "id": "1",
-                        "location": values.office.split(",")[0],
-                        "visitDate": moment(values.date).format('YY/MM/DD'),
-                        "authorizedPerson": AppUserData?.data?.userId,
-                        "Pvehicle": values.persionalVehical,
-                        "VisType": "O",
-                        "visLevel": "1",
-                        "buildings": buldings,
-                        "duration": values.duration,
-                        "exArrTime": moment(values.date).format('MM-DD-YY hh:mm'),
-                        "SearchLevel": values.searchLevel,
-                        "interVehicle": values.internalVehical,
-                        "ReasonToCome": values.reason,
-                        "perName": values.perName,
-                        "Desig": values.Desig,
-                        "noOfPerson": "5",
-                        "empId": values.empId,
-                        "vehicleNumber": values.vehicleNumber,
-                        "dateDummy": values.date
-                    }
-                    console.log("payload", newdata);
-                    navigation.navigate("VisitorDetails", {
-                        visitorpayload: newdata,
-                    })
-                }}>
-
-
+        <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight, }}>
+            <KeyboardAwareScrollView style={ {flexGrow:1} }>
                 {
-
-                    ({
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        setFieldValue,
-                        values,
-                        errors,
-                        touched,
-                        isValid,
-                    }) => (
-                        <ScrollView nestedScrollEnabled={true} style={{ marginTop: 5, paddingHorizontal: 10 }}>
-
-
-                            {/* Employee ID and Slip No */}
-
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                    <View style={{ width: "30%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Employee ID
-                                        </Text>
-                                        <TextInput
-                                            onChangeText={handleChange('reason')}
-                                            onBlur={handleBlur('reason')}
-                                            value={values.reason}
-                                            style={styles.TextInputStyle}
-                                        />
-                                    </View>
-                                    <View style={{ width: "67%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Slip No.
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                             />
-                                    </View>
-                                </View>
-
-                            </View>
-
-                            {/* DepartMent and Name  */}
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                    <View style={{ width: "30%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Department
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                        />
-                                    </View>
-                                    <View style={{ width: "67%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-                                            }} Bold>
-                                            Name
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-
-
-                            <DatePicker
-                                modal
-                                mode="datetime"
-                                open={OpenDateTimePicker}
-                                date={values.date}
-                                onConfirm={date => {
-                                    console.log(date);
-                                    setFieldValue('date', date);
-                                    setOpenDateTimePicker(false);
-                                    // setDate(date);
-                                    // console.log(date);
-                                }}
-                                onCancel={() => {
-                                    setOpenDateTimePicker(false);
-                                }}
-                            />
-
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                    <View style={{ width: "50%", paddingRight: 5 }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-                                            }} Bold>
-                                            Appx. Time Out
-                                        </Text>
-                                        <TouchableOpacity
-                                            style={styles.DateInOut}
-                                            onPress={() => setOpenDateTimePicker(true)}
-                                        >
-                                            <Text style={{ color: 'gray' }}>
-                                                {moment(values.date).format('YY/MM/DD hh:mm')}
-                                            </Text>
-
-                                            <View>
-                                                <View
-                                                    style={{
-                                                        flexDirection: 'row',
-                                                        // width: 65,
-                                                        justifyContent: 'space-around',
-                                                    }}>
-                                                    <Ionicons
-                                                        name="calendar-outline"
-                                                        size={25}
-                                                        color={GlobalColor.PrimaryGradient}
-                                                    />
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <DatePicker
-                                        modal
-                                        mode="datetime"
-                                        open={OpenDateTimePicker2}
-                                        date={values.date}
-                                        onConfirm={date => {
-                                            console.log(date);
-                                            setFieldValue('date', date);
-                                            setOpenDateTimePicker2(false);
-                                            // setDate(date);
-                                            // console.log(date);
-                                        }}
-                                        onCancel={() => {
-                                            setOpenDateTimePicker2(false);
-                                        }}
-                                    />
-
-
-                                    <View style={{ width: "50%", paddingLeft: 5 }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Appx. Time In
-                                        </Text>
-                                        <TouchableOpacity
-                                            style={styles.DateInOut}
-                                            onPress={() => setOpenDateTimePicker2(true)}
-                                        >
-                                            <Text style={{ color: 'gray' }}>
-                                                {moment(values.date).format('YY/MM/DD hh:mm')}
-                                            </Text>
-
-                                            <View>
-                                                <View
-                                                    style={{
-                                                        flexDirection: 'row',
-                                                        // width: 65,
-                                                        justifyContent: 'space-around',
-                                                    }}>
-                                                    <Ionicons
-                                                        name="calendar-outline"
-                                                        size={25}
-                                                        color={GlobalColor.PrimaryGradient}
-                                                    />
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                {errors.duration && touched.duration && (
+                    loader ?
+                    <Spinner
+                        visible={loader}
+                        textContent={'Loading...'}
+                        textStyle={styles.spinnerTextStyle}
+                    /> : null
+                }
+            <Header title="Taxi Approval" back />
+                <View style={{ flexGrow:1, paddingHorizontal:10 }}>
+                <Formik                
+                    enableReinitialize
+                    innerRef={fromRef}
+                    validationSchema={gatePassScheema}
+                    initialValues={TaxiApiData}
+                    onSubmit={values => {                    
+                        SubmitData(values);
+                    }}
+                    >
+                    {
+                        ({
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            setFieldValue,
+                            values,
+                            errors,
+                            touched,
+                            isValid,
+                        }) =>  (
+                            <View style={{flex:1}}>
+                                {/* Employee ID and Slip No */}
                                     <View
                                         style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
                                             width: '100%',
-                                            alignSelf: 'center',
-                                            paddingVertical: 2,
                                         }}>
-                                        <Text style={{ color: 'red', textAlign: 'right' }}>
-                                            {errors.duration}
-                                        </Text>
+
+                                        <View style={{ width: "30%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Employee ID
+                                            </Text>
+                                            <TextInput
+                                                onChangeText={handleChange('empid')}
+                                                onBlur={handleBlur('empid')}
+                                                value={values.empid}
+                                                style={styles.TextInputStyle}
+                                            />
+                                        </View>
+
+                                        <View style={{ width: "67%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Slip No.
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('slipno')}
+                                                onBlur={handleBlur('slipno')}
+                                                value={values.slipno}
+                                                />
+                                        </View>
                                     </View>
-                                )}
-                            </View>
-
-                            {/* Purpose of Visit */}
-
-                            <View style={{ marginVertical: 5 }}>
+                                {/* DepartMent and Name  */}
                                 <View style={{ width: '100%' }}>
-                                    <Text
+                                    <View
                                         style={{
-                                            paddingHorizontal: 0,
-                                            marginVertical: 5,
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                        }}>
+                                        <View style={{ width: "30%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
 
-                                        }} Bold>
-                                        Purpose of Visit
-                                    </Text>
-                                    <TextInput
+                                                }} Bold>
+                                                Department
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('duration')}
+                                                onBlur={handleBlur('duration')}
+                                                value={values.Dept}
+                                            />
+                                        </View>
+                                        <View style={{ width: "67%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+                                                }} Bold>
+                                                Name
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('duration')}
+                                                onBlur={handleBlur('duration')}
+                                                value={values.Name}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
 
-                                        onChangeText={handleChange('reason')}
-                                        onBlur={handleBlur('reason')}
-                                        value={values.reason}
-                                        style={styles.TextInputStyle}
-                                    />
-                                    {errors.reason && touched.reason && (
+
+                                <DatePicker
+                                    modal
+                                    mode="datetime"
+                                    open={OpenDateTimePicker}
+                                    date={new Date()}
+                                    minimumDate={new Date()}
+                                    maximumDate={TimeoutMax}
+                                    onConfirm={date => {
+                                        console.log(date);
+                                        setFieldValue('Time_OUTSHOW', date);
+                                        setOpenDateTimePicker(false);
+                                        // setDate(date);
+                                        // console.log(date);
+                                    }}
+                                    onCancel={() => {
+                                        setOpenDateTimePicker(false);
+                                    }}
+                                />
+
+                                <View style={{ width: '100%' }}>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                        }}>
+                                        <View style={{ width: "50%", paddingRight: 5 }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+                                                }} Bold>
+                                                Appx. Time Out
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={styles.DateInOut}
+                                                onPress={() => setOpenDateTimePicker(true)}
+                                            >
+                                                <Text style={{ color: 'gray' }}>
+                                                    {moment(values.Time_OUTSHOW).format('DD-MM-YY hh:mm')}
+                                                </Text>
+
+                                                <View>
+                                                    <View
+                                                        style={{
+                                                            flexDirection: 'row',
+                                                            // width: 65,
+                                                            justifyContent: 'space-around',
+                                                        }}>
+                                                        <Ionicons
+                                                            name="calendar-outline"
+                                                            size={25}
+                                                            color={GlobalColor.PrimaryGradient}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <DatePicker
+                                            modal
+                                            mode="datetime"
+                                            minimumDate={new Date()}
+                                            maximumDate={TimeinMax}
+                                            open={OpenDateTimePicker2}
+                                            date={new Date()}
+                                            onConfirm={date => {
+                                                setFieldValue('Time_INSHOW', date);
+                                                setOpenDateTimePicker2(false);
+                                                // setDate(date);
+                                                // console.log(date);
+                                            }}
+                                            onCancel={() => {
+                                                setOpenDateTimePicker2(false);
+                                            }}
+                                        />
+                                        <View style={{ width: "50%", paddingLeft: 5 }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Appx. Time In
+                                            </Text>
+                                            <TouchableOpacity
+                                                style={styles.DateInOut}
+                                                onPress={() => setOpenDateTimePicker2(true)}
+                                            >
+                                                <Text style={{ color: 'gray' }}>
+                                                    {moment(values.Time_INSHOW).format('DD-MM-YY hh:mm')}
+                                                </Text>
+
+                                                <View>
+                                                    <View
+                                                        style={{
+                                                            flexDirection: 'row',
+                                                            // width: 65,
+                                                            justifyContent: 'space-around',
+                                                        }}>
+                                                        <Ionicons
+                                                            name="calendar-outline"
+                                                            size={25}
+                                                            color={GlobalColor.PrimaryGradient}
+                                                        />
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    {errors.duration && touched.duration && (
                                         <View
                                             style={{
                                                 width: '100%',
                                                 alignSelf: 'center',
                                                 paddingVertical: 2,
                                             }}>
-                                            <Text
-                                                style={{ color: 'red', textAlign: 'left' }}>
-                                                {errors.reason}
+                                            <Text style={{ color: 'red', textAlign: 'right' }}>
+                                                {errors.duration}
                                             </Text>
                                         </View>
                                     )}
                                 </View>
-                            </View>
 
+                                {/* Purpose of Visit */}
 
-                            {/* Source And Destination */}
-
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                    <View style={{ width: "50%", paddingRight: 5 }}>
+                                <View style={{ marginVertical: 5 }}>
+                                    <View style={{ width: '100%' }}>
                                         <Text
                                             style={{
                                                 paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
+                                                marginVertical: 5,
 
                                             }} Bold>
-                                            Source
+                                            Purpose of Visit
                                         </Text>
                                         <TextInput
-                                            style={styles.TextInputDesign}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
 
+                                            onChangeText={handleChange('reason')}
+                                            onBlur={handleBlur('reason')}
+                                            value={values.purpose}
+                                            style={styles.TextInputStyle}
                                         />
-                                    </View>
-                                    <View style={{ width: "50%", paddingLeft: 5 }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-
-                                            }} Bold>
-                                            Destination
-                                        </Text>
-                                        <TextInput
-                                           style={styles.TextInputDesign}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-
-                                        />
+                                        {errors.reason && touched.reason && (
+                                            <View
+                                                style={{
+                                                    width: '100%',
+                                                    alignSelf: 'center',
+                                                    paddingVertical: 2,
+                                                }}>
+                                                <Text
+                                                    style={{ color: 'red', textAlign: 'left' }}>
+                                                    {errors.reason}
+                                                </Text>
+                                            </View>
+                                        )}
                                     </View>
                                 </View>
-                            </View>
 
-                            {/* Kms.  And Party Code */}
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
 
-                                    <View style={{ width: "30%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
+                                {/* Source And Destination */}
 
-                                            }} Bold>
-                                            Kms (Appx.)
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                            />
-                                    </View>
-                                    <View style={{ width: "67%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Party Code
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                             />
-                                    </View>
-                                </View>
-                            </View>
-
-                            {/* Addl. Persons and Persons Staff Id */}
-                            <View style={{ width: '100%' }}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        width: '100%',
-                                    }}>
-                                    <View style={{ width: "30%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-                                            }} Bold>
-                                            Addl. Persons
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                             />
-                                    </View>
-                                    <View style={{ width: "67%" }}>
-                                        <Text
-                                            style={{
-                                                paddingHorizontal: 0,
-                                                paddingTop: 10,
-                                                paddingVertical: 5,
-
-                                            }} Bold>
-                                            Persons Staff Id
-                                        </Text>
-                                        <TextInput
-                                            style={styles.TextInputStyle}
-                                            onChangeText={handleChange('duration')}
-                                            onBlur={handleBlur('duration')}
-                                            value={values.duration}
-                                            />
-                                    </View>
-                                </View>
-                            </View>
-
-                            {/* Taxi */}
-
-                            <View style={{ marginVertical: 5, }}>
-                                <View style={{ marginBottom: 5 }}>
-                                    <Text
-                                        style={{
-                                            paddingHorizontal: 0,
-                                            // paddingVertical: 5,
-
-                                        }} Bold>
-                                        Taxi
-                                    </Text>
-                                </View>
-                                <SelectDropdown
-                                    data={searchLevelData}
-
-                                    onSelect={(selectedItem, index) => {
-                                        console.log(selectedItem, index);
-                                        console.log("selectedItem", selectedItem);
-                                        setFieldValue('searchLevel', selectedItem.value);
-
-                                    }}
-                                    defaultButtonText={'Select Taxi'}
-                                    buttonTextAfterSelection={(selectedItem, index) => {
-                                        return selectedItem.label
-                                    }}
-                                    rowTextForSelection={(item, index) => {
-                                        return item.label
-                                    }}
-                                    buttonStyle={styles.dropdown2BtnStyle}
-                                    buttonTextStyle={styles.dropdown2BtnTxtStyle}
-                                    renderDropdownIcon={isOpened => {
-                                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-                                    }}
-                                    dropdownIconPosition={'right'}
-                                    dropdownStyle={styles.dropdown2DropdownStyle}
-                                    rowStyle={styles.dropdown2RowStyle}
-                                    rowTextStyle={styles.dropdown2RowTxtStyle}
-                                />
-                                {errors.searchLevel && touched.searchLevel && (
+                                <View style={{ width: '100%' }}>
                                     <View
                                         style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
                                             width: '100%',
-                                            alignSelf: 'center',
-                                            paddingVertical: 2,
                                         }}>
-                                        <Text style={{ color: 'red', textAlign: 'left' }}>
-                                            {errors.searchLevel}
+                                        <View style={{ width: "50%", paddingRight: 5 }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Source
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputDesign}
+                                                onChangeText={handleChange('StartPoint')}
+                                                onBlur={handleBlur('StartPoint')}
+                                                value={values.StartPoint}
+
+                                            />
+                                        </View>
+                                        <View style={{ width: "50%", paddingLeft: 5 }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+
+                                                }} Bold>
+                                                Destination
+                                            </Text>
+                                            <TextInput
+                                            style={styles.TextInputDesign}
+                                                onChangeText={handleChange('desig')}
+                                                onBlur={handleBlur('desig')}
+                                                value={values.desig}
+
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* Kms.  And Party Code */}
+                                <View style={{ width: '100%' }}>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                        }}>
+
+                                        <View style={{ width: "30%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Kms (Appx.)
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('kms')}
+                                                onBlur={handleBlur('kms')}
+                                                value={values.kms}
+                                                />
+                                        </View>
+                                        <View style={{ width: "67%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Party Code
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('Partycode')}
+                                                onBlur={handleBlur('Partycode')}
+                                                value={values.Partycode}
+                                                />
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* Addl. Persons and Persons Staff Id */}
+                                <View style={{ width: '100%' }}>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            width: '100%',
+                                        }}>
+                                        <View style={{ width: "30%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+                                                }} Bold>
+                                                Addl. Persons
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('Addperson')}
+                                                onBlur={handleBlur('Addperson')}
+                                                value={values.Addperson}
+                                                />
+                                        </View>
+                                        <View style={{ width: "67%" }}>
+                                            <Text
+                                                style={{
+                                                    paddingHorizontal: 0,
+                                                    paddingTop: 10,
+                                                    paddingVertical: 5,
+
+                                                }} Bold>
+                                                Persons Staff Id
+                                            </Text>
+                                            <TextInput
+                                                style={styles.TextInputStyle}
+                                                onChangeText={handleChange('perempid')}
+                                                onBlur={handleBlur('perempid')}
+                                                value={values.perempid}
+                                                />
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* Taxi */}
+
+                                <View style={{ marginVertical: 5, }}>
+                                    <View style={{ marginBottom: 5 }}>
+                                        <Text
+                                            style={{
+                                                paddingHorizontal: 0,
+                                                // paddingVertical: 5,
+
+                                            }} Bold>
+                                            Taxi
                                         </Text>
                                     </View>
-                                )}
-                            </View>
-
-                            {/* Approve Request Button */}
-                            <View style={{ paddingVertical: 10, flexDirection: "row" }}>
-                                <View style={{ width: "50%", padding: 5 }}>
-                                    <Button title="Approve Request"
-                                    // onPress={() => {handleSubmit();}}
+                                    <SelectDropdown
+                                        data={taxitypeList}
+                                        onSelect={(selectedItem, index) => {
+                                            setFieldValue('Dpm_Taxi_Type', selectedItem.TCRT_TAXI_TYPE);
+                                        }}
+                                        defaultButtonText={'Select Taxi'}
+                                        buttonTextAfterSelection={(selectedItem, index) => {
+                                            return selectedItem.TCRT_TAXI_TYPE
+                                        }}
+                                        rowTextForSelection={(item, index) => {
+                                            return item.TCRT_TAXI_TYPE
+                                        }}
+                                        buttonStyle={styles.dropdown2BtnStyle}
+                                        buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                                        renderDropdownIcon={isOpened => {
+                                            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+                                        }}
+                                        dropdownIconPosition={'right'}
+                                        dropdownStyle={styles.dropdown2DropdownStyle}
+                                        rowStyle={styles.dropdown2RowStyle}
+                                        rowTextStyle={styles.dropdown2RowTxtStyle}
                                     />
+                                    {errors.Dpm_Taxi_Type && touched.Dpm_Taxi_Type && (
+                                        <View
+                                            style={{
+                                                width: '100%',
+                                                alignSelf: 'center',
+                                                paddingVertical: 2,
+                                            }}>
+                                            <Text style={{ color: 'red', textAlign: 'left' }}>
+                                                {errors.Dpm_Taxi_Type}
+                                            </Text>
+                                        </View>
+                                    )}
                                 </View>
 
-                                <View style={{ width: "50%", padding: 5 }}>
-                                    <Button title="Cancel"
-                                    // onPress={() => {handleSubmit();}}
-                                    />
+                                {/* Approve Request Button */}
+                                <View style={{ paddingVertical: 10, flexDirection: "row" }}>
+                                    <View style={{ width: "50%", padding: 5 }}>
+                                        <Button title="Approve Request"
+                                        onPress={() => {handleSubmit();}}
+                                        />
+                                    </View>
+
+                                    <View style={{ width: "50%", padding: 5 }}>
+                                        <Button title="Cancel"
+                                        onPress={() => {
+                                            navigation.goBack()
+                                        }}
+                                        />
+                                    </View>
                                 </View>
                             </View>
-                        </ScrollView>
-                    )}
-            </Formik>
+                        )}                    
+                </Formik>
+                </View>
+            </KeyboardAwareScrollView>        
         </SafeAreaView>
 
     );
@@ -881,15 +858,13 @@ const styles = StyleSheet.create({
         paddingVertical: 4
     },
     TextInputStyle: {
-        width: '100%',
+        height:40,
+        // width: '100%',
         backgroundColor: '#fff',
         borderWidth: 1,
-        alignItems: 'center',
-        flexDirection: 'row',
-        padding: 6,
-        alignSelf: 'center',
+        // padding: 6,
         borderColor: GlobalColor.Secondary,
-        fontSize: 16,
+        // fontSize: 16,
     },
     TextInputDesign: {
         width: '100%',
@@ -908,7 +883,10 @@ const styles = StyleSheet.create({
         padding: 6,
         alignSelf: 'center',
         borderColor: GlobalColor.Secondary
-    }
+    },
+    spinnerTextStyle: {
+        color: GlobalColor.White
+    },
 
 });
 
