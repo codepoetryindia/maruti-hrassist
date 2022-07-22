@@ -328,7 +328,7 @@ if(loader){
 
   return (
         <View style={styles.container}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.addtnlBtn}
             onPress={() => {
              
@@ -361,7 +361,7 @@ if(loader){
                   <Text style={{ color:"#fff"}}>Attendance Percentage</Text>
                 </TouchableOpacity>
             </View>
-          ) : null}
+          ) : null} */}
 
 
         <View style={{width: '100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>      

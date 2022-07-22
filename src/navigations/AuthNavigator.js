@@ -20,8 +20,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
-
   const [isFirstLaunch, setIsFirstLaunch] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     getStorageData()
@@ -34,16 +36,25 @@ const AuthNavigator = () => {
     await AsyncStorage.getItem('isnotfirstTime').then((data)=>{
       if(data != null){
         console.log(data);
-        setIsFirstLaunch(data);
+        setIsFirstLaunch(true);
       }      
-    })
+    }).finally(() => {
+      setLoading(false);
+      })
+  }
+
+  if (loading) {
+    return null
   }
   
 const FirstRun = ()=>{
     return (
       <Stack.Navigator initialRouteName='OnboardingScreen' screenOptions={{headerShown:false}}>
         <Stack.Screen name='SignIn' component={SignIn}/>
-        <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
+
+        {!loading && !isFirstLaunch && (
+          <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
+        )}        
       </Stack.Navigator>
     );
   }
@@ -59,7 +70,8 @@ const FirstRun = ()=>{
 
   return(
     <View style={{ flex:1 }}>
-       {!isFirstLaunch ? <FirstRun/> :<SecondRun/> }
+      <FirstRun/>
+       {/* {loading && !isFirstLaunch ? <FirstRun/> :<SecondRun/> } */}
     </View>   
   )
 
