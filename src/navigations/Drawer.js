@@ -31,6 +31,7 @@ import ManagerAttandancePercentage from '../screens/Attendance/managermode/Manag
 import TaxComputationSlip from '../screens/CompensationAndBenifits/TaxComputationSlip';
 import PFBalance from '../screens/CompensationAndBenifits/PFBalance';
 import TaxSavings from '../screens/CompensationAndBenifits/TaxSavings';
+import Feedback from '../screens/Buisness/Feedback';
 
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
@@ -68,7 +69,9 @@ const MyDrawer = () => {
       <Drawer.Screen name='ManagerAttandancePercentage' component={ManagerAttandancePercentage} options={{unmountOnBlur:true}}/>  
       <Drawer.Screen name='TaxComputationSlip' component={TaxComputationSlip} options={{unmountOnBlur:true}}/>  
       <Drawer.Screen name='PFBalance' component={PFBalance} options={{unmountOnBlur:true}}/>  
-      <Drawer.Screen name='TaxSavings' component={TaxSavings} options={{unmountOnBlur:true}}/>            
+      <Drawer.Screen name='TaxSavings' component={TaxSavings} options={{unmountOnBlur:true}}/> 
+      <Drawer.Screen name='Feedback' component={Feedback} options={{unmountOnBlur:true}}/> 
+                 
 
     </Drawer.Navigator>
   );
