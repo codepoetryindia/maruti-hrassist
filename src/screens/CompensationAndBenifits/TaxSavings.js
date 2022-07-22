@@ -47,10 +47,8 @@ const TaxSavings = () => {
 
     // Get Tax Savings
     const GetTaxSavings = async () => {
-
         //Set Loader
         setLoader(true);
-    
         try {
           //getting Data
           let result = await ApiService.PostMethode('/GetTaxSavings', {
@@ -60,9 +58,10 @@ const TaxSavings = () => {
     
           //remove loader
           stopLoader()
-    
-          //set Data
-          setTaxSaving(result?.Value?.Table2)
+          if(result?.Value){
+            //set Data
+            setTaxSaving(result?.Value?.Table2)
+          }
         } catch (error) {
     
           //remove loader
@@ -78,40 +77,47 @@ const TaxSavings = () => {
     }, [])
 
 
+    if(loader){
+        return(
+            <SafeAreaView style={{ flex: 1,backgroundColor: GlobalColor.PrimaryLight  }}>
+                <Header title="Tax Savings" back/>
+                <LoadingScreen/>
+            </SafeAreaView>          
+        )
+      }
+
+
 
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>
             <Header title="Tax Savings" back />
+            <View style={styles.container}>
+                <View style={[styles.MainCard, {backgroundColor: GlobalColor.White }]}>                                
+                    <View style={styles.textContainer}>
+                        <Text Bold>Description</Text>
+                        <Text Bold> Amount (Rs.)</Text>
+                    </View>
 
-            <View style={[styles.MainCard, {backgroundColor: GlobalColor.White }]}>
-
-                
-                <View style={styles.textContainer}>
-                    <Text Bold>Description</Text>
-                    <Text Bold> Amount (Rs.)</Text>
+                    <View style={{ borderBottomWidth:1,paddingHorizontal:10, borderColor:GlobalColor.Secondary}}/>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={taxSaving}
+                            ListEmptyComponent={() => {
+                                return (
+                                    <ListEmptyComponent title="No Data Found"></ListEmptyComponent>
+                                )
+                            }}
+                            keyExtractor={({ item, index }) => index}
+                            renderItem={({ item, index }) => (
+                                <View style={styles.textContainerFlatList}>
+                                    <View style={{ width: '70%' }}><Text>{item.SAVG_DESC}</Text></View>
+                                    <Text>{item.SVDT_AMT}</Text>
+                                    {/* <View style={{width:'50%',justifyContent:'flex-end'}}>></View> */}
+                                </View>
+                            )}
+                        />
                 </View>
-                <View style={{ borderBottomWidth:1,marginHorizontal:20,
-        borderColor:GlobalColor.Secondary,}}/>
-
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={taxSaving}
-                    ListEmptyComponent={() => {
-                        return (
-                            <ListEmptyComponent title="No Data Found"
-                            ></ListEmptyComponent>
-                        )
-                    }}
-                    keyExtractor={({ item, index }) => index}
-                    renderItem={({ item, index }) => (
-                        <View style={styles.textContainerFlatList}>
-                            <View style={{ width: '70%' }}><Text>{item.SAVG_DESC}</Text></View>
-                            <Text>{item.SVDT_AMT}</Text>
-                            {/* <View style={{width:'50%',justifyContent:'flex-end'}}>></View> */}
-                        </View>
-                    )}
-                />
             </View>
         </SafeAreaView>
     )
@@ -120,29 +126,34 @@ const TaxSavings = () => {
 export default TaxSavings
 
 const styles = StyleSheet.create({
-
+    container:{
+        paddingHorizontal:10,
+        flex:1
+    },  
     textContainer: {
-        width: '90%',
+        width: '100%',
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent: 'space-between',
-        padding:10,            
+        // padding:10,
+        paddingVertical:10            
      
 
     },
     textContainerFlatList: {
-        width: '90%',
+        width: '100%',
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent: 'space-between',
         marginVertical: 8,        
         borderBottomWidth:0.5,
-        borderColor:GlobalColor.Secondary
+        borderColor:GlobalColor.Secondary,
+        paddingBottom:8,
 
     },
     MainCard: {
         flex:1,
-        margin: 10,
+        paddingHorizontal:10,
         shadowColor: GlobalColor.Black,
         shadowOffset: {
             width: 0,
@@ -152,6 +163,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.0,
         elevation: 3,
         borderRadius: 4,
+        marginTop:5,
     }
 
 

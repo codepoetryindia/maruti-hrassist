@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView } from 'react-native';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Feather from 'react-native-vector-icons/Feather';
-// import BillIcon from '../../assets/Images/compensation and benefits/bill.png'
 import Modal from 'react-native-modal';
 import { ActivityIndicator } from 'react-native-paper';
 import AuthContext from '../../context/AuthContext';
@@ -24,21 +23,10 @@ import { Header } from '../../components/reusable/Header';
 
 
 const TaxComputationSlip = () => {
-
     const [loader, setLoader] = useState(false)
     const [taxData, setTaxData] = useState([]);
-    const [taxSaving, setTaxSaving] = useState();
-    const [month, setMonth] = useState();
-    const [employeePf, setEmployeePf] = useState();
-    const [employerPf, setEmployerPf] = useState();
-    const [netBalance, setNetBalance] = useState();
     const { authContext, AppUserData } = useContext(AuthContext);
     const [refresh, setrefresh] = useState(false);
-
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [taxModalVisible, setTaxModalVisible] = useState(false);
-    const [pfModalVisible, setPfModalVisible] = useState(false);
-    const [savingModalVisible, setSevingModalVisible] = useState(false);
 
     const stopLoader = () => {
         setLoader(false);
@@ -46,8 +34,11 @@ const TaxComputationSlip = () => {
     }
 
     // tax Saving Api
-    const GetTaxAppApi = async () => {
-        setLoader(true);
+    const GetTaxAppApi = async (isrefresh = false) => {
+        if(!isrefresh){
+            setLoader(true);
+        }
+        
         try {
             //Get Data
             let result = await ApiService.PostMethode('/GetTaxApp', {
@@ -73,29 +64,41 @@ const TaxComputationSlip = () => {
     }, [])
 
 
+    if(loader){
+        return(
+            <SafeAreaView style={{ flex: 1,backgroundColor: GlobalColor.PrimaryLight  }}>
+                <Header title="Tax Computation Slip" back/>
+                <LoadingScreen/>
+            </SafeAreaView>          
+        )
+      }
+    
+      const FlatList_Header_Approve = () => {
+        return (
+            <View style={styles.textContainer}>
+                <Text Bold>Component</Text>
+                <Text Bold>Amount (Rs.)</Text>
+            </View>
+        )}
+
 
 
     return (
         <SafeAreaView style={{ flex: 1,backgroundColor: GlobalColor.PrimaryLight  }}>
             <Header title="Tax Computation Slip" back/>
-
             <View style={[styles.MainCard,{padding:10,backgroundColor: GlobalColor.White}]}>
-                <View style={styles.textContainer}>
-                    <Text Bold>Component</Text>
-                    <Text Bold>Amount (Rs.)</Text>
-                </View>
-
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={taxData}
+                    data={taxData}//taxData
                     ListEmptyComponent={() => {
                         return (
                             <ListEmptyComponent title="No Data Found"
-                            // enableRefresh={true}
-                            // onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh}
+                            enableRefresh={true}
+                             onRefreshCallback={()=>GetTaxAppApi(true)} refreshing={refresh}
                             ></ListEmptyComponent>
                         )
                     }}
+                    ListHeaderComponent={FlatList_Header_Approve}
                     keyExtractor={({ item, index }) => index}
                     renderItem={({ item, index }) => (
                         <View style={styles.textContainer}>
@@ -104,10 +107,7 @@ const TaxComputationSlip = () => {
                         </View>
                     )}
                 />
-            </View>
-            
-
-
+            </View>        
         </SafeAreaView>
     )
 }

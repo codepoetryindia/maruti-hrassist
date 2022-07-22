@@ -38,7 +38,8 @@ const Book = () => {
   const [loader, setLoader] = useState(false);
   const [ModalLoader, setModalLoader] = useState(false);
   const [seatAvility, setSeatAvility] = useState('')
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedShuttle, setselectedShuttle] = useState({});
 
 
   // const [loader, setLoader] = useState(false);
@@ -95,13 +96,14 @@ const Book = () => {
     })
   }
 
-  const GetSeatsAvailabilityApi = () => {
+  const GetSeatsAvailabilityApi = (item) => {
+    setselectedShuttle(item);
     setModalVisible(true);
     setModalLoader(true);
     let payloadDate = moment(date).format("DD-MMMM-YYYY").toUpperCase()
     let token = AppUserData.token
     let apiData = {
-      BKAVID: BKAVID[0],
+      BKAVID: item.SHTL_ROUT_MAPP_ID,
       BKAVStartDate: payloadDate,
     }
     console.log("apiPayload", apiData)
@@ -191,7 +193,7 @@ const Book = () => {
                     <TouchableOpacity
                       key={item.SHTL_REGISTRATION_NO}
                       onPress={() => {
-                        GetSeatsAvailabilityApi()
+                        GetSeatsAvailabilityApi(item);
                         // setModalVisible(true)
                       }} style={styles.ListContant}>
                       <Text>{item.SHTL_REGISTRATION_NO}</Text>
@@ -233,7 +235,7 @@ const Book = () => {
                             style={{ minWidth: 150, marginLeft: 10 }}>
                             <Button title="Book Now" onPress={() => {
                               setModalVisible(false)
-                              navigation.navigate("SeatBook")
+                              navigation.navigate("SeatBook", {data:selectedShuttle, date: date})
                             }} />
                           </View>
                         </View>

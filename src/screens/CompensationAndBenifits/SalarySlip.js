@@ -324,7 +324,7 @@ const SalarySlip = ({ navigation }) => {
                 </TouchableOpacity>
 
 
-                
+
                 <ScrollView style={{ backgroundColor: GlobalColor.White, marginVertical: 10, }} >
                     {/* Table */}
 
@@ -389,13 +389,13 @@ const SalarySlip = ({ navigation }) => {
                                     return (
                                         <View style={[styles.Table, { alignSelf: 'center', }]}>
                                             <View style={styles.tableRow}>
-                                                <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
+                                                <Text style={{ color: GlobalColor.Black,fontSize: GlobalFontSize.P - 2 }}>{item.EARNING}</Text>
                                             </View>
                                             <View style={styles.tableRow}>
-                                                <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
+                                                <Text style={{ color: GlobalColor.Black,fontSize: GlobalFontSize.P - 2 }}>{item.DED}</Text>
                                             </View>
                                             <View style={styles.tableRow}>
-                                                <Text style={{ color: GlobalColor.Black }}>{item.NET}</Text>
+                                                <Text style={{ color: GlobalColor.Black,fontSize: GlobalFontSize.P - 2 }}>{item.NET}</Text>
                                             </View>
                                         </View>
                                     )
@@ -415,7 +415,7 @@ const SalarySlip = ({ navigation }) => {
                                 renderItem={({ item, index }) => {
                                     return (
                                         <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.GLMS_MESSAGES}</Text>
+                                            <Text style={{ color: GlobalColor.Black,fontSize: GlobalFontSize.P - 2 }}>{item.GLMS_MESSAGES}</Text>
 
                                         </View>
                                     )
@@ -435,7 +435,7 @@ const SalarySlip = ({ navigation }) => {
 
                                     return (
                                         <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.EXMS_MESSAGES}</Text>
+                                            <Text style={{ color: GlobalColor.Black,fontSize: GlobalFontSize.P - 2 }}>{item.EXMS_MESSAGES}</Text>
 
                                         </View>
                                     )

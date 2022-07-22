@@ -46,7 +46,7 @@ const MyDrawer = () => {
       <Drawer.Screen name='EmployProfile' component={EmployProfile}/>
       <Drawer.Screen name='EditProfile' component={EditProfile}/>
       <Drawer.Screen name='Nomination' component={Nomination}/>
-      <Drawer.Screen name="CompensationBenifitsNav" component={CompensationBenifitsNav}/>
+      <Drawer.Screen name="CompensationBenifitsNav" component={CompensationBenifitsNav} options={{unmountOnBlur:true}}/>
       <Drawer.Screen name="HospitalNavs" component={HospitalNavs} />
       <Drawer.Screen name="Canteen" component={Canteen} />
       <Drawer.Screen name="CanteenMenu" component={CanteenMenu} />
@@ -69,10 +69,8 @@ const MyDrawer = () => {
       <Drawer.Screen name='ManagerAttandancePercentage' component={ManagerAttandancePercentage} options={{unmountOnBlur:true}}/>  
       <Drawer.Screen name='TaxComputationSlip' component={TaxComputationSlip} options={{unmountOnBlur:true}}/>  
       <Drawer.Screen name='PFBalance' component={PFBalance} options={{unmountOnBlur:true}}/>  
-      <Drawer.Screen name='TaxSavings' component={TaxSavings} options={{unmountOnBlur:true}}/> 
-      <Drawer.Screen name='Feedback' component={Feedback} options={{unmountOnBlur:true}}/> 
-                 
-
+      <Drawer.Screen name='TaxSavings' component={TaxSavings} options={{unmountOnBlur:true}}/>   
+      <Drawer.Screen name='Feedback' component={Feedback} options={{unmountOnBlur:true}}/>   
     </Drawer.Navigator>
   );
 }

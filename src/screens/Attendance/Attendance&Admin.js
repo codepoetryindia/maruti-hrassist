@@ -29,7 +29,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const AttendanceAdmin = ({navigation}) => {
   const [route, setroute] = useState("Attendance");
-  const [horizental, setHorizental] = useState(true);
+  const [horizental, setHorizental] = useState(false);
 
   const tabBarListeners = ({ navigation, route }) => ({
     tabPress: () => {
