@@ -33,7 +33,7 @@ import Text from '../../components/reusable/Text';
 
 
 
-const PastBook = () => {
+const PastBook = ({navigation, route}) => {
     const [fromDate] = useState(new Date());
     const [toDate] = useState(new Date());
     const [firstDate, setFirstDate] = useState('')
@@ -44,10 +44,13 @@ const PastBook = () => {
     const [textinputSecondDate, setTextinputSecondDate] = useState('');
     const [pastFudata, setPastFuData] = useState([])
     const { authContext, AppUserData } = useContext(AuthContext);
-    const [loader, setLoader] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [loader, setLoader] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [bookingDetails, setBookingDetails] = useState([])
-    const [bktId, setBktId] = useState('');
+
+
+
+
     const GetShutlPastFutrReportApi = (data) => {
         let token = AppUserData.token
         setLoader(true);
@@ -56,11 +59,11 @@ const PastBook = () => {
                 console.log("GetShutlPastFutrReportApi", result);
                 setLoader(false);
                 let ApiValue = result.Value
-                {
-                    ApiValue.map((item) => {
-                        return (setBktId(item.BKDT_ID))
-                    })
-                }
+                // {
+                //     ApiValue.map((item) => {
+                //         return (setBktId(item.BKDT_ID))
+                //     })
+                // }
                 setPastFuData(ApiValue)
             })
 
@@ -86,17 +89,22 @@ const PastBook = () => {
     const BookingDetailApi = (data) => {
         let token = AppUserData.token
         let apiData = {
-            BKDTID: bktId,
+            BKDTID: data,
         }
-        console.log("apiPayload", apiData)
+        // setModalVisible(true);
         setLoader(true);
         ApiService.PostMethode('/BookingDetail', apiData, token)
             .then(result => {
                 console.log("BookingDetail", result);
+
                 setLoader(false);
-                let ApiValue = result.Value
-                setBookingDetails(ApiValue)
-                setModalVisible(true)
+                if(result.Value &&result.Value.length > 0){
+                    let ApiValue = result.Value;
+                    setBookingDetails(ApiValue[0]);
+                    setModalVisible(true);
+                }else{
+                    Toast.show("Details not found")
+                }
             })
             .catch(error => {
                 setLoader(false);
@@ -117,13 +125,18 @@ const PastBook = () => {
                 }
             });
     };
+
+
+
+
     const ShuttleEligibilityApi = (data) => {
+
         let token = AppUserData.token
         let userId = AppUserData?.data?.userId
         let apiData = {
-            UserName: userId,
-        }
-        console.log("apiPayload", apiData)
+            BKDTID: data,
+        }        
+        // console.log("apiPayload", apiData)
         setLoader(true);
         ApiService.PostMethode('/ShuttleEligibility', apiData, token)
             .then(result => {
@@ -131,17 +144,21 @@ const PastBook = () => {
                 setLoader(false);
                 let ApiResult = result.Result
                 setModalVisible(false);
-                Alert.alert(
-                    "Eligible",
-                    ApiResult,
-                    [
-                        {
-                            text: "Okay",
-                            onPress: () => console.log("Cancel Pressed"),
-                            style: "cancel"
-                        },
-                    ]
-                );
+                if(ApiResult== "N"){
+                    Alert.alert(
+                        "Alert",
+                        "Feedback cannot be submitted for PAST booking",
+                        [
+                            {
+                                text: "Okay",
+                                onPress: () => console.log("Cancel Pressed"),
+                                style: "cancel"
+                            },
+                        ]
+                    );
+                }else{
+                    navigation.navigate("Feedback", {bookingid:data})
+                }                
             })
             .catch(error => {
                 setLoader(false);
@@ -162,6 +179,8 @@ const PastBook = () => {
                 }
             });
     };
+
+    
 
 
 
@@ -192,6 +211,10 @@ const PastBook = () => {
             GetShutlPastFutrReportApi(apiData);
         }
     }
+
+
+
+
 
     if (loader) {
         return (
@@ -335,7 +358,10 @@ const PastBook = () => {
 
 
 
-                                    <TouchableOpacity style={styles.cardContainer}>
+                                    <TouchableOpacity style={styles.cardContainer}  
+                                            onPress={() => {
+                                                BookingDetailApi(item.BKDT_ID)
+                                            }}>
                                         <View style={styles.cardRow}>
                                             <View style={styles.cardColumn}>
                                                 <Text style={styles.cardLabel}>Date</Text>
@@ -376,52 +402,70 @@ const PastBook = () => {
 
 
                     {/* SeatAvility Modal */}
+    <Modal
+        // animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text Bold style={styles.modalTextHeading}>Booking Detail</Text>
+            <View style={styles.modalrow}>
+                <Text Bold>Booking Id:</Text>
+                <Text Bold>{bookingDetails.BKDT_ID}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Registration No.:</Text>
+                <Text Bold>{bookingDetails.SHTL_REGISTRATION_NO}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Booking For:</Text>
+                <Text Bold>{bookingDetails.BKDT_EMPL_ID}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Name:</Text>
+                <Text Bold>{bookingDetails.EMPL_NAME}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Date:</Text>
+                <Text Bold>{moment(bookingDetails.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Source:</Text>
+                <Text Bold>{bookingDetails.ROUT_SOURCE}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Destination:</Text>
+                <Text Bold>{bookingDetails.ROUT_DESTINATION}</Text>                
+            </View>
 
-                    <Modal transparent={true} visible={modalVisible}>
-                        <Pressable
-                            onPress={() => {
-                                setModalVisible(false)
-                            }}
-                            style={styles.ModalContainer}>
-                            <View
-                                style={styles.ModalContant}>
-                                <Text style={{ fontSize: GlobalFontSize.H4 }} Bold>Booking Detail</Text>
-
-                                {bookingDetails.map((item) => {
-                                    console.log("first", item)
-                                    return (
-                                        <View style={{ width: '100%', marginVertical: 15 }}>
-                                            <Text>Booking Id : {item.BKDT_ID} </Text>
-                                            <Text>Registration No : {item.SHTL_REGISTRATION_NO} </Text>
-                                            <Text>Booking For : {item.BKDT_EMPL_ID} </Text>
-                                            <Text>Name : {item.EMPL_NAME} </Text>
-                                            <Text>Date : {moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
-                                            <Text>Source : {item.ROUT_SOURCE} </Text>
-                                            <Text>Destination : {item.EMPL_NAME} </Text>
-                                            <Text>Time : {item.ROUT_START_TIME} </Text>
-                                            <Text>Status : {item.BKDT_STATUS_FLAG} </Text>
-                                        </View>
-                                    )
-                                })}
-                                <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
-                                    <View
-                                        style={{ width: '47%', }}
-                                    >
-                                        <Button btnStyle={{ paddingHorizontal: 10 }} title="Close" onPress={() => {
-                                            setModalVisible(false)
-                                        }} />
-
-                                    </View>
-                                    <View style={{ width: '47%', }}>
-                                        <Button title="Feedback" onPress={() => {
-                                            ShuttleEligibilityApi()
-                                        }} />
-                                    </View>
-                                </View>
-                            </View>
-                        </Pressable>
-                    </Modal>
-                </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Time:</Text>
+                <Text Bold>{bookingDetails.ROUT_START_TIME}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text Bold>Status:</Text>
+                <Text Bold>{bookingDetails.BKDT_STATUS_FLAG}</Text>                
+            </View>        
+                {
+                    bookingDetails.BKDT_STATUS_FLAG == "Booked" ? (
+                        <View style={styles.modalButtons}>
+                            <Button title="OK" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setModalVisible(!modalVisible)}/>
+                            <Button title="FEEDBACK" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>ShuttleEligibilityApi(bookingDetails.BKDT_ID)}/>
+                        </View>                        
+                    ):(
+                        <View style={styles.modalButtons}>
+                            <Button title="OK" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setModalVisible(!modalVisible)}/>
+                        </View>
+                    )
+                }                            
+          </View>
+        </View>
+      </Modal>    
+    </View>
             ) : (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
                     {loader == true ? <Text>We are Loading your data</Text> : <ListEmptyComponent title="No Data Found" subtitle="Please select dates and submit to continue" ></ListEmptyComponent>}
@@ -512,30 +556,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2.0,
         elevation: 5,
     },
-    ModalContainer: {
-        backgroundColor: '#000000aa',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-
-    },
-    ModalContant: {
-        backgroundColor: GlobalColor.White,
-        padding: 20,
-        borderRadius: 0,
-        width: '90%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: "center"
-    },
-
-
-
-
-
-
     cardContainer:{
-
         backgroundColor:GlobalColor.White,
         borderWidth:1,
         borderColor:GlobalColor.Secondary,
@@ -562,6 +583,40 @@ const styles = StyleSheet.create({
     cardLabelRight:{
         textAlign:'right',
         color:GlobalColor.Primary,
+        fontSize:GlobalFontSize.Error
+    },
+    centeredView:{
+        backgroundColor:'rgba(0,0,0,0.5)',
+        flex:1, 
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalView:{
+        width:"80%",
+        backgroundColor:GlobalColor.White,
+        padding:10,
+        paddingHorizontal:15
+    },
+    modalTextHeading:{
+        fontSize:GlobalFontSize.H4,
+        marginBottom:10
+    },
+    modalrow:{
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        marginTop:10, 
+    },
+    modalButtons:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginTop:15
+    },
+    ButtonWidth:{
+        // width:'45%',
+        flex:0.5,
+        borderRadius:0
+    },
+    ButtonWidthText:{
         fontSize:GlobalFontSize.Error
     }
 

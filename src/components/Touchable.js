@@ -89,7 +89,7 @@ const TouchableCard = ({navigation}) => {
               else if(item.name==='Attendance & Admin') {
                 navigation.navigate('AttendanceAdmin');
               }
-             else if(item.name==='Compensation and Benefits') {
+             else if(item.name==='Comp. & Benefits') {
                 navigation.navigate('CompensationBenifitsNav');
                 // console.log("hello");
               }
@@ -105,7 +105,7 @@ const TouchableCard = ({navigation}) => {
              else if(item.name==='Other Mobile Apps') {
                 navigation.navigate('OtherApps');
               }
-              else if(item.name==='Buisness Travel') {
+              else if(item.name==='Business Travel') {
                 navigation.navigate('BuisnessTravel');
               }
              else if(item.name==='Share App') {

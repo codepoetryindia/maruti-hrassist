@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Modal, Pressable, Image, SafeAreaView, } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Modal, Pressable, Image, SafeAreaView,Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -21,9 +21,13 @@ import { Header } from '../../components/reusable/Header';
 import TextInput from '../../components/reusable/TextInput';
 import Text from '../../components/reusable/Text';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import moment from 'moment';
 
 // create a component
-const SeatBook = ({ navigation }) => {
+const SeatBook = ({ navigation, route }) => {
+    console.log(route.params.data);
+    console.log(route.params.date);
+
     let radio_props = [
         { label: 'Self', value: 0 },
         { label: 'On Behalf', value: 1 },
@@ -41,7 +45,6 @@ const SeatBook = ({ navigation }) => {
 
     let inputNameData = AppUserData?.data?.EMPL_NAME
     let inputDegnData = AppUserData.data.EMPL_DESG_CODE
-    console.log(inputDegnData);
 
     const SearchEmployee = () => {
         console.log('post data', search);
@@ -64,7 +67,7 @@ const SeatBook = ({ navigation }) => {
                 })
                 .catch(error => {
                     setLoader(false);
-                    // console.log('Error occurred==>', error);
+                    console.log('Error occurred==>', error);
                     if (error.response) {
                         if (error.response.status == 401) {
                             console.log('error from api', error.response);
@@ -84,15 +87,32 @@ const SeatBook = ({ navigation }) => {
         let apiData;
         if (isSelected == 0) {
             apiData = {
-                UserName: userId
+                "BKDTID":"",
+                "BKDTShtlID": route.params.data.SHTL_ROUT_MAPP_ID,
+                "BKDTEmplID": userId,
+                "StartDate": moment().format("DD-MMMM-YYYY"),
+                "EndDate": moment().format("DD-MMMM-YYYY"),
+                "Reason": "",
+                "BKDTFlag": "I",
+                "BKDTUser": userId
             }
+            // route.params.date
+            // route.params.date
         }
         else {
             apiData = {
-                UserName: searchedNameData['Staff No']
+                "BKDTID":"",
+                "BKDTShtlID": route.params.data.SHTL_ROUT_MAPP_ID,
+                "BKDTEmplID": searchedNameData['Staff No'],
+                "StartDate": moment().format("DD-MMMM-YYYY"),
+                "EndDate": moment().format("DD-MMMM-YYYY"),
+                "Reason": "",
+                "BKDTFlag": "I",
+                "BKDTUser": userId
             }
         }
-        console.log("apiData", apiData)
+        // console.log("apiData", apiData)
+        // return;
         setLoader(true);
         ApiService.PostMethode('/BookShuttleSeat', apiData, token)
             .then(result => {
@@ -100,7 +120,8 @@ const SeatBook = ({ navigation }) => {
                 let responseData = result.Result;
                 console.log('ApiResult', responseData);
                 // setBookData(responseData)
-                alert(responseData)
+                Alert.alert("Success",responseData);
+                navigation.goBack();
             })
             .catch(error => {
                 setLoader(false);

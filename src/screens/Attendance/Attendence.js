@@ -1,6 +1,6 @@
 //import liraries
 import React, {useEffect, useState,useContext} from 'react';
-import {View, StyleSheet, TouchableOpacity, FlatList, Platform} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, FlatList, Platform, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -170,7 +170,7 @@ const Attendance = ({navigation}) => {
   const handelDate = () => {
    if(fromDate >toDate)
    {
-    alert('from date should be less then to date');
+    Alert.alert('from date should be less then to date');
    }else {
     GetRawPunch();
    }
@@ -199,7 +199,7 @@ const Attendance = ({navigation}) => {
                 let notSupported = true;
                 Toast.show('Something Went Wrong');
               }else{
-                Toast.show('Worked');
+                // Toast.show('Worked');
               }
             }
           })
@@ -267,7 +267,7 @@ const Attendance = ({navigation}) => {
         .then(result => {
             setLoader(false);
             console.log('ApiResult SubmitPunchRO', result);
-            alert(result.Result)
+            Alert.alert(result.Result)
             // let responseData = result.Value[0].SHIS_YYMM_CODE
             // console.log('GetMonth', responseData)
             // setMonth(responseData)

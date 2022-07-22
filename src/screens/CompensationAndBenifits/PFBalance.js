@@ -1,24 +1,17 @@
 //import liraries
 import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, FlatList, SafeAreaView } from 'react-native';
-
 import AuthContext from '../../context/AuthContext';
 import * as ApiService from '../../Utils/Utils';
-
 import Text from '../../components/reusable/Text';
-
 import { GlobalColor } from '../../constants/Colors';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import { showErrorMessage } from '../../Utils/Utils';
 import { Header } from '../../components/reusable/Header';
-
-
-
-
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 
 
 const PFBalance = () => {
-
     const [loader, setLoader] = useState(false)
     const [taxData, setTaxData] = useState([]);
     const [taxSaving, setTaxSaving] = useState();
@@ -53,15 +46,16 @@ const PFBalance = () => {
       }, AppUserData.token)
 
       //stop Loader
-      stopLoader()
-
-      //Set Data
-      let CB1_CB2 = result.Value.Table1[0].CB1_CB2
-      let PFST_MUL_CB3 = result.Value.Table2[0].PFST_MUL_CB3
-      let NetBalance = CB1_CB2 + PFST_MUL_CB3
-      setEmployeePf(CB1_CB2)
-      setEmployerPf(PFST_MUL_CB3)
-      setNetBalance(NetBalance)
+      stopLoader();
+      if(result.Value){
+        //Set Data
+        let CB1_CB2 = result.Value.Table1[0].CB1_CB2
+        let PFST_MUL_CB3 = result.Value.Table2[0].PFST_MUL_CB3
+        let NetBalance = CB1_CB2 + PFST_MUL_CB3
+        setEmployeePf(CB1_CB2)
+        setEmployerPf(PFST_MUL_CB3)
+        setNetBalance(NetBalance)
+      }
 
     } catch (error) {
       //stop Loader
@@ -76,12 +70,21 @@ const PFBalance = () => {
     }, [])
 
 
+    if(loader){
+        return(
+            <SafeAreaView style={{ flex: 1,backgroundColor: GlobalColor.PrimaryLight  }}>
+                <Header title="PF Balance" back/>
+                <LoadingScreen/>
+            </SafeAreaView>          
+        )
+      }
+
+
 
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>
             <Header title="PF Balance" back />
-
             <View style={[styles.MainCard, { padding: 10,backgroundColor: GlobalColor.White }]}>
                 <View>
                     <View style={styles.textContainer}>
@@ -90,16 +93,14 @@ const PFBalance = () => {
                             Rs.{employeePf}
                         </Text>
                     </View>
-                    <View style={{ borderBottomWidth:0.5,marginHorizontal:5,
-        borderColor:GlobalColor.Secondary,}}/>
+                    <View style={{ borderBottomWidth:0.5,marginHorizontal:5, borderColor:GlobalColor.Secondary,}}/>
                     <View style={styles.textContainer}>
                         <Text >Employer's</Text>
                         <Text Bold>
                             Rs.{employerPf}
                         </Text>
                     </View>
-                    <View style={{ borderBottomWidth:0.5,marginHorizontal:5,
-        borderColor:GlobalColor.Secondary,}}/>
+                    <View style={{ borderBottomWidth:0.5,marginHorizontal:5, borderColor:GlobalColor.Secondary,}}/>
                     <View style={styles.textContainer}>
                         <Text Bold>Net Balance</Text>
                         <Text Bold>
@@ -108,9 +109,6 @@ const PFBalance = () => {
                     </View>
                 </View>
             </View>
-
-
-
         </SafeAreaView>
     )
 }

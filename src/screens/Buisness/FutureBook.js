@@ -33,7 +33,7 @@ export default function FutureBook() {
     const [refresh, setrefresh] = useState(false);
     const [firstDate, setFirstDate] = useState('');
     const [secondDate, setSecondDate] = useState('');
-    const [modalVisible, setmodalVisible] = useState(true);
+    const [modalVisible, setmodalVisible] = useState(false);
     const [BookingDetail, setBookingDetail] = useState({});
 
 
@@ -173,11 +173,20 @@ export default function FutureBook() {
 
 
     const BookShuttleSeatApi = (userIDNum) => {
+
         let token = AppUserData.token
         let userId = AppUserData?.data?.userId
-        let apiData = {
-            UserName: userIDNum
-        }
+        let apiData = 
+            {
+                "BKDTID":userIDNum.BKDT_ID,
+                "BKDTShtlID":userIDNum.BKDT_SHTL_RTMP_ID,
+                "BKDTEmplID":userIDNum.BKDT_EMPL_ID,
+                "StartDate":moment().format("DD-MMMM-YYYY"),
+                "EndDate":moment().format("DD-MMMM-YYYY"),
+                "Reason":"",
+                "BKDTFlag":"C",
+                "BKDTUser":userId
+            };        
         // console.log("apiData", apiData)
         setLoader(true);
         ApiService.PostMethode('/BookShuttleSeat', apiData, token)
@@ -320,7 +329,7 @@ export default function FutureBook() {
             </View>
             <View style={styles.modalButtons}>
                 <Button title="OK" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setmodalVisible(!modalVisible)}/>
-                <Button title="CANCEL BOOKING" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>confirmCancel(BookingDetail.BKDT_EMPL_ID)}/>
+                <Button title="CANCEL BOOKING" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>confirmCancel(BookingDetail)}/>
             </View>
             
           </View>

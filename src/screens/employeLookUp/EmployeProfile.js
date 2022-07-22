@@ -133,7 +133,7 @@ const EmployProfile = ({ navigation, route }) => {
             shadowRadius: 3.84,
             elevation: 5,
             borderRadius: 8,
-            marginTop:60
+            marginTop:60, marginBottom:20
           }}>
 
           <View
@@ -181,8 +181,9 @@ const EmployProfile = ({ navigation, route }) => {
           </View>
 
 
-          <View style={{ flex:1 }}>
+          <View style={{ flex:1, paddingBottom:20 }}>
             <FlatList
+              contentContainerStyle={{ flexGrow:1, marginBottom:20 }}
               data={employeeData}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={() => {
@@ -196,7 +197,7 @@ const EmployProfile = ({ navigation, route }) => {
               }}
               keyExtractor={({ item, index }) => item}
               renderItem={({ item, index }) => (
-                <View>
+                <View style={{ flex:1 }}>
                   <Text style={{ color: 'gray', fontSize: 20, textAlign: 'center', padding: 5, letterSpacing: 1 }}>{item.EMPL_NAME}</Text>
                   <View style={styles.box}>
                     <Text style={styles.header}>Employee ID</Text>
@@ -263,6 +264,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginVertical: 5,
     borderBotttomWidth: 1,
+    borderBottomColor:GlobalColor.Secondary,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
