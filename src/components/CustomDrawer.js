@@ -17,8 +17,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import Share from 'react-native-share';
 import AuthContext from '../context/AuthContext';
-
-
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
 import Text from './reusable/Text';

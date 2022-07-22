@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         
     },
     MainCard:{
-        
+        flex:1,        
         margin:10,
         shadowColor: GlobalColor.Black,
         shadowOffset: {

@@ -9,7 +9,9 @@ import {
     SafeAreaView,
     Modal,
     Pressable,
-    Alert
+    Alert,
+    ScrollView
+
 
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -28,6 +30,7 @@ import { LoadingScreen } from '../../components/reusable/LoadingScreen';
 import Button from '../../components/reusable/Button';
 import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
 import Text from '../../components/reusable/Text';
+
 
 
 const PastBook = () => {
@@ -283,36 +286,94 @@ const PastBook = () => {
                 <Button title="UPDATE" onPress={() => { handleSubmit() }}></Button>
             </TouchableOpacity>
             {pastFudata.length > 0 ? (
-                <View
-                    style={styles.ListContainer}>
-                    <View style={styles.ListContainerCardDesign}>
+                <View style={{ flex:1 }}>
+                    {/* <View style={styles.ListContainerCardDesign}>
                         <Text Bold>Date</Text>
                         <Text Bold>Emp ID</Text>
                         <Text Bold>Booking ID</Text>
                         <Text Bold>Source</Text>
                         <Text Bold>Destination</Text>
                         <Text Bold>Status</Text>
-                    </View>
-                    <View>
+                    </View> */}
+                    <ScrollView >
                         {
                             pastFudata.map((item) => {
                                 return (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            BookingDetailApi(item.BKDT_ID)
-                                        }} style={styles.CardData}>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_EMPL_ID}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_ID}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.ROUT_SOURCE}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.ROUT_DESTINATION}</Text>
-                                        <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_STATUS_FLAG}</Text>
+
+                                    //  <TouchableOpacity
+                                    //         onPress={() => {
+                                    //             BookingDetailApi(item.BKDT_ID)
+                                    //         }} style={styles.ListContainer}>
+
+                                    //         <View style={{ flexDirection: "row", justifyContent: "space-between",marginBottom:7 }}>
+                                    //             <Text Bold>Date :  <Text>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2,marginLeft:44 }}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text> */}
+
+                                    //             <Text Bold>Emp ID : <Text>{item.BKDT_EMPL_ID}</Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>
+                                    //                 {item.BKDT_EMPL_ID}
+                                    //             </Text> */}
+                                    //         </View>
+
+
+                                    //         <View style={{ flexDirection: "row", justifyContent: "space-between",marginBottom:7 }}>
+                                    //             <Text Bold>Booking ID : <Text>{item.BKDT_ID}</Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_ID}</Text> */}
+                                    //             <Text Bold>Source : <Text>{item.ROUT_SOURCE} </Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.ROUT_SOURCE}</Text> */}
+                                    //         </View>
+
+
+                                    //         <View style={{ flexDirection: "row", justifyContent: "space-between",marginBottom:7 }}>
+                                    //             <Text Bold>Destination : <Text>{item.ROUT_DESTINATION}</Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2, marginLeft: -16 }}>{item.ROUT_DESTINATION}</Text> */}
+                                    //             <Text Bold>Status : <Text>{item.BKDT_STATUS_FLAG}</Text></Text>
+                                    //             {/* <Text style={{ fontSize: GlobalFontSize.Small - 2 }}>{item.BKDT_STATUS_FLAG}</Text> */}
+                                    //         </View>
+                                    //     </TouchableOpacity>  
+
+
+
+
+                                    <TouchableOpacity style={styles.cardContainer}>
+                                        <View style={styles.cardRow}>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabel}>Date</Text>
+                                                <Text Bold style={styles.cardValue}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
+                                            </View>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabelRight}>Employee ID</Text>
+                                                <Text Bold style={styles.cardValueRight}>{item.BKDT_EMPL_ID}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.cardRow}>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabel}>Booking ID</Text>
+                                                <Text Bold style={styles.cardValue}>{item.BKDT_ID}</Text>
+                                            </View>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabelRight}>Source</Text>
+                                                <Text Bold style={styles.cardValueRight}>{item.ROUT_SOURCE}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.cardRow}>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabel}>Destination</Text>
+                                                <Text Bold style={styles.cardValue}>{item.ROUT_DESTINATION}</Text>
+                                            </View>
+                                            <View style={styles.cardColumn}>
+                                                <Text style={styles.cardLabelRight}>Status</Text>
+                                                <Text Bold style={styles.cardValueRight}>{item.BKDT_STATUS_FLAG}</Text>
+                                            </View>
+                                        </View>
                                     </TouchableOpacity>
+
                                 )
                             })
                         }
+                    </ScrollView>
 
-                    </View>
+
 
                     {/* SeatAvility Modal */}
 
@@ -407,8 +468,8 @@ const styles = StyleSheet.create({
 
     ListContainer: {
         width: '100%',
-        alignSelf: 'center',
-        paddingVertical: 10,
+
+
         paddingHorizontal: 10,
         backgroundColor: '#fff',
         shadowColor: '#000',
@@ -419,8 +480,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 1.84,
         elevation: 5,
-        borderRadius: 0,
-        paddingBottom: 25
+        borderWidth: 0.5,
+        borderColor: GlobalColor.Secondary,
+        borderRadius: 3,
+        padding: 20,
+        marginBottom: 10
     },
     ListContainerCardDesign: {
         width: '100%',
@@ -437,7 +501,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         backgroundColor: GlobalColor.White,
         paddingVertical: 15,
-        paddingHorizontal:5,
+        paddingHorizontal: 5,
         backgroundColor: '#FFF',
         shadowColor: '#000',
         shadowOffset: {
@@ -463,7 +527,48 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: "center"
+    },
+
+
+
+
+
+
+    cardContainer:{
+
+        backgroundColor:GlobalColor.White,
+        borderWidth:1,
+        borderColor:GlobalColor.Secondary,
+        borderRadius:5, 
+        padding:10, 
+        marginBottom:10
+    },
+    cardRow:{
+
+        flexDirection:'row', 
+        justifyContent:'space-between',
+        marginBottom:10,
+    },
+    cardValueRight:{
+
+        textAlign:'right',
+        color:GlobalColor.Primary
+    },
+    cardLabel:{
+
+        color:GlobalColor.Primary,
+        fontSize:GlobalFontSize.Error
+    },
+    cardLabelRight:{
+        textAlign:'right',
+        color:GlobalColor.Primary,
+        fontSize:GlobalFontSize.Error
     }
+
+
+
+
+
 
 });
 export default PastBook;

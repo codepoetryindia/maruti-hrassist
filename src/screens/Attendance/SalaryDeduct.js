@@ -97,9 +97,6 @@ const SalaryDeduct = ({ navigation }) => {
     )
   }
 
-
-
-
   return (
     <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight}}>    
       <Header title="Salary Deduction" back/>
