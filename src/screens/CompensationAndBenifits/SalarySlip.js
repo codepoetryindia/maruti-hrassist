@@ -149,6 +149,7 @@ const SalarySlip = ({ navigation }) => {
         GetMonth()
         GetSalaryData()
         GetSalaryTypeApi()
+        console.log("first massage", table3Data)
     }, [])
     console.log("month data", month);
 
@@ -174,16 +175,17 @@ const SalarySlip = ({ navigation }) => {
 
 
 
+
     return (
 
         <SafeAreaView style={{ flex: 1, width: '100%', height: '100%', backgroundColor: GlobalColor.PrimaryLight }}>
-            {/* {loader == true ? (
+            {loader == true ? (
                 <Spinner
                     visible={loader}
                     textContent={'Loading...'}
                     textStyle={styles.spinnerTextStyle}
                 />
-            ) : null} */}
+            ) : null}
 
 
             <Header title="Salary Slip" />
@@ -226,7 +228,7 @@ const SalarySlip = ({ navigation }) => {
                 </View>
             </LinearGradient> */}
 
-            <View style={{ paddingHorizontal: 10 }}>
+            <View style={{ flex: 1, paddingHorizontal: 10, marginVertical: 10, }}>
 
                 <TouchableOpacity
                     style={styles.Salary}
@@ -287,7 +289,7 @@ const SalarySlip = ({ navigation }) => {
                                         toggleModal()
                                     }}
                                     style={styles.textContainer}>
-                                    <Text style={{ paddingVertical: 5, paddingHorizontal: 8, color: "#000",fontSize: GlobalFontSize.P }}>{item.SHIS_YYMM_CODE}</Text>
+                                    <Text style={{ paddingVertical: 5, paddingHorizontal: 8, color: "#000", fontSize: GlobalFontSize.P }}>{item.SHIS_YYMM_CODE}</Text>
                                 </TouchableOpacity>
                             )}
                         />
@@ -321,114 +323,128 @@ const SalarySlip = ({ navigation }) => {
                     </View>
                 </TouchableOpacity>
 
-                <ScrollView>
+
+                
+                <ScrollView style={{ backgroundColor: GlobalColor.White, marginVertical: 10, }} >
                     {/* Table */}
-                    <View style={[styles.Table, { alignSelf: 'center' }]}>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Pay Element</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Earnings</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Deduction</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Remarks</Text>
-                        </View>
 
-
-                    </View>
                     {table1Data.length > 0 ? (
-                        <FlatList
-                            data={table1Data}
-                            keyExtractor={({ item, index }) => index}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={styles.Table}>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.MDESC}</Text>
+                        <>
+                            <View style={[styles.Table, {}]}>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Pay Element</Text>
+                                </View>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Earnings</Text>
+                                </View>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Deduction</Text>
+                                </View>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Remarks</Text>
+                                </View>
+                            </View>
+                            <FlatList
+                                data={table1Data}
+                                keyExtractor={({ item, index }) => index}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={styles.Table}>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black, fontSize: GlobalFontSize.P - 2 }}>{item.MDESC}</Text>
+                                            </View>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black, fontSize: GlobalFontSize.P - 2 }}>{item.EARNING}</Text>
+                                            </View>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black, fontSize: GlobalFontSize.P - 2 }}>{item.DED}</Text>
+                                            </View>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black, fontSize: GlobalFontSize.P - 2 }}>{item.SHIS_REMARKS}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
-                                        </View>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
-                                        </View>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.SHIS_REMARKS}</Text>
-                                        </View>
-                                    </View>
-                                )
-                            }} />
+                                    )
+                                }} />
+                        </>
                     ) : null}
 
-                    <View style={[styles.Table, {}]}>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Earnings</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Deduction</Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text Bold>Total</Text>
-                        </View>
-                    </View>
+
                     {table4Data.length > 0 ? (
-                        <FlatList
-                            data={table4Data}
-                            keyExtractor={({ item, index }) => index}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={[styles.Table, { alignSelf: 'center', }]}>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
+                        <>
+                            <View style={[styles.Table, {}]}>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Earnings</Text>
+                                </View>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Deduction</Text>
+                                </View>
+                                <View style={styles.tableRow}>
+                                    <Text Bold>Total</Text>
+                                </View>
+                            </View>
+                            <FlatList
+                                data={table4Data}
+                                keyExtractor={({ item, index }) => index}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={[styles.Table, { alignSelf: 'center', }]}>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black }}>{item.EARNING}</Text>
+                                            </View>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
+                                            </View>
+                                            <View style={styles.tableRow}>
+                                                <Text style={{ color: GlobalColor.Black }}>{item.NET}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.DED}</Text>
-                                        </View>
-                                        <View style={styles.tableRow}>
-                                            <Text style={{ color: GlobalColor.Black }}>{item.NET}</Text>
-                                        </View>
-                                    </View>
-                                )
-                            }} />
+                                    )
+                                }} />
+                        </>
                     ) : null}
-                    <View style={styles.Table}>
 
-                        <Text Bold>General Message</Text>
-                    </View>
                     {table2Data.length > 0 ? (
-                        <FlatList
-                            data={table2Data}
-                            keyExtractor={({ item, index }) => index}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                        <Text style={{ color: GlobalColor.Black }}>{item.GLMS_MESSAGES}</Text>
+                        <>
+                            <View style={styles.Table}>
 
-                                    </View>
-                                )
-                            }} />
+                                <Text Bold>General Message</Text>
+                            </View>
+                            <FlatList
+                                data={table2Data}
+                                keyExtractor={({ item, index }) => index}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.GLMS_MESSAGES}</Text>
+
+                                        </View>
+                                    )
+                                }} />
+                        </>
                     ) : null}
-                    <View style={styles.Table}>
-                        <Text Bold>Employee Message</Text>
-                    </View>
+
                     {table3Data.length > 0 ? (
-                        <FlatList
-                            data={table3Data}
-                            keyExtractor={({ item, index }) => index}
-                            renderItem={({ item, index }) => {
+                        <><View style={[styles.Table,]}>
+                            <Text Bold >Employee Message</Text>
+                        </View>
 
-                                return (
-                                    <View style={[styles.Table, { flexDirection: 'column' }]}>
-                                        <Text style={{ color: GlobalColor.Black }}>{item.EXMS_MESSAGES}</Text>
+                            <FlatList
+                                data={table3Data}
+                                keyExtractor={({ item, index }) => index}
+                                renderItem={({ item, index }) => {
 
-                                    </View>
-                                )
-                            }} />
+                                    return (
+                                        <View style={[styles.Table, { flexDirection: 'column' }]}>
+                                            <Text style={{ color: GlobalColor.Black }}>{item.EXMS_MESSAGES}</Text>
+
+                                        </View>
+                                    )
+
+                                }} />
+                        </>
                     ) : null}
                 </ScrollView>
+
             </View>
         </SafeAreaView>
     );
@@ -512,7 +528,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent: 'space-evenly',
-        padding: 5,
+        paddingHorizontal: 5,
         borderBottomWidth: 0.5,
         borderColor: GlobalColor.Secondary,
         marginTop: 30
