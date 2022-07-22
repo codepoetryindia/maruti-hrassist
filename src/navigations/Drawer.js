@@ -28,6 +28,9 @@ import SalaryDeduct from '../screens/Attendance/SalaryDeduct';
 import ManagerMode from '../screens/Attendance/ManagerMode';
 import ManagerTaxiApproval from '../screens/Attendance/managermode/ManagerTaxiApproval';
 import ManagerAttandancePercentage from '../screens/Attendance/managermode/ManagerAttandancePercentage';
+import TaxComputationSlip from '../screens/CompensationAndBenifits/TaxComputationSlip';
+import PFBalance from '../screens/CompensationAndBenifits/PFBalance';
+import TaxSavings from '../screens/CompensationAndBenifits/TaxSavings';
 
 const Drawer = createDrawerNavigator();
 const MyDrawer = () => {
@@ -62,7 +65,11 @@ const MyDrawer = () => {
       <Drawer.Screen name='CompayShiftDe' component={CompayShiftDe}/>
       <Drawer.Screen name='SalaryDeduct' component={SalaryDeduct}/>
       <Drawer.Screen name='ManagerTaxiApproval' component={ManagerTaxiApproval} options={{unmountOnBlur:true}}/>
-      <Drawer.Screen name='ManagerAttandancePercentage' component={ManagerAttandancePercentage} options={{unmountOnBlur:true}}/>      
+      <Drawer.Screen name='ManagerAttandancePercentage' component={ManagerAttandancePercentage} options={{unmountOnBlur:true}}/>  
+      <Drawer.Screen name='TaxComputationSlip' component={TaxComputationSlip} options={{unmountOnBlur:true}}/>  
+      <Drawer.Screen name='PFBalance' component={PFBalance} options={{unmountOnBlur:true}}/>  
+      <Drawer.Screen name='TaxSavings' component={TaxSavings} options={{unmountOnBlur:true}}/>            
+
     </Drawer.Navigator>
   );
 }

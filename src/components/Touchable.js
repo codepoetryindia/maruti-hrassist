@@ -37,7 +37,7 @@ const TouchableCard = ({navigation}) => {
     },
     {
       id: '3',
-      name: 'Compensation and Benifits',
+      name: 'Comp. & Benefits',
       images: require('../assets/Images/home/chart.png'),
     },
     {
@@ -62,7 +62,7 @@ const TouchableCard = ({navigation}) => {
     },
     {
       id: '8',
-      name: 'Buisness Travel',
+      name: 'Business Travel',
       images: require('../assets/Images/home/btravel.png'),
     },
     {
@@ -89,7 +89,7 @@ const TouchableCard = ({navigation}) => {
               else if(item.name==='Attendance & Admin') {
                 navigation.navigate('AttendanceAdmin');
               }
-             else if(item.name==='Compensation and Benifits') {
+             else if(item.name==='Compensation and Benefits') {
                 navigation.navigate('CompensationBenifitsNav');
                 // console.log("hello");
               }

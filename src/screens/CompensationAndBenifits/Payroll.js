@@ -41,28 +41,28 @@ const Payroll = () => {
       setrefresh(false);
   }
 
-  // tax Saving Api
-  const GetTaxAppApi = async () => {
-    setLoader(true);
-    try {
-      //Get Data
-      let result = await ApiService.PostMethode('/GetTaxApp', {
-        "UserName": AppUserData?.data?.userId
-      }, AppUserData.token)
+  // // tax Saving Api
+  // const GetTaxAppApi = async () => {
+  //   setLoader(true);
+  //   try {
+  //     //Get Data
+  //     let result = await ApiService.PostMethode('/GetTaxApp', {
+  //       "UserName": AppUserData?.data?.userId
+  //     }, AppUserData.token)
 
-      // Stop Loader
-      stopLoader()
+  //     // Stop Loader
+  //     stopLoader()
 
-      //Set Data
-      setTaxData(result.Value)
-    }
-    catch (error) {
-      //Stop Loader
-      stopLoader()
-      //Show Error Massage
-      showErrorMessage(error)
-    }
-  };
+  //     //Set Data
+  //     setTaxData(result.Value)
+  //   }
+  //   catch (error) {
+  //     //Stop Loader
+  //     stopLoader()
+  //     //Show Error Massage
+  //     showErrorMessage(error)
+  //   }
+  // };
 
 
   //   // financial year Api
@@ -89,64 +89,64 @@ const Payroll = () => {
       });
   };
 
-  // // Pf Balance Api 
-  const PfBalance = async () => {
-    //set Loader
-    setLoader(true);
+  // // // Pf Balance Api 
+  // const PfBalance = async () => {
+  //   //set Loader
+  //   setLoader(true);
 
-    try {
+  //   try {
 
-      //get Api Data
-      let result = await ApiService.PostMethode('/GetPFStatement', {
-        "EmplID": AppUserData?.data?.userId,
-        "FNYR": month
-      }, AppUserData.token)
+  //     //get Api Data
+  //     let result = await ApiService.PostMethode('/GetPFStatement', {
+  //       "EmplID": AppUserData?.data?.userId,
+  //       "FNYR": month
+  //     }, AppUserData.token)
 
-      //stop Loader
-      stopLoader()
+  //     //stop Loader
+  //     stopLoader()
 
-      //Set Data
-      let CB1_CB2 = result.Value.Table1[0].CB1_CB2
-      let PFST_MUL_CB3 = result.Value.Table2[0].PFST_MUL_CB3
-      let NetBalance = CB1_CB2 + PFST_MUL_CB3
-      setEmployeePf(CB1_CB2)
-      setEmployerPf(PFST_MUL_CB3)
-      setNetBalance(NetBalance)
+  //     //Set Data
+  //     let CB1_CB2 = result.Value.Table1[0].CB1_CB2
+  //     let PFST_MUL_CB3 = result.Value.Table2[0].PFST_MUL_CB3
+  //     let NetBalance = CB1_CB2 + PFST_MUL_CB3
+  //     setEmployeePf(CB1_CB2)
+  //     setEmployerPf(PFST_MUL_CB3)
+  //     setNetBalance(NetBalance)
 
-    } catch (error) {
-      //stop Loader
-      stopLoader()
-      //Show Error Massage
-      showErrorMessage(error)
-    }
-  };
+  //   } catch (error) {
+  //     //stop Loader
+  //     stopLoader()
+  //     //Show Error Massage
+  //     showErrorMessage(error)
+  //   }
+  // };
 
-  const GetTaxSavings = async () => {
+  // const GetTaxSavings = async () => {
 
-    //Set Loader
-    setLoader(true);
+  //   //Set Loader
+  //   setLoader(true);
 
-    try {
-      //getting Data
-      let result = await ApiService.PostMethode('/GetTaxSavings', {
-        "EmplID": AppUserData?.data?.userId,
-        "FNYR": month,
-      }, AppUserData.token)
+  //   try {
+  //     //getting Data
+  //     let result = await ApiService.PostMethode('/GetTaxSavings', {
+  //       "EmplID": AppUserData?.data?.userId,
+  //       "FNYR": month,
+  //     }, AppUserData.token)
 
-      //remove loader
-      stopLoader()
+  //     //remove loader
+  //     stopLoader()
 
-      //set Data
-      setTaxSaving(result?.Value?.Table2)
-    } catch (error) {
+  //     //set Data
+  //     setTaxSaving(result?.Value?.Table2)
+  //   } catch (error) {
 
-      //remove loader
-      stopLoader()
+  //     //remove loader
+  //     stopLoader()
 
-      //Show Error Massage
-      showErrorMessage(error)
-    }
-  };
+  //     //Show Error Massage
+  //     showErrorMessage(error)
+  //   }
+  // };
 
   useEffect(() => {
     GetMonth()
@@ -196,8 +196,9 @@ const Payroll = () => {
       {/* Tax  */}
 
       <TouchableOpacity onPress={() => {
-        setTaxModalVisible(true)
-        GetTaxAppApi();
+        myNavigation.navigate('TaxComputationSlip')
+        // setTaxModalVisible(true)
+        // GetTaxAppApi();
       }}>
         <View style={styles.box}>
           <View style={styles.iconBox}>
@@ -223,7 +224,7 @@ const Payroll = () => {
         </View>
 
 
-        <Modal
+        {/* <Modal
           backdropOpacity={0.5}
           animationInTiming={300}
           animationIn="fadeIn"
@@ -274,15 +275,16 @@ const Payroll = () => {
               : (<ListEmptyComponent title="No Data Found"  ></ListEmptyComponent>)}
 
           </View>
-        </Modal>
+        </Modal> */}
       </TouchableOpacity>
 
       {/* PF */}
 
       <TouchableOpacity
         onPress={() => {
-          setPfModalVisible(true)
-          PfBalance();
+          myNavigation.navigate('PFBalance')
+          // setPfModalVisible(true)
+          // PfBalance();
         }}>
         <View style={styles.box}>
           <View style={styles.iconBox}>
@@ -308,7 +310,7 @@ const Payroll = () => {
         </View>
 
         {/* Pf saving modal */}
-
+{/* 
         <Modal
           backdropOpacity={0.5}
           animationInTiming={300}
@@ -346,11 +348,13 @@ const Payroll = () => {
                   Rs.{netBalance}
                 </Text>
               </View>
-            </View>
+            </View> */}
+
+
             {/* )}
           /> */}
-          </View>
-        </Modal>
+          {/* </View>
+        </Modal> */}
 
         {/* tax saving modal close */}
 
@@ -360,8 +364,9 @@ const Payroll = () => {
 
       <TouchableOpacity
         onPress={() => {
-          setSevingModalVisible(true)
-          GetTaxSavings();
+          myNavigation.navigate('TaxSavings')
+          // setSevingModalVisible(true)
+          // GetTaxSavings();
         }
         } style={styles.box}>
         <View style={styles.iconBox}>
@@ -385,6 +390,8 @@ const Payroll = () => {
           <Feather name="corner-up-right" size={20} />
         </View>
       </TouchableOpacity>
+
+
       <Modal
         backdropOpacity={0.5}
         coverScreen={true}
@@ -399,6 +406,7 @@ const Payroll = () => {
               style={{ margin: 10 }}
             />
           </TouchableOpacity>
+
           <View style={styles.textContainer}>
             <Text Bold>Description</Text>
             <Text Bold>

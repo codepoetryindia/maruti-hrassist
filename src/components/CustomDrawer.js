@@ -17,8 +17,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Feather';
 import Share from 'react-native-share';
 import AuthContext from '../context/AuthContext';
-
-
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
 import Text from './reusable/Text';
@@ -216,7 +214,7 @@ function CustomDrawer(props) {
               style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
-              label="Buisness Travel"
+              label="Business Travel"
               onPress={() => navigation.navigate('BuisnessTravel')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />

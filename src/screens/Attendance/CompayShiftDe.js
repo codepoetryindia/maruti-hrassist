@@ -37,19 +37,19 @@ const CompayShiftDe = ({ navigation }) => {
 
 
     const stopLoader = () => {
-      try {
-        setLoader(false);
-        setrefresh(false);
-      } catch (error) {
-        console.log(error)
-      }
+        try {
+            setLoader(false);
+            setrefresh(false);
+        } catch (error) {
+            console.log(error)
+        }
     }
-  
+
 
     const CompanyShiftMaster = (pulldown = false) => {
         if (!pulldown) {
             setLoader(true);
-          }
+        }
         let userId = AppUserData?.data?.userId
         let token = AppUserData.token;
         let apiData = {
@@ -88,41 +88,80 @@ const CompayShiftDe = ({ navigation }) => {
 
     if (loader) {
         return (
-          <SafeAreaView style={{ flex:1 }}>
-            <Header title={"Company Shift Details"} back/>
-            <LoadingScreen />
-          </SafeAreaView>
+            <SafeAreaView style={{ flex: 1 }}>
+                <Header title={"Company Shift Details"} back />
+                <LoadingScreen />
+            </SafeAreaView>
         )
-      }
-
-
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>
-            <Header title={"Company Shift Details"} back/>
-            <View style={{ flex:1, backgroundColor:GlobalColor.PrimaryLight, paddingHorizontal:10, paddingTop:10 }}>
-
-                <View style={styles.canteenBox}>
-                    <Text Bold>Cal Type</Text>
-                    <Text Bold>Shift</Text>
-                    <Text Bold>Start</Text>
-                    <Text Bold>1st Half</Text>
-                </View>
-
+            <Header title={"Company Shift Details"} back />
+            <View style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight, paddingHorizontal: 10, paddingTop: 10 }}>
 
                 <FlatList
-                    contentContainerStyle={{ flexGrow:1, marginTop:10 }}
+                    contentContainerStyle={{ flexGrow: 1, paddingVertical: 5 }}
                     data={companyShiftMaster}
-                    ListEmptyComponent={() =>  <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => CompanyShiftMaster(true)} refreshing={refresh} ></ListEmptyComponent>}
+                    ListEmptyComponent={() => <ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={() => CompanyShiftMaster(true)} refreshing={refresh} ></ListEmptyComponent>}
                     keyExtractor={({ item, index }) => index}
                     renderItem={({ item, index }) => {
                         return (
-                            <View
-                                style={styles.canteen}>
-                                <Text>{item.CAL_NO}</Text>
-                                <Text>{item.SHIFT}</Text>
-                                <Text>{item.START_TIME}</Text>
-                                <Text>{item.FIRST_HALF_END}</Text>
+                            // <View
+                            //     style={styles.canteen}>
+                            //     <Text>{item.CAL_NO}</Text>
+                            //     <Text>{item.SHIFT}</Text>
+                            //     <Text>{item.START_TIME}</Text>
+                            //     <Text>{item.FIRST_HALF_END}</Text>
+                            // </View>
+
+                            <View style={styles.cardContainer}>
+                                <View style={styles.cardRow}>
+                                    <View style={styles.cardColumn}>
+                                        <Text style={styles.cardLabel}>
+                                            Shift
+                                        </Text>
+                                        <Text Bold style={styles.cardValue}>{item.SHIFT}</Text>
+                                    </View>
+                                    <View style={styles.cardColumn}>
+                                        <Text style={styles.cardLabelRight}>
+                                            Cal Type
+                                        </Text>
+                                        <Text Bold style={styles.cardValueRight}>{item.CAL_NO}</Text>
+                                    </View>
+                                </View>
+
+
+                                <View style={styles.cardRow}>
+                                    <View style={styles.cardColumn}>
+                                        <Text style={styles.cardLabel}>Start</Text>
+                                        <Text Bold style={styles.cardValue}>{item.START_TIME}</Text>
+                                    </View>
+                                    <View style={styles.cardColumn}>
+                                    <Text style={styles.cardLabelRight}>End</Text>
+                                        <Text Bold style={styles.cardValueRight}>{item.END_TIME}</Text> 
+                                    </View>
+                                </View>
+
+
+                                <View style={styles.cardRow}>
+                                    <View style={styles.cardColumn}>
+                                        <Text style={styles.cardLabel}>
+                                        1st Half End
+                                        </Text>
+                                        <Text Bold style={styles.cardValue}>
+                                        {item.FIRST_HALF_END}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.cardColumn}>
+                                    <Text style={styles.cardLabelRight}>
+                                    2nd Half Start
+                                        </Text>
+                                        <Text Bold style={styles.cardValueRight}>{item.SECOND_HALF_START}   
+                                        </Text>
+                                        
+                                    </View>
+                                </View>
                             </View>
                         )
                     }}
@@ -141,33 +180,60 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 
-    canteenBox:{
+    canteenBox: {
         width: '100%',
         backgroundColor: '#fff',
         alignSelf: 'center',
         padding: 10,
-        paddingVertical:15,
+        paddingVertical: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 0,
-        borderBottomWidth:1,
-        borderBottomColor:GlobalColor.Secondary
+        borderBottomWidth: 1,
+        borderBottomColor: GlobalColor.Secondary
     },
     canteen: {
         width: '100%',
         backgroundColor: '#fff',
         alignSelf: 'center',
         padding: 10,
-        paddingVertical:15,
+        paddingVertical: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 0,
-        borderWidth:0.5, 
-        borderColor:GlobalColor.Secondary, 
-        marginBottom:10
+        borderWidth: 0.5,
+        borderColor: GlobalColor.Secondary,
+        marginBottom: 10
     },
+
+    cardContainer: {
+        backgroundColor: GlobalColor.White,
+        borderWidth: 1,
+        borderColor: GlobalColor.Secondary,
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10
+    },
+    cardRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+    cardValueRight: {
+        textAlign: 'right',
+        color: GlobalColor.Primary
+    },
+    cardLabel: {
+        color: GlobalColor.Primary,
+        fontSize: GlobalFontSize.Error
+    },
+    cardLabelRight: {
+        textAlign: 'right',
+        color: GlobalColor.Primary,
+        fontSize: GlobalFontSize.Error
+    }
 });
 
 // //make this component available to the app
