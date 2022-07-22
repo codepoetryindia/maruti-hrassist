@@ -216,7 +216,7 @@ function CustomDrawer(props) {
               style={{borderBottomWidth: 0.5, borderBottomColor: GlobalColor.PrimaryLight}}
             />
             <DrawerItem
-              label="Buisness Travel"
+              label="Business Travel"
               onPress={() => navigation.navigate('BuisnessTravel')}
               icon={({color, size}) => (
                 // <Icon name="calendar" color={'black'} size={size} />
