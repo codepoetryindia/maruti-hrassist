@@ -159,9 +159,9 @@ const OtherApps = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
       <Header title ="Other Mobile Apps"/>
-          <View style={{ flex: 1, paddingHorizontal:10 }}>
+          <View style={{ flex: 1, paddingHorizontal:10, }}>
             <FlatList
-              contentContainerStyle={{ flex:1 }}
+              contentContainerStyle={{ flex:1, alignItems:'center' }}
               data={appLink}
               numColumns={2}
               ListEmptyComponent={<ListEmptyComponent title="No Data Found" enableRefresh={true} onRefreshCallback={()=>GetAPPLinkApi(true)} refreshing={refresh} />}
@@ -192,15 +192,15 @@ const OtherApps = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width:"100%",
     backgroundColor: '#fff',    
   },
   button:{
-    width: '48%',
-    alignSelf: 'center',
+    minWidth:150,
+    maxWidth:200,
     justifyContent: 'center',
     marginTop: 10,
     margin: 5,
+    alignSelf:'center',
     borderColor:GlobalColor.Secondary,
     borderWidth:0.5,
     paddingHorizontal: 15,
