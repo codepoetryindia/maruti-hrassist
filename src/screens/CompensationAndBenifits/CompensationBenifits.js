@@ -1,6 +1,6 @@
 //import liraries
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, useWindowDimensions, SafeAreaView } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, SafeAreaView, Alert, Image } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -15,11 +15,19 @@ import Hospital from '../EmergencyAndHospital/Hospital';
 import NearByHospital from '../EmergencyAndHospital/NearByHospital';
 import Text from '../../components/reusable/Text';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import LocalAuthentication from 'rn-local-authentication';
+import AuthorisedComp from '../../components/reusable/AuthorisedComp';
+import Button from "../../components/reusable/Button";
+import { GlobalFontSize } from '../../constants/FontSize';
+
+
 
 const Tab = createMaterialTopTabNavigator();
 
 const CompensationBenifits = ({ navigation }) => {
   const [isAuth, setIsAuth] = useState('');
+  const [Loading, setLoading] = useState(true);
+
 
   const optionalConfigObject = {
     title: 'Authentication Required', // Android
@@ -36,7 +44,31 @@ const CompensationBenifits = ({ navigation }) => {
     handelBiometric();
   }, []);
 
+
+
   const handelBiometric = () => {
+    LocalAuthentication.authenticateAsync({
+      reason: "Please, authenticate!",
+      fallbackEnabled: true,
+      fallbackTitle: "Unlock using passcode",
+      fallbackToPinCodeAction: true
+  }).then(response => {
+    console.log(response);
+      if (response.success) {
+          // Alert.alert("Authenticated successfully!");
+          setIsAuth(true);
+          setLoading(false);
+      } else {
+          setIsAuth(false);
+          setLoading(false);
+          // Alert.alert("Something went wrong");
+      }
+  })
+
+
+
+
+    return; 
     TouchID.isSupported(optionalConfigObject)
       .then(biometryType => {
         // Success code
@@ -74,11 +106,21 @@ const CompensationBenifits = ({ navigation }) => {
   //   {key: 'second', title: 'Benifits'},
   // ]);
 
+  if(Loading){
+    return(
+      <SafeAreaView style={{flexGrow:1}}>
+        <Header title="Compensation and Benefits" />
+          <AuthorisedComp title="Authorise" subtitle="Please authorise yur device to access comp. & benefits"/>     
+      </SafeAreaView>
+    )
+  }
+
+
 
   return (
          <SafeAreaView style={{flexGrow:1}}>
          <View style={{flex:1}}>
-           {/* {isAuth == true ? (  */}
+           {isAuth == true ? ( 
             <View style={{flex:1}}>
                 <Header title="Compensation and Benefits" />
                     <Tab.Navigator
@@ -93,15 +135,29 @@ const CompensationBenifits = ({ navigation }) => {
                       <Tab.Screen name="Benifits" component={Benifits} />
                     </Tab.Navigator>
             </View>
-            {/* ) : ( 
-             <View style={{backgroundColor:'#fff', flex:1, justifyContent:'center', alignItems:'center'}}>
-                 <Text>Please Run in a real device </Text>
-                 <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'gray', padding:15}}>
-                   <Text>Go Back</Text>
-                 </TouchableOpacity>
+             ) : ( 
+             <View style={{backgroundColor:'#fff', flex:1}}>
+              <Header title="Compensation and Benefits" />
+                <View style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
+
+                    <View style={styles.innerContainer}>
+                        <Image
+                        style={styles.tinyLogo}
+                        source={require('./../../assets/Images/accessfailed.png')}
+                        />
+                        <Text style={styles.title} Bold>Unauthorised</Text>                      
+                    </View>              
+
+
+                    <Button 
+                      onPress={()=>{
+                        navigation.goBack()
+                      }}
+                    title="GO BACK" btnStyle={{ width:"50%", alignSelf:'center', marginTop:20, borderRadius:0 }}/>
+                </View>
              </View> 
             )      
-           }  */}
+           }
           </View>
          </SafeAreaView>
   );
@@ -137,33 +193,22 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalColor.White,
     color: '#424242',
   },
+  title:{
+    fontSize:GlobalFontSize.H4,
+    textAlign:'center',
+    marginBottom:15, marginTop:10        
+  },
+  subtitle:{
+      textAlign:'center',
+  },
+  innerContainer:{
+      maxWidth:250
+  },
+  tinyLogo:{
+    width:100,
+    height:100,
+    alignSelf:'center'
+},
 });
-
-// //make this component available to the app
 export default CompensationBenifits;
 
-// //import liraries
-// import React, { Component } from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// // create a component
-// const EmployeLookUp = () => {
-//     return (
-//         <View style={styles.container}>
-//             <Text>EmployeLookUp</Text>
-//         </View>
-//     );
-// };
-
-// // define your styles
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         backgroundColor: '#2c3e50',
-//     },
-// });
-
-// //make this component available to the app
-// export default EmployeLookUp;
