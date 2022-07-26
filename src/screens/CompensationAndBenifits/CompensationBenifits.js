@@ -40,7 +40,7 @@ const CompensationBenifits = ({ navigation }) => {
     passcodeFallback: false, // iOS - allows the device to fall back to using the passcode, if faceid/touch is not available. this does not mean that if touchid/faceid fails the first few times it will revert to passcode, rather that if the former are not enrolled, then it will use the passcode.
   };
   useEffect(() => {
-    // handelBiometric();
+    handelBiometric();
   }, []);
 
 
@@ -105,7 +105,7 @@ const CompensationBenifits = ({ navigation }) => {
   //   {key: 'second', title: 'Benifits'},
   // ]);
 
-  if(!Loading){
+  if(Loading){
     return(
       <SafeAreaView style={{flexGrow:1}}>
         <Header title="Compensation and Benefits" />
@@ -119,7 +119,7 @@ const CompensationBenifits = ({ navigation }) => {
   return (
          <SafeAreaView style={{flexGrow:1}}>
          <View style={{flex:1}}>
-           {isAuth != true ? ( 
+           {isAuth == true ? ( 
             <View style={{flex:1}}>
                 <Header title="Compensation and Benefits" />
                     <Tab.Navigator
