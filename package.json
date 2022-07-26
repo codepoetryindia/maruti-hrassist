@@ -61,7 +61,6 @@
     "react-native-snackbar": "^2.4.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
-    "react-native-touch-id": "^4.4.1",
     "react-native-vector-icons": "^9.0.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",

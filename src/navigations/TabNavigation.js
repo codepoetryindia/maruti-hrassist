@@ -3,15 +3,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Entypo';
 import Material from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from '../screens/Home';
-import Gatepass from '../screens/Gatspass/Gatepass';
-import OtherApps from '../screens/OtherApps';
+
 import LinearGradient from 'react-native-linear-gradient';
-import AttendanceAdminNav from './AttendanceAdminNav';
-import AttendanceAdmin from '../screens/Attendance/Attendance&Admin';
 import { GlobalColor } from '../constants/Colors';
 import { GlobalFontSize } from '../constants/FontSize';
-import Text from '../components/reusable/Text';
+
+import Home from '../screens/Home';
+import AttendanceAdminNav from './AttendanceAdminNav';
+import GatePassNavigator from './GatePassNavigator';
+import OtherApps from '../screens/OtherApps';
+
+
+
 
 const Tab = createBottomTabNavigator();
 function Tabs() {
@@ -40,7 +43,7 @@ function Tabs() {
           <Icon name="home" color={color} size={size} />
         ),
       }}/>
-      <Tab.Screen name="AttendanceAdmin" component={AttendanceAdmin}
+      <Tab.Screen name="AttendanceAdmin" component={AttendanceAdminNav}
        options={{
         tabBarLabel: 'Attendance',
         tabBarIcon: ({ color, size }) => (
@@ -49,8 +52,9 @@ function Tabs() {
         tabBarStyle: { display: "none" },
       }} 
     />
-      <Tab.Screen name="Gatepass" component={Gatepass}
+      <Tab.Screen name="Gatepass" component={GatePassNavigator}
        options={{
+        unmountOnBlur:true,
         tabBarLabel: 'Gatepass',
         tabBarIcon: ({ color, size }) => (
           <Material name="perm-contact-cal" color={color} size={size} />

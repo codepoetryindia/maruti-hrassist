@@ -328,8 +328,12 @@ export default function FutureBook() {
                 <Text Bold>{BookingDetail.BKDT_STATUS_FLAG}</Text>                
             </View>
             <View style={styles.modalButtons}>
-                <Button title="OK" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setmodalVisible(!modalVisible)}/>
-                <Button title="CANCEL BOOKING" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>confirmCancel(BookingDetail)}/>
+                <Button title="Ok" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setmodalVisible(!modalVisible)}/>
+                {
+                   BookingDetail.BKDT_STATUS_FLAG == 'Booked' ? (
+                        <Button title="Cancel Booking" btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>confirmCancel(BookingDetail)}/>
+                    ): null
+                }
             </View>
             
           </View>

@@ -8,6 +8,8 @@ import AttendancePer from '../screens/Attendance/AttendancePer';
 import CompayShiftDe from '../screens/Attendance/CompayShiftDe';
 import LeaveBalance from '../screens/Attendance/LeaveBalance';
 import SalaryDeduct from '../screens/Attendance/SalaryDeduct';
+import ManagerTaxiApproval from '../screens/Attendance/managermode/ManagerTaxiApproval';
+import ManagerAttandancePercentage from '../screens/Attendance/managermode/ManagerAttandancePercentage';
 
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +23,9 @@ function AttendanceAdminNav() {
       <Stack.Screen name='CompayShiftDe' component={CompayShiftDe} />
       <Stack.Screen name='LeaveBalance' component={LeaveBalance} />
       <Stack.Screen name='SalaryDeduct' component={SalaryDeduct} />
-       </Stack.Navigator>
+      <Stack.Screen name='ManagerTaxiApproval' component={ManagerTaxiApproval}/>
+      <Stack.Screen name='ManagerAttandancePercentage' component={ManagerAttandancePercentage}/>  
+    </Stack.Navigator>
   );
 }
 
