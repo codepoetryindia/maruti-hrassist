@@ -683,6 +683,7 @@ const Gatepass = ({ navigation }) => {
                       alignSelf: 'center',
                       borderColor: GlobalColor.Secondary,
                       fontSize: 16,
+                      paddingVertical:8
                     }}
                   />
                   {errors.reason && touched.reason && (
@@ -958,6 +959,7 @@ const Gatepass = ({ navigation }) => {
                         onPress = { toggleBuilding }
                       }}
                     >
+                      <SafeAreaView style={{flex:1}}>
                       <View style={styles.centeredView}>
                         <TouchableOpacity style={styles.Modalclose}
                           onPress={toggleBuilding}
@@ -1026,6 +1028,7 @@ const Gatepass = ({ navigation }) => {
                           )}
                         />
                       </View>
+                      </SafeAreaView>
                     </Modal>
 
                   </View>
@@ -1080,7 +1083,8 @@ const Gatepass = ({ navigation }) => {
                       borderRadius: 5,
                       alignSelf: 'center',
                       backgroundColor: '#fff',
-                      borderColor: GlobalColor.Secondary
+                      borderColor: GlobalColor.Secondary,
+                      paddingVertical:7
                     }}>
 
                     <View
@@ -1185,7 +1189,7 @@ const Gatepass = ({ navigation }) => {
                   <TextInput
                     value={values.perName}
                     editable={false}
-                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8, backgroundColor: GlobalColor.White, borderColor: GlobalColor.Secondary }} />
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8, backgroundColor: GlobalColor.White, borderColor: GlobalColor.Secondary ,paddingHorizontal:10}} />
 
                   <Text
                     style={{
@@ -1197,7 +1201,7 @@ const Gatepass = ({ navigation }) => {
                   <TextInput
                     value={values.Desig}
                     editable={false}
-                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8, backgroundColor: GlobalColor.White, borderColor: GlobalColor.Secondary }} />
+                    style={{ marginVertical: 10, width: '100%', borderWidth: 1, paddingVertical: 10, alignSelf: 'center', borderRadius: 8, backgroundColor: GlobalColor.White, borderColor: GlobalColor.Secondary,paddingHorizontal:10 }} />
                 </View>
 
                 {/* Next Button */}
@@ -1207,9 +1211,10 @@ const Gatepass = ({ navigation }) => {
                   }} />
                 </View>
               </View>
-
+              
               {/* MOdal for searchEMP List */}
               <Modal transparent={false} visible={empmodalVisible}>
+                <SafeAreaView style={{flex:1}}>
                 <Pressable
                   style={{
                     flex: 1,
@@ -1286,6 +1291,7 @@ const Gatepass = ({ navigation }) => {
                     // )} */}
                   </View>
                 </Pressable>
+                </SafeAreaView>
               </Modal>
 
               {/* end modal */}

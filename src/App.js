@@ -12,13 +12,13 @@ import {
   Platform
 } from 'react-native';
 import Routes from './navigations/Routes';
-import RNPermissions, {
-  NotificationsResponse,
-  Permission,
-  PERMISSIONS,
-  PermissionStatus,
-  RESULTS
-} from 'react-native-permissions';
+// import RNPermissions, {
+//   NotificationsResponse,
+//   Permission,
+//   PERMISSIONS,
+//   PermissionStatus,
+//   RESULTS
+// } from 'react-native-permissions';
 import RNBootSplash from "react-native-bootsplash";
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs([
@@ -41,7 +41,7 @@ export default function App() {
 
 
   const StatusBarHeight = StatusBar.currentHeight;
-
+  /*
   const askAndroidPermissions= async()=> {
     // console.log(Platform)
     if (Platform.OS != 'android'){
@@ -92,7 +92,7 @@ export default function App() {
             .then((notifications) => console.log("notifications",notifications ))
             .catch((error) => console.warn(error));
     }
-
+    */
     // useEffect(() => {
     //   const permission = askAndroidPermissions();
     //   return () => {

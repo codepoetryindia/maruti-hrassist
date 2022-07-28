@@ -6,7 +6,7 @@ export const PostMethode = async (url, data, token) => {
     let PostUrl = API_SERVICES_URL + url;
     console.log("Api url", PostUrl, data);
     try {
-        let response = await axios.post(PostUrl, JSON.stringify(data), {
+        let response = await axios.post(PostUrl, data, {
             headers: {
                 'Content-Type ': "application/json",
                 // Accept :"application/json",

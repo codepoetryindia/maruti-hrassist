@@ -147,6 +147,7 @@ export const Attendance = ({navigation}) => {
           <Feather name="search" size={20} color={GlobalColor.Secondary} />
         </View>
         <TextInput
+        
           placeholder="Search By Name/Dept/Staff/ID"
           value={search}
           onChangeText={(data) => {
@@ -155,7 +156,8 @@ export const Attendance = ({navigation}) => {
           style={{
             width: '65%',
             paddingVertical: 5,
-            fontSize: 16
+            fontSize: 16,
+            paddingVertical:10
           }}
         />
         {search !== '' ? (

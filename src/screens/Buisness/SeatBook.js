@@ -192,7 +192,7 @@ const SeatBook = ({ navigation, route }) => {
                         style={{
                             width: '100%',
                             borderRadius: 8,
-
+                            paddingVertical:10,
                             alignItems: 'center',
                             borderWidth: 0,
                             borderColor: GlobalColor.PrimaryGradient,
@@ -230,8 +230,7 @@ const SeatBook = ({ navigation, route }) => {
                         style={{
                             width: '100%',
                             borderRadius: 8,
-
-
+                            paddingVertical:10,
                             alignItems: 'center',
                             borderWidth: 0,
                             borderColor: GlobalColor.PrimaryGradient,
@@ -399,6 +398,7 @@ const SeatBook = ({ navigation, route }) => {
                             style={{
                                 width: '100%',
                                 borderRadius: 8,
+                                paddingVertical:10,
                                 alignItems: 'center',
                                 borderWidth: 0,
                                 borderColor: GlobalColor.PrimaryGradient,
@@ -434,6 +434,7 @@ const SeatBook = ({ navigation, route }) => {
                             style={{
                                 width: '100%',
                                 borderRadius: 8,
+                                paddingVertical:10,
                                 alignItems: 'center',
                                 borderWidth: 0,
                                 borderColor: GlobalColor.PrimaryGradient,
@@ -450,9 +451,8 @@ const SeatBook = ({ navigation, route }) => {
                                 borderRadius: 4,
                             }}
                         >
-
-
                             <TextInput
+                                style={{paddingHorizontal:10}}
                                 editable={false}
                                 value={searchedNameData.Desg}
                             />

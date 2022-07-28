@@ -8,38 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MarutiSuzukiAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MarutiSuzukiAppTests.m */; };
+		0E82078BB0C4F0D6DC4B1429 /* libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2D43B378A677C6884EA0CE9 /* libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		6A2861A71BC4451A85BFA43F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09EEB58D3ABC452789B254B7 /* AntDesign.ttf */; };
-		7C64083A55E441C498BB5BE6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B80FFCC3B8948ABAC5918F3 /* Entypo.ttf */; };
-		4F43B47E316A4276A0638E0F /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD6DBE602E354625829F28C5 /* EvilIcons.ttf */; };
-		1726AE415EA041D7B21B8A77 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5D43A1BA5EC438283C50C1A /* Feather.ttf */; };
-		10FB6231AACE4A00B6265128 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DE235F663F04379B01DB8C5 /* FontAwesome.ttf */; };
-		6D159BD8D9E043DEAF06924B /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 042246519A43488E9F3ADDDF /* FontAwesome5_Brands.ttf */; };
-		BF6F1FC3A63949C68FD2B708 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4BD11830E3C248329BA00617 /* FontAwesome5_Regular.ttf */; };
-		38072F9E69AC421C98113CB1 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59E10D4232484CC4A3F90625 /* FontAwesome5_Solid.ttf */; };
-		93927D3FAEBF409695263A8F /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D4AFD60202C406498467524 /* Fontisto.ttf */; };
-		5504382BAA334EBABC7D7730 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1A0843D0BA44DF28907A3C1 /* Foundation.ttf */; };
-		2FD6EF91A70B49E89AEEBCC3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2BB906C7C074EB1849CDFCB /* Ionicons.ttf */; };
-		21DD52F96F6E4310BACF2286 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E692AE0C7D444A97AEF68800 /* MaterialCommunityIcons.ttf */; };
-		0A51DA5C0E8741AA843410ED /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 413FD878198E4502A12E6116 /* MaterialIcons.ttf */; };
-		6415F6A7AF1B49E499B26C89 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEA897C2324847EA81506456 /* Octicons.ttf */; };
-		F7DE059FED7D4707924BC40E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BAE99B83EB67402C8097F6A7 /* SimpleLineIcons.ttf */; };
-		92339BF0D5BD4B169C5305CA /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F7571F50123C4BE2A3C3DB6A /* Zocial.ttf */; };
-		92648742304B4CC2A8A4C5F7 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEC216747ED94B16A624D8DD /* Roboto-Black.ttf */; };
-		EF514E6C8F834CD58A4E136D /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53368163BC22440CABD9A237 /* Roboto-BlackItalic.ttf */; };
-		5C62749C6FCE4F5BABE305D6 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A572EA5779264C7E98B841D7 /* Roboto-Bold.ttf */; };
-		A708C4A31F784A19870DAAEA /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1110EA0221C64D27B26D8EEB /* Roboto-BoldItalic.ttf */; };
-		6DC7E1B248334C6DA9BEFA2F /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B424F2DFBE4B4BF1B2B46E17 /* Roboto-Italic.ttf */; };
+		3F62F7EA2892716D00CEAC5F /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 3F62F7E92892716D00CEAC5F /* fonts */; };
 		59BF5A1EFD584A36B40080F8 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81707924716F472F9AFC0B44 /* Roboto-Light.ttf */; };
-		A4B78D24352447CEACB5A8DE /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D90EF3CEDF5463DBBA9B090 /* Roboto-LightItalic.ttf */; };
-		E439CAF96BD74FE8BEF70BD2 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0B817D9E3934E10BCD58A78 /* Roboto-Medium.ttf */; };
-		D92CC95FF23448E392ABA133 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0D0E29A212444479728FD3A /* Roboto-MediumItalic.ttf */; };
-		D10541A3AB33419F8246ACCE /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70888FF41157459699D1B2F8 /* Roboto-Regular.ttf */; };
-		B46A2D3D604D4E44B42F3A6A /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C44E33936F4A16BA263604 /* Roboto-Thin.ttf */; };
+		5C62749C6FCE4F5BABE305D6 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A572EA5779264C7E98B841D7 /* Roboto-Bold.ttf */; };
+		6DC7E1B248334C6DA9BEFA2F /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B424F2DFBE4B4BF1B2B46E17 /* Roboto-Italic.ttf */; };
 		7A2FB609F2D64E5A8003ACB5 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2C961AFE19044BC9C914C88 /* Roboto-ThinItalic.ttf */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		92648742304B4CC2A8A4C5F7 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEC216747ED94B16A624D8DD /* Roboto-Black.ttf */; };
+		A4B78D24352447CEACB5A8DE /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D90EF3CEDF5463DBBA9B090 /* Roboto-LightItalic.ttf */; };
+		A708C4A31F784A19870DAAEA /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1110EA0221C64D27B26D8EEB /* Roboto-BoldItalic.ttf */; };
+		B46A2D3D604D4E44B42F3A6A /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C44E33936F4A16BA263604 /* Roboto-Thin.ttf */; };
+		CB26579C19BE715B9BC17A39 /* libPods-MarutiSuzukiApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2F1C4AD6FE83C13C26F9986 /* libPods-MarutiSuzukiApp.a */; };
+		D10541A3AB33419F8246ACCE /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70888FF41157459699D1B2F8 /* Roboto-Regular.ttf */; };
+		D92CC95FF23448E392ABA133 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0D0E29A212444479728FD3A /* Roboto-MediumItalic.ttf */; };
+		E439CAF96BD74FE8BEF70BD2 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0B817D9E3934E10BCD58A78 /* Roboto-Medium.ttf */; };
+		EF514E6C8F834CD58A4E136D /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53368163BC22440CABD9A237 /* Roboto-BlackItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,42 +43,33 @@
 		00E356EE1AD99517003FC87E /* MarutiSuzukiAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarutiSuzukiAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MarutiSuzukiAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarutiSuzukiAppTests.m; sourceTree = "<group>"; };
+		1110EA0221C64D27B26D8EEB /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BoldItalic.ttf"; path = "../assets/fonts/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
+		13A6F742049C4A4F93D2848A /* Pods-MarutiSuzukiApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarutiSuzukiApp.debug.xcconfig"; path = "Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MarutiSuzukiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarutiSuzukiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MarutiSuzukiApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = MarutiSuzukiApp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MarutiSuzukiApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MarutiSuzukiApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MarutiSuzukiApp/main.m; sourceTree = "<group>"; };
+		1BA18D7E11022A6AD4FBAAC0 /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.release.xcconfig"; path = "Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		1C743F37A562597033BA7F9A /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.debug.xcconfig"; path = "Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3F62F7E92892716D00CEAC5F /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		48C44E33936F4A16BA263604 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		4D90EF3CEDF5463DBBA9B090 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-LightItalic.ttf"; path = "../assets/fonts/Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
+		53368163BC22440CABD9A237 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BlackItalic.ttf"; path = "../assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
+		606B7FFB7E959E72CE7C8A96 /* Pods-MarutiSuzukiApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarutiSuzukiApp.release.xcconfig"; path = "Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp.release.xcconfig"; sourceTree = "<group>"; };
+		70888FF41157459699D1B2F8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		81707924716F472F9AFC0B44 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MarutiSuzukiApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A2C961AFE19044BC9C914C88 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
+		A572EA5779264C7E98B841D7 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		B424F2DFBE4B4BF1B2B46E17 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
+		C0D0E29A212444479728FD3A /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
+		E0B817D9E3934E10BCD58A78 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		09EEB58D3ABC452789B254B7 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9B80FFCC3B8948ABAC5918F3 /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		DD6DBE602E354625829F28C5 /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F5D43A1BA5EC438283C50C1A /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8DE235F663F04379B01DB8C5 /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		042246519A43488E9F3ADDDF /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4BD11830E3C248329BA00617 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		59E10D4232484CC4A3F90625 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7D4AFD60202C406498467524 /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A1A0843D0BA44DF28907A3C1 /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C2BB906C7C074EB1849CDFCB /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E692AE0C7D444A97AEF68800 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		413FD878198E4502A12E6116 /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FEA897C2324847EA81506456 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BAE99B83EB67402C8097F6A7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F7571F50123C4BE2A3C3DB6A /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FEC216747ED94B16A624D8DD /* Roboto-Black.ttf */ = {isa = PBXFileReference; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		53368163BC22440CABD9A237 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-BlackItalic.ttf"; path = "../assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A572EA5779264C7E98B841D7 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1110EA0221C64D27B26D8EEB /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-BoldItalic.ttf"; path = "../assets/fonts/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B424F2DFBE4B4BF1B2B46E17 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; name = "Roboto-Italic.ttf"; path = "../assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		81707924716F472F9AFC0B44 /* Roboto-Light.ttf */ = {isa = PBXFileReference; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4D90EF3CEDF5463DBBA9B090 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-LightItalic.ttf"; path = "../assets/fonts/Roboto-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E0B817D9E3934E10BCD58A78 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C0D0E29A212444479728FD3A /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		70888FF41157459699D1B2F8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		48C44E33936F4A16BA263604 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A2C961AFE19044BC9C914C88 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F2D43B378A677C6884EA0CE9 /* libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2F1C4AD6FE83C13C26F9986 /* libPods-MarutiSuzukiApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MarutiSuzukiApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEC216747ED94B16A624D8DD /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E82078BB0C4F0D6DC4B1429 /* libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB26579C19BE715B9BC17A39 /* libPods-MarutiSuzukiApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,8 +126,21 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				F2F1C4AD6FE83C13C26F9986 /* libPods-MarutiSuzukiApp.a */,
+				F2D43B378A677C6884EA0CE9 /* libPods-MarutiSuzukiApp-MarutiSuzukiAppTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		64401E2A50F3F71E6F023CF9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				13A6F742049C4A4F93D2848A /* Pods-MarutiSuzukiApp.debug.xcconfig */,
+				606B7FFB7E959E72CE7C8A96 /* Pods-MarutiSuzukiApp.release.xcconfig */,
+				1C743F37A562597033BA7F9A /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.debug.xcconfig */,
+				1BA18D7E11022A6AD4FBAAC0 /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -160,12 +153,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3F62F7E92892716D00CEAC5F /* fonts */,
 				13B07FAE1A68108700A75B9A /* MarutiSuzukiApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MarutiSuzukiAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				927E12B28BE54825A9CFEB58 /* Resources */,
+				64401E2A50F3F71E6F023CF9 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -182,24 +177,8 @@
 			sourceTree = "<group>";
 		};
 		927E12B28BE54825A9CFEB58 /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
-				09EEB58D3ABC452789B254B7 /* AntDesign.ttf */,
-				9B80FFCC3B8948ABAC5918F3 /* Entypo.ttf */,
-				DD6DBE602E354625829F28C5 /* EvilIcons.ttf */,
-				F5D43A1BA5EC438283C50C1A /* Feather.ttf */,
-				8DE235F663F04379B01DB8C5 /* FontAwesome.ttf */,
-				042246519A43488E9F3ADDDF /* FontAwesome5_Brands.ttf */,
-				4BD11830E3C248329BA00617 /* FontAwesome5_Regular.ttf */,
-				59E10D4232484CC4A3F90625 /* FontAwesome5_Solid.ttf */,
-				7D4AFD60202C406498467524 /* Fontisto.ttf */,
-				A1A0843D0BA44DF28907A3C1 /* Foundation.ttf */,
-				C2BB906C7C074EB1849CDFCB /* Ionicons.ttf */,
-				E692AE0C7D444A97AEF68800 /* MaterialCommunityIcons.ttf */,
-				413FD878198E4502A12E6116 /* MaterialIcons.ttf */,
-				FEA897C2324847EA81506456 /* Octicons.ttf */,
-				BAE99B83EB67402C8097F6A7 /* SimpleLineIcons.ttf */,
-				F7571F50123C4BE2A3C3DB6A /* Zocial.ttf */,
 				FEC216747ED94B16A624D8DD /* Roboto-Black.ttf */,
 				53368163BC22440CABD9A237 /* Roboto-BlackItalic.ttf */,
 				A572EA5779264C7E98B841D7 /* Roboto-Bold.ttf */,
@@ -215,7 +194,6 @@
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -224,9 +202,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MarutiSuzukiAppTests" */;
 			buildPhases = (
+				10207FEB476E1F1511A57437 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				74825B6D9857FFC4B46ED75F /* [CP] Embed Pods Frameworks */,
+				ACEDEB6A5E760E068BCAE4CE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,11 +223,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MarutiSuzukiApp" */;
 			buildPhases = (
+				0161E6C9B63C3632434E7417 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				AE34E87942EB293EDD4320E5 /* [CP] Embed Pods Frameworks */,
+				6F68A7B0F9849DF7D23DB563 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -307,26 +291,11 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				6A2861A71BC4451A85BFA43F /* AntDesign.ttf in Resources */,
-				7C64083A55E441C498BB5BE6 /* Entypo.ttf in Resources */,
-				4F43B47E316A4276A0638E0F /* EvilIcons.ttf in Resources */,
-				1726AE415EA041D7B21B8A77 /* Feather.ttf in Resources */,
-				10FB6231AACE4A00B6265128 /* FontAwesome.ttf in Resources */,
-				6D159BD8D9E043DEAF06924B /* FontAwesome5_Brands.ttf in Resources */,
-				BF6F1FC3A63949C68FD2B708 /* FontAwesome5_Regular.ttf in Resources */,
-				38072F9E69AC421C98113CB1 /* FontAwesome5_Solid.ttf in Resources */,
-				93927D3FAEBF409695263A8F /* Fontisto.ttf in Resources */,
-				5504382BAA334EBABC7D7730 /* Foundation.ttf in Resources */,
-				2FD6EF91A70B49E89AEEBCC3 /* Ionicons.ttf in Resources */,
-				21DD52F96F6E4310BACF2286 /* MaterialCommunityIcons.ttf in Resources */,
-				0A51DA5C0E8741AA843410ED /* MaterialIcons.ttf in Resources */,
-				6415F6A7AF1B49E499B26C89 /* Octicons.ttf in Resources */,
-				F7DE059FED7D4707924BC40E /* SimpleLineIcons.ttf in Resources */,
-				92339BF0D5BD4B169C5305CA /* Zocial.ttf in Resources */,
 				92648742304B4CC2A8A4C5F7 /* Roboto-Black.ttf in Resources */,
 				EF514E6C8F834CD58A4E136D /* Roboto-BlackItalic.ttf in Resources */,
 				5C62749C6FCE4F5BABE305D6 /* Roboto-Bold.ttf in Resources */,
 				A708C4A31F784A19870DAAEA /* Roboto-BoldItalic.ttf in Resources */,
+				3F62F7EA2892716D00CEAC5F /* fonts in Resources */,
 				6DC7E1B248334C6DA9BEFA2F /* Roboto-Italic.ttf in Resources */,
 				59BF5A1EFD584A36B40080F8 /* Roboto-Light.ttf in Resources */,
 				A4B78D24352447CEACB5A8DE /* Roboto-LightItalic.ttf in Resources */,
@@ -354,6 +323,118 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		0161E6C9B63C3632434E7417 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MarutiSuzukiApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		10207FEB476E1F1511A57437 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6F68A7B0F9849DF7D23DB563 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		74825B6D9857FFC4B46ED75F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ACEDEB6A5E760E068BCAE4CE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests/Pods-MarutiSuzukiApp-MarutiSuzukiAppTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE34E87942EB293EDD4320E5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MarutiSuzukiApp/Pods-MarutiSuzukiApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -407,6 +488,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C743F37A562597033BA7F9A /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -433,6 +515,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1BA18D7E11022A6AD4FBAAC0 /* Pods-MarutiSuzukiApp-MarutiSuzukiAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -456,10 +539,14 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 13A6F742049C4A4F93D2848A /* Pods-MarutiSuzukiApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T7F8SG5UW6;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MarutiSuzukiApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -473,6 +560,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MarutiSuzukiApp;
+				PROVISIONING_PROFILE_SPECIFIER = LMS_InHouse;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -481,10 +569,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 606B7FFB7E959E72CE7C8A96 /* Pods-MarutiSuzukiApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T7F8SG5UW6;
 				INFOPLIST_FILE = MarutiSuzukiApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -497,6 +589,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = MarutiSuzukiApp;
+				PROVISIONING_PROFILE_SPECIFIER = LMS_InHouse;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -535,6 +628,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -599,6 +693,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

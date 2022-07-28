@@ -616,6 +616,7 @@ const Leave = ({ navigation }) => {
                         <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
+                            boxType={'square'}
                             value={values.planned == "P" ? true : false}
                             onValueChange={(newValue) =>
                               fromRef.current.setFieldValue('planned', "P")
@@ -629,6 +630,7 @@ const Leave = ({ navigation }) => {
                         <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
+                            boxType={'square'}
                             value={values.planned == "U" ? true : false}
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('planned', "U")
@@ -681,6 +683,7 @@ const Leave = ({ navigation }) => {
                         <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
+                            boxType={'square'}
                             value={values.period == "3" ? true : false}
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "3")
@@ -692,6 +695,7 @@ const Leave = ({ navigation }) => {
                         <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
+                            boxType={'square'} 
                             value={values.period == "1" ? true : false}
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "1")
@@ -706,6 +710,7 @@ const Leave = ({ navigation }) => {
                         <View style={styles.checkboxContainer}>
                           <CheckBox
                             disabled={false}
+                            boxType={'square'}
                             value={values.period == "2" ? true : false}
                             onValueChange={(newValue) => {
                               fromRef.current.setFieldValue('period', "2")
@@ -1285,7 +1290,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   checkboxText: {
-    marginLeft: 2
+    marginLeft: 2,
+    paddingHorizontal:10
   }
 });
 

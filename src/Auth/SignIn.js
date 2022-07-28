@@ -47,6 +47,8 @@ const SignIn = ({ navigation }) => {
     // console.log('api data', data);
     AuthService.Post('Login', data)
       .then(res => {
+        console.log(res);
+
         let contextData = {
           token: res.token,
           user: values.UserName,
@@ -83,13 +85,13 @@ const SignIn = ({ navigation }) => {
     ApiService.PostMethode('/GetEmployeeProfile', data, token)
       .then(res => {
         let response = res.Value;
+        console.log(res);
         if(response.Table){
           let userData = {
             EMPL_NAME: response.Table[0].EMPL_NAME,
             profile_photo:response.Table[0].profile_photo,
             userId:user,
             EMPL_DESG_CODE:response.Table[0].EMPL_DESG_CODE,
-  
           };
           let contextData = {
             token: token,
@@ -106,7 +108,7 @@ const SignIn = ({ navigation }) => {
       .catch(error => {
         setLoader(false);
         // return;
-        console.log('response data', JSON.stringify(error));
+        console.log('response data', error);
         if (error.response) {
           // client received an error response (5xx, 4xx)
           console.log(error.response.data.error.message);
@@ -229,6 +231,7 @@ const SignIn = ({ navigation }) => {
                             alignSelf: 'center',
                             margin: 8,
                             borderRadius: 8,
+                            paddingVertical:10
                           }}>
                           <Ionicons
                             name="person-circle"
@@ -241,6 +244,7 @@ const SignIn = ({ navigation }) => {
                             onChangeText={handleChange('UserName')}
                             onBlur={handleBlur('UserName')}
                             value={values.UserName}
+                            style={{paddingHorizontal:6}}
                           />
                         </View>
                         {errors.UserName && touched.UserName && (
@@ -267,6 +271,7 @@ const SignIn = ({ navigation }) => {
                             alignSelf: 'center',
                             borderRadius: 8,
                             margin: 8,
+                            paddingVertical:10
                           }}>
                           <Ionicons
                             name="lock-closed"
@@ -280,6 +285,8 @@ const SignIn = ({ navigation }) => {
                             onChangeText={handleChange('Password')}
                             onBlur={handleBlur('Password')}
                             value={values.Password}
+                            style={{paddingHorizontal:6}}
+
                           />
                           <TouchableOpacity
                             onPress={() => {

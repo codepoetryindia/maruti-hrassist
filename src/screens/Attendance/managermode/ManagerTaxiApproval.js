@@ -874,6 +874,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderWidth: 1,
         color:GlobalColor.Text,
+        paddingHorizontal:10,
         // padding: 6,
         borderColor: GlobalColor.Secondary,
         // fontSize: 16,

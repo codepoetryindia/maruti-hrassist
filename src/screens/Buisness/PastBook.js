@@ -492,6 +492,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // padding: 10,
         paddingHorizontal: 5,
+        paddingVertical:10,
         backgroundColor: '#fff',
         shadowColor: GlobalColor.ShadowColor,
         shadowOffset: {
