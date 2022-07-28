@@ -79,13 +79,16 @@ const Gatepass = ({ navigation }) => {
       .then(result => {
         console.log("APiresult GetLocationListVGPS", result);
         setLoader(false);
-
         setLocations(result.Value);
-        let Location = result.Value[0].LOCN
-        let LocationCode = result.Value[0].CODE
-        console.log("LocationCode", LocationCode)
-        setEmpLoc(Location)
-        setEmpLocCode(LocationCode)
+        if(result.Value.length > 0){
+          let Location = result.Value[0].LOCN;
+          let LocationCode = result.Value[0].CODE;
+          // console.log("LocationCode", LocationCode)
+          setEmpLoc(Location)
+          setEmpLocCode(LocationCode)
+          fromRef.current.setFieldValue('office', result.Value[0]);
+          GetAccessListVGPSApi(result.Value[0].CODE.split(',')[0]);
+        }
       })
       .catch(error => {
         setLoader(false);
@@ -118,10 +121,14 @@ const Gatepass = ({ navigation }) => {
     setLoader(true);
     ApiService.PostMethode('/GetSearchLevelsListVGPS', apiData, token)
       .then(result => {
-        console.log(result);
+        console.log("Search level", result);
         setLoader(false);
-        let arrData = result.Value.map((item) => { return { 'label': item.MEANING, value: item.VAL } })
-        setSearchLevelData(arrData)
+        if(result.Value.length> 0){
+          let arrData = result.Value.map((item) => { return { 'label': item.MEANING, value: item.VAL } })
+          setSearchLevelData(arrData);
+          fromRef.current.setFieldValue('searchLevel', arrData[0]);
+
+        }
       })
       .catch(error => {
         setLoader(false);
@@ -240,19 +247,19 @@ const Gatepass = ({ navigation }) => {
 
 
   const gatePassScheema = yup.object().shape({
-    office: yup.string().required('Location is required'),
+    office: yup.object().required('Location is required'),
     // date: yup.string().required('select one is required'),
     duration: yup
       .string()
       .required('Duration  is required')
       .max(24, 'Duration should be less then 24 hours'),
-    searchLevel: yup.string().required('select one search level please'),
+    searchLevel: yup.object().required('select one search level please'),
     reason: yup.string().required('Reason is required'),
-    persionalVehical: yup.string().required('Select an option'),
-    internalVehical: yup.string().required('Select an option'),
+    persionalVehical:yup.object().required('Select an option'),
+    internalVehical: yup.object().required('Select an option'),
     vehicleNumber: yup.string()
       .test('Vehicle Number is required', function () {
-        if (this.parent.persionalVehical === 'N') {
+        if (this.parent.persionalVehical.value === 'N') {
           return true;
         } else {
           if (this.parent.vehicleNumber) {
@@ -308,7 +315,9 @@ const Gatepass = ({ navigation }) => {
       <Header title="Visitor Gatepass" />
       {/* BODY */}
       <Formik
+        // enableReinitialize
         innerRef={fromRef}
+        validateOnBlur={false}
         validationSchema={gatePassScheema}
         initialValues={{
           office: '',
@@ -316,8 +325,14 @@ const Gatepass = ({ navigation }) => {
           duration: '',
           searchLevel: '',
           reason: '',
-          persionalVehical: '',
-          internalVehical: '',
+          persionalVehical: {
+            label: "No",
+            value: "N"
+          },
+          internalVehical: {
+            label: "No",
+            value: "N"
+          },
           vehicleNumber: '',
           building: '',
           searchEmp: '',
@@ -362,17 +377,17 @@ const Gatepass = ({ navigation }) => {
           // };
           let newdata = {
             "id": "1",
-            "location": values.office.split(",")[0],
+            "location": values.office.CODE.split(",")[0],
             "visitDate": moment(values.date).format('YY/MM/DD'),
             "authorizedPerson": AppUserData?.data?.userId,
-            "Pvehicle": values.persionalVehical,
+            "Pvehicle": values.persionalVehical.value,
             "VisType": "O",
             "visLevel": "1",
             "buildings": buldings,
             "duration": values.duration,
             "exArrTime": moment(values.date).format('MM-DD-YY hh:mm'),
-            "SearchLevel": values.searchLevel,
-            "interVehicle": values.internalVehical,
+            "SearchLevel": values.searchLevel.value,
+            "interVehicle": values.internalVehical.value,
             "ReasonToCome": values.reason,
             "perName": values.perName,
             "Desig": values.Desig,
@@ -420,10 +435,9 @@ const Gatepass = ({ navigation }) => {
                   // console.log(selectedItem, index);
                   console.log(selectedItem);
                   setBuildingData([]);
-                  setFieldValue('office', selectedItem.CODE);
+                  // setFieldValue('office', selectedItem.CODE);
+                  setFieldValue('office', selectedItem);
                   GetAccessListVGPSApi(selectedItem.CODE.split(',')[0]);
-
-
                 }}
                 defaultButtonText={'Select Location'}
                 buttonTextAfterSelection={(selectedItem, index) => {
@@ -595,11 +609,13 @@ const Gatepass = ({ navigation }) => {
 
                 <SelectDropdown
                   data={searchLevelData}
-
+                  defaultValue={values.searchLevel}
                   onSelect={(selectedItem, index) => {
                     console.log(selectedItem, index);
                     console.log("selectedItem", selectedItem);
-                    setFieldValue('searchLevel', selectedItem.value);
+                    // setFieldValue('searchLevel', selectedItem.value);
+                    setFieldValue('searchLevel', selectedItem);
+
 
                   }}
                   defaultButtonText={'Select Search Level'}
@@ -709,6 +725,7 @@ const Gatepass = ({ navigation }) => {
                         // if data array is an array of objects then return selectedItem.property to render after item is selected
                         return selectedItem.label
                       }}
+                      defaultValue={values.persionalVehical}
                       rowTextForSelection={(item, index) => {
                         // text represented for each item in dropdown
                         // if data array is an array of objects then return item.property to represent item in dropdown
@@ -719,7 +736,7 @@ const Gatepass = ({ navigation }) => {
                       data={options}
                       onSelect={(selectedItem, index) => {
                         // console.log(selectedItem, index);
-                        setFieldValue("persionalVehical", selectedItem.value);
+                        setFieldValue("persionalVehical", selectedItem);
 
                       }}
                       buttonStyle={styles.dropdown2BtnStyle}
@@ -764,6 +781,7 @@ const Gatepass = ({ navigation }) => {
                         // if data array is an array of objects then return selectedItem.property to render after item is selected
                         return selectedItem.label
                       }}
+                      defaultValue={values.internalVehical}
                       rowTextForSelection={(item, index) => {
                         // text represented for each item in dropdown
                         // if data array is an array of objects then return item.property to represent item in dropdown
@@ -772,7 +790,7 @@ const Gatepass = ({ navigation }) => {
                       data={options}
                       onSelect={(selectedItem, index) => {
                         // console.log(selectedItem, index);                    
-                        setFieldValue("internalVehical", selectedItem.value);
+                        setFieldValue("internalVehical", selectedItem);
                       }}
                       buttonStyle={styles.dropdown2BtnStyle}
                       buttonTextStyle={styles.dropdown2BtnTxtStyle}
@@ -806,7 +824,7 @@ const Gatepass = ({ navigation }) => {
               {/* Vehicle number */}
 
               {
-                values.persionalVehical == 'Y' ? (
+                values.persionalVehical.value == 'Y' ? (
                   <View style={{ marginVertical: 5 }}>
                     <View style={{ width: '100%' }}>
                       <Text
@@ -1079,7 +1097,7 @@ const Gatepass = ({ navigation }) => {
                     <TextInput
                       placeholder="Search By Name/Dept/Staff ID"
                       value={search}
-                      onBlur={handleBlur('searchEmp')}
+                      // onBlur={handleBlur('searchEmp')}
                       onChangeText={(data) => {
                         setSearch(data)
                       }}
@@ -1114,14 +1132,27 @@ const Gatepass = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
 
-
-                  {search == '' ? (
-                    <View>
-                      <Text style={{ fontSize: 12, color: 'red', marginTop: 10 }}>
+                  {errors.searchEmp && touched.searchEmp && (
+                    <View
+                      style={{
+                        width: '100%',
+                        alignSelf: 'center',
+                        paddingVertical: 2,
+                      }}>
+                      <Text style={{ fontSize: 14, color: 'red', marginTop: 10 }}>
                         {errors.searchEmp}
                       </Text>
                     </View>
-                  ) : null}
+                  )}
+
+
+                  {/* {search == '' ? (
+                    <View>
+                      <Text style={{ fontSize: 14, color: 'red', marginTop: 10 }}>
+                        {errors.searchEmp}
+                      </Text>
+                    </View>
+                  ) : null} */}
 
                   {/* {searchAlert !== '' ? (<View
                   style={{

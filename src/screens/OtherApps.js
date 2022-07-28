@@ -62,11 +62,21 @@ const OtherApps = ({ navigation }) => {
       .then(result => {
         let responseData = result.Value
         stopLoader(false);
-        setAppLink(responseData);
+        if(Platform.OS === 'ios'){
+          let result = responseData.filter(element => {
+            return element.LINK_LINK5 == "IOS"
+          });
+          setAppLink(result);
+        }else{
+          let result = responseData.filter(element => {            
+            return element.LINK_LINK5 == "ANDROID"
+          });
+          setAppLink(result);
+        }        
       })
       .catch(error => {
         stopLoader(false);
-        // console.log('Error occurred==>', error);
+        console.log('Error occurred==>', error);
         if (error.response) {
           if (error.response.status == 401) {
             console.log('error from api', error.response);

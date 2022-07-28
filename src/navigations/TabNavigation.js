@@ -45,6 +45,7 @@ function Tabs() {
       }}/>
       <Tab.Screen name="AttendanceAdmin" component={AttendanceAdminNav}
        options={{
+        unmountOnBlur:true,
         tabBarLabel: 'Attendance',
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="calendar-edit" color={color} size={size} />

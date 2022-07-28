@@ -127,6 +127,13 @@ const Leave = ({ navigation }) => {
       .then(result => {
         setLoader(false);
         console.log('ApiResult', result);
+        if(result.Result){
+          if(result.Result.search("successfully") != -1){
+            fromRef.current.resetForm();
+            setChecked(null);
+            setValidReason("Select Reason");     
+          }   
+        }
         Toast.show(result.Result);
       })
       .catch(error => {
@@ -487,6 +494,7 @@ const Leave = ({ navigation }) => {
             {applyLeave == 0 ? (
               <Formik
                 innerRef={fromRef}
+                validateOnBlur={false}
                 validationSchema={leaveTypeScheema}
                 initialValues={{
                   leave: '',

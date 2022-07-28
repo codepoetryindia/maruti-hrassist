@@ -36,8 +36,8 @@ const ShuttleBooking = ({ navigation }) => {
         tabBarStyle: { backgroundColor: GlobalColor.PrimaryGradient, elevation: 0 },
       }}>
         <Tab.Screen name="Book" component={Book} />
-        <Tab.Screen name="PastBook" component={PastBook} />
-        <Tab.Screen name="FutureBook" component={FutureBook} />
+        <Tab.Screen name="Past Bookings" component={PastBook} />
+        <Tab.Screen name="Future Bookings" component={FutureBook} />
       </Tab.Navigator>
     </View>
     </SafeAreaView>
